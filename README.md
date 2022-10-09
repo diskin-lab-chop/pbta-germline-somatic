@@ -5,7 +5,7 @@ This repository contains a docker image and code used to conduct analyses for th
 
 1. Clone the repository
 ```
-git clone git@github.com:diskin-lab-chop/pbta-germline-somatic-integration.git
+git clone git@github.com:diskin-lab-chop/OpenPBTA-germline.git
 ```
 
 2. Pull the docker container:
@@ -15,7 +15,7 @@ docker pull jrokita1/pbta-germline:version0.1
 
 3. Start the docker container, from the `pbta-germline-somatic-integration` folder, run:
 ```
-docker run --name container_name -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic-integration jrokita1/pbta-germline:version0.1
+docker run --name container_name -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/OpenPBTA-germline jrokita1/pbta-germline:version0.1
 ```
 
 4. To execute shell within the docker image, from the `PBTA-ALT-analysis` folder, run:
@@ -25,7 +25,7 @@ docker exec -ti container_name bash
 
 5. Navigate to an analysis module and run the shell script:
 ```
-cd /home/rstudio/pbta-germline-somatic-integration/analyses/module_of_interest
+cd /home/rstudio/OpenPBTA-germline/analyses/module_of_interest
 ```
 
 
