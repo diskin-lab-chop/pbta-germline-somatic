@@ -13,7 +13,7 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
-
+# load v22 OpenPBTA histologies file
 v22_hist <- read_tsv(file.path(data_dir, "pbta-histologies.tsv"), guess_max = 3000)
 
 # select all normal BS_ids
@@ -31,6 +31,7 @@ tumor_ids <- v22_hist %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
                 sample_id_tumor =  sample_id)
 
+# select only primary tumors
 primary_tumors <- v22_hist %>%
   filter(sample_type == "Tumor",
          composition != "Derived Cell Line",
@@ -39,12 +40,14 @@ primary_tumors <- v22_hist %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
                 sample_id_tumor =  sample_id)
 
+# gather additional germline metadata
 germline_ids_meta <- v22_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids$Kids_First_Biospecimen_ID) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 sample_id_normal =  sample_id) %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal)
 
+# combine germline + tumor ids, separating histologies/tumor descriptor by semicolons
 combined <- germline_ids_meta %>%
   left_join(tumor_ids) %>%
   group_by(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal) %>%
@@ -55,6 +58,7 @@ combined <- germline_ids_meta %>%
             molecular_subtype = str_c(unique(molecular_subtype), collapse = "; "),) %>%
   write_tsv(file.path(results_dir, "tumor-histologies-collapsed-by-germline.tsv"))
 
+# combine germline + tumor ids (primary only), separating histologies/tumor descriptor by semicolons
 combined_primary_only <- germline_ids_meta %>%
   left_join(primary_tumors) %>%
   group_by(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal) %>%
