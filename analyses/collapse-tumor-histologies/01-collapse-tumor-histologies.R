@@ -1,4 +1,5 @@
 library(tidyverse) 
+library(readxl)
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -7,6 +8,7 @@ setwd(root_dir)
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "collapse-tumor-histologies")
 results_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input")
 
 # If the results directory does not exist, create it
 if (!dir.exists(results_dir)) {
@@ -80,4 +82,20 @@ combined_primary_only <- germline_ids_meta %>%
             molecular_subtype = str_c(unique(molecular_subtype), collapse = "; "),) %>%
   write_tsv(file.path(results_dir, "primary-tumor-histologies-collapsed-by-germline.tsv"))
 
-  
+# add previous CBTN diagnoses
+prev <- readxl::read_excel(file.path(input_dir, "PBTA_Germline_801_10102022.xlsx"), sheet = 1) %>%
+  select(Kids_First_Biospecimen_ID, broad_histology, cancer_group, DISEASE_USING, Other_Description_USE) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
+                tumor_descriptor_RC = tumor_descriptor,
+                broad_histology_RC = broad_histology,
+                cancer_group_RC = cancer_group)
+
+combined_append <- combined %>%
+  left_join(prev) %>%
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
+         tumor_descriptor, broad_histology, broad_histology_RC, cancer_group, cancer_group_RC, DISEASE_USING, Other_Description_USE) %>%
+  write_tsv(file.path(results_dir, "tumor-histologies-collapsed-by-germline-CBTN.tsv"))
+
+names(prev)
+
+
