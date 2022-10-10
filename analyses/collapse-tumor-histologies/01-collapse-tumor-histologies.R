@@ -14,7 +14,14 @@ if (!dir.exists(results_dir)) {
 }
 
 # load v22 OpenPBTA histologies file
-v22_hist <- read_tsv(file.path(data_dir, "pbta-histologies.tsv"), guess_max = 3000)
+v22_hist <- read_tsv(file.path(data_dir, "pbta-histologies.tsv"), guess_max = 3000) %>%
+  # update cancer_group to NA if non-tumor
+  mutate(cancer_group = case_when(broad_histology == "Non-tumor" ~ NA_character_,
+         TRUE ~ as.character(cancer_group)))
+
+# pull cell line info for PT_C2D4JXS1, which has no tumor WGS
+BS_AFBPM6CN <- v22_hist %>%
+  filter(Kids_First_Biospecimen_ID == "BS_AFBPM6CN")
 
 # select all normal BS_ids
 germline_ids <- v22_hist %>%
@@ -29,7 +36,11 @@ tumor_ids <- v22_hist %>%
          composition != "Derived Cell Line",
          experimental_strategy == "WGS") %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
-                sample_id_tumor =  sample_id)
+                sample_id_tumor =  sample_id) %>%
+  # remove select benign / non-tumors from being matched
+  filter(!Kids_First_Biospecimen_ID_tumor %in% c("BS_1135HC0V", "BS_MCM78YPC", "BS_N9BF56FP")) %>%
+  # add back one cell line for patient with no associated tumors
+  bind_rows(BS_AFBPM6CN)
 
 # select only primary tumors
 primary_tumors <- v22_hist %>%
