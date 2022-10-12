@@ -8,7 +8,7 @@ author: Jo Lynne Rokita
 params:
   maf_in:
     label: "OncoKB-Annotated MAF input file"
-    value: analysese/oncokb-annotation/results/snv-consensus-plus-hotspots-goi-oncokb.maf.tsv
+    value: analyses/oncokb-annotation/results/snv-consensus-plus-hotspots-goi-oncokb.maf.tsv
     input: file
   germ_in:
     label: "germline file"
@@ -17,7 +17,7 @@ params:
 editor_options: 
   chunk_output_type: inline
 ---
-
+Set libraries and file paths
 ```{r load libraries}
 # load libraries
 library(tidyverse)
@@ -34,27 +34,94 @@ if (!dir.exists(results_dir)) {
 }
 
 # add histologies file so we can subset maf
-histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
+histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "tumor-histologies-collapsed-by-germline-CBTN.tsv")
+
+# remove cell lines from histologies file
+v22_hist_file <- file.path(data_dir,"pbta-histologies.tsv")
 
 # goi file
 goi_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
 
-
+Load oncokb annotated maf and explore data
 ```{r load files}
-germline <- read_tsv(file.path(root_dir, params$germ_in))
+germline <- read_tsv(file.path(root_dir, params$germ_in)) %>%
+  dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID,
+                HGVSc_germ = HGVS.c,
+                HGVSp_germ = HGVS.p) 
 
-tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
+integrated_hist <- read_tsv(histologies_file)
+v22_hist <- read_tsv(v22_hist_file, guess_max = 3000) %>%
   filter(!is.na(pathology_diagnosis),
-                experimental_strategy != "RNA-Seq") %>%
-  pull(Kids_First_Biospecimen_ID)
+         experimental_strategy == "WGS",
+         tumor_descriptor != "Derived Cell Line")
 
-goi <- read_table(goi_file, col_names = "genes")
+# CPGs
+goi <- read_table(goi_file, col_names = "genes") #%>%
+  #add_row(genes = "ATRX")
 
-maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F)
+# load maf/remove ATRX
+maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
+  filter(Hugo_Symbol != "ATRX",
+         Tumor_Sample_Barcode %in% v22_hist$Kids_First_Biospecimen_ID)
+
+# CPGs without somatic hits
+setdiff(goi$genes, unique(maf$Hugo_Symbol))
+
+# table of gene counts by oncogenic effect
+maf %>%
+  count(ONCOGENIC) %>%
+  arrange(-n)
+
+# filter known oncogenic/likely oncogenic/resistance hits
+onco_hits <- maf %>%
+  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance")) %>%
+  write_tsv(file.path(results_dir, "pbta-oncokb-oncogenic-maf.tsv"))
+
+# prevalence by gene
+onco_hits %>%
+  count(Hugo_Symbol) %>%
+  arrange(-n)
+
+# prevalence by variant in oncokb
+onco_hits %>%
+  count(VARIANT_IN_ONCOKB) %>%
+  arrange(-n)
+
+# prevalence by variant in oncokb
+onco_hits %>%
+  count(MUTATION_EFFECT) %>%
+  arrange(-n)
+
+# how many are hotspots?
+onco_hits %>%
+  count(HotSpotAllele) %>%
+  arrange(-n)
+
 ```
 
+Integrate with germline data
+```{r two hits same gene}
+# collapse calls a bit
+onco_hits_subset <- onco_hits %>%
+  mutate(VAF = t_alt_count / t_depth) %>%
+  select(Matched_Norm_Sample_Barcode, Tumor_Sample_Barcode, Hugo_Symbol, Transcript_ID, HGVSc, HGVSp, VAF, SIFT, PolyPhen, Variant_Classification, HotSpotAllele, ONCOGENIC, MUTATION_EFFECT, VARIANT_IN_ONCOKB)
+
+# two hit CPG matches
+germline_somatic_gene_matches <- germline %>%
+  inner_join(onco_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-two-gene-hits.tsv"))
+```
+
+List germline + somatic gene hits by sample
+```{r gene hits by patient}
+collapsed <- germline %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
+  #mutate(path_call = paste(`L-LP_Call_final`, Reasoning_for_call, sep = ",")) %>%
+  group_by(Kids_First_Biospecimen_ID_normal) %>%
+  summarise(Hugo_Symbol = str_c(sort(unique(Hugo_Symbol)), collapse = "; "))
 
 
+```
 
             
