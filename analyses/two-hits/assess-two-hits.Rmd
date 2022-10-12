@@ -1,0 +1,60 @@
+---
+title: "Assess second hits"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Jo Lynne Rokita
+params:
+  maf_in:
+    label: "OncoKB-Annotated MAF input file"
+    value: analysese/oncokb-annotation/results/snv-consensus-plus-hotspots-goi-oncokb.maf.tsv
+    input: file
+  germ_in:
+    label: "germline file"
+    value: data/pbta-germline-all-20220729.tsv
+    input: file
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r load libraries}
+# load libraries
+library(tidyverse)
+
+# define directories 
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+analysis_dir <- file.path(root_dir, "analyses", "two-hits")
+results_dir <- file.path(analysis_dir, "results")
+data_dir <- file.path(root_dir, "data")
+
+# If the input and results directories do not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# add histologies file so we can subset maf
+histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
+
+# goi file
+goi_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+```
+
+
+```{r load files}
+germline <- read_tsv(file.path(root_dir, params$germ_in))
+
+tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
+  filter(!is.na(pathology_diagnosis),
+                experimental_strategy != "RNA-Seq") %>%
+  pull(Kids_First_Biospecimen_ID)
+
+goi <- read_table(goi_file, col_names = "genes")
+
+maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F)
+```
+
+
+
+
+            

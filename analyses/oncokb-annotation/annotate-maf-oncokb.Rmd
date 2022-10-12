@@ -60,29 +60,13 @@ goi_file <- file.path(analysis_dir, "input", "cpg.txt")
 
 
 ```{r load files}
-tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 1000) %>%
+tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
   filter(!is.na(pathology_diagnosis),
                 experimental_strategy != "RNA-Seq") %>%
   pull(Kids_First_Biospecimen_ID)
 
-#keep_cols <- c("Tumor_Sample_Barcode",
-#               "NCBI_Build",
-#               "Hugo_Symbol",
-#               "Transcript_ID",
-#               "HGVSp_Short",
-#               "HGVSp",
-#               "Chromosome", 
-#               "Start_Position", 
-#               "End_Position", 
-#               "Reference_Allele", 
-#               "Tumor_Seq_Allele1",
-#               "Tumor_Seq_Allele2", 
-#               "Variant_Classification", 
-#               "Variant_Type",
-#               "VAF",
-#               "HotSpotAllele")
-
-goi <- read_table(goi_file, col_names = "genes")
+goi <- read_table(goi_file, col_names = "genes") %>%
+  add_row(genes = "ATRX")
 
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% tumor_ids,
@@ -94,9 +78,9 @@ maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
 ```{r annotate pbta maf}
 # pbta maf
 command <- paste(params$python_path, maf_annotator, '-i', file.path(analysis_dir, params$maf_goi), '-o', file.path(analysis_dir, params$maf_out), '-b', oncokb_token, '-q hgvsp_short', '-r GRCh38')
-command
+#command
 
-system(command)
+#system(command)
 ```
 
 
