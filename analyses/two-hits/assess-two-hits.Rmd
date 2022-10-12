@@ -17,7 +17,8 @@ params:
 editor_options: 
   chunk_output_type: inline
 ---
-Set libraries and file paths
+### Set libraries and file paths
+
 ```{r load libraries}
 # load libraries
 library(tidyverse)
@@ -43,7 +44,8 @@ v22_hist_file <- file.path(data_dir,"pbta-histologies.tsv")
 goi_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
 
-Load oncokb annotated maf and explore data
+### Load oncokb annotated maf and explore data
+
 ```{r load files}
 germline <- read_tsv(file.path(root_dir, params$germ_in)) %>%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID,
@@ -100,7 +102,8 @@ onco_hits %>%
 
 ```
 
-Integrate with germline data
+### Integrate with germline data
+
 ```{r two hits same gene}
 # collapse calls a bit
 onco_hits_subset <- onco_hits %>%
@@ -113,14 +116,27 @@ germline_somatic_gene_matches <- germline %>%
   write_tsv(file.path(results_dir, "germline-somatic-two-gene-hits.tsv"))
 ```
 
-List germline + somatic gene hits by sample
+### List germline + somatic gene hits by sample
+
 ```{r gene hits by patient}
 collapsed <- germline %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
   #mutate(path_call = paste(`L-LP_Call_final`, Reasoning_for_call, sep = ",")) %>%
   group_by(Kids_First_Biospecimen_ID_normal) %>%
-  summarise(Hugo_Symbol = str_c(sort(unique(Hugo_Symbol)), collapse = "; "))
+  summarise(Hugo_Symbol = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
+  left_join(integrated_hist)
 
+collapsed_onco <- onco_hits_subset %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
+                Kids_First_Biospecimen_ID_tumor_maf = Tumor_Sample_Barcode,
+                Hugo_Symbol_somatic = Hugo_Symbol) %>%
+  group_by(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor_maf) %>%
+  summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = "; "))
+
+
+collapsed_germ_som <- collapsed %>%
+  left_join(collapsed_onco, by = "Kids_First_Biospecimen_ID_normal") %>%
+  write_tsv(file.path(results_dir, "germline-somatic-collapsed-by-gene.tsv"))
 
 ```
 
