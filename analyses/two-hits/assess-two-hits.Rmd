@@ -12,7 +12,7 @@ params:
     input: file
   germ_in:
     label: "germline file"
-    value: data/pbta-germline-all-20220729.tsv
+    value: data/pbta_germline_plp_calls.tsv
     input: file
 editor_options: 
   chunk_output_type: inline

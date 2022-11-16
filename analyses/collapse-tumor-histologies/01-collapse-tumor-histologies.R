@@ -29,7 +29,7 @@ BS_AFBPM6CN <- v22_hist %>%
 germline_ids <- v22_hist %>%
   filter(is.na(pathology_diagnosis), 
          experimental_strategy == "WGS") %>%
-  select(Kids_First_Biospecimen_ID) %>%
+  dplyr::select(Kids_First_Biospecimen_ID) %>%
   unique()
 
 # select all tumors
@@ -58,7 +58,7 @@ germline_ids_meta <- v22_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids$Kids_First_Biospecimen_ID) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 sample_id_normal =  sample_id) %>%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal)
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal)
 
 # combine germline + tumor ids, separating histologies/tumor descriptor by semicolons
 combined <- germline_ids_meta %>%
@@ -83,8 +83,7 @@ combined_primary_only <- germline_ids_meta %>%
   write_tsv(file.path(results_dir, "primary-tumor-histologies-collapsed-by-germline.tsv"))
 
 # add previous CBTN diagnoses
-prev <- readxl::read_excel(file.path(input_dir, "PBTA_Germline_801_10102022.xlsx"), sheet = 1) %>%
-  select(Kids_First_Biospecimen_ID, broad_histology, cancer_group, DISEASE_USING, Other_Description_USE) %>%
+prev <- readxl::read_excel(file.path(input_dir, "PBTA_Germline_801_10102022.xlsx"), sheet = 1) %>%  dplyr::select(Kids_First_Biospecimen_ID, tumor_descriptor, broad_histology, cancer_group, DISEASE_USING, Other_Description_USE) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 tumor_descriptor_RC = tumor_descriptor,
                 broad_histology_RC = broad_histology,
@@ -92,7 +91,7 @@ prev <- readxl::read_excel(file.path(input_dir, "PBTA_Germline_801_10102022.xlsx
 
 combined_append <- combined %>%
   left_join(prev) %>%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
          tumor_descriptor, broad_histology, broad_histology_RC, cancer_group, cancer_group_RC, DISEASE_USING, Other_Description_USE) %>%
   write_tsv(file.path(results_dir, "tumor-histologies-collapsed-by-germline-CBTN.tsv"))
 
