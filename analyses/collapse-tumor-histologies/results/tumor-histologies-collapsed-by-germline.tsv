@@ -1,0 +1,802 @@
+Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	Kids_First_Biospecimen_ID_tumor	tumor_descriptor	cancer_group	broad_histology	molecular_subtype
+PT_00G007DM	BS_CTEM6SYF	BS_AQMKA8NC; BS_K07KNTFY	Recurrence; Initial CNS Tumor	Embryonal tumor with multilayer rosettes	Embryonal tumor	CNS Embryonal, NOS; ETMR, C19MC-altered
+PT_01MZ62KG	BS_Y7A7J675	BS_TE8QFF7T	Progressive	Embryonal tumor with multilayer rosettes	Embryonal tumor	ETMR, C19MC-altered
+PT_02J5CWN5	BS_CW6NWAWQ	BS_2VB8649B; BS_5TT6TT4K	Initial CNS Tumor; Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, FGFR; LGG, wildtype
+PT_02MVZZSW	BS_XCKDRRYT	BS_MW74GF38	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_04YTK82N	BS_FEYZXWG7	BS_3JE2T7AR	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_06ERX8Z7	BS_PJK0M1X0	BS_B1X2SB4P	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_06H29FCG	BS_43F0DV8Y	BS_0W8AWY10	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_0CE0HFYB	BS_V1P84V9F	BS_30W38X77	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
+PT_0CRPE7YP	BS_KD07YRG3	BS_YPCTK927	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_0DXHDZJR	BS_65YZYWHD	BS_QWS88QXE	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_0EWY6S6S	BS_DMD12ZRF	BS_GAA327FP	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_0F3RHT8J	BS_0YJF1F95	BS_354DTKHE	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_0FKQ3XGV	BS_X9DDS508	BS_PDRNE606	Initial CNS Tumor	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_0H65S44B	BS_TBYS2Z4H	BS_Q807ENGY	Initial CNS Tumor	NA	Benign tumor	NA
+PT_0K0DPVF6	BS_JQB0CTE7	BS_Z4Q8RH5M	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_0MHKP408	BS_GSTHVZFR	BS_J6VRW67C	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_0MXPTTM3	BS_NY9MPC8F	BS_8SYN7GXG	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, IDH, TP53 activated
+PT_0NY38X3W	BS_R035Q020	BS_HQFNQHVW	Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_0PT33SCF	BS_2QF33SK7	BS_KBPBCWA0	Recurrence	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_0RN3VSXZ	BS_JTSWHVNR	BS_VQEPFE1P	Initial CNS Tumor	NA	Benign tumor	NA
+PT_0SPKM4S8	BS_6FD0SW6E	BS_VW4XN9Y7	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 activated
+PT_0T2EWNYR	BS_ZJF3N0DE	BS_AHT9PKVE	Initial CNS Tumor	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_0WKX8Q5X	BS_85KFJ81X	BS_QSMFVHSB	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_0WMP712K	BS_4EAVBDKR	BS_KAZENYZE	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_0XN6EYXZ	BS_0RVVY4PS	BS_9F2J6VS1	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_124TTG01	BS_KAPQRSFM	BS_85Y70BHE	Initial CNS Tumor	Adenoma	Benign tumor	NA
+PT_12JTZFC2	BS_49Z8WJP2	BS_P0KQFXNC	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_13MKXR8G	BS_YXPWKF92	BS_CXCKHP3Z	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_164RNWTT	BS_TH4A63J7	BS_5D24XV4T	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_16EJ7BZ9	BS_81PR0E1C	BS_5KK9P7XD	Initial CNS Tumor	NA	Benign tumor	NA
+PT_17NG0KW3	BS_EFTRE3J4	BS_JDS0SYST	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_17W3GJPT	BS_1XMBRB6K	BS_ETTZM63Y	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, FGFR
+PT_1BV6ND1D	BS_RG2CTN65	BS_MZJJRDZF	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_1DRAVX4S	BS_1Q9PXTH7	BS_GWPJKM7G	Initial CNS Tumor	Rhabdomyosarcoma	Mesenchymal non-meningothelial tumor	NA
+PT_1DSX4VJM	BS_0WDJRMAB	BS_KYPMZZSY	Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_1DY2TP9N	BS_EXKVBK51	BS_376Q9QKG	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_1E3E6GMF	BS_BKCPNFZ5	BS_7GKF6M85	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_1EB5KHZX	BS_YNN71TNT	BS_C0YDDQKB	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_1H2REHT2	BS_0KKH9VKP	BS_79SYEHY3; BS_7M7JNG00; BS_96S0VQBN	Progressive	High-grade glioma astrocytoma; Pleomorphic xanthoastrocytoma	Diffuse astrocytic and oligodendroglial tumor; Low-grade astrocytic tumor	HGG, H3 wildtype, TP53 loss; LGG, NF1-somatic, NF1-germline, CDKN2A/B
+PT_1J2DT6MM	BS_WYX72YAC	BS_THH0CE5A	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_1KEER2Q1	BS_8PRJTBE1	BS_F1B71HTZ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_1MW98VR1	BS_FCPCSXCG	BS_007JTNB8	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_1N6ATKJS	BS_JG0BEXPR	BS_KKWQW01N	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_1NN9AW39	BS_WNKT1PAM	BS_8D52JK1Q	Initial CNS Tumor	Melanocytic tumor	Melanocytic tumor	NA
+PT_1P436YMM	BS_QSHPVH0P	BS_6GTKRGNK	Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_1T7WF5S1	BS_ZY3SVMA5	BS_HSYF7G2D	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_1TB2V1PH	BS_GE6GWP4A	BS_JM979K1M	Initial CNS Tumor	Germinoma	Germ cell tumor	NA
+PT_1TGKS073	BS_XN449RAJ	BS_CGCNC41M	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_1VQWQ0TC	BS_P65SHPNZ	BS_QXZTRMWM	Recurrence	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_1Z015H6V	BS_3BC5EX6K	BS_A3EV6FXK	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_1ZAWNGWT	BS_79FBVAB7	BS_4DTX295Z; BS_6X2BQQGE	Initial CNS Tumor; Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, IDH
+PT_203ZY782	BS_KN5FPSJE	BS_BVD7PWP5	Initial CNS Tumor	Choroid plexus cyst	Choroid plexus tumor	NA
+PT_20ZM6THA	BS_3X8GAQ2M	BS_9X9E86DY	Recurrence	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, other MAPK
+PT_229DRV7B	BS_ZQY1P7NR	BS_CDKC1E2B	Recurrence	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_23K3YS1P	BS_GFKX8YM0	BS_BBCM52QE	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_23NZGSRJ	BS_KSRKPT4Z	BS_05S9WJW6	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_25Z2NX27	BS_5W0BW97W	BS_N9SMBR24; BS_W50WEJE7	Progressive; Initial CNS Tumor	NA	Benign tumor	NA
+PT_26V72ZXB	BS_MDHYHEBH	BS_QZT3SPY7	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_279D9QZ8	BS_VBB1XSPW	BS_1YTHM07J	Recurrence	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_27FDWCVZ	BS_SP886CE6	BS_D09VWF8H	Initial CNS Tumor	Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_2BJF83GQ	BS_4EK9WVET	BS_J5J0EA7Y	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline
+PT_2BTC5TEN	BS_601994WV	BS_AQQY8HMR	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_2C63FJAM	BS_PXD19CBF	BS_F48RA7QF	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, MYB/MYBL1
+PT_2CJ31SBX	BS_2AQZX79Y	BS_JC2187NA	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_2D1KGV99	BS_1C3RDKQH	BS_CFEWVDG1	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_2E552BAR	BS_XR81Q21W	BS_6Z213H2V; BS_E8MC6R2K	Initial CNS Tumor	Malignant peripheral nerve sheath tumor; Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_2ECVKTTQ	BS_2EAATK5V	BS_DW1CYEXP; BS_ERMGD2N5	Second Malignancy; Recurrence	Pilocytic astrocytoma; Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline, CDKN2A/B; LGG, NF1-germline
+PT_2FK75B27	BS_PF6TP3FX	BS_B3RH9V17	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_2FVTD0WR	BS_C8EYP5BV	BS_8TFBNHT0; BS_RA0VCMWC	Initial CNS Tumor; Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_2GPH62JS	BS_7NEND0C1	BS_2VHFP7M8	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_2JDDX6TJ	BS_THDBV4G0	BS_B9QP40ER	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_2NQPX1R2	BS_KF14TKFY	BS_YBCQBCQC	Recurrence	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_2PRV78FX	BS_4KXBM5J8	BS_17AXPP1Y	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, MYB/MYBL1
+PT_2SCVQ2N6	BS_P862EP9P	BS_ST3Z2B9B	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_2VSDT9CK	BS_TTZA89Y4	BS_CQ8C6X4X	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_2WA5PM32	BS_D4YJXS6R	BS_AJFG2QDD	Recurrence	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_2WVW55DA	BS_M4KBSYZ2	BS_M28HG0NT; BS_NYVVN7SD; BS_R94EDP5H; BS_RG6JK7ZN	Progressive	High-grade glioma astrocytoma; Desmoplastic infantile astrocytoma and ganglioglioma	Diffuse astrocytic and oligodendroglial tumor; Neuronal and mixed neuronal-glial tumor	HGG, H3 wildtype; GNT, RTK; HGG, H3 wildtype, TP53 loss
+PT_2Y3R515E	BS_FF2TWA2W	BS_5RD8KEED	Progressive	Teratoma	Germ cell tumor	NA
+PT_2YCHME6S	BS_E4SBS246	BS_MZB884N9	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_2YT37G8P	BS_9YHX7QFW	BS_4QFSH7C4; BS_ZJZFT0AJ	Progressive; Recurrence	Low-grade glioma astrocytoma; Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_2Z7GVDTM	BS_FVGXRPNG	BS_QYWGB52C	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_2ZXR2PDN	BS_S588W9V2	BS_93B38HPS	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_32J909WM	BS_ABDWNW1A	BS_JDMM2XG4	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_37B5JRP1	BS_0JS89ADT	BS_8Q8N6AHW; BS_EJV0N3BX	Progressive; Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_37WTWPZY	BS_ZVXHWM3N	BS_MHT5C2AP	Initial CNS Tumor	Langerhans Cell histiocytosis	Histiocytic tumor	NA
+PT_387VK1T9	BS_T77MXWTX	BS_F064HMTP	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_38FS37DP	BS_6VQ446ZB	BS_JX1PK0VW	Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_39HBKSGG	BS_B6H61NPY	BS_Z5D6G1S6	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_3A0B29QT	BS_C8FMN2ZR	BS_E5B2YZJH	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_3A87PCQK	BS_PY472W3B	BS_AQECMDPP	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_3AWKWXEV	BS_YKT1NAJQ	BS_E42SSQGJ	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_3CHB9PK5	BS_0754AZX0	BS_20TBZG09; BS_8AY2GM4G	Initial CNS Tumor; Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_3CVMBGD7	BS_YWM1RMFT	BS_49JD1V3S	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_3D74J8RZ	BS_X0XM8PYJ	BS_HGP0PV0D; BS_VMZMGB7B	Progressive	Meningioma	Meningioma	NA
+PT_3J0ASVHN	BS_6VYD7653	BS_R9V82BC1	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_3KK1F95W	BS_ER2MEZMV	BS_03SSN1N2	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_3KM9W8S8	BS_1DM8G1V8	BS_859AV1DB	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_3KWSRWZN	BS_V733WCVK	BS_5V2XCW17	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_3MNY9BRY	BS_YEEV8386	BS_5R0HHQ1Y	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_3NM45TQ8	BS_45N760PZ	BS_N2JD3VX6	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_3P3D97AB	BS_J5596HKA	BS_XVNNWN2Z	Initial CNS Tumor	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_3PK66TJY	BS_K1ZCZDGY	BS_F5V8CWXT	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_3PSG2DQT	BS_WZ662J49	BS_2CD1XWVP	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_3R0P995B	BS_NCF4MJ9S	BS_75VHXMZN; BS_C9TNGEA0	Initial CNS Tumor; Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_3RN24N9X	BS_AZG06JFG	BS_VW96PFKQ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_3SW2VHD5	BS_Y6FTH24P	BS_JJNSP29S	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_3T3VGWC6	BS_31E3HZPZ	BS_10AD3EFX; BS_NCGGFG6H	Initial CNS Tumor; Recurrence	Low-grade glioma astrocytoma; Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E; LGG, BRAF V600E, CDKN2A/B
+PT_3V5GTCJR	BS_63AK4SCF	BS_QZTPJ8YW	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_3VCS1PPF	BS_370TKZ48	BS_B4P1NP87; BS_QMY84KF4	Initial CNS Tumor; Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_3VQEVNDD	BS_PC83EJY8	BS_9G7ETYHR	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_3WA1XB8G	BS_YJCZY95C	BS_K049HVGR	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_3WA7SBQ6	BS_VJ7200DX	BS_HN8DE43A	Initial CNS Tumor	Choroid plexus carcinoma	Choroid plexus tumor	NA
+PT_3X3MF8ZD	BS_2EJWS3SD	BS_3NX3RBCX	Second Malignancy	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_409Y4N1N	BS_8DTDM1MK	BS_HW4MYBZ2	Initial CNS Tumor	Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_40HTPY49	BS_DDH5HKJK	BS_T7WMJ08W	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_4159VCJY	BS_E7JTAP8Y	BS_HTGDSPQA	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_41QYPSGV	BS_VN983YRH	BS_CPYV7AHD	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_41RR5FQD	BS_1CXWXC2H	BS_71HPXFE7	Initial CNS Tumor	Teratoma	Germ cell tumor	NA
+PT_41WETNRC	BS_644F21BX	BS_GFS9JEE6	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_4347ZBEX	BS_GKRMQS5W	BS_742CDKAS	Second Malignancy	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_44HPG5YT	BS_1NPNHFPC	BS_BZWM455T	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_45P9F9MD	BS_YCT0FK91	BS_0RF0G9SQ	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_45YH276T	BS_2E1MBQ4Y	BS_QC5FNXGH	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_46F28BFH	BS_PVJXA07K	BS_H8E4K1DT	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_48N4Y6YP	BS_88FW45Z8	BS_8B1YF57H	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_4ADZ9F53	BS_MCWEQ2PN	BS_FHE6Z73G	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E, CDKN2A/B
+PT_4EDBZRM2	BS_TV8HD883	BS_9M49SGAQ	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, KIAA1549-BRAF
+PT_4JG5KWE8	BS_JAGHHZXH	BS_N9N1X78X	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_4RJ2EATN	BS_4CVBQP6X	BS_F7KYPE79	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_4TASAQKA	BS_HMWZ2893	BS_AEMRNSQX	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_4XB3YTJM	BS_872YDFKD	BS_823V5X6Z	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_4XVA57J7	BS_GVA39GGG	BS_9NF39QAW	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
+PT_4XWYZYJS	BS_9E41M9S0	BS_VHD4ARSG	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_4Z34K4XB	BS_0X88TX85	BS_P36C0ABE	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_4ZSR5DY8	BS_PFE6M2EW	BS_W9FW1PAE; BS_YH4DYNQ2	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline, FGFR
+PT_50ZFWMZE	BS_YJ0QJJZB	BS_4P25NNZD	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_54MH6Q46	BS_0R4R9C2K	BS_AXM96K20	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_57YP9ABV	BS_FSK1AK5N	BS_YKQP4SBX	Progressive	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_596H0BQF	BS_DRNNKZYE	BS_8Q8CAY84	Progressive	NA	Benign tumor	NA
+PT_59D00MBQ	BS_9G82HJFA	BS_3E5C1PN1; BS_QG6V29H7	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_59FJRPVX	BS_6E10DMSJ	BS_WJB33V17	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_5ABCFCSK	BS_RVFDSK8D	BS_APAQ2X2S	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_5BWZA0NT	BS_85TADN40	BS_BFDEZK1C	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_5CKDR2SF	BS_26J942GD	BS_9KDA3HG6	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_5CNZ47XV	BS_R483NVWW	BS_QM1Z8R38	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_5D3AVPCW	BS_EW74HRQW	BS_XCFNEZ8E	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_5F4N0CAP	BS_YZ3MRCXX	BS_G12HNXYX	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_5FR2YA6E	BS_F42WG7E7	BS_VTTTQYQA	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_5GQ76YZJ	BS_2K76WTCZ	BS_WXKCR17Q	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_5KP2E0DS	BS_PAYW4RCK	BS_D3ZV6MMY	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_5KRVE8E4	BS_QYFY15FA	BS_QX754ADQ	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_5M8A47WW	BS_S8CT9Z7J	BS_50XV7CTQ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_5P3XJ97K	BS_F8Y7NRK8	BS_RB8VSEVG	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_5SNX4PMK	BS_1Z7Y81NW	BS_XKXDH0YJ	Initial CNS Tumor	NA	Benign tumor	NA
+PT_5SX0GRW1	BS_TP6GSAB6	BS_KP0YNTAK	Progressive	Neuroblastoma	Embryonal tumor	NA
+PT_5VAKED5F	BS_TGEBNSS2	BS_7M5272WN	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_5X061J42	BS_3DHNFFV6	BS_Z5VJCFNP	Initial CNS Tumor	Germinoma	Germ cell tumor	NA
+PT_625X34JX	BS_0B2KNG4A	BS_6FYTRKJJ	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_63F63QY0	BS_BZ7FK347	BS_KAD49R68	Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_63HDZHCN	BS_7CBZW7P6	BS_S0T3CQ97	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 activated
+PT_66XN3MT1	BS_9A5CF1QE	BS_DC7XYYG8	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_67R1AF5R	BS_XJWNW9E8	BS_4PAE19ZC	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_69C7CBFW	BS_VA0KWD52	BS_MJ8EGM54	Initial CNS Tumor	Rhabdomyosarcoma	Mesenchymal non-meningothelial tumor	NA
+PT_6BX46NVR	BS_4RVAJBCR	BS_CFPWSZB5	Progressive	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_6DB7B9WV	BS_9TKZ0YP0	BS_CWQ35N2K	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_6DW5NFKX	BS_TZQ8XNQQ	BS_KT9H4B1N	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_6E8JYRXM	BS_TYCE05MW	BS_3R0KN6Z4	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_6GDPNFA6	BS_N56BGDK6	BS_XGVSX8BX	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_6MB6RED3	BS_6PFQJMM3	BS_K14VJ1E3	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_6MWPJ96F	BS_D9FXAR11	BS_6GV08HTE; BS_M8EBKZDG	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_6N1QWCXE	BS_M5M3BPDH	BS_D2BZ25FW	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_6N825561	BS_EH43PB49	BS_E0S2Y0TS	Progressive	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_6PFFSB6D	BS_D4X1QMG0	BS_4Z6F1HJZ	Initial CNS Tumor	Myxoid spindle cell tumor	Non-CNS tumor	NA
+PT_6Q0NPVP3	BS_B3WREYSV	BS_E5H6CFYT	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, H3
+PT_6R7AE0P3	BS_F8WRX1VY	BS_42A66SH4	Initial CNS Tumor	Langerhans Cell histiocytosis	Histiocytic tumor	NA
+PT_6R95FQT2	BS_0TEYTQJY	BS_YXCVR90M	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_6SH7PV1N	BS_XQ0Y2PMV	BS_MW63FCZC	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_6TKJRSPW	BS_9GHGSRGG	BS_WRJNMEX2	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_6TMT65YA	BS_WP2FY512	BS_BSM3ZHW4	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_6TZR2DH1	BS_5ESEHG0A	BS_SFZ3A07S	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_6VJ5PNKS	BS_SWHT4TC3	BS_JJWC13GG	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_76Q72M5T	BS_MN13H3T4	BS_DT92H1MJ	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_78NQ0QQS	BS_JXEQWWJH	BS_T8TCEBB1	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_7BJBEBZT	BS_T2025VEQ	BS_164KRQJ0	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_7DP91QDJ	BS_Q69BHVQX	BS_V3SC6NWH	Initial CNS Tumor	Cavernoma	Mesenchymal non-meningothelial tumor	NA
+PT_7E3V3JFX	BS_5BZXVKWT	BS_G16NM5WJ	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, H3 K28
+PT_7F3ZPZB7	BS_JZAENWRM	BS_FXDY881S	Initial CNS Tumor	Germinoma	Germ cell tumor	NA
+PT_7F485CXV	BS_38D5GXR1	BS_1RF75MK2	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_7FQ6VECA	BS_FT5H2TGH	BS_Y7CA8B5R	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_7FZ8SE69	BS_1034EC8V	BS_KHSYAB3J	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_7JQ24F35	BS_EM975DQ6	BS_895FJ34T; BS_WD7AQV83	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_7KBMN6C2	BS_EM6VE8JM	BS_HZHEF797	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_7KTAH3RD	BS_2G2VJT4R	BS_ZJT1REVB	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_7M2PGCBV	BS_YVH56WW3	BS_BBTT7DH4; BS_QRH793AV	Recurrence; Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_7MZRW1DH	BS_23EJJGP1	BS_1C4WCNQF	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_7QKGGMKV	BS_F0WR427W	BS_NMQTPVFW	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_7RMS6K08	BS_7V4S5B83	BS_ACE6QKVF	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_7T13FDWK	BS_BYA3D12Q	BS_DMBNB0EP	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_7TEHW6VQ	BS_TA48KCWF	BS_KYPZRS4S	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_7TRGHZBK	BS_HNWNZFHA	BS_XEVMEYFS	Initial CNS Tumor	Choroid plexus carcinoma	Choroid plexus tumor	NA
+PT_7VPSS2SN	BS_5ECS2BQT	BS_ZH6PC8KM	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_7VSY72EK	BS_M2D1DQR4	BS_0ZR4XA69	Initial CNS Tumor	CNS Burkitt's lymphoma	Lymphoma	NA
+PT_7WT6P5M8	BS_WMVYQREN	BS_JB3J82ZK	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_7YGZ526E	BS_E1EPMTD5	BS_4ZKN0WGS	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_7YSCM82T	BS_Z6GF2TDX	BS_5Y2Q63Y4	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_82A9SDRN	BS_99MW9ECE	BS_NWYBD9CA	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_82MX6J77	BS_8782G07F	BS_8H2XX24V; BS_P42V737Y	Initial CNS Tumor; Second Malignancy	Medulloblastoma; Meningioma	Embryonal tumor; Meningioma	NA
+PT_858H7ABM	BS_AS4CJ75A	BS_872Q3FK2	Recurrence	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_868QRW9G	BS_71CN44A6	BS_K89V7JNJ	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_89XRZBSG	BS_XHT3F34T	BS_G9MQM1KK; BS_X1DSETVE	Initial CNS Tumor; Recurrence	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype; HGG, H3 wildtype, TP53 loss
+PT_8CZ6ANE0	BS_C524TC33	BS_4G9Y2VC6	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_8ECE2D92	BS_BT4WRQCA	BS_GXACEYKB	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_8FWP7BR3	BS_Z56904ZW	BS_0QEBZX3M	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_8GBF5MTD	BS_ZDSXV5N1	BS_S7S6YEHA	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_8GN3TQRM	BS_4AM9C504	BS_QQP17PDQ; BS_RXSBJ929; BS_S791VC80	Recurrence; Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_8GW4J4TD	BS_S3VV60EP	BS_V8G6BZRR	Initial CNS Tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	NA
+PT_8R00BMHH	BS_9F8D3A05	BS_H50HR85Y	Initial CNS Tumor	Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_8RB3EKNP	BS_6S7T92KS	BS_5KFAEMQJ	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_8RB7TPS2	BS_J9M165VZ	BS_8SETK1J4; BS_ZS1QRMXS	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_8SDJXNFR	BS_VHG85P93	BS_6Z4WHYDG	Recurrence	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_8V3360DR	BS_VCCX0CTG	BS_JVTQD8HH	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_8WNA6M94	BS_J354PJZN	BS_090GV72Q	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_8XZY6MM1	BS_6M3B3TKJ	BS_WB8P21ED	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_90W4HCNR	BS_GAFJBRM5	BS_M1TDS9CT	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_92YX7KK9	BS_6S0YKNJD	BS_F5KRHGKC	Initial CNS Tumor	Germinoma	Germ cell tumor	NA
+PT_94EHCMXA	BS_P3W89XQY	BS_S88G7BXH	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline
+PT_95S99RWE	BS_KSFM87N1	BS_HYGK88B0	Recurrence	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_962TCBVR	BS_JEPRW1KE	BS_2CQ6K2JW; BS_ME97J1GA; BS_Q3ANJDVG	Initial CNS Tumor; Progressive; Recurrence	Pilocytic astrocytoma; Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_976P4557	BS_G4NEC9N5	BS_6HE8H9HY	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_98QMQZY7	BS_382HZBG4	BS_JC8YV5V9	Initial CNS Tumor	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_99S5BPE3	BS_1NWVFBTQ	BS_83MSWR59; BS_86QSEFS7; BS_AG6M7TJE	Initial CNS Tumor; Recurrence	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_9A6RPJ97	BS_7GZKB2J6	BS_RHEBGZF8	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_9AHA6KW3	BS_6X36H0V9	BS_SDT1J3A7	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_9AW9EWHA	BS_RAFVMB92	BS_EFBBP9H3	Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_9B6KWJT2	BS_DJ7XB1DM	BS_VQC2PE2B	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_9BZETM0M	BS_GBQ6A3ST	BS_STNH7YSX	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 G35
+PT_9C2G356W	BS_GMJP7PN2	BS_1VMBA3BN	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_9DER14KH	BS_JN7F983Y	BS_TNQKJZCP	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_9DMMZ08D	BS_XEY2VWR9	BS_FVYBGMG1; BS_H174820R	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_9GKVQ9QS	BS_MVYA262V	BS_3Z40EZHD; BS_JRFVST47	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_9HMVHQEH	BS_61C97RSA	BS_H2K7XX4X	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_9M4CQX3M	BS_9XMMXFXW	BS_ZAH4FHV2	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, NF1-somatic, FGFR
+PT_9PJR0ZK7	BS_GJWAV3E5	BS_A1DV9T7G; BS_WH8KWW5J	Second Malignancy; Recurrence	Neurofibroma Plexiform; Malignant peripheral nerve sheath tumor	Tumor of cranial and paraspinal nerves	NA
+PT_9S6WMQ92	BS_YVRSCEC6	BS_1CZPVCXR; BS_WY5KYSHJ; BS_ZR75EKKX	Progressive; Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_9XAA8PF6	BS_JQDT3FKQ	BS_A9S5HT6P	Initial CNS Tumor	Adenoma	Benign tumor	NA
+PT_9YMRNZHH	BS_5YCVM9WF	BS_F8KR1QWE	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_9YNQJZ5G	BS_BVRH3WGW	BS_C3X4AEK5	Progressive	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_9ZY739FB	BS_E45WEXMB	BS_Z14Z2JMW	Recurrence	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_A0F23R7E	BS_QG3PYXB4	BS_AR2BH0Z4	Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_A325EYR2	BS_DP925FZV	BS_YB99Q6TN	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_A4KA01ZH	BS_Z82320N1	BS_RCAZ62J7	Initial CNS Tumor	Teratoma	Germ cell tumor	NA
+PT_A594A46X	BS_J7WQHJDQ	BS_6Y7FX7QJ	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, other MAPK
+PT_A9F8Y6MA	BS_BXTHPE56	BS_ZKZACPVV	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_A9YAZJNN	BS_0QC2QX0P	BS_PNXDHDF3	Recurrence	Meningioma	Meningioma	NA
+PT_AC5SD9AC	BS_FBZQ4DXA	BS_VPJ9CARN	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_ADTP7EHN	BS_TWCW8QZV	BS_KG1YMTA4	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_AKQZZPH8	BS_B900YTMN	BS_XPSD2NRJ	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_AP9P5D7N	BS_44WMSY17	BS_V79WFJ6N	Recurrence	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_AQWDQW27	BS_8R1DYXMB	BS_D3KVGMRJ; BS_EDZCAHR2; BS_JR56RQDC	Progressive; Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_ATE3YRH5	BS_K9NDFNWV	BS_04B8X54S	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_ATS9XDJ5	BS_MTA50F0G	BS_R1ZBTEAG	Recurrence	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_AW8WV14Y	BS_EQCAS6HV	BS_YYAPSA5P	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_AWBPNFM5	BS_DF6YZT8Y	BS_5V2FBYQG	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, RTK
+PT_AWMZ12NP	BS_WDSA6GVS	BS_FJEBFQHG; BS_N8WXTFN4	Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E; GNG, wildtype
+PT_AXMVG8QE	BS_1VKV3MYJ	BS_Q88059DJ	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_AXVH36AM	BS_556GG009	BS_ZPF89720	Initial CNS Tumor	Sarcoma	Mesenchymal non-meningothelial tumor	NA
+PT_AYZA2WCW	BS_T20VY3XN	BS_0Q8G4N8H	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_B0JFCN5W	BS_YHZ69SDZ	BS_BZ4GKDP4	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_B38P3Y5T	BS_Y63AQ2ZX	BS_DH86PF5A	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_B54PH840	BS_ZP36WDVS	BS_XJZQA3AP	Initial CNS Tumor	Pineoblastoma	Tumor of pineal region	NA
+PT_B7QRTN72	BS_5N2GEGMD	BS_YH60H2FS	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_BBHAD51D	BS_FW28DA07	BS_WYF8NGSD	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_BCN28SW9	BS_03KCP14P	BS_8BM1WTGR	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_BCWGRGDB	BS_8CDVTS20	BS_BA0M71QZ	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_BDM0M83S	BS_1RA2RC8A	BS_M16CDR44	Initial CNS Tumor	Pineoblastoma	Tumor of pineal region	NA
+PT_BDNE55YT	BS_3E3VYSXT	BS_Y43VC4VG	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_BF3PGTF7	BS_GEYA8N9C	BS_AGAW7M7W	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_BG7GAFK6	BS_R2J0DCAT	BS_9BF58P80	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_BK92NM09	BS_GNH80DDG	BS_XVYRXN8J	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_BNARR0N6	BS_05H4Y3ZF	BS_99PPRCW4	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_BPKVVWVB	BS_9NRNDZD0	BS_20X874J5	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_BQ8BQ01J	BS_DMP1BV1H	BS_0DKPGQWD	Initial CNS Tumor	Gliomatosis cerebri	Low-grade astrocytic tumor	LGG, IDH
+PT_BRTVGGRK	BS_1BQ1WBCT	BS_QHTDJG77	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_BTTM2HS5	BS_319879RE	BS_PFXDWV9R	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_BWFTKJXT	BS_ETAATG3J	BS_K3PPH522	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_BWGZBVD1	BS_AJZ5H79X	BS_NZRJE7QA	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_BWN251DF	BS_Y8FH8822	BS_MVC1NCZX	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_BZKJR4GK	BS_C7M1W9D1	BS_NTXHP7QR	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_C1M4YF1R	BS_7FHJGTZG	BS_K6BMXTW5	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_C2D4JXS1	BS_P4Z4YP0P	NA	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_C2VY5NM6	BS_FQ58DAZV	BS_N0Z6V2YG	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_C4F1HPH5	BS_SY0S6QFV	BS_RH9PMH3G	Initial CNS Tumor	Langerhans Cell histiocytosis	Histiocytic tumor	NA
+PT_C94VR1Y2	BS_M7KYG012	BS_HBAKYKQM	Recurrence	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_CAYBADQC	BS_WRRTNKYE	BS_2Z9JQDPV	Initial CNS Tumor	Juvenile xanthogranuloma	Histiocytic tumor	NA
+PT_CB1XPA3W	BS_3A55810M	BS_KCN7NG92	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, NF1-somatic
+PT_CB9PD1YP	BS_Z8E250HZ	BS_WSFB4SA2	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_CBAYDRF9	BS_C75Y7S77	BS_7BNQBB26	Unavailable	NA	Pre-cancerous lesion	NA
+PT_CEWNZVKF	BS_WCQW99V3	BS_MWXDJFWW	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_CGPJY881	BS_CJFTT8ZC	BS_XKP747AS	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_CGWPWSXM	BS_N6XWSD15	BS_9W6FK6X4	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_CK41DW03	BS_4RV40GPD	BS_3AERRZQT	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_CM32ZCX6	BS_5MJ9XXAC	BS_40SJZGT2	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_CMB6TASJ	BS_6PQN5AMH	BS_B73JK7T1	Progressive	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_CQ7EGCMB	BS_HQEFFVM1	BS_PJ08ZW9A	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_CR2YBSPT	BS_6Y9AK5F8	BS_AXW0XBH8	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_CTSQ5FHH	BS_GCNH4CC0	BS_HPMX6CT4	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_CW0BJE0Y	BS_B2AFNXS1	BS_12ZB7R6A	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_CWA1405H	BS_AF6A572P	BS_9YPJANGX	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_CWD717Q0	BS_C4BTBM7G	BS_4RS1SC48	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_CX58G6P6	BS_GAPT45QB	BS_X6361T19	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_CXT81GRM	BS_QYGZMWPC	BS_3CG2N4PD; BS_HZNKSQ17	Progressive; Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH; MB, To be classified
+PT_CYBYN18G	BS_DCEAZ94R	BS_T1SNKF50	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_CYVVA9AB	BS_95P46VE0	BS_01DQH017	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_D13X3N8F	BS_8Q2EAYJR	BS_V2MDX7HG	Progressive	NA	Benign tumor	NA
+PT_D1WJ3BJX	BS_RREVQG9H	BS_7PKPNFFK	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_D215EQAP	BS_Q14B10B6	BS_SFH8TGKT	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_D3AN5M5W	BS_DSPH005J	BS_XBE002WV	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_D5KHK0SS	BS_9HYDMBBW	BS_AJ0T7DJ7	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_D7FS86D8	BS_SYGXZY9V	BS_3ZASRA3A	Initial CNS Tumor	NA	Benign tumor	NA
+PT_D7KMPYTZ	BS_K65XZGKM	BS_P3P96WCD	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_D9NTSYSC	BS_4TEXRBCG	BS_9BGCH82S	Initial CNS Tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	NA
+PT_DA2TJAV1	BS_5N4ZSC43	BS_Y4ZX0YX7	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, To be classified
+PT_DA4WFQ96	BS_CEPD6BKP	BS_M9YZK3SP	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_DACV00WF	BS_TQYACCGG	BS_PVZJCXS1	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_DDFAZ345	BS_1EWXJPWR	BS_94AP61Q5	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, other MAPK
+PT_DEDRCQWH	BS_T3VJQSYM	BS_ZHJFX6C9	Initial CNS Tumor	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_DEKWG1QG	BS_A4JP70KJ	BS_CXN0498B	Initial CNS Tumor	NA	Benign tumor	NA
+PT_DEYCW197	BS_YWHDJ7FE	BS_6XP91JM2	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_DFCZAG9T	BS_5YXP6R6Q	BS_4NPEMNAD	Initial CNS Tumor	Neuroblastoma	Embryonal tumor	NA
+PT_DFQAH7RS	BS_0V76MCTW	BS_MW16Y7ME; BS_ZKFEMJZ8	Progressive; Recurrence	Dysembryoplastic neuroepithelial tumor; Ganglioglioma	Neuronal and mixed neuronal-glial tumor; Low-grade astrocytic tumor	NA
+PT_DFXQFYPV	BS_VZ4NGF34	BS_DJEVCH34	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_DH8A0SNQ	BS_S7MPY3T4	BS_B5Z2XV03; BS_BYJDRXMK	Progressive	Teratoma	Germ cell tumor	NA
+PT_DJ106XYS	BS_EQG6D837	BS_WJF6ZXWN	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_DMHFS0HX	BS_51ZADQ6R	BS_GCQEB05M	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_DMMKT7X1	BS_2PBM9RA8	BS_QMG7XNEW	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_DNAJYFZT	BS_5PYJQBEA	BS_EJ1H9PZY	Recurrence	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_DPVW4M1W	BS_GTY5J0S4	BS_SQSH5G7A	Recurrence	Sarcoma	Mesenchymal non-meningothelial tumor	NA
+PT_DQ3ZCHB6	BS_FD2A9E05	BS_PMSZKZP7	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_DQT78GS5	BS_70SGSPD8	BS_69VS8PS1	Initial CNS Tumor	Embryonal tumor with multilayer rosettes	Embryonal tumor	ETMR, C19MC-altered
+PT_DTP4MMRA	BS_CEZVJC67	BS_KH3859M5; BS_NASADC3P	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_DV8XECKA	BS_1K0Q5YZY	BS_10HD18B8	Initial CNS Tumor	Teratoma	Germ cell tumor	NA
+PT_DW6V5V8E	BS_SG7EPZ4W	BS_F4D169Q7	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_DXF7ZZQZ	BS_2CRT47CB	BS_KVYCH9PB	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, MYB/MYBL1
+PT_DY6QG8QC	BS_M1Q77XK8	BS_NG0CR0EP	Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, NF1-somatic, BRAF V600E
+PT_E1TRJP8V	BS_KWQ8A6AJ	BS_SK949N33	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_E3ADF4ZB	BS_WDTHGVYN	BS_C1RRDNF5	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_E3S6H59E	BS_C2AV5D4A	BS_T54TAE3R	Initial CNS Tumor	Oligodendroglioma	Diffuse astrocytic and oligodendroglial tumor	NA
+PT_E3Y5BBSF	BS_65WGB39R	BS_W8DA9AXT	Recurrence	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_E4ECAFEN	BS_TE01WW4M	BS_1JMTTKMK	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_E546ZRXA	BS_RJ0CHRKK	BS_9QMVZ4C0	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_E66N7YBN	BS_FQ7H95MY	BS_0XD58YD9	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, To be classified
+PT_E6FTW238	BS_FPB0JGKX	BS_5WK2KXYW	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_E78NHRWQ	BS_T5WVTGV8	BS_3DYRAZE7	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_E79807KT	BS_N0X0S3JD	BS_3A0CJMRH	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_E8XM8JFZ	BS_4T617TSG	BS_B558FJXC	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_EB0D3BXG	BS_F5EX3ZY5	BS_F0GNWEJJ	Progressive	Neuroblastoma	Embryonal tumor	NA
+PT_EB89G70N	BS_8WTBCJT5	BS_KB9GJDCS	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_EC8R84NM	BS_5BCMBVDR	BS_CXDKK6KS	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_ECBD1D5J	BS_ST9MMP22	BS_84AQCZE4	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_ECMZCNTF	BS_MVK4CG1G	BS_MGBEMNYR	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_EDWA0XTP	BS_91CV203N	BS_WP2D11SK	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_EEKE0V9T	BS_C9A3X8GK	BS_F969DNHD	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_EF398HVC	BS_5B7YXYEH	BS_1B4Q7CNG	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_EG7PH32E	BS_AGNSAKZG	BS_2P7MJGM7	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_EGGY1XC0	BS_SF02KBCG	BS_CSY11X7E	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_EJ8TKG2Z	BS_JF2EP1G9	BS_NMJPX8VQ	Progressive	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_EPFX7V9H	BS_Z9WDGDVR	BS_NB509KST	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_EQ5C5TEA	BS_HVCBQ58H	BS_0S617SMM	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_ER1C7KPB	BS_5T9PYCRT	BS_D59VEERR	Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, To be classified
+PT_ESHACWF6	BS_W75GCHPW	BS_A94A7EJ4; BS_SWHQ8FDW	Progressive; Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_EV71W1JW	BS_FFGQ61KQ	BS_YETTZ1NC	Initial CNS Tumor	Metastatic secondary tumors	Metastatic tumors	NA
+PT_EW604JB3	BS_EK6AB5ZC	BS_N8D9FH6M	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_EXJAEW1M	BS_G5B1ZN5S	BS_4XPPZTGG	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_EYHJQQ8E	BS_RKNNAG23	BS_HW4J7JM8	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_EYWDFKA7	BS_JZKV3CQ1	BS_5S8VXASX; BS_DAEM3WRX	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_EYX2CP9F	BS_RK06RAFZ	BS_8JFMP1T1	Recurrence	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_EYZ25B99	BS_AEJZG4A3	BS_9E6Q11G2	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_EZEMVRVT	BS_GGNKMKW9	BS_32HAVF6S	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_EZS4SRH6	BS_CX6SQF8T	BS_X1R0N8QS	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_EZW3S4F1	BS_39FV4VJR	BS_QBZDQX7A	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_F0N89D15	BS_PCKWEEVT	BS_K3Y06EKR	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_F1086Z0A	BS_XFT4ENH2	BS_BWZTMWTM	Initial CNS Tumor	Chordoma	Chordoma	CHDM, poorly differentiated
+PT_F27SA15G	BS_K7A7QW76	BS_2NN6ME5A	Recurrence	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline
+PT_F3S9PB94	BS_DF9MHMCK	BS_R1CV479M	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_F822DBA0	BS_874XHFP7	BS_KPWRDRFP	Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_F9F3E8YR	BS_FTRXA2R5	BS_R922P3XJ	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_FAD8FQ6S	BS_92HPNHFB	BS_JQNF0FQP	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, KIAA1549-BRAF
+PT_FAPEH6R1	BS_S0NVKYR6	BS_ARE4EM81	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_FAQWD7GX	BS_6H3DP0G0	BS_CN7PB0DN	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_FC0EF5ZT	BS_K756ZQDR	BS_WJ7GMQTF	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_FCM7XPVR	BS_W7P0FTAQ	BS_4GKH983E	Recurrence	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	NA
+PT_FF0MSK4D	BS_YFKXF7K2	BS_KJQXZ8GK	Initial CNS Tumor	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_FFRHWB74	BS_QMDRA3VT	BS_QDGHHS4S	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
+PT_FHDZNN40	BS_S5EPM2VY	BS_R82MYPKB	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_FKWCVXNC	BS_KA6B8TG8	BS_GDPZN3SD	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_FMK5VFYW	BS_W489E0R2	BS_80X7AVCP	Progressive	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_FN4GEEFR	BS_7QSPXKMP	BS_BX8AR74E; BS_E1VJCEWB	Initial CNS Tumor; Progressive	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_FWD7NZQ0	BS_WM0ZMCCN	BS_797V83YM	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_FXPJM0MW	BS_KZCXH6EX	BS_WQ19Z6MD	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_FYECBRPP	BS_E1SWA20C	BS_WCNPE0AC	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_FYPWZBH0	BS_EPCD7XFA	BS_ZCY4ECNV	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_FZHGKJ0H	BS_SEERSEV2	BS_5J5VH3X0; BS_NHMPQ8Q1	Initial CNS Tumor	Ganglioneuroblastoma	Embryonal tumor	NA
+PT_G16WS1MW	BS_PHMN1WB3	BS_2W200YK5	Progressive	Meningioma	Meningioma	NA
+PT_G1QNGVCZ	BS_NFTVRVAF	BS_JK5GTHVG	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_G3AVDN4E	BS_6EASDEJQ	BS_RQ5Z7KNW	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_G5RA8E3N	BS_YB4SNTJY	BS_BAVWP5JG	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_G8DRDA33	BS_DH8Z9WDK	BS_32VQRFDS	Initial CNS Tumor	NA	Benign tumor	NA
+PT_GAM3E6M3	BS_ZDBEHEPY	BS_9E632VPJ	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_GB8MNK85	BS_683F9WT2	BS_7HC4W4SA	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, IDH
+PT_GBDYKSPY	BS_CMDFBW42	BS_KV3XF9WV	Progressive	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_GCKT4FJX	BS_1GMX5YEM	BS_2HNHCSNB	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_GCXG7800	BS_F0K8DMTS	BS_947CK40E	Initial CNS Tumor	NA	Benign tumor	NA
+PT_GDDWPDMC	BS_XQFPDAB6	BS_V3ZNXRHK	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_GERCQ0JG	BS_W1T5T8WS	BS_HZV4WDTB	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_GGCQAGPS	BS_ATYBFKWJ	BS_0J5MCBZV	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_GH27VJBD	BS_NHFB2YJR	BS_H8MAKDRB	Progressive	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_GH693TT8	BS_ZZHCTPFR	BS_NDSWS9TS	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_GH6HM5QF	BS_E0H9DHVX	BS_70FKSKM9	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_GHHY5AAE	BS_A75SK7WA	BS_VA07453Z	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_GKSABESN	BS_D64Q07W9	BS_GRECE8Q9	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_GKWWWJ0X	BS_531TJYQE	BS_XKE77TR4	Recurrence	Ganglioglioma	Low-grade astrocytic tumor	GNG, KIAA1549-BRAF
+PT_GNKRMTQY	BS_3CK0QVDX	BS_H1MNXNHB	Initial CNS Tumor	Pineoblastoma	Tumor of pineal region	NA
+PT_GPQJYAW4	BS_XAKR8MYK	BS_W6B48DD5	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_GQZ84ACS	BS_3C702XH4	BS_3ZMH8578	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_GR8P8NY5	BS_ZMPNTK3D	BS_P99S85CY	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_GVDMG7KC	BS_D7AKEXHJ	BS_KM878Y43	Initial CNS Tumor	Oligodendroglioma	Low-grade astrocytic tumor	LGG, wildtype
+PT_GWX2XSM0	BS_NHEDGJ66	BS_41SWNWAG	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, To be classified
+PT_GY0QSY4H	BS_BG996C4D	BS_FWCKP4X1	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_GY99ZJHV	BS_61AK2H2N	BS_17FVWMNV	Initial CNS Tumor	Atypical choroid plexus papilloma	Benign tumor	NA
+PT_GYJ97915	BS_358WF90F	BS_HM5N78GV	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_H024RK87	BS_AS05QBHE	BS_MRX1SPFB	Recurrence	Teratoma	Germ cell tumor	NA
+PT_H0HWHRPB	BS_K2S0JAFS	BS_QE5B0T7R	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_H45M7M2T	BS_1Z7833P7	BS_6XHDR1WS; BS_E9M7TDB6	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_H4H6RD7Y	BS_345M1B93	BS_MS87PMR7	Initial CNS Tumor	NA	Benign tumor	NA
+PT_H57TEQDT	BS_KTKMBKXB	BS_CP435MAC	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_H6E09982	BS_5AXMM8V5	BS_9D39MFHT	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_H876VB6R	BS_SK68QV3Y	BS_XMNBSBGN	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_H8Z52K09	BS_KFTEJV19	BS_SCQNN2A2	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_HBT0C66Y	BS_ACZNJGV3	BS_M1YHV93N	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_HEGTYPQJ	BS_TV12GQHS	BS_VKH9KYDB	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_HFQNKP5X	BS_SDDK3Q44	BS_5B6XZ7YP; BS_6F49F7WH; BS_9GN1QA3Q; BS_FBJ516WW	Progressive; Recurrence; Initial CNS Tumor	Chordoma	Chordoma	CHDM, poorly differentiated; CHDM, conventional
+PT_HGHV85PZ	BS_CTQ82WX9	BS_VDSR4X6N	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, KIAA1549-BRAF
+PT_HGM20MW7	BS_Z370T42N	BS_FK3B5SDH	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_HJA1ZYS1	BS_XXMXCGJ7	BS_H83DTMT2	Initial CNS Tumor	NA	Benign tumor	NA
+PT_HJMP6PH2	BS_0TTQDZ2K	BS_9SVMVJ45; BS_XKM2EAT4	Recurrence; Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_HM2GMT2H	BS_GKFY1GX4	BS_8YQGSMDK	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_HMF8J4EG	BS_DNRQ0EN0	BS_GKPVZXYP	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_HMY997GX	BS_F69GWP99	BS_2JDVY4F7	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, RTK
+PT_HN0AXSZ0	BS_SSVBWYPN	BS_Z34PQDYT	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_HNZNZ635	BS_59H6VFJX	BS_SKRY0BJ4	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_HQ89KPKT	BS_TTRNJ8DJ	BS_R1RMKH1B	Initial CNS Tumor	Ganglioneuroma	Other tumor	NA
+PT_HT4HJXY6	BS_N559C2Y0	BS_1JGQPJH3; BS_AG0BZN6F	Second Malignancy; Initial CNS Tumor	Meningioma; Medulloblastoma	Meningioma; Embryonal tumor	NA
+PT_HV6C0T34	BS_PT1DC3ZF	BS_16TBX6G5	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_HVZTF42R	BS_M28J7CGM	BS_53TV75NN	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_HXDCHQ9Y	BS_BPDT230W	BS_WEGGXVYA	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_HYXSSCJ5	BS_KC7HM9HA	BS_45913DTA	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_J06X17XH	BS_EVZW31ZP	BS_02W5H7K5; BS_02ZSVZCB	Initial CNS Tumor; Recurrence	Rosai-Dorfman disease; Sarcoma	Histiocytic tumor; Mesenchymal non-meningothelial tumor	NA
+PT_J0SZ1SX5	BS_PF7546KW	BS_5NAKYS1S	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_J302B8Y5	BS_0PB4PTHT	BS_GTAJFTTR	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_J3B812DT	BS_ESFA9S69	BS_PZDTK87A	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_J4MWGQFQ	BS_44WJZ1HP	BS_E8SJ36A6	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_J50NZYZF	BS_VP4S1XTC	BS_J52D4XQY; BS_MWZCP1XW	Progressive	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_J5NSRW1Y	BS_P1JY6XK5	BS_F8K4VQMF	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_JCECCFPB	BS_G113MX63	BS_YZ0P5E8H	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_JEA0AEMZ	BS_4K4YW80B	BS_ASXY97FK	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_JEW5HG4W	BS_949NSSEH	BS_18NCV5QZ	Second Malignancy	Meningioma	Meningioma	NA
+PT_JMW6Q6NH	BS_NY51QX79	BS_5BNV7MCF	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_JN3EN2HR	BS_KNJ64STQ	BS_MAVSJH2Y	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_JN3S17B3	BS_1MMZN94J	BS_1EYKDS0Z	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_JNEV57VK	BS_SGS26NXP	BS_85Q5P8GF; BS_P0QJ1QAH	Initial CNS Tumor; Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss; DMG, H3 K28, TP53 activated
+PT_JP1FDKN9	BS_R333SVK1	BS_FF73TT6D; BS_W74D279Q	Recurrence; Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_JPWVCTAJ	BS_QW5QYXGG	BS_6FV7BDE3	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_JQ45JK94	BS_XWBMBWC6	BS_41TD9XET	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_JSFBMK5V	BS_H4KBJDGN	BS_H0638GZT; BS_KY1CTGJ3	Initial CNS Tumor; Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_JV9G8MFD	BS_GERET530	BS_ZAT0XJE5	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_JW6FBEFK	BS_6K3Y2WXF	BS_3P96RT4E	Progressive	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_JWW33RTB	BS_ET04R6F9	BS_JBHQ6G3J	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_JXGMAHHN	BS_ASJMZMN6	BS_MWKJF6XH	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_JXSDFPNM	BS_XCW7C66J	BS_F5641KTR	Second Malignancy	Meningioma	Meningioma	NA
+PT_JYZA0PNV	BS_Q7NF95N0	BS_8W0FNBWF	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_K2YDNZDA	BS_MKYS4YRC	BS_62XRDTM6	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_K30AWQ8A	BS_SCCY3YMQ	BS_9GSWPZ44	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_K39HM2JF	BS_5M3NSS9K	BS_YEWX69X4	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_K5KH69Q1	BS_ZAN8EYCC	BS_BS5X4H0Y	Initial CNS Tumor	NA	Benign tumor	NA
+PT_K63972GG	BS_X5H2K1XG	BS_EQE19CB0	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_K6G6BE6G	BS_KKV7WAG3	BS_3108RS7G	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_K8ZV7APT	BS_Q6K6BVTF	BS_1RFBH1SP; BS_5XZP7F4Q; BS_C6NB914B; BS_EXTEGB51	Initial CNS Tumor; Progressive	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_K94ZVZMX	BS_X4VBHJSZ	BS_W3R2DQ86	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_KBFM551M	BS_9H6Z0MEG	BS_9P4NDTKJ; BS_J8EK6RNF; BS_M0B42FPR; BS_M5FM63EB	Initial CNS Tumor; Progressive Disease Post-Mortem	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_KBFM551M	BS_HJ7HYZ7N	BS_9P4NDTKJ; BS_J8EK6RNF; BS_M0B42FPR; BS_M5FM63EB	Initial CNS Tumor; Progressive Disease Post-Mortem	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_KCTZZA3G	BS_0YV62XEX	BS_EDCQ4M0R; BS_TX2WGF8K	Initial CNS Tumor	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_KDW5HHWQ	BS_2BQGSW0G	BS_QE7WAAKC	Recurrence	Oligodendroglioma	Diffuse astrocytic and oligodendroglial tumor	NA
+PT_KEQ53KRH	BS_6VTM903X	BS_R1G6SG0K	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_KFYJBQB8	BS_EBBQ7GD2	BS_NJFK43N3	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_KHX1WQ4H	BS_WCAMS5WN	BS_BNFCXVYZ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_KMHGNCNR	BS_9704T3DW	BS_E7HEQZ1K; BS_T5T21G7N	Initial CNS Tumor; Recurrence	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_KN25EYMG	BS_CWMK1Y3Y	BS_PVYMDM18	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_KQK98ZVP	BS_2V4BP5Q9	BS_YMDPFK0V	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_KTRJ8TFY	BS_SNRF1RKC	BS_3VKW5988; BS_5968GBGT; BS_AF5D41PD; BS_BQ81D2BP; BS_EE73VE7V; BS_HYKV2TH9	Initial CNS Tumor; Progressive Disease Post-Mortem	Diffuse midline glioma; High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss; HGG, H3 wildtype, TP53 loss
+PT_KVFS3Z2Q	BS_PZ35809R	BS_9JVGXA2W	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_KVMF5TFW	BS_0QP42DN4	BS_8FSJDG2T	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_KXB1PJV0	BS_P52FTQNA	BS_6Q9PMNWY	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_KZ04SDDS	BS_JWETX0BH	BS_79NQJZ09	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_KZ56XHJT	BS_3PNWA7WT	BS_0ATJ22QA; BS_1Q524P3B; BS_22VCR7DF; BS_AK9BV52G; BS_D6STCMQS; BS_H8NWA41N; BS_X5VN0FW0; BS_YHXMYDBN	Progressive; Progressive Disease Post-Mortem; Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_KZ56XHJT	BS_Q7R8BT07	BS_0ATJ22QA; BS_1Q524P3B; BS_22VCR7DF; BS_AK9BV52G; BS_D6STCMQS; BS_H8NWA41N; BS_X5VN0FW0; BS_YHXMYDBN	Progressive; Progressive Disease Post-Mortem; Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_M04EC74B	BS_84QXT7FR	BS_CKY2TTXG	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_M0AP3Z15	BS_ZH666SJW	BS_5BMNK8SY	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_M0FVZ88D	BS_WA65EGJJ	BS_JNS7Q60A	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_M1RYN7B0	BS_8ZTNXCZJ	BS_0EN5R1AP	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_M23Q0DC3	BS_6GS4XT7F	BS_CGXTFM67	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_M2J30CF7	BS_751B2CF8	BS_AWDQEKK1	Initial CNS Tumor	Sarcoma	Mesenchymal non-meningothelial tumor	NA
+PT_M5HDHQNQ	BS_JGTBRH16	BS_GKN0B47F	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_M9XXJ4GR	BS_9TSKXKGH	BS_682Z7WH6; BS_R6CKWZW6	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_MA0J8DSN	BS_408757Q1	BS_T99M7842	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_MBAXTJET	BS_26CXGVJ0	BS_C6GBYR17	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_MDWPRDBT	BS_RB3PE7G3	BS_00TRPEQX; BS_1M63B97V; BS_BQWMQM2Y; BS_D368BNRD	Recurrence; Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_MNHMAH0S	BS_RZHVM2QD	BS_MJJZJMTK	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, To be classified
+PT_MNR94DEV	BS_HS2BZ6T2	BS_ZP89F1JY	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_MNSEJCDM	BS_29YQSB5E	BS_CBMAWSAR; BS_J8EH1N7V; BS_Y74XAFJX; BS_ZSH09N84	Initial CNS Tumor; Progressive Disease Post-Mortem	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_MPRBGGEJ	BS_XRF8D151	BS_KYG3H6C6	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_MQHST8YC	BS_0P2FRMSA	BS_2VSN5YC5	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_MSBPMJ56	BS_FJ9W9C74	BS_40FX713C	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_MSQ6GSVP	BS_9R1ENMBP	BS_HJ95JNFN	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_MT27S7S4	BS_HJ99CJ2R	BS_9GJHMA3J	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_MTE126WM	BS_ECMB9SWH	BS_74A1TB03	Progressive	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_MV7Y44QQ	BS_DW6P4EXB	BS_E0AAK0V0	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_MXASQ2GW	BS_30WN9M3C	BS_922YMFYK	Progressive	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_N3205P0D	BS_JJ593ZW7	BS_EPM623G4	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 G35, TP53 loss
+PT_N32BYY8A	BS_579DARY4	BS_D6XHKZDZ	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_N3HVMV06	BS_YXW56D0Z	BS_SD28E0SC	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_N4PR21ME	BS_Q4NCA4E4	BS_Y3472DYJ	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_N56EYD4Z	BS_WQFHXEKC	BS_NFT9VHMJ	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_N673SYWW	BS_PTYP388A	BS_PMFR8NPN	Progressive	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_N8W26H19	BS_251Z13NC	BS_AJAH8KG5; BS_MBYEK6HV; BS_TZPJHKQR	Recurrence; Progressive; Initial CNS Tumor	Low-grade glioma astrocytoma; Pilocytic astrocytoma; Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E; LGG, wildtype
+PT_N9CGVG02	BS_9S3N3Y5W	BS_ABENB1H2	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_N9KYV4WB	BS_4Z2E5K9N	BS_9PQPZPGM	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_N9SG16EC	BS_4XTPR2VM	BS_FHFVCQ41	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_N9W4GT6D	BS_Z7681S6Y	BS_AVS4DSZW	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_NA8NZ0BN	BS_96TV932S	BS_B6K0N6HS	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, RTK, CDKN2A/B
+PT_NBSRQAMS	BS_MAZNT95V	BS_Q9NHTR7G	Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_NBY8PZR9	BS_5C23V7CC	BS_Z9NCH2XA	Initial CNS Tumor	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_NCDHZ8H8	BS_MN2FX68Z	BS_DGG7YE8R	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_ND34A6PR	BS_FNQMY128	BS_QMHND3QK	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_NDVJE438	BS_WWHGAHR5	BS_FT95T4YP	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_NEB4WEAT	BS_QVS9AXGC	BS_0SFXXBQ5	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_NESAQHB1	BS_R2Z4MK3F	BS_6TMPZKSZ; BS_KJTW1RBN	Initial CNS Tumor	CNS neuroblastoma	Embryonal tumor	CNS NB-FOXR2
+PT_NFDHYPGT	BS_DHHCTYYW	BS_6KEYD1S4	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_NGDW8WVP	BS_K0R1DMA7	BS_154FP4ZQ	Initial CNS Tumor	Hemangioblastoma	Mesenchymal non-meningothelial tumor	NA
+PT_NH8CJ84W	BS_GP9W8WG8	BS_AM2TZPNS	Progressive	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_NK8A49X5	BS_668350EZ	BS_1MME7FBS; BS_AHAXPFG3; BS_HEJ72V3F	Initial CNS Tumor; Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_NK8A49X5	BS_STZ2C71Q	BS_1MME7FBS; BS_AHAXPFG3; BS_HEJ72V3F	Initial CNS Tumor; Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_NMZBRFYS	BS_WP9M8J6W	BS_BD4RQ1G0	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_NNZQ09SH	BS_QGEEVNAS	BS_2SG8JNMB	Recurrence	Rosette-forming glioneuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, other MAPK, FGFR
+PT_NPETR8RY	BS_Q5ABAC4M	BS_FSM39DXA; BS_W5P7SPDH	Recurrence; Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_NPHZQW6A	BS_WVRCPEH1	BS_B6KCJF2B	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_NPPBNRVV	BS_CYKA9DP6	BS_QA0W86WP	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_NS1F6DT8	BS_JJNCV530	BS_8226HD4X	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_NSXP8AWV	BS_8HZ761SQ	BS_M18CDDGK	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_NTEKMKTX	BS_JNRAKEMV	BS_PYVPKH11	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_NTK39NNV	BS_SQT11CPC	BS_Y2C78JC4	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_NV584F7Q	BS_318P54W7	BS_X7QJCVJB	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_NXX0M835	BS_ZVFTWY6Y	BS_NS8G0465	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_NYBH025T	BS_GSF4J5DP	BS_6NPSZJ4C	Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_NZFFMZ0B	BS_5GRVA3YE	BS_89RCN9PF	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_P2NGYMG5	BS_Y6D4JQS8	BS_230S192D	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_P4ZEFY19	BS_SN2CD2FC	BS_QGX93WPF	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_P5HHJJPH	BS_R7TZRSZT	BS_KXGJ1HMG	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_P9RT6693	BS_8D40GRF9	BS_P3KD5EQG	Recurrence	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_PABK01H0	BS_H5KWGC03	BS_185Q218S	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_PAW18EK3	BS_9GT5XCF3	BS_M2MSWKBC	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_PF9EC93Q	BS_K4XGEGW0	BS_80078QDG	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_PFA762TK	BS_HM2ZG2J7	BS_32JF8TPP; BS_XHAQXDR0	Recurrence; Initial CNS Tumor	Low-grade glioma astrocytoma; Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_PFP1ZVHD	BS_5FP2H6VW	BS_Z9PKZ4RT	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
+PT_PGVQ4XRZ	BS_95W988HQ	BS_VXNT1TDB	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_PHKSYE6Q	BS_BE3DW3RB	BS_Y9GHDZKS	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_PJFTMJ6H	BS_0YFQF89N	BS_SSYNTXDC	Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_PKHG2YFW	BS_89N80Q5Q	BS_7Y5E5KQW	Initial CNS Tumor	Langerhans Cell histiocytosis	Histiocytic tumor	NA
+PT_PKP1250P	BS_1YCS44MN	BS_ZBWQG7VR	Recurrence	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_PNED3GG3	BS_6458RHRT	BS_WMEYJGDC	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_PR4YBBH3	BS_9BBWSCD6	BS_C2NH5FDT; BS_PPY0EWPG	Progressive; Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_PSX2CSYX	BS_W9MBVTYX	BS_AFAHY6HP	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_PX4E85V1	BS_V8JGE8N1	BS_47X3VAM0	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_PY4QFHHV	BS_7WQ4F99X	BS_EKR4NSNW	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_Q25V9Y6M	BS_YVWRMH36	BS_9HDPJT21	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_Q38AT6JY	BS_B7SMC7HM	BS_RR3DKGKY	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_Q3EP24V1	BS_MKSMSB6J	BS_235QEYMQ	Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_Q90R6M3E	BS_00ZND930	BS_XGMXJKFX	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_QA9WJ679	BS_QPSQPDR8	BS_7PF3C1P7	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_QAX38GM7	BS_6FHKKNF0	BS_QD22MJJ5	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_QD6KKKJH	BS_NTV9Z7SE	BS_9BN45DFK; BS_B91XGSA5	Initial CNS Tumor	Pineoblastoma	Tumor of pineal region	NA
+PT_QDGVJKE0	BS_35M8GBJ4	BS_EP25TTAG	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_QEMT1845	BS_RQPK5NY1	BS_TPX7YY57	Initial CNS Tumor	NA	Non-tumor	NA
+PT_QEP13FH4	BS_4HD33MVB	BS_Y5DA59M3	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_QH9H491G	BS_6YMCPWP4	BS_4T8J7JEP; BS_YRC54VPP	Initial CNS Tumor; Recurrence	Meningioma	Meningioma	NA
+PT_QJ3144WH	BS_KGG1WDT8	BS_8BS10XE2	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_QK4XB83F	BS_ZM9EYYDT	BS_01Y5F4PN	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_QPY0H50V	BS_MKGT5WZD	BS_Z4S81HG1	Progressive	Myofibroblastoma	Mesenchymal non-meningothelial tumor	NA
+PT_QQ9JGEY9	BS_S6EXG9N9	BS_Z1BBZ01F	Initial CNS Tumor	Malignant peripheral nerve sheath tumor	Tumor of cranial and paraspinal nerves	NA
+PT_QQZXYR4M	BS_SP3ND4W3	BS_58X7SKJS	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, IDH, TP53 loss
+PT_QT3MK7BZ	BS_14EZDZE6	BS_F9ZTZ4YS	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_QT9T89S5	BS_X7EQKJZH	BS_T97EP8H0	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_QTDY0Y9A	BS_61KN2D29	BS_1S5V7WWC	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_QW5VW2PY	BS_X75SX2EH	BS_A4KYP5H0	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_QZN7FZER	BS_P2QCH2SY	BS_VK46N40F	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_R0M1QBY4	BS_22PCHWT3	BS_0YVR8Q4E	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, KIAA1549-BRAF
+PT_R10BSB9F	BS_618WFRXY	BS_C5RDMCCS	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_R1DHB0ZT	BS_MS9061DG	BS_E9ATGWME	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, To be classified
+PT_R1N5M7NH	BS_3YXGSTJ7	BS_886M7JMG	Recurrence	NA	Non-tumor	NA
+PT_R4T1V1K4	BS_2ZKBYF95	BS_23ZE42Q3	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_R63RHJWX	BS_ZX3ZSN8F	BS_G4EX0H98	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_R6WWH1QX	BS_0Y1Y2WA4	BS_1AZ8YJSH	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_R9V5R1SY	BS_K3N0H305	BS_B94G701Q	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_RA6AGBA7	BS_N1WCEX2B	BS_P4K6WK9Y	Progressive	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_RDJ40M73	BS_HT2S4SW0	BS_928HWFFM	Recurrence	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 G35
+PT_RFB07MZS	BS_PKKNB5PY	BS_N4B3WB8W	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_RFF7MKTC	BS_T5TB5NM7	BS_PP4WJBNR	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_RFGZ2JGP	BS_J764TSC8	BS_9CMJ3QF6	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, WNT
+PT_RGX23JFP	BS_S0WS43HJ	BS_SYGKQD8M; BS_XW26N96W	Progressive	Ganglioglioma	Low-grade astrocytic tumor	GNG, RTK
+PT_RH59ET3M	BS_SMRT95TG	BS_KRYYDC2X	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_RJ1TJ2KH	BS_KBM2MTND	BS_6GN1FGTB; BS_6VKKMM6M	Initial CNS Tumor; Progressive	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_RJ98S3KZ	BS_RW50H521	BS_MEPW36WF	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_RKECV80K	BS_N05BJ03T	BS_PEDGRK8S	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_RM5S859Q	BS_63JFFF51	BS_R7YMKNJN	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_RM9AZ7A8	BS_F46C86A9	BS_SYWRCE3Z	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_RMK36R2E	BS_ZNB7T5SZ	BS_RGSJMSRE	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_RQ21EBK9	BS_D70Z2E3A	BS_39Q80NT3	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_RRG1V7EP	BS_NKNDVFFR	BS_P7CY04E7	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_RRT2E7HK	BS_3J179Q27	BS_JHGFJR3D	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_RSDTCFDA	BS_VNBX1SEV	BS_SK4H5MJQ	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_RX1EWBP9	BS_S2N3XTKS	BS_0FQKT8EY	Progressive	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_RXJZ3C5G	BS_6N7KRTKM	BS_R726FKHP	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_RXT6KRR6	BS_H281CW3G	BS_CK7CPM73	Recurrence	Ganglioneuroblastoma	Embryonal tumor	NA
+PT_S0PBN4M7	BS_Q80JX5G6	BS_Q50P97Y0	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_S0Q27J13	BS_S75EZJDW	BS_P3PF53V8	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 activated
+PT_S21ZTKPS	BS_1HQWNZCB	BS_P3EVK3C2	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_S2ASFBP7	BS_JDD16DMY	BS_969K7ZM1	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_S2BEPYQ0	BS_0TCRV9AC	BS_ABZ3BK38	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_S2CXXZCF	BS_1GEXQEBZ	BS_KVV3G6NP	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_S2SQJVGK	BS_4T3BZ2F6	BS_8S2CZBA6; BS_YGQS4660	Progressive; Recurrence	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_S3FJSBJT	BS_S573YGV3	BS_X9PJ715R	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_S4A0R1PM	BS_QMBK2FV7	BS_1S2BHJ8K	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_S4H6KA09	BS_YR9C74CN	BS_K6A9Z04J	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_S4YNE17X	BS_HHJZ05XC	BS_3MYQP7P5; BS_8CA214YR; BS_93BV8AY9; BS_CRKBDAYZ; BS_D3XVXF05	Initial CNS Tumor; Progressive	Low-grade glioma astrocytoma; Schwannoma; Neurofibroma Plexiform	Low-grade astrocytic tumor; Tumor of cranial and paraspinal nerves	NA
+PT_S7WJ99PC	BS_TARPGT44	BS_W9P0PFDH	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, wildtype
+PT_S7YHNHSS	BS_T3FD64Z7	BS_KSRYKCDE	Initial CNS Tumor	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_S8E3281G	BS_0A99GJGD	BS_55N7KFHW	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_SABHZ7XX	BS_8AEFKGN1	BS_FCXEAPJ1	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_SBHN5F68	BS_NBM9CPE4	BS_Q5XKTB1V	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_SCBMTG0S	BS_NF8F99FQ	BS_BM95DGCQ	Initial CNS Tumor	NA	Benign tumor	NA
+PT_SCCDBETQ	BS_G64B5MDA	BS_XM302FF4	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_SDK91A16	BS_4JPDCXVR	BS_47454JJ6	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_SJEG0MKD	BS_Z5JH1FMC	BS_JJZPY3BG	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_SMDEQVHJ	BS_4RT8H37A	BS_XSWF2MR1	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_SRWZDG3N	BS_K7R4CV56	BS_95RRF4NE	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_SSE4AH59	BS_PY51XH82	BS_EHBH0NYX	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_SYHB12RN	BS_CCZZ0NQF	BS_9DM8H1RX	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_SZJ7WZZW	BS_FHDR7FJE	BS_WP9J88EB	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_T1FV709B	BS_X4ZVTJEK	BS_XH5JP8DB	Initial CNS Tumor	Desmoplastic infantile astrocytoma and ganglioglioma	Neuronal and mixed neuronal-glial tumor	GNT, BRAF V600E
+PT_T2M1338J	BS_PN1V5KM9	BS_7XZNDFV4; BS_CHAFNK64	Second Malignancy; Initial CNS Tumor	Meningioma; Craniopharyngioma	Meningioma; Tumors of sellar region	NA
+PT_T3REPTTC	BS_B0M7XY0G	BS_T9T3R2J0	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_T4VKB29K	BS_TG80SF4Z	BS_MFTAVQ5C	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_T5CR5HQZ	BS_J4WKRNHA	BS_36HCZ3KW	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, To be classified
+PT_T5KEXCK7	BS_SZYRB89G	BS_19EJ85F8	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_T8V9ES93	BS_9XHV04WE	BS_J4E9SW51	Initial CNS Tumor	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_T93J9EGZ	BS_Y2Z06EDG	BS_3J4T2YYW	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_TB8HPJBN	BS_45VHDFRD	BS_G2016BE5	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_TD6ST5MG	BS_TTVB22NF	BS_SE82EQF8	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_TEBD1SES	BS_ZSAHMF4V	BS_K3YT05M7	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_TGTJECMR	BS_N4D5BPQP	BS_ZJSMC22A	Progressive	Teratoma	Germ cell tumor	NA
+PT_TH18S0JQ	BS_Y6ZSGEPG	BS_KH0NFCWF	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_TKWTTRQ7	BS_DKKJWR3M	BS_06GEF6DB; BS_2RX2NF1Q	Initial CNS Tumor; Progressive	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_TPSMT960	BS_QYQNZDD8	BS_4M0ZMCDC	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_TRXF649Z	BS_BFK70293	BS_11322HD1	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_TS0FW57Z	BS_CBVA073E	BS_Q0XBZP88	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, other MAPK
+PT_TV5DYHNC	BS_ZJ3VP0AP	BS_W23ERYW3	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_TVK2KY36	BS_XMP45ADN	BS_S34SCYW4	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_TXFYRDP4	BS_JNFPEM6F	BS_5Z4XQC9X	Initial CNS Tumor	Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_V07ZH5JS	BS_PSAZZC71	BS_2F70R10Z	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_V0TQ0P66	BS_5VSK2DHE	BS_2AWCKNB3	Initial CNS Tumor	Meningioma	Meningioma	NA
+PT_V0X73HEQ	BS_YR1X1SSH	BS_GMQZNQH8	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_V1HNAC2Q	BS_E5RKHG41	BS_NNFDFAFM	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_V2F0865M	BS_86EDWEA2	BS_JSMAT49K	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_V3Q78E6F	BS_YG4EJAF4	BS_7RQCH5Y7	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_V5ASTHRH	BS_9HVNGAB8	BS_HNE6BPMH	Progressive	Mixed germ cell tumor	Germ cell tumor	NA
+PT_V8714N9H	BS_617JM3FD	BS_H1K33JVK	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_V9WP047R	BS_3DNSBVGH	BS_V6HKXX1Z	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_VABP80N2	BS_J996NDK4	BS_R913E3VB	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_VAJN5QP8	BS_GKJZGTFS	BS_KSHETTQC	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_VBNP6JFB	BS_656G546M	BS_YZ2YNEJJ	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_VBVZ2NAR	BS_H9813KRS	BS_9ZFXXJPK	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_VCD0W8HG	BS_WKD534RB	BS_TRGECFNP	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
+PT_VE0Q731Y	BS_DHRJC5NK	BS_BBHFKBE7	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_VGXHFMND	BS_XDE7MG7P	BS_6X3Z0AVR	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_VH6S71AC	BS_QEGZ6CYZ	BS_8BD8WD38	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_VHS5RM2K	BS_ZMZFKVWZ	BS_FNM4BB83	Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_VJ0M4E8Y	BS_VP4WNVZG	BS_FFD25TTK	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_VJBVXB08	BS_VA9JGYAX	BS_TF6H437Q	Initial CNS Tumor	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_VJZN69T9	BS_A1A5ZH77	BS_7M6F9GQD	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group3
+PT_VPEMAQBN	BS_D48QXYW6	BS_Q6GVRAWK	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_VQDNSYXM	BS_8SMZ11ER	BS_JBY9S5D4	Initial CNS Tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	NA
+PT_VT6PJVQN	BS_0C83MQ6C	BS_XDY9BYRK	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_VTF65Y63	BS_QNYDD0TY	BS_MSGYZ69T	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
+PT_VTM2STE3	BS_AYFJ1B57	BS_02YBZSBY	Progressive	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 activated
+PT_VVCN8DXT	BS_H17P6WH8	BS_MSB1RDAJ	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_VY45XTT7	BS_JHEHVG4M	BS_ZV21J6YW	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_VZTTTP3Q	BS_APFT88Y3	BS_16FT8V4B	Initial CNS Tumor	Diffuse fibrillary astrocytoma	Low-grade astrocytic tumor	LGG, IDH
+PT_W17NV5YG	BS_DC5JYYPA	BS_B4DY7ET3; BS_FVPMPMRJ	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified; EPN, ST YAP1
+PT_W3FSA7NH	BS_T5772838	BS_1GK2EMFY	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_W6AWJJK7	BS_K44TMQ9G	BS_3Y44RJXS; BS_9HEMB7RK	Recurrence; Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, other MAPK; GNG, other MAPK, IDH
+PT_W6CW60K9	BS_F4V6RWJ9	BS_ZX1YPQ88	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_W7FK539G	BS_99HARYGS	BS_25VZM81R	Initial CNS Tumor	Metastatic secondary tumors	Metastatic tumors	NA
+PT_WE1CHTWK	BS_AWRNMZAY	BS_4DY83R02	Initial CNS Tumor	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
+PT_WE7HQN0C	BS_E951SZ7T	BS_T8C13KNH	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_WG2Z95B5	BS_Q1SPJ467	BS_8WJR4AA3	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_WG5PHHSQ	BS_SS95SWY2	BS_N5VYY66W	Initial CNS Tumor	NA	Benign tumor	NA
+PT_WGVEF96B	BS_36YFSGDX	BS_TQ0J7WJQ	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 activated
+PT_WGWMA5AZ	BS_DTYN7DX6	BS_NEX92KQH	Recurrence	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_WKNKNYHH	BS_CYM7BP13	BS_5ZRZC3ZM	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_WP871F5S	BS_2TZNPK1V	BS_R3WB0PP7; BS_XWQTX5HH	Progressive; Initial CNS Tumor	Hemangioblastoma	Mesenchymal non-meningothelial tumor	NA
+PT_WPYCXMDA	BS_Z263QQQV	BS_QSDKJM8T	Progressive	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_WTMSD2WB	BS_DKTB5YDM	BS_JTBM5TSE	Initial CNS Tumor	Chordoma	Chordoma	CHDM, conventional
+PT_WVAJN6WR	BS_CKWQKB3A	BS_FBP5NZNR	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_WVC247PK	BS_8YD46AZB	BS_QK61ST4T	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_WWME595X	BS_MWV7PRDK	BS_VVD8TJNE	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_WWZ2Q14R	BS_7QH9BCJQ	BS_DVQYQSVW	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_WY8REZ3P	BS_GABF65KC	BS_G61CN2V0	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_WYF217NZ	BS_6QF29TRA	BS_RZNNEX1Y	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_WYR1DVHX	BS_Q0T0VAXT	BS_ACTR13BQ	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_WYVMWYVA	BS_ZRVFD8TY	BS_HC4T1EEP	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_X0FPPTMT	BS_F2D6YE08	BS_BMHYK93N	Initial CNS Tumor	Neurocytoma	Neuronal and mixed neuronal-glial tumor	CNC
+PT_X1PRY0FC	BS_2QRTD3RQ	BS_E2RXQ3JW	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, NF1-germline
+PT_X1XVE1XX	BS_J7EMBT8S	BS_XNTQBZAJ	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_X5TQR8V2	BS_N2A2JA32	BS_C19DFVR5	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_X71D7G5S	BS_GWFF9E3C	BS_P8WN8XEQ	Recurrence	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 G35
+PT_X84SD608	BS_XCA92FF3	BS_NJV6A585	Second Malignancy	Neurofibroma Plexiform	Tumor of cranial and paraspinal nerves	NA
+PT_X8S0H6TG	BS_W82P51ED	BS_ZECKZTFC	Initial CNS Tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
+PT_X8SK8120	BS_ARW4NM3Z	BS_SNC5WMVN	Progressive	Neurocytoma	Neuronal and mixed neuronal-glial tumor	CNC
+PT_XA8ASFJK	BS_CZGNQ9KQ	BS_Z7R92XX6	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline
+PT_XA98HG1C	BS_YKD3WYFB	BS_2J4FG4HV; BS_5JC116NM	Initial CNS Tumor; Progressive	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_XCCV6CW2	BS_KC1C1TZA	BS_FYJMNRGK	Initial CNS Tumor	Teratoma	Germ cell tumor	NA
+PT_XDV8W16W	BS_VM2GYF7B	BS_AGGH3QGS	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_XHYBZKCX	BS_HN0SA3ZK	BS_0XR7GYAV	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_XNMKQ4MR	BS_97241EMC	BS_8EB1S8MK	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, other MAPK
+PT_XNTFM9XY	BS_G473TPVG	BS_WD37M8SD	Initial CNS Tumor	Cavernoma	Mesenchymal non-meningothelial tumor	NA
+PT_XP8AM1CH	BS_938K7FSV	BS_1EQGGHHQ	Initial CNS Tumor	Adenoma	Benign tumor	NA
+PT_XRQHMBHB	BS_R0JC16SG	BS_R5G3QP11	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_XSS1ANXD	BS_HGPJ76NM	BS_FQ2ZBMPA	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_XTVQB9S4	BS_0P3S5YJQ	BS_DE26D072; BS_NXZSD2KK	Progressive; Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	NA
+PT_XWVQW6JX	BS_TKRHXGZQ	BS_XBBBE8V2	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_XX2VW3D9	BS_7XX4Q2RJ	BS_0J5GC803	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_XXZHRPNM	BS_ZMW21B7R	BS_SMCPASF0	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_XY404K0D	BS_4ZRXYY4Z	BS_6SA5B35V	Initial CNS Tumor	Neurocytoma	Neuronal and mixed neuronal-glial tumor	EVN
+PT_Y32AQSEY	BS_1G71S350	BS_MDVMT75X	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_Y572BRC1	BS_KRYAZ09R	BS_042DVDQM; BS_J037K4BM; BS_JA3XXP1Y	Progressive	Low-grade glioma astrocytoma; Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_Y5KY6KN9	BS_NWXG4ZNS	BS_AYPBAHJ6	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_Y660CKCB	BS_SKWPQHER	BS_FKQ7F6D1	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_Y76A7PBA	BS_0FE1EFV8	BS_M4E4H6NG	Recurrence	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_Y7F2JZMQ	BS_40QCA1MC	BS_GS9JCK55	Recurrence	Ganglioglioma	Low-grade astrocytic tumor	GNG, NF1-germline
+PT_Y8HSH496	BS_0MRKTX2B	BS_06GPPDHZ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_Y8RNS9JE	BS_XKHY9A6D	BS_3BMGF6GN	Recurrence	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 activated
+PT_YBJYA2CD	BS_N2TDDQ9Y	BS_KFRBXXV7	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_YCMH9SQP	BS_63QHP547	BS_A70G7S2W	Initial CNS Tumor	Metastatic secondary tumors	Metastatic tumors	NA
+PT_YDWBWTVN	BS_SW8JSYQ7	BS_YVFFHJ1Q	Initial CNS Tumor	Schwannoma	Tumor of cranial and paraspinal nerves	NA
+PT_YFS3AWC0	BS_TDN8NVYJ	BS_10V9SAG8	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_YGN06RPZ	BS_V8GEAEZJ	BS_060QB7XB; BS_3C4YAMKJ	Progressive; Initial CNS Tumor	Diffuse leptomeningeal glioneuronal tumor; Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, KIAA1549-BRAF
+PT_YJBPEF4V	BS_MTDQBCQK	BS_PC2YQ4F6	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_YJGTKDV0	BS_K9TB43R2	BS_XVBX7ZK1	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_YKVK5HTK	BS_14G6WY88	BS_3QDRWJCF	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_YMN5GV47	BS_ER05WTNS	BS_Y3ETG5AE	Progressive	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, NF1-somatic
+PT_YQWG98Z5	BS_8CA6RYK8	BS_C3KDA5ZC	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_YRMG61G8	BS_Q2TEFDZ7	BS_PV130A29	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_YT70KJ5P	BS_Q5AH9TH0	BS_9R82A3VT	Initial CNS Tumor	NA	Benign tumor	NA
+PT_YV2S3ES7	BS_PFSB20M7	BS_JSNJZERZ	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, SHH
+PT_YVG4H0F1	BS_36PAKW92	BS_XCNGQ25H	Initial CNS Tumor	Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
+PT_YXJQGT69	BS_88B4WV6J	BS_NHRNZRQV	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_YXZPWFVB	BS_ARSZZ15F	BS_R8ZKDFWH	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_YY7CRV21	BS_AA6DZJ9Z	BS_FG649AWK	Initial CNS Tumor	NA	Pre-cancerous lesion	NA
+PT_YZ8A8A36	BS_7XEH55CB	BS_59FR1NC2	Initial CNS Tumor	Choroid plexus carcinoma	Choroid plexus tumor	NA
+PT_YZME6QCY	BS_92SK6DD8	BS_MW6YMRBJ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, FGFR
+PT_Z4BF2NSB	BS_ZY319KJ4	BS_W2QCHQ7E	Initial CNS Tumor	High-grade glioma astrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53 loss
+PT_Z4GS3ZQQ	BS_82HQ2RBJ	BS_6ZP2KRPW; BS_AWV1EDYB	Initial CNS Tumor; Recurrence	Ependymoma; Dysembryoplastic neuroepithelial tumor	Ependymal tumor; Neuronal and mixed neuronal-glial tumor	NA
+PT_Z4PJA6KT	BS_EYXVNC69	BS_WPCBK1EG	Initial CNS Tumor	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53 loss
+PT_Z7YJ7MSM	BS_AB2C1EF9	BS_MGY2V5N4	Recurrence	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	NA
+PT_Z9QE51C3	BS_0TX5YDGH	BS_FNF1TCSW	Initial CNS Tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
+PT_ZA95JQEB	BS_GSKG0MB0	BS_ZZJF26C4	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_ZCXS29JJ	BS_YXWZB6S7	BS_VF099E8S	Initial CNS Tumor	Sarcoma	Mesenchymal non-meningothelial tumor	NA
+PT_ZD45GXZ0	BS_PZE7R1WM	BS_J33YVP27	Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_ZD9AYB6F	BS_5WZE7TYQ	BS_245CTSH9	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_ZG4J0EK0	BS_D4K3JN7S	BS_T5HPW4Z0	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, Group4
+PT_ZGWYMRV8	BS_0NC1NQ01	BS_7F07M7JG	Initial CNS Tumor	Medulloblastoma	Embryonal tumor	MB, To be classified
+PT_ZMKMKCFQ	BS_00QJE3E5	BS_GRS3T427; BS_WDTT7PG2	Initial CNS Tumor; Progressive	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, RTK
+PT_ZN1F7RMP	BS_BGW6PHHK	BS_BR1X3R68	Initial CNS Tumor	Adenoma	Benign tumor	NA
+PT_ZR8MQRVG	BS_1KT7DF0G	BS_MT5ZSRG4	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_ZRQQC2S9	BS_QX8PTX5X	BS_PEFRDKDZ	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, NF1-germline
+PT_ZS2YDFBE	BS_EE7684YB	BS_P6NWC51S	Initial CNS Tumor	Choroid plexus papilloma	Benign tumor	NA
+PT_ZVV78QP5	BS_98RN7Y9D	BS_2RJN5Z4W	Initial CNS Tumor	Pilocytic astrocytoma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_ZWY04DCR	BS_S9CT40AZ	BS_6T87HSPX	Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, ST RELA
+PT_ZZ8SBJJ5	BS_D3VQDD5A	BS_CPZZR2R7	Progressive	Atypical choroid plexus papilloma	Benign tumor	NA
+PT_ZZRBX5JT	BS_83YQS965	BS_9N3B3HZB; BS_AGD2ATY1; BS_JE1DF581	Recurrence; Initial CNS Tumor	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_ZZTQQVCT	BS_RX561Y2K	BS_78TQS4Y3	Initial CNS Tumor	Low-grade glioma astrocytoma	Low-grade astrocytic tumor	LGG, wildtype
+PT_ZZWYKZZ8	BS_W4ZEEWZA	BS_2E81A3FT	Progressive	Ependymoma	Ependymal tumor	EPN, To be classified
