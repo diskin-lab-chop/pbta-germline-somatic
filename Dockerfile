@@ -60,6 +60,19 @@ RUN ./install_github.r \
 RUN ./install_github.r  'thomasp85/patchwork' --ref 'c67c6603ba59dd46899f17197f9858bc5672e9f4'
 
 
+# Install pip3 and python reqs for oncokb
+RUN apt-get -y --no-install-recommends install \
+    python3-pip python3-dev
+RUN pip3 install \
+  "matplotlib==3.1.2" \
+  "kiwisolver==1.2.0" \
+  "requests==2.27.1" \
+  "urllib3==1.26.8"
+
+# Install oncokb
+RUN git clone https://github.com/oncokb/oncokb-annotator.git /home/oncokb-annotator
+
+
 WORKDIR /rocker-build/
 
 ADD Dockerfile .

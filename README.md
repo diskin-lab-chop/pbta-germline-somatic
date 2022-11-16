@@ -13,12 +13,12 @@ git clone git@github.com:diskin-lab-chop/OpenPBTA-germline.git
 docker pull jrokita1/pbta-germline:version0.1
 ```
 
-3. Start the docker container, from the `pbta-germline-somatic-integration` folder, run:
+3. Start the docker container, from the `OpenPBTA-germline` folder, run:
 ```
 docker run --name container_name -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/OpenPBTA-germline jrokita1/pbta-germline:version0.1
 ```
 
-4. To execute shell within the docker image, from the `PBTA-ALT-analysis` folder, run:
+4. To execute shell within the docker image, from the `OpenPBTA-germline` folder, run:
 ```
 docker exec -ti container_name bash
 ```
@@ -73,7 +73,7 @@ cd /home/rstudio/OpenPBTA-germline/analyses/module_of_interest
 
 ## Code Authors
 
-Jo Lynne Rokita ([@jharenza](https://github.com/jharenza))
+Jo Lynne Rokita ([@jharenza](https://github.com/jharenza)) and Ryan Corbett ([@rjcorb]((https://github.com/rjcorb))
 
 ## Contact
 
