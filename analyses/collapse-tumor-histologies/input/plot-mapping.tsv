@@ -6,7 +6,7 @@ Benign tumor	Atypical choroid plexus papilloma	Benign tumor	Benign tumor or non-
 Benign tumor	Adenoma	Benign tumor	Benign tumor or non-cancer	NA	NA	NA			
 Non-tumor	NA	NA	Benign tumor or non-cancer	NA	NA	NA	NA	NA	NA
 Pre-cancerous lesion	NA	Other	Benign tumor or non-cancer	NA	NA	NA	12	NA	NA
-Tumors of sellar region	Adamantinomatous Craniopharyngioma	Tumor of sellar region	Craniopharyngioma	NA	NA	NA	NA	NA	NA
+Tumors of sellar region	Adamantinomatous Craniopharyngioma	Tumor of sellar region	Craniopharyngioma	#b2502d	CRANIO	#b33000	NA	NA	NA
 Tumors of sellar region	Craniopharyngioma	Craniopharyngioma	Craniopharyngioma	#b2502d	CRANIO	#b33000	7	Other CNS	TRUE
 Diffuse astrocytic and oligodendroglial tumor	Diffuse intrinsic pontine glioma	High-grade glioma	DIPG or DMG	#ff80e5	DIPG/DMG	#ff40d9			
 Diffuse astrocytic and oligodendroglial tumor	Diffuse midline glioma	High-grade glioma	DIPG or DMG	#ff80e5	DIPG/DMG	#ff40d9	2	Diffuse astrocytic and oligodendroglial tumor	NA
@@ -16,12 +16,12 @@ Low-grade astrocytic tumor	Ganglioglioma	Low-grade glioma	Ganglioglioma	#8f8fbf	
 Germ cell tumor	Germinoma	Germ cell tumor	Germ cell tumor	#0074d9	GCT	#b5b5b5	10	Other CNS	FALSE
 Germ cell tumor	Mixed germ cell tumor	Germ cell tumor	Germ cell tumor	#0074d9	GCT	#b5b5b5	10	Other CNS	FALSE
 Germ cell tumor	Teratoma	Germ cell tumor	Germ cell tumor	#0074d9	GCT	#058aff	10	Other CNS	TRUE
-Histiocytic tumor	Juvenile xanthogranuloma	Other	Haematolymphoid tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
-Histiocytic tumor	Langerhans Cell histiocytosis	Other	Haematolymphoid tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
-Histiocytic tumor	Rosai-Dorfman disease	Other	Haematolymphoid tumor	#808080	NA	#b5b5b5			
+Histiocytic tumor	Juvenile xanthogranuloma	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
+Histiocytic tumor	Langerhans Cell histiocytosis	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
+Histiocytic tumor	Rosai-Dorfman disease	Other	Other tumor	#808080	NA	#b5b5b5			
 Embryonal tumor	Medulloblastoma	Embryonal tumor	Medulloblastoma	#220040	MB	#a340ff	3	Embryonal tumor	NA
 Meningioma	Meningioma	Meningioma	Meningioma	#2db398	Meningioma	#2db398	8	Other CNS	TRUE
-Chordoma	Chordoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#808080	NA	#b5b5b5	12	NA	NA
+Chordoma	Chordoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5	12	NA	NA
 Mesenchymal non-meningothelial tumor	Cavernoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5	9	Other CNS	FALSE
 Mesenchymal non-meningothelial tumor	Ewing sarcoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5	9	Other CNS	TRUE
 Mesenchymal non-meningothelial tumor	Fibromyxoid lesion	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5			
@@ -57,7 +57,7 @@ Low-grade astrocytic tumor	Gliomatosis cerebri	NA	Other low-grade glioma	#8f8fbf
 Choroid plexus tumor	Choroid plexus carcinoma	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
 Choroid plexus tumor	Choroid plexus tumor	Other	Other tumor	#808080	NA	#b5b5b5			
 Choroid plexus tumor	Choroid plexus cyst	Other	Other tumor	#808080	NA	#b5b5b5			
-Lymphoma	CNS Burkitt's lymphoma	Other	Haematolymphoid tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
+Lymphoma	CNS Burkitt's lymphoma	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
 Melanocytic tumor	Melanocytic tumor	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
 Metastatic tumors	Metastatic secondary tumors	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
 Non-CNS tumor	Myxoid spindle cell tumor	NA	Other tumor	#808080	NA	#b5b5b5			
@@ -65,6 +65,6 @@ Other	NA	NA	Other tumor	#808080	NA	#b5b5b5	NA	NA	NA
 Tumor of cranial and paraspinal nerves	Malignant peripheral nerve sheath tumor	Tumor of cranial and paraspinal nerves	Other tumor	#808080	NA	#b5b5b5	5	Other CNS	FALSE
 Tumor of pineal region	Pineoblastoma	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
 Low-grade astrocytic tumor	Pilocytic astrocytoma	Low-grade glioma	Pilocytic astrocytoma	#8f8fbf	PA	#8c8cff	1	Low-grade astrocytic tumor	NA
-Low-grade astrocytic tumor	Pleomorphic xanthoastrocytoma	Low-grade glioma	Pleomorphic xanthoastrocytoma	#8f8fbf	PXA	#4e4ede	1	Low-grade astrocytic tumor	NA
+Low-grade astrocytic tumor	Pleomorphic xanthoastrocytoma	Low-grade glioma	Other low-grade glioma	#8f8fbf	Other LGG	#000047	1	Low-grade astrocytic tumor	NA
 Tumor of cranial and paraspinal nerves	Schwannoma	Tumor of cranial and paraspinal nerves	Schwannoma	#ffaa00	Schwannoma	#ab7200	5	Other CNS	TRUE
 Low-grade astrocytic tumor	Subependymal Giant Cell Astrocytoma	Low-grade glioma	Subependymal Giant Cell Astrocytoma	#8f8fbf	SEGA	#2828a1	1	Low-grade astrocytic tumor	NA
