@@ -31,11 +31,12 @@ BS_AFBPM6CN <- v11_hist %>%
 germline_ids <- read_lines(file.path(input_dir, "samples_of_interest.txt"))
 
 # add independent specimen file to get primary plus tumor bs ids
-tumor_ids <- read_tsv(file.path(data_dir, "independent-specimens.wgs.primary-plus.tsv")) %>%
+tumor_ids <- read_tsv(file.path(data_dir, "independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv")) %>%
   bind_rows(BS_AFBPM6CN) %>%
-  left_join(v22_hist[,c("Kids_First_Biospecimen_ID", "tumor_descriptor", "cancer_group", "broad_histology", "molecular_subtype")]) %>%
-  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID)
-  
+  select(Kids_First_Biospecimen_ID) %>%
+  inner_join(v11_hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID", "tumor_descriptor", "pathology_diagnosis", "pathology_free_text_diagnosis", "cancer_group", "broad_histology", "molecular_subtype")]) %>%
+dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID)
+
 # gather additional germline metadata
 germline_ids_meta <- v11_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids) %>%
