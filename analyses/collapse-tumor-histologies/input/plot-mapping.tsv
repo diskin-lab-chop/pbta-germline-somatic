@@ -30,30 +30,32 @@ Mesenchymal non-meningothelial tumor	Inflammatory Myofibroblastic Tumor	Mesenchy
 Mesenchymal non-meningothelial tumor	Rhabdomyosarcoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5	9	Other CNS	FALSE
 Mesenchymal non-meningothelial tumor	Sarcoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5	9	Other CNS	FALSE
 Mesenchymal non-meningothelial tumor	Myofibroblastoma	Mesenchymal non-meningothelial tumor	Mesenchymal non-meningothelial tumor	#7fbf00	NA	#b5b5b5			
-Tumor of cranial and paraspinal nerves	Neurofibroma Plexiform	NA	Neurofibroma Plexiform	NA	NFP	NA	NA	NA	NA
+Tumor of cranial and paraspinal nerves	Neurofibroma/Plexiform	NA	Neurofibroma Plexiform	NA	NFP	NA	NA	NA	NA
 Neuronal and mixed neuronal-glial tumor	Central neurocytoma	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	NA	NA	NA
 Neuronal and mixed neuronal-glial tumor	Desmoplastic infantile astrocytoma and ganglioglioma	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	6	Other CNS	FALSE
 Neuronal and mixed neuronal-glial tumor	Extraventricular neurocytoma	NA	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	NA	NA	NA
 Neuronal and mixed neuronal-glial tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	6	Other CNS	FALSE
-Neuronal and mixed neuronal-glial tumor	Neuroepithelial neoplasm	NA	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	NA	NA	NA
+Neuronal and mixed neuronal-glial tumor	Neuroepithelial neoplasm	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	NA	NA	NA
 Neuronal and mixed neuronal-glial tumor	Neuroepithelial neoplasm	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
 Neuronal and mixed neuronal-glial tumor	Rosette-forming glioneuronal tumor	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	6	Other CNS	FALSE
-Neuronal and mixed neuronal-glial tumor	Neurocytoma	NA	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
+Neuronal and mixed neuronal-glial tumor	Neurocytoma	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
 Embryonal tumor	CNS Embryonal tumor	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf	3	Embryonal tumor	NA
 Embryonal tumor	Embryonal tumor	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf			
 Embryonal tumor	Embryonal tumor with multilayer rosettes	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf	3	Embryonal tumor	NA
 Embryonal tumor	Ganglioneuroblastoma	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf	3	Embryonal tumor	NA
 Embryonal tumor	Ganglioneuroma	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf	NA	NA	NA
 Embryonal tumor	Neuroblastoma	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf	3	Embryonal tumor	NA
+Germ cell tumor	NA	Germ cell tumor	Germ cell tumor	#0074d9	GCT	#b5b5b5			
 Embryonal tumor	CNS neuroblastoma	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf			
 Other tumor	Ganglioneuroma	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf			
 Diffuse astrocytic and oligodendroglial tumor	Gliosarcoma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5			
-Diffuse astrocytic and oligodendroglial tumor	High-grade glioma astrocytoma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5	NA	NA	NA
+Diffuse astrocytic and oligodendroglial tumor	High-grade glioma/astrocytoma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5	NA	NA	NA
 Diffuse astrocytic and oligodendroglial tumor	Oligodendroglioma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5	2	Diffuse astrocytic and oligodendroglial tumor	NA
 Low-grade astrocytic tumor	Diffuse fibrillary astrocytoma	Low-grade glioma	Other low-grade glioma	#8f8fbf	Other LGG	#000047	1	Low-grade astrocytic tumor	NA
-Low-grade astrocytic tumor	Low-grade glioma astrocytoma	Other low-grade glioma	Other low-grade glioma	#8f8fbf	Other LGG	#000047	NA	NA	NA
+Low-grade astrocytic tumor	Low-grade glioma/astrocytoma	Other low-grade glioma	Other low-grade glioma	#8f8fbf	Other LGG	#000047	NA	NA	NA
 Low-grade astrocytic tumor	Oligodendroglioma	Low-grade glioma	Other low-grade glioma	#8f8fbf	Other LGG	#000047	1	Low-grade astrocytic tumor	NA
-Low-grade astrocytic tumor	Gliomatosis cerebri	NA	Other low-grade glioma	#8f8fbf	Other LGG	#000047			
+Neuronal and mixed neuronal-glial tumor	NA	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
+Low-grade astrocytic tumor	Gliomatosis Cerebri	NA	Other low-grade glioma	#8f8fbf	Other LGG	#000047			
 Choroid plexus tumor	Choroid plexus carcinoma	Other	Other tumor	#808080	NA	#b5b5b5	12	Other CNS	FALSE
 Choroid plexus tumor	Choroid plexus tumor	Other	Other tumor	#808080	NA	#b5b5b5			
 Choroid plexus tumor	Choroid plexus cyst	Other	Other tumor	#808080	NA	#b5b5b5			
@@ -68,3 +70,4 @@ Low-grade astrocytic tumor	Pilocytic astrocytoma	Low-grade glioma	Pilocytic astr
 Low-grade astrocytic tumor	Pleomorphic xanthoastrocytoma	Low-grade glioma	Other low-grade glioma	#8f8fbf	Other LGG	#000047	1	Low-grade astrocytic tumor	NA
 Tumor of cranial and paraspinal nerves	Schwannoma	Tumor of cranial and paraspinal nerves	Schwannoma	#ffaa00	Schwannoma	#ab7200	5	Other CNS	TRUE
 Low-grade astrocytic tumor	Subependymal Giant Cell Astrocytoma	Low-grade glioma	Subependymal Giant Cell Astrocytoma	#8f8fbf	SEGA	#2828a1	1	Low-grade astrocytic tumor	NA
+Mixed tumor	NA	Tumors of the cranial and paraspinal nerves	Other tumor	#808080	NA	#b5b5b5			

@@ -1,21 +1,21 @@
 plot_group	n
-Neurofibroma Plexiform	11
 Subependymal Giant Cell Astrocytoma	11
-Neuronal and mixed neuronal-glial tumor	12
+Neurofibroma Plexiform	12
 Germ cell tumor	13
-Schwannoma	14
+Schwannoma	13
+Neuronal and mixed neuronal-glial tumor	15
 Other embryonal tumor	19
+Dysembryoplastic neuroepithelial tumor	21
 Meningioma	22
 Mesenchymal non-meningothelial tumor	22
-Dysembryoplastic neuroepithelial tumor	23
-Other tumor	23
+Other tumor	22
 Atypical Teratoid Rhabdoid Tumor	27
 Craniopharyngioma	39
-DIPG or DMG	40
 Ganglioglioma	44
-Other high-grade glioma	50
 Benign tumor or non-cancer	51
+DIPG or DMG	52
 Ependymoma	71
+Other high-grade glioma	78
 Other low-grade glioma	90
 Medulloblastoma	97
-Pilocytic astrocytoma	119
+Pilocytic astrocytoma	120
