@@ -37,56 +37,35 @@ cd /home/rstudio/OpenPBTA-germline/analyses/module_of_interest
 ├── README.md
 ├── analyses
 │   ├── collapse-tumor-histologies
-│   │   ├── 01-collapse-tumor-histologies.R
-│   │   ├── input
-│   │   │   └── PBTA_Germline_801_10102022.xlsx
-│   │   └── results
-│   │       ├── primary-tumor-histologies-collapsed-by-germline.tsv
-│   │       ├── tumor-histologies-collapsed-by-germline-CBTN.tsv
-│   │       └── tumor-histologies-collapsed-by-germline.tsv
 │   ├── oncokb-annotation
-│   │   ├── annotate-maf-oncokb.Rmd
-│   │   ├── annotate-maf-oncokb.nb.html
-│   │   ├── code
-│   │   │   ├── 01-create-subset-maf.Rmd
-│   │   │   ├── 01-create-subset-maf.nb.html
-│   │   │   └── 02-run-oncokb-annotation.sh
-│   │   ├── input
-│   │   │   └── cpg.txt
-│   │   ├── results
-│   │   │   ├── snv-consensus-plus-hotspots-goi-oncokb.maf.tsv
-│   │   │   └── snv-consensus-plus-hotspots-goi.maf.tsv
-│   │   └── run-oncokb-annotation.sh
 │   └── two-hits
-│       ├── assess-two-hits.Rmd
-│       ├── assess-two-hits.nb.html
-│       └── results
-│           ├── germline-somatic-collapsed-by-gene.tsv
-│           ├── germline-somatic-two-gene-hits.tsv
-│           └── pbta-oncokb-oncogenic-maf.tsv
 ├── data
-│   └── v1
+│   ├── v1
+│   └── v2
 │       ├── consensus_seg_annotated_cn_autosomes.tsv.gz
 │       ├── consensus_seg_annotated_cn_x_and_y.tsv.gz
 │       ├── consensus_seg_with_status.tsv
 │       ├── gene-expression-rsem-tpm-collapsed.rds
+│       ├── histologies.tsv
 │       ├── independent-specimens.rnaseqpanel.primary-plus.tsv
 │       ├── independent-specimens.rnaseqpanel.primary.tsv
 │       ├── independent-specimens.wgs.primary-plus.tsv
 │       ├── independent-specimens.wgs.primary.tsv
 │       ├── independent-specimens.wgswxs.primary-plus.tsv
 │       ├── independent-specimens.wgswxs.primary.tsv
+│       ├── independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv
+│       ├── independent-specimens.wgswxspanel.primary-plus.prefer.wxs.tsv
 │       ├── md5sum.txt
 │       ├── pbta-cnv-consensus-gistic.zip
 │       ├── pbta-cnv-consensus.seg.gz
 │       ├── pbta-fusion-putative-oncogenic.tsv
-│       ├── pbta-histologies.tsv
 │       ├── pbta-sv-manta.tsv.gz
 │       ├── pbta_germline_plp_calls.tsv
 │       ├── release-notes.md
 │       ├── snv-consensus-plus-hotspots.maf.tsv.gz
 │       └── snv-mutation-tmb-coding.tsv
 ├── download_data.sh
+├── figures
 └── scripts
     ├── install_bioc.r
     └── install_github.r
