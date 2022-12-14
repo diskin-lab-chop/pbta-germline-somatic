@@ -1,0 +1,121 @@
+---
+title: 'Query causal variants in LFS and NF1 patients'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "2022-12-05"
+---
+
+
+Load libraries and set directory paths
+```{r load libraries}
+library(data.table)
+library(tidyverse)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "predisposition-variants")
+results_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input")
+
+histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
+plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+
+plp_wgs_unfiltered_file <- file.path(input_dir, 'all_TP53_variants_PLP.tsv')
+vus_wgs_filtered_file <- file.path(input_dir, 'PBTA_VUS_TP53_pass_filters.csv')
+plp_wxs_unfiltered_file <- file.path(input_dir, 'PNOC_88_WXS_PLP_TP53_no_filter.txt')
+vus_wxs_filtered_file <- file.path(input_dir, 'PNOC_88_WXS_VUS_TP53_pass_filters.txt')
+```
+
+
+```{r load files}
+hist <- read_tsv(histologies_file) %>%
+  dplyr::select(Kids_First_Biospecimen_ID, Kids_First_Participant_ID, cancer_predispositions)
+
+germline <- read_tsv(plp_file) %>%
+  left_join(hist, by = 'Kids_First_Biospecimen_ID')
+```
+
+
+```{r get LFS TP53}
+samples <- unique(germline$Kids_First_Biospecimen_ID)
+LFS <- ifelse(samples %in% germline[grepl('Li-Fraumeni', germline$cancer_predispositions),]$Kids_First_Biospecimen_ID,
+              'Yes', 'No')
+tp53_plp <- ifelse(samples %in% germline[grepl('TP53', germline$Hugo_Symbol),]$Kids_First_Biospecimen_ID,
+                   'Yes', 'No')
+table(LFS, tp53_plp)
+
+germline %>%
+  filter(cancer_predispositions == 'Li-Fraumeni syndrome' & Hugo_Symbol == 'TP53')
+```
+
+
+```{r check vus unfiltered tp53}
+lfs_pts <- unique(germline[germline$cancer_predispositions == 'Li-Fraumeni syndrome' & !is.na(germline$cancer_predispositions),]$Kids_First_Participant_ID)
+lfs_bs <- unique(germline[germline$cancer_predispositions == 'Li-Fraumeni syndrome' & !is.na(germline$cancer_predispositions),]$Kids_First_Biospecimen_ID)
+
+all_tp53_wgs <- read_tsv(plp_wgs_unfiltered_file) %>%
+  rename('Kids_First_Biospecimen_ID' = 'Sub1.ID' ) %>%
+  dplyr::select(Kids_First_Biospecimen_ID, 'L-LP_Call_final',
+                Hugo_symbol, HGVS.c, HGVS.p) %>%
+  left_join(hist, by = 'Kids_First_Biospecimen_ID') %>%
+  filter(Kids_First_Participant_ID %in% lfs_pts)
+all_tp53_wgs
+
+all_tp53_wxs <- read_tsv(plp_wxs_unfiltered_file) %>%
+  rename('Kids_First_Biospecimen_ID' = 'Sub1.ID') %>%
+  filter(Kids_First_Biospecimen_ID %in% lfs_pts)
+all_tp53_wxs
+
+vus_tp53_wgs <- read_csv(vus_wgs_filtered_file) %>%
+  rename('Kids_First_Biospecimen_ID' = 'Sub1.ID') %>%
+  dplyr::select(Kids_First_Biospecimen_ID, 'L-LP_Call_final',
+                Hugo_symbol, HGVS.c, HGVS.p) %>%
+  left_join(hist, by = 'Kids_First_Biospecimen_ID') %>%
+  filter(Kids_First_Participant_ID %in% lfs_pts)
+vus_tp53_wgs
+
+vus_tp53_wxs <- read_tsv(vus_wxs_filtered_file, col_names = F) %>%
+  rename('Kids_First_Biospecimen_ID' = X31,
+         'L-LP_Call_final' = X3,
+         'Hugo_symbol' = X8,
+         'HGVS.c' = X51, 'HGVS.p' = X52) %>%
+  dplyr::select(Kids_First_Biospecimen_ID, 'L-LP_Call_final',
+                Hugo_symbol, HGVS.c, HGVS.p) %>%
+  left_join(hist, by = 'Kids_First_Biospecimen_ID') %>%
+  filter(Kids_First_Participant_ID %in% lfs_pts)
+vus_tp53_wxs
+
+lfs_pts[!lfs_pts %in% c(vus_tp53_wgs$Kids_First_Participant_ID, all_tp53_wgs$Kids_First_Participant_ID)]
+lfs_bs[!lfs_bs %in% c(vus_tp53_wgs$Kids_First_Biospecimen_ID, all_tp53_wgs$Kids_First_Biospecimen_ID)]
+
+
+lfs_tp53 <- all_tp53_wgs %>%
+  bind_rows(vus_tp53_wgs)
+
+write_tsv(lfs_tp53, file.path(results_dir, 'tp53_plp_vus_variants_lfs.tsv'))
+```
+
+
+```{r get NF1 NF1 status}
+NF1 <- ifelse(samples %in% germline[grepl('NF-1', germline$cancer_predispositions),]$Kids_First_Biospecimen_ID,
+              'Yes', 'No')
+nf1_plp <- ifelse(samples %in% germline[grepl('NF1', germline$Hugo_Symbol),]$Kids_First_Biospecimen_ID,
+                  'Yes', 'No')
+table(NF1, nf1_plp)
+
+nf1_pts <- unique(germline[grepl('NF-1', germline$cancer_predispositions),]$Kids_First_Participant_ID)
+nf1_bs <- unique(germline[grepl('NF-1', germline$cancer_predispositions),]$Kids_First_Biospecimen_ID)
+
+nf1 <- germline %>%
+  filter(Kids_First_Participant_ID %in% nf1_pts & Hugo_Symbol == 'NF1')
+
+nf1_pts[!nf1_pts %in% nf1$Kids_First_Participant_ID]
+nf1_bs[!nf1_bs %in% nf1$Kids_First_Biospecimen_ID]
+
+write_tsv(nf1, file.path(results_dir, 'nf1_plp_nf1_patients.tsv'))
+```
