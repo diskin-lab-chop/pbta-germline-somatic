@@ -1,0 +1,16 @@
+Kids_First_Biospecimen_ID	experimental_strategy	L-LP_Call_final	Reasoning_for_call	Hugo_Symbol	HGVS.c	HGVS.p	class
+BS_1Z7Y81NW	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.137G>T	.	MMR
+BS_382HZBG4	WGS	Pathogenic	InterVar_Recalculated Pathogenic	EXO1	c.1626T>G	p.Tyr542*	MMR
+BS_3C702XH4	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCNA	c.86A>G	.	MMR
+BS_6FD0SW6E	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.137G>T	.	MMR
+BS_D48QXYW6	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.1831dupA	p.Ile611fs	MMR
+BS_E7JTAP8Y	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RFC3	c.417dupA	p.Leu140fs	MMR
+BS_GJWAV3E5	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS2	c.11C>G	p.Ser4*	MMR
+BS_HT2S4SW0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MLH3	c.1364_1365delAG	p.Glu455fs	MMR
+BS_QG3PYXB4	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PMS2	c.1376C>G	p.Ser459*	MMR
+BS_SGS26NXP	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	MSH2	c.1906G>C	p.Ala636Pro	MMR
+BS_SYGXZY9V	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c.524delT	p.Leu175fs	MMR
+BS_WMVYQREN	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MSH3	c.574C>T	p.Gln192*	MMR
+BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c.1010dupA	p.Tyr337fs	MMR
+BS_0754AZX0	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	MSH6	c.3439-2A>G	.	MMR
+BS_ESFA9S69	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MSH3	c.2319-1G>A	.	MMR

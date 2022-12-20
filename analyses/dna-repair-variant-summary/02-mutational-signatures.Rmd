@@ -1,0 +1,539 @@
+---
+title: 'Mutational Signatures Analysis'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "2022-12-14"
+---
+
+Load packages and set directories
+
+```{r load libraries}
+library(data.table)
+library(tidyverse)
+library(ggplot2)
+library(ggsci)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
+results_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input")
+plot_dir <- file.path(analysis_dir, "plots")
+```
+
+Set paths for histology, plp variant, and mutational signature weights files
+
+```{r}
+histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-CBTN-dx.tsv")
+
+dna_repair_plp_file <- file.path(results_dir, 'dna_repair_germline_plp_summary.tsv')
+cosmicv2_nature_file <- file.path(input_dir, 'merged_COSMICv2_nature_signature_exposures.tsv')
+cosmicv3_file <- file.path(input_dir, 'COSMICv3.3_signature_exposures.tsv')
+```
+
+## Mutational signature difference between samples with and without MMR germline variants
+
+Read summary DNA repair germline PLP variant file, and pull sample IDs for those with and without DNA repair variants
+
+```{r}
+dna_repair_plp <- read_tsv(dna_repair_plp_file) %>%
+  rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_normal')
+hist <- read_tsv(histologies_file) 
+
+repair_germline <- dna_repair_plp %>%
+  filter(dna_repair_germline == 'Yes') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+ctrl_germline <- dna_repair_plp %>%
+  filter(dna_repair_germline == 'No') %>%
+  pull(Kids_First_Biospecimen_ID)
+```
+
+Get matched tumor BS IDs
+
+```{r}
+repair_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% repair_germline]) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
+
+ctrl_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% ctrl_germline]) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
+```
+
+Read in COSMIC mutational signature weight files, and set weights to zero if < 0.06 as described in [deconstructSigs paper] (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4762164/)
+
+```{r}
+cosmicv2_nature_res <- read_tsv(cosmicv2_nature_file) %>%
+  mutate(exposure = ifelse(exposure >=0.06,
+                           exposure, 0))
+  
+cosmicv3_df <- read_tsv(cosmicv3_file) %>%
+  mutate(exposure = ifelse(exposure >=0.06,
+                           exposure, 0))
+```
+
+Create data frame of mean cosmic v2 signatures, and calculate p-value of Wilcoxin-rank sum test comparing sigature weight means between groups 
+
+```{r}
+cosmicv2_sigs <- unique(cosmicv2_nature_res$signature[cosmicv2_nature_res$source == 'COSMIC'])
+
+cosmicv2_res <- data.frame(signature = rep(0, length(cosmicv2_sigs)),
+                          repair_exposure = rep(0, length(cosmicv2_sigs)),
+                   ctrl_exposure = rep(0, length(cosmicv2_sigs)),
+                   exposure_diff = rep(0, length(cosmicv2_sigs)),
+                   pvalue = rep(0, length(cosmicv2_sigs)))
+
+for (i in 1:length(cosmicv2_sigs)){
+  cosmicv2_res$signature[i] <- cosmicv2_sigs[i]
+  repair_exposures <- cosmicv2_nature_res[cosmicv2_nature_res$source == 'COSMIC' & cosmicv2_nature_res$signature == cosmicv2_sigs[i] & cosmicv2_nature_res$`Kids_First_Biospecimen_ID` %in% repair_ids,]$exposure
+  ctrl_exposures <- cosmicv2_nature_res[cosmicv2_nature_res$source == 'COSMIC' & cosmicv2_nature_res$signature == cosmicv2_sigs[i] & cosmicv2_nature_res$`Kids_First_Biospecimen_ID` %in% ctrl_ids,]$exposure
+  cosmicv2_res$repair_exposure[i] <- mean(repair_exposures)
+  cosmicv2_res$ctrl_exposure[i] <- mean(ctrl_exposures)
+  cosmicv2_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
+  cosmicv2_res$pvalue[i] <- wilcox.test(repair_exposures, ctrl_exposures, alternative =)$p.value
+}
+```
+
+Plot difference in v2 signature weight means between groups: 
+
+```{r}
+cosmicv2_res <- cosmicv2_res %>%
+  filter(!is.na(pvalue)) %>%
+  mutate(association = ifelse(signature %in% c('Signature.6', 'Signature.15', 'Signature.20', 'Signature.26'),
+                              'MMR', 
+                              ifelse(signature %in% c('Signature.3'), 'Other Repair', 'Non-repair'))) %>%
+  filter(abs(exposure_diff) > 2e-3) %>%
+  arrange(desc(exposure_diff))
+
+cosmicv2_res$signature <- factor(cosmicv2_res$signature,
+                                 levels = cosmicv2_res$signature)
+
+ggplot(cosmicv2_res, aes(x = signature, y = exposure_diff, fill = association)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(hjust = 0.5, size = 18)) + 
+  labs(x = 'COSMIC v2 signature', y = 'exposure difference',
+       fill = 'association', title = 'DNA repair germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "cosmicv2_signature_diff_DNArepair_vs_other.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+Create data frame of mean cosmic v3 signatures and test for significant differences in signature weight means:  
+
+```{r}
+cosmicv3_sigs <- unique(cosmicv3_df$signature)
+
+cosmicv3_res <- data.frame(signature = rep(0, length(cosmicv3_sigs)),
+                            repair_exposure = rep(0, length(cosmicv3_sigs)),
+                           ctrl_exposure = rep(0, length(cosmicv3_sigs)),
+                           exposure_diff = rep(0, length(cosmicv3_sigs)),
+                           pvalue = rep(0, length(cosmicv3_sigs)))
+
+for (i in 1:length(cosmicv3_sigs)){
+  cosmicv3_res$signature[i] <- cosmicv3_sigs[i]
+  repair_exposures <- cosmicv3_df[cosmicv3_df$signature == cosmicv3_sigs[i] & cosmicv3_df$`Kids_First_Biospecimen_ID` %in% repair_ids,]$exposure
+  ctrl_exposures <- cosmicv3_df[cosmicv3_df$signature == cosmicv3_sigs[i] & cosmicv3_df$`Kids_First_Biospecimen_ID` %in% ctrl_ids,]$exposure
+  cosmicv3_res$repair_exposure[i] <- mean(repair_exposures)
+  cosmicv3_res$ctrl_exposure[i] <- mean(ctrl_exposures)
+  cosmicv3_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
+  cosmicv3_res$pvalue[i] <- ifelse(!is.nan(mean(repair_exposures) - mean(ctrl_exposures)),
+                                   wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
+                                   NA)
+}
+```
+
+Plot differences in v3.3 signature weight means between groups: 
+
+```{r}
+cosmicv3_res <- cosmicv3_res %>%
+  filter(!is.na(pvalue)) %>%
+  mutate(association = ifelse(signature %in% c('SBS6', 'SBS14', 'SBS15', 'SBS20', 'SBS21', 'SBS26', 'SBS44'),
+                      'MMR', 
+                      ifelse(signature %in% c('SBS30', 'SBS36', 'SBS3', 'SBS10a', 'SBS10b', 'SBS10c', 'SBS10d'), 'Other Repair', 'Non-repair'))) %>%
+  filter(abs(exposure_diff) > 2e-3) %>%
+  arrange(desc(exposure_diff))
+
+cosmicv3_res$signature <- factor(cosmicv3_res$signature,
+                                     levels = cosmicv3_res$signature)
+
+ggplot(cosmicv3_res, aes(x = signature, y = exposure_diff, fill = association)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(hjust = 0.5, size = 18)) + 
+  labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
+       fill = 'association', title = 'DNA repair germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "cosmicv3_signature_diff_DNArepair_vs_other.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+## Mutational signature difference between samples with and without MMR germline variants
+
+Pull BS IDs for samples with and without germline MMR variants
+
+```{r}
+mmr_germline <- dna_repair_plp %>%
+  filter(mmr_germline == 'Yes') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+mmr_ctrl_germline <- dna_repair_plp %>%
+  filter(mmr_germline == 'No') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+mmr_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% mmr_germline]) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
+
+mmr_ctrl_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% mmr_ctrl_germline]) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
+```
+
+Generate v2 mutational signature group means, differences, and p-values
+
+```{r}
+mmr_cosmicv2_res <- data.frame(signature = rep(0, length(cosmicv2_sigs)),
+                               mmr_exposure = rep(0, length(cosmicv2_sigs)),
+                               ctrl_exposure = rep(0, length(cosmicv2_sigs)),
+                               exposure_diff = rep(0, length(cosmicv2_sigs)),
+                               pvalue = rep(0, length(cosmicv2_sigs)))
+
+for (i in 1:length(cosmicv2_sigs)){
+  mmr_cosmicv2_res$signature[i] <- cosmicv2_sigs[i]
+  repair_exposures <- cosmicv2_nature_res[cosmicv2_nature_res$signature == cosmicv2_sigs[i] & cosmicv2_nature_res$`Kids_First_Biospecimen_ID` %in% mmr_ids,]$exposure
+  ctrl_exposures <- cosmicv2_nature_res[cosmicv2_nature_res$signature == cosmicv2_sigs[i] & cosmicv2_nature_res$`Kids_First_Biospecimen_ID` %in% mmr_ctrl_ids,]$exposure
+  mmr_cosmicv2_res$mmr_exposure[i] <- mean(repair_exposures)
+  mmr_cosmicv2_res$ctrl_exposure[i] <- mean(ctrl_exposures)
+  mmr_cosmicv2_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
+  mmr_cosmicv2_res$pvalue[i] <- ifelse(!is.nan(mean(repair_exposures) - mean(ctrl_exposures)),
+                                       wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
+                                       NA)
+}
+```
+
+Plot group differences 
+
+```{r}
+mmr_cosmicv2_res <- mmr_cosmicv2_res %>%
+  filter(!is.na(pvalue)) %>%
+  mutate(association = ifelse(signature %in% c('Signature.6', 'Signature.15', 'Signature.20', 'Signature.26'),
+                              'MMR', 
+                              ifelse(signature %in% c('Signature.3'), 'Other Repair', 'Non-repair'))) %>%
+  filter(abs(exposure_diff) > 2e-3) %>%
+  arrange(desc(exposure_diff))
+
+mmr_cosmicv2_res$signature <- factor(mmr_cosmicv2_res$signature,
+                                     levels = mmr_cosmicv2_res$signature)
+
+ggplot(mmr_cosmicv2_res, aes(x = signature, y = exposure_diff, fill = association)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(hjust = 0.5, size = 18)) + 
+  labs(x = 'COSMIC v2 signature', y = 'exposure difference',
+       fill = 'association', title = 'MMR germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "cosmicv2_signature_diff_MMR_vs_other.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+Generate v3 mutational signature group means, differences, and p-values
+
+```{r}
+mmr_cosmicv3_res <- data.frame(signature = rep(0, length(cosmicv3_sigs)),
+                               mmr_exposure = rep(0, length(cosmicv3_sigs)),
+                               ctrl_exposure = rep(0, length(cosmicv3_sigs)),
+                               exposure_diff = rep(0, length(cosmicv3_sigs)),
+                               pvalue = rep(0, length(cosmicv3_sigs)))
+
+for (i in 1:length(cosmicv3_sigs)){
+  mmr_cosmicv3_res$signature[i] <- cosmicv3_sigs[i]
+  repair_exposures <- cosmicv3_df[cosmicv3_df$signature == cosmicv3_sigs[i] & cosmicv3_df$`Kids_First_Biospecimen_ID` %in% mmr_ids,]$exposure
+  ctrl_exposures <- cosmicv3_df[cosmicv3_df$signature == cosmicv3_sigs[i] & cosmicv3_df$`Kids_First_Biospecimen_ID` %in% mmr_ctrl_ids,]$exposure
+  mmr_cosmicv3_res$mmr_exposure[i] <- mean(repair_exposures)
+  mmr_cosmicv3_res$ctrl_exposure[i] <- mean(ctrl_exposures)
+  mmr_cosmicv3_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
+  mmr_cosmicv3_res$pvalue[i] <- ifelse(!is.nan(mean(repair_exposures) - mean(ctrl_exposures)),
+                                       wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
+                                       NA)
+}
+```
+
+plot group differences
+
+```{r}
+mmr_cosmicv3_res <- mmr_cosmicv3_res %>%
+  filter(!is.na(pvalue)) %>%
+  mutate(association = ifelse(signature %in% c('SBS6', 'SBS14', 'SBS15', 'SBS20', 'SBS21', 'SBS26', 'SBS44'),
+                              'MMR', 
+                              ifelse(signature %in% c('SBS30', 'SBS36', 'SBS3', 'SBS10a', 'SBS10b', 'SBS10c', 'SBS10d'), 'Other Repair', 'Non-repair'))) %>%
+  filter(abs(exposure_diff) > 2e-3) %>%
+  arrange(desc(exposure_diff))
+
+mmr_cosmicv3_res$signature <- factor(mmr_cosmicv3_res$signature,
+                                     levels = mmr_cosmicv3_res$signature)
+
+ggplot(mmr_cosmicv3_res, aes(x = signature, y = exposure_diff, fill = association)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(hjust = 0.5, size = 18)) + 
+  labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
+       fill = 'association', title = 'MMR germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "cosmicv3_signature_diff_MMR_vs_other.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+## Mutational signature difference between samples with and without DNA repair, non-MMR germline variants
+
+Pull BS IDs for samples with and without germline DNA repair, non-MMR variants
+
+```{r}
+nonmmr_germline <- dna_repair_plp %>%
+  filter(mmr_germline == 'No' & dna_repair_germline == 'Yes') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+nonmmr_ctrl_germline <- dna_repair_plp %>%
+  filter(dna_repair_germline == 'No') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+nonmmr_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% nonmmr_germline]) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
+
+nonmmr_ctrl_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% nonmmr_ctrl_germline]) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
+```
+
+Generate v2 mutational signature group means, differences, and p-values
+
+```{r}
+nonmmr_cosmicv2_res <- data.frame(signature = rep(0, length(cosmicv2_sigs)),
+                               nonmmr_exposure = rep(0, length(cosmicv2_sigs)),
+                               ctrl_exposure = rep(0, length(cosmicv2_sigs)),
+                               exposure_diff = rep(0, length(cosmicv2_sigs)),
+                               pvalue = rep(0, length(cosmicv2_sigs)))
+
+for (i in 1:length(cosmicv2_sigs)){
+  nonmmr_cosmicv2_res$signature[i] <- cosmicv2_sigs[i]
+  repair_exposures <- cosmicv2_nature_res[cosmicv2_nature_res$signature == cosmicv2_sigs[i] & cosmicv2_nature_res$`Kids_First_Biospecimen_ID` %in% nonmmr_ids,]$exposure
+  ctrl_exposures <- cosmicv2_nature_res[cosmicv2_nature_res$signature == cosmicv2_sigs[i] & cosmicv2_nature_res$`Kids_First_Biospecimen_ID` %in% nonmmr_ctrl_ids,]$exposure
+  nonmmr_cosmicv2_res$nonmmr_exposure[i] <- mean(repair_exposures)
+  nonmmr_cosmicv2_res$ctrl_exposure[i] <- mean(ctrl_exposures)
+  nonmmr_cosmicv2_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
+  nonmmr_cosmicv2_res$pvalue[i] <- ifelse(!is.nan(mean(repair_exposures) - mean(ctrl_exposures)),
+                                       wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
+                                       NA)
+}
+```
+
+plot group differences
+
+```{r}
+nonmmr_cosmicv2_res <- nonmmr_cosmicv2_res %>%
+  filter(!is.na(pvalue)) %>%
+  mutate(association = ifelse(signature %in% c('Signature.6', 'Signature.15', 'Signature.20', 'Signature.26'),
+                              'MMR', 
+                              ifelse(signature %in% c('Signature.3'), 'Other Repair', 'Non-repair'))) %>%
+  filter(abs(exposure_diff) > 2e-3) %>%
+  arrange(desc(exposure_diff))
+
+nonmmr_cosmicv2_res$signature <- factor(nonmmr_cosmicv2_res$signature,
+                                     levels = nonmmr_cosmicv2_res$signature)
+
+ggplot(nonmmr_cosmicv2_res, aes(x = signature, y = exposure_diff, fill = association)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(hjust = 0.5, size = 18)) + 
+  labs(x = 'COSMIC v2 signature', y = 'exposure difference',
+       fill = 'association', title = 'DNA repair, non-MMR germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "cosmicv2_signature_diff_DNArepair_nonMMR_vs_other.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+Generate v3 mutational signature group means, differences, and p-values
+
+```{r}
+nonmmr_cosmicv3_res <- data.frame(signature = rep(0, length(cosmicv3_sigs)),
+                               nonmmr_exposure = rep(0, length(cosmicv3_sigs)),
+                               ctrl_exposure = rep(0, length(cosmicv3_sigs)),
+                               exposure_diff = rep(0, length(cosmicv3_sigs)),
+                               pvalue = rep(0, length(cosmicv3_sigs)))
+
+for (i in 1:length(cosmicv3_sigs)){
+  nonmmr_cosmicv3_res$signature[i] <- cosmicv3_sigs[i]
+  repair_exposures <- cosmicv3_df[cosmicv3_df$signature == cosmicv3_sigs[i] & cosmicv3_df$`Kids_First_Biospecimen_ID` %in% nonmmr_ids,]$exposure
+  ctrl_exposures <- cosmicv3_df[cosmicv3_df$signature == cosmicv3_sigs[i] & cosmicv3_df$`Kids_First_Biospecimen_ID` %in% nonmmr_ctrl_ids,]$exposure
+  nonmmr_cosmicv3_res$nonmmr_exposure[i] <- mean(repair_exposures)
+  nonmmr_cosmicv3_res$ctrl_exposure[i] <- mean(ctrl_exposures)
+  nonmmr_cosmicv3_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
+  nonmmr_cosmicv3_res$pvalue[i] <- ifelse(!is.nan(mean(repair_exposures) - mean(ctrl_exposures)),
+                                       wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
+                                       NA)
+}
+```
+
+plot group differences
+
+```{r}
+nonmmr_cosmicv3_res <- nonmmr_cosmicv3_res %>%
+  filter(!is.na(pvalue)) %>%
+  mutate(association = ifelse(signature %in% c('SBS6', 'SBS14', 'SBS15', 'SBS20', 'SBS21', 'SBS26', 'SBS44'),
+                              'MMR', 
+                              ifelse(signature %in% c('SBS30', 'SBS36', 'SBS3', 'SBS10a', 'SBS10b', 'SBS10c', 'SBS10d'), 'Other Repair', 'Non-repair'))) %>%
+  filter(abs(exposure_diff) > 2e-3) %>%
+  arrange(desc(exposure_diff))
+
+nonmmr_cosmicv3_res$signature <- factor(nonmmr_cosmicv3_res$signature,
+                                     levels = nonmmr_cosmicv3_res$signature)
+
+ggplot(nonmmr_cosmicv3_res, aes(x = signature, y = exposure_diff, fill = association)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(hjust = 0.5, size = 18)) + 
+  labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
+       fill = 'association', title = 'DNA repair, non-MMR germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "cosmicv3_signature_diff_DNArepair_nonMMR_vs_other.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+make violin plots of weights for MMR signatures that are increased in MMR germline variant samples (SBS14), (SBS6), (SBS15)
+
+```{r}
+sbs14_df <- cosmicv3_df %>%
+  filter(signature == 'SBS14' & Kids_First_Biospecimen_ID %in% c(mmr_ids, nonmmr_ids, ctrl_ids)) %>%
+  mutate(germline_variant = ifelse(Kids_First_Biospecimen_ID %in% mmr_ids, 'MMR', 
+                                   ifelse(Kids_First_Biospecimen_ID %in% nonmmr_ids, 'Other DNA Repair',
+                                          'Non-repair')))
+
+sbs14_df$germline_variant = factor(sbs14_df$germline_variant,
+                                        levels = c('MMR', 'Other DNA Repair', 'Non-repair'))
+
+ggplot(sbs14_df, aes(x = germline_variant, y = exposure, fill = germline_variant)) +
+  geom_violin(binaxis = "y", stackdir = "center") +
+  geom_boxplot(width=0.1) + 
+  labs(x = 'Germline Variant Class', y = 'SBS14 Exposure (COSMIC v3.3)') +
+  theme_minimal() +
+  theme(legend.position = 'none',
+        text = element_text(size = 12)) +
+  scale_x_discrete(labels = c("MMR\n (n=15)", "Other DNA Repair\n (n=164)", "Non-repair\n (n=659)")) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "SBS14_signature_byGroup_violinPlot.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+
+```{r}
+sbs15_df <- cosmicv3_df %>%
+  filter(signature == 'SBS15' & Kids_First_Biospecimen_ID %in% c(mmr_ids, nonmmr_ids, ctrl_ids)) %>%
+  mutate(germline_variant = ifelse(Kids_First_Biospecimen_ID %in% mmr_ids, 'MMR', 
+                                   ifelse(Kids_First_Biospecimen_ID %in% nonmmr_ids, 'Other DNA Repair',
+                                          'Non-repair')))
+
+sbs15_df$germline_variant = factor(sbs15_df$germline_variant,
+                                   levels = c('MMR', 'Other DNA Repair', 'Non-repair'))
+
+ggplot(sbs15_df, aes(x = germline_variant, y = exposure, fill = germline_variant)) +
+  geom_violin(binaxis = "y", stackdir = "center") +
+  geom_boxplot(width=0.1) + 
+  labs(x = 'Germline Variant Class', y = 'SBS15 Exposure (COSMIC v3.3)') +
+  theme_minimal() +
+  theme(legend.position = 'none',
+        text = element_text(size = 12))+
+  scale_x_discrete(labels = c("MMR\n (n=15)", "Other DNA Repair\n (n=164)", "Non-repair\n (n=659)")) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "SBS15_signature_byGroup_violinPlot.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+```{r}
+sbs6_df <- cosmicv3_df %>%
+  filter(signature == 'SBS6' & Kids_First_Biospecimen_ID %in% c(mmr_ids, nonmmr_ids, ctrl_ids)) %>%
+  mutate(germline_variant = ifelse(Kids_First_Biospecimen_ID %in% mmr_ids, 'MMR', 
+                                   ifelse(Kids_First_Biospecimen_ID %in% nonmmr_ids, 'Other DNA Repair',
+                                          'Non-repair')))
+sbs6_df$germline_variant = factor(sbs6_df$germline_variant,
+                                   levels = c('MMR', 'Other DNA Repair', 'Non-repair'))
+
+ggplot(sbs6_df, aes(x = germline_variant, y = exposure, fill = germline_variant)) +
+  geom_violin(binaxis = "y", stackdir = "center") +
+  geom_boxplot(width=0.1) + 
+  labs(x = 'Germline Variant Class', y = 'SBS6 Exposure (COSMIC v3.3)') +
+  theme_minimal() +
+  theme(legend.position = 'none',
+        text = element_text(size = 12)) +
+  scale_x_discrete(labels = c("MMR\n (n=15)", "Other DNA Repair\n (n=164)", "Non-repair\n (n=659)")) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "SBS6_signature_byGroup_violinPlot.png"), 
+  width = 25, height = 25, units = "cm")
+```
+
+Merge exposure levels across MMR signatures and plot
+
+```{r}
+mmr_df <- cosmicv3_df %>%
+  filter(Kids_First_Biospecimen_ID %in% c(mmr_ids, nonmmr_ids, ctrl_ids) & signature %in% c('SBS6', 'SBS14', 'SBS15', 'SBS20', 'SBS21', 'SBS26', 'SBS44')) %>%
+  group_by(Kids_First_Biospecimen_ID) %>%
+  summarize(sum = sum(exposure)) %>%
+  mutate(germline_variant = ifelse(Kids_First_Biospecimen_ID %in% mmr_ids, 'MMR', 
+                                   ifelse(Kids_First_Biospecimen_ID %in% nonmmr_ids, 'Other DNA Repair',
+                                          'Non-repair')))
+  
+model_sum <- lm(sum ~ germline_variant, data = mmr_df)
+anova(model_sum)
+TukeyHSD(aov(model_sum))
+  
+ggplot(mmr_df, aes(x = germline_variant, y = sum, fill = germline_variant)) +
+  geom_violin(binaxis = "y", stackdir = "center", trim = T) +
+  geom_boxplot(width=0.1) + 
+  labs(x = 'Germline Variant Class', y = 'MMR Sig Exposure (COSMIC v3.3)') +
+  theme_minimal() +
+  theme(legend.position = 'none',
+        text = element_text(size = 12)) +
+  scale_x_discrete(labels = c("MMR\n (n=15)", "Other DNA Repair\n (n=164)", "Non-repair\n (n=659)")) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "MMR_signature_byGroup_violinPlot.png"), 
+  width = 25, height = 25, units = "cm")
+```
+

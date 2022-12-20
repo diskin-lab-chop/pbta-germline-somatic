@@ -1,0 +1,290 @@
+---
+title: 'GSEA score comparison'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "2022-12-14"
+---
+
+Load packages and set directories
+
+```{r load libraries}
+library(data.table)
+library(tidyverse)
+library(ggplot2)
+library(ggsci)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
+results_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input")
+plot_dir <- file.path(analysis_dir, "plots")
+```
+
+Set file paths
+
+```{r set file paths}
+histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
+
+dna_repair_plp_file <- file.path(results_dir, 'dna_repair_germline_plp_summary.tsv')
+gsva_file <- file.path(input_dir, 'gsva_scores.tsv')
+```
+
+Read in DNA repair variant file and pull DNA repair/control samples
+
+```{r}
+dna_repair_plp <- read_tsv(dna_repair_plp_file) %>%
+    rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_normal')
+
+repair_germline <- dna_repair_plp %>%
+  filter(dna_repair_germline == 'Yes') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+ctrl_germline <- dna_repair_plp %>%
+  filter(ner_germline == 'No') %>%
+  pull(Kids_First_Biospecimen_ID)
+```
+
+## GSVA score difference between samples with and without DNA repair germline variants
+
+Read histology file and pull somatic BS_ids
+
+```{r read hist}
+hist <- read_tsv(histologies_file) 
+
+repair_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% repair_germline]) %>%
+  filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+ctrl_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %>%
+  filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+  pull(Kids_First_Biospecimen_ID)
+```
+
+Create data frame of mean GSVA scores in DNA repair and test for significant differences in signature weight means:  
+
+```{r}
+scores <- read_tsv(gsva_file)
+
+hallmarks <- unique(scores$hallmark_name)
+
+gsva_res <- data.frame(hallmark = hallmarks,
+                           repair_score = rep(0, length(hallmarks)),
+                           ctrl_score = rep(0, length(hallmarks)),
+                           score_diff = rep(0, length(hallmarks)),
+                           pvalue = rep(0, length(hallmarks)))
+
+for (i in 1:length(hallmarks)){
+  repair_scores <- scores[scores$hallmark_name == hallmarks[i] & scores$`Kids_First_Biospecimen_ID` %in% repair_ids,]$gsea_score
+  ctrl_scores <- scores[scores$hallmark_name == hallmarks[i] & scores$`Kids_First_Biospecimen_ID` %in% ctrl_ids,]$gsea_score
+  gsva_res$repair_score[i] <- mean(repair_scores)
+  gsva_res$ctrl_score[i] <- mean(ctrl_scores)
+  gsva_res$score_diff[i] <- mean(repair_scores) - mean(ctrl_scores)
+  gsva_res$pvalue[i] <- wilcox.test(repair_scores, ctrl_scores)$p.value
+}
+```
+Plot differences in GSVA scores means between groups: 
+
+```{r plot DNA repair}
+gsva_res <- gsva_res %>%
+  filter(!is.na(pvalue)) %>%
+  filter(abs(score_diff) > 0.05) %>%
+  arrange(desc(score_diff))
+
+gsva_res$hallmark <- factor(gsva_res$hallmark,
+                                 levels = gsva_res$hallmark)
+
+ggplot(gsva_res, aes(x = hallmark, y = score_diff)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(size = 18, hjust = 2)) + 
+  labs(x = 'pathway', y = 'GSEA score difference',
+       title = 'DNA repair germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  ylim(-0.2, 0.4) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "gsva_diff_DNArepair_vs_other.png"), 
+  width = 30, height = 20, units = "cm")
+```
+
+## GSVA score difference between samples with and without MMR germline variants
+
+pull MMR and non-MMR gene germline variant samples and corresponding somatic IDs
+
+```{r}
+mmr_germline <- dna_repair_plp %>%
+  filter(mmr_germline == 'Yes') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+mmr_ctrl_germline <- dna_repair_plp %>%
+  filter(mmr_germline == 'No') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+mmr_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %>%
+  filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+mmr_ctrl_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_ctrl_germline]) %>%
+  filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+  pull(Kids_First_Biospecimen_ID)
+```
+
+Create data frame of GSVA score means and test for significant differences between groups
+
+```{r}
+mmr_res <- data.frame(hallmark = hallmarks,
+                       repair_score = rep(0, length(hallmarks)),
+                       ctrl_score = rep(0, length(hallmarks)),
+                       score_diff = rep(0, length(hallmarks)),
+                       pvalue = rep(0, length(hallmarks)))
+
+for (i in 1:length(hallmarks)){
+  repair_scores <- scores[scores$hallmark_name == hallmarks[i] & scores$`Kids_First_Biospecimen_ID` %in% mmr_ids,]$gsea_score
+  ctrl_scores <- scores[scores$hallmark_name == hallmarks[i] & scores$`Kids_First_Biospecimen_ID` %in% mmr_ctrl_ids,]$gsea_score
+  mmr_res$repair_score[i] <- mean(repair_scores)
+  mmr_res$ctrl_score[i] <- mean(ctrl_scores)
+  mmr_res$score_diff[i] <- mean(repair_scores) - mean(ctrl_scores)
+  mmr_res$pvalue[i] <- wilcox.test(repair_scores, ctrl_scores)$p.value
+}
+```
+Plot differences between groups
+
+```{r}
+
+mmr_res <- mmr_res %>%
+  filter(!is.na(pvalue)) %>%
+  filter(abs(score_diff) > 0.05) %>%
+  arrange(desc(score_diff))
+
+mmr_res$hallmark <- factor(mmr_res$hallmark,
+                            levels = mmr_res$hallmark)
+
+ggplot(mmr_res, aes(x = hallmark, y = score_diff)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(size = 18, hjust = 5)) + 
+  labs(x = 'pathway', y = 'GSEA score difference',
+       title = 'MMR germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  ylim(-0.2, 0.4) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "gsva_diff_MMR_vs_other.png"), 
+  width = 30, height = 20, units = "cm")
+```
+
+## GSVA score difference between samples with and without DNA repair, non-MMR germline variants
+
+pull DNA repair, non-MMR gene germline variant samples and corresponding somatic IDs
+
+```{r}
+nonmmr_germline <- dna_repair_plp %>%
+  filter(mmr_germline == 'No' & dna_repair_germline == 'Yes') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+nonmmr_ctrl_germline <- dna_repair_plp %>%
+  filter(dna_repair_germline == 'No') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+nonmmr_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% nonmmr_germline]) %>%
+  filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+  pull(Kids_First_Biospecimen_ID)
+
+nonmmr_ctrl_ids <- hist %>%
+  filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% nonmmr_ctrl_germline]) %>%
+  filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+  pull(Kids_First_Biospecimen_ID)
+```
+
+Create data frame of mean GSVA scores between groups, and test for significant differences
+
+```{r}
+nonmmr_res <- data.frame(hallmark = hallmarks,
+                      repair_score = rep(0, length(hallmarks)),
+                      ctrl_score = rep(0, length(hallmarks)),
+                      score_diff = rep(0, length(hallmarks)),
+                      pvalue = rep(0, length(hallmarks)))
+
+for (i in 1:length(hallmarks)){
+  repair_scores <- scores[scores$hallmark_name == hallmarks[i] & scores$`Kids_First_Biospecimen_ID` %in% nonmmr_ids,]$gsea_score
+  ctrl_scores <- scores[scores$hallmark_name == hallmarks[i] & scores$`Kids_First_Biospecimen_ID` %in% nonmmr_ctrl_ids,]$gsea_score
+  nonmmr_res$repair_score[i] <- mean(repair_scores)
+  nonmmr_res$ctrl_score[i] <- mean(ctrl_scores)
+  nonmmr_res$score_diff[i] <- mean(repair_scores) - mean(ctrl_scores)
+  nonmmr_res$pvalue[i] <- wilcox.test(repair_scores, ctrl_scores)$p.value
+}
+```
+
+Plot differences between groups
+
+```{r}
+
+nonmmr_res <- nonmmr_res %>%
+  filter(!is.na(pvalue)) %>%
+  filter(abs(score_diff) > 0.05) %>%
+  arrange(desc(score_diff))
+
+nonmmr_res$hallmark <- factor(nonmmr_res$hallmark,
+                            levels = nonmmr_res$hallmark)
+
+ggplot(nonmmr_res, aes(x = hallmark, y = score_diff)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(size = 18, hjust = 5)) + 
+  labs(x = 'pathway', y = 'GSEA score difference',
+       title = 'DNA Repair, non-MMR germline vs. other') +
+  geom_hline(yintercept = 0) + 
+  ylim(-0.2, 0.4) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "gsva_diff_DNArepair_nonMMR_vs_other.png"), 
+  width = 30, height = 20, units = "cm")
+```
+
+Plot repair score distributions for MMR, other DNA repair, and no DNA repair germline variant samples
+
+```{r}
+repair_scores <- scores %>%
+  filter(hallmark_name == 'HALLMARK_DNA_REPAIR' & Kids_First_Biospecimen_ID %in% c(mmr_ids, nonmmr_ids, ctrl_ids)) %>%
+  mutate(germline_variant = ifelse(Kids_First_Biospecimen_ID %in% mmr_ids, 'MMR', 
+                        ifelse(Kids_First_Biospecimen_ID %in% nonmmr_ids, 'Other DNA Repair',
+                               'Non-repair')))
+
+repair_scores$germline_variant = factor(repair_scores$germline_variant,
+                                        levels = c('MMR', 'Other DNA Repair', 'Non-repair'))
+
+ggplot(repair_scores, aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
+  geom_violin(binaxis = "y", stackdir = "center") +
+  geom_boxplot(width=0.1) + 
+  labs(x = 'Germline Variant Class', y = 'DNA Repair GSEA score') +
+  theme_minimal() +
+  theme(legend.position = 'none',
+        text = element_text(size = 12)) +
+  scale_x_discrete(labels = c("MMR\n (n=19)", "Other DNA Repair\n (n=73)", "Non-repair\n (n=781)")) +
+  scale_fill_npg()
+
+ggsave(
+  file.path(plot_dir, "DNArepair_gsva_score_byGroup_violinPlot.png"), 
+  width = 30, height = 20, units = "cm")
+```
+
