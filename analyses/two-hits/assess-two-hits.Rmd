@@ -35,10 +35,10 @@ if (!dir.exists(results_dir)) {
 }
 
 # add histologies file so we can subset maf
-histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "tumor-histologies-collapsed-by-germline-CBTN.tsv")
+histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-CBTN-dx.tsv")
 
 # remove cell lines from histologies file
-v22_hist_file <- file.path(data_dir,"pbta-histologies.tsv")
+v22_hist_file <- file.path(data_dir,"histologies.tsv")
 
 # goi file
 goi_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -60,12 +60,10 @@ v22_hist <- read_tsv(v22_hist_file, guess_max = 3000) %>%
 
 # CPGs
 goi <- read_table(goi_file, col_names = "genes") #%>%
-  #add_row(genes = "ATRX")
 
-# load maf/remove ATRX
+# load maf
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
-  filter(Hugo_Symbol != "ATRX",
-         Tumor_Sample_Barcode %in% v22_hist$Kids_First_Biospecimen_ID)
+  filter(Tumor_Sample_Barcode %in% v22_hist$Kids_First_Biospecimen_ID)
 
 # CPGs without somatic hits
 setdiff(goi$genes, unique(maf$Hugo_Symbol))

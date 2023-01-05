@@ -37,7 +37,7 @@ if (!dir.exists(input_dir)) {
 }
 
 # add histologies file so we can subset maf
-histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
+histologies_file <- file.path(data_dir,"histologies.tsv")
 
 # goi file
 goi_file <- file.path(analysis_dir, "input", "cpg.txt")
@@ -50,8 +50,7 @@ tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
                 experimental_strategy != "RNA-Seq") %>%
   pull(Kids_First_Biospecimen_ID)
 
-goi <- read_table(goi_file, col_names = "genes") %>%
-  add_row(genes = "ATRX")
+goi <- read_table(goi_file, col_names = "genes")
 
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% tumor_ids,
