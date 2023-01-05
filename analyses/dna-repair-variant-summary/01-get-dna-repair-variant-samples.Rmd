@@ -151,7 +151,7 @@ ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
   theme_minimal()
 
 ggsave(
-  file.path(plot_dir, "dna_repair_samples_by_plot_group.png"), 
+  file.path(plot_dir, "dna_repair_samples_by_plot_group.pdf"), 
   width = 25, height = 25, units = "cm")
 ```
 

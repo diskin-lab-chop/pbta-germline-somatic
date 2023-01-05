@@ -31,9 +31,12 @@ Set paths for histology, plp variant, and mutational signature weights files
 ```{r}
 histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-CBTN-dx.tsv")
 
-dna_repair_plp_file <- file.path(results_dir, 'dna_repair_germline_plp_summary.tsv')
+dna_repair_plp_summary_file <- file.path(results_dir, 'dna_repair_germline_plp_summary.tsv')
 cosmicv2_nature_file <- file.path(input_dir, 'merged_COSMICv2_nature_signature_exposures.tsv')
 cosmicv3_file <- file.path(input_dir, 'COSMICv3.3_signature_exposures.tsv')
+
+mmr_plp_file <- file.path(results_dir, 'mmr_germline_variant_plp.tsv')
+dna_repair_plp_file <- file.path(results_dir, 'dna_repair_germline_variant_plp.tsv')
 ```
 
 ## Mutational signature difference between samples with and without MMR germline variants
@@ -41,15 +44,15 @@ cosmicv3_file <- file.path(input_dir, 'COSMICv3.3_signature_exposures.tsv')
 Read summary DNA repair germline PLP variant file, and pull sample IDs for those with and without DNA repair variants
 
 ```{r}
-dna_repair_plp <- read_tsv(dna_repair_plp_file) %>%
+dna_repair_plp_summary <- read_tsv(dna_repair_plp_summary_file) %>%
   rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_normal')
 hist <- read_tsv(histologies_file) 
 
-repair_germline <- dna_repair_plp %>%
+repair_germline <- dna_repair_plp_summary %>%
   filter(dna_repair_germline == 'Yes') %>%
   pull(Kids_First_Biospecimen_ID)
 
-ctrl_germline <- dna_repair_plp %>%
+ctrl_germline <- dna_repair_plp_summary %>%
   filter(dna_repair_germline == 'No') %>%
   pull(Kids_First_Biospecimen_ID)
 ```
@@ -96,8 +99,10 @@ for (i in 1:length(cosmicv2_sigs)){
   cosmicv2_res$repair_exposure[i] <- mean(repair_exposures)
   cosmicv2_res$ctrl_exposure[i] <- mean(ctrl_exposures)
   cosmicv2_res$exposure_diff[i] <- mean(repair_exposures) - mean(ctrl_exposures)
-  cosmicv2_res$pvalue[i] <- wilcox.test(repair_exposures, ctrl_exposures, alternative =)$p.value
+  cosmicv2_res$pvalue[i] <- wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value
 }
+
+write_tsv(cosmicv2_res, file.path(results_dir, 'cosmicv2_sig_diff_DNArepair_vs_other.tsv'))
 ```
 
 Plot difference in v2 signature weight means between groups: 
@@ -125,8 +130,8 @@ ggplot(cosmicv2_res, aes(x = signature, y = exposure_diff, fill = association)) 
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "cosmicv2_signature_diff_DNArepair_vs_other.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "cosmicv2_signature_diff_DNArepair_vs_other.pdf"), 
+  width = 30, height = 15, units = "cm")
 ```
 
 Create data frame of mean cosmic v3 signatures and test for significant differences in signature weight means:  
@@ -151,6 +156,8 @@ for (i in 1:length(cosmicv3_sigs)){
                                    wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
                                    NA)
 }
+
+write_tsv(cosmicv3_res, file.path(results_dir, 'cosmicv3_sig_diff_DNArepair_vs_other.tsv'))
 ```
 
 Plot differences in v3.3 signature weight means between groups: 
@@ -178,8 +185,8 @@ ggplot(cosmicv3_res, aes(x = signature, y = exposure_diff, fill = association)) 
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "cosmicv3_signature_diff_DNArepair_vs_other.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "cosmicv3_signature_diff_DNArepair_vs_other.pdf"), 
+  width = 30, height = 15, units = "cm")
 ```
 
 ## Mutational signature difference between samples with and without MMR germline variants
@@ -187,11 +194,11 @@ ggsave(
 Pull BS IDs for samples with and without germline MMR variants
 
 ```{r}
-mmr_germline <- dna_repair_plp %>%
+mmr_germline <- dna_repair_plp_summary %>%
   filter(mmr_germline == 'Yes') %>%
   pull(Kids_First_Biospecimen_ID)
 
-mmr_ctrl_germline <- dna_repair_plp %>%
+mmr_ctrl_germline <- dna_repair_plp_summary %>%
   filter(mmr_germline == 'No') %>%
   pull(Kids_First_Biospecimen_ID)
 
@@ -224,6 +231,8 @@ for (i in 1:length(cosmicv2_sigs)){
                                        wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
                                        NA)
 }
+
+write_tsv(mmr_cosmicv2_res, file.path(results_dir, 'cosmicv2_sig_diff_MMR_vs_other.tsv'))
 ```
 
 Plot group differences 
@@ -251,8 +260,8 @@ ggplot(mmr_cosmicv2_res, aes(x = signature, y = exposure_diff, fill = associatio
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "cosmicv2_signature_diff_MMR_vs_other.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "cosmicv2_signature_diff_MMR_vs_other.pdf"), 
+  width = 30, height = 15, units = "cm")
 ```
 
 Generate v3 mutational signature group means, differences, and p-values
@@ -275,6 +284,8 @@ for (i in 1:length(cosmicv3_sigs)){
                                        wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
                                        NA)
 }
+
+write_tsv(mmr_cosmicv3_res, file.path(results_dir, 'cosmicv3_sig_diff_MMR_vs_other.tsv'))
 ```
 
 plot group differences
@@ -302,8 +313,8 @@ ggplot(mmr_cosmicv3_res, aes(x = signature, y = exposure_diff, fill = associatio
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "cosmicv3_signature_diff_MMR_vs_other.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "cosmicv3_signature_diff_MMR_vs_other.pdf"), 
+  width = 30, height = 15, units = "cm")
 ```
 
 ## Mutational signature difference between samples with and without DNA repair, non-MMR germline variants
@@ -311,11 +322,11 @@ ggsave(
 Pull BS IDs for samples with and without germline DNA repair, non-MMR variants
 
 ```{r}
-nonmmr_germline <- dna_repair_plp %>%
+nonmmr_germline <- dna_repair_plp_summary %>%
   filter(mmr_germline == 'No' & dna_repair_germline == 'Yes') %>%
   pull(Kids_First_Biospecimen_ID)
 
-nonmmr_ctrl_germline <- dna_repair_plp %>%
+nonmmr_ctrl_germline <- dna_repair_plp_summary %>%
   filter(dna_repair_germline == 'No') %>%
   pull(Kids_First_Biospecimen_ID)
 
@@ -348,6 +359,8 @@ for (i in 1:length(cosmicv2_sigs)){
                                        wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
                                        NA)
 }
+
+write_tsv(nonmmr_cosmicv2_res, file.path(results_dir, 'cosmicv2_sig_diff_DNArepair_nonMMR_vs_other.tsv'))
 ```
 
 plot group differences
@@ -375,8 +388,8 @@ ggplot(nonmmr_cosmicv2_res, aes(x = signature, y = exposure_diff, fill = associa
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "cosmicv2_signature_diff_DNArepair_nonMMR_vs_other.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "cosmicv2_signature_diff_DNArepair_nonMMR_vs_other.pdf"), 
+  width = 30, height = 15, units = "cm")
 ```
 
 Generate v3 mutational signature group means, differences, and p-values
@@ -399,6 +412,8 @@ for (i in 1:length(cosmicv3_sigs)){
                                        wilcox.test(repair_exposures, ctrl_exposures, alternative = 'two.sided')$p.value,
                                        NA)
 }
+
+write_tsv(nonmmr_cosmicv3_res, file.path(results_dir, 'cosmicv3_sig_diff_DNArepair_nonMMR_vs_other.tsv'))
 ```
 
 plot group differences
@@ -426,11 +441,11 @@ ggplot(nonmmr_cosmicv3_res, aes(x = signature, y = exposure_diff, fill = associa
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "cosmicv3_signature_diff_DNArepair_nonMMR_vs_other.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "cosmicv3_signature_diff_DNArepair_nonMMR_vs_other.pdf"), 
+  width = 30, height = 15, units = "cm")
 ```
 
-make violin plots of weights for MMR signatures that are increased in MMR germline variant samples (SBS14), (SBS6), (SBS15)
+make violin plots of weights for MMR signatures that are increased in MMR germline variant samples (SBS14, SBS6, SBS15)
 
 ```{r}
 sbs14_df <- cosmicv3_df %>%
@@ -453,10 +468,9 @@ ggplot(sbs14_df, aes(x = germline_variant, y = exposure, fill = germline_variant
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "SBS14_signature_byGroup_violinPlot.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "SBS14_signature_byGroup_violinPlot.pdf"), 
+  width = 20, height = 15, units = "cm")
 ```
-
 
 ```{r}
 sbs15_df <- cosmicv3_df %>%
@@ -479,8 +493,8 @@ ggplot(sbs15_df, aes(x = germline_variant, y = exposure, fill = germline_variant
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "SBS15_signature_byGroup_violinPlot.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "SBS15_signature_byGroup_violinPlot.pdf"), 
+  width = 20, height = 15, units = "cm")
 ```
 
 ```{r}
@@ -503,8 +517,8 @@ ggplot(sbs6_df, aes(x = germline_variant, y = exposure, fill = germline_variant)
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "SBS6_signature_byGroup_violinPlot.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "SBS6_signature_byGroup_violinPlot.pdf"), 
+  width = 20, height = 15, units = "cm")
 ```
 
 Merge exposure levels across MMR signatures and plot
@@ -517,11 +531,7 @@ mmr_df <- cosmicv3_df %>%
   mutate(germline_variant = ifelse(Kids_First_Biospecimen_ID %in% mmr_ids, 'MMR', 
                                    ifelse(Kids_First_Biospecimen_ID %in% nonmmr_ids, 'Other DNA Repair',
                                           'Non-repair')))
-  
-model_sum <- lm(sum ~ germline_variant, data = mmr_df)
-anova(model_sum)
-TukeyHSD(aov(model_sum))
-  
+
 ggplot(mmr_df, aes(x = germline_variant, y = sum, fill = germline_variant)) +
   geom_violin(binaxis = "y", stackdir = "center", trim = T) +
   geom_boxplot(width=0.1) + 
@@ -533,7 +543,34 @@ ggplot(mmr_df, aes(x = germline_variant, y = sum, fill = germline_variant)) +
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "MMR_signature_byGroup_violinPlot.png"), 
-  width = 25, height = 25, units = "cm")
+  file.path(plot_dir, "MMR_signature_byGroup_violinPlot.pdf"), 
+  width = 20, height = 15, units = "cm")
 ```
 
+```{r}
+mmr_plp <- read_tsv(mmr_plp_file) %>%
+  rename('Kids_First_Biospecimen_ID_normal' = 'Kids_First_Biospecimen_ID') %>%
+  left_join(hist[,c('Kids_First_Biospecimen_ID_normal', 'Kids_First_Biospecimen_ID_tumor')], by = 'Kids_First_Biospecimen_ID_normal') %>%
+  rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_tumor') %>%
+  left_join(mmr_df[c('Kids_First_Biospecimen_ID', 'sum')], by = 'Kids_First_Biospecimen_ID') %>%
+  rename('MMR_exposure' = 'sum') %>%
+  left_join(sbs6_df[c('Kids_First_Biospecimen_ID', 'exposure')], by = 'Kids_First_Biospecimen_ID') %>%
+  left_join(sbs14_df[c('Kids_First_Biospecimen_ID', 'exposure')], by = 'Kids_First_Biospecimen_ID') %>%
+  left_join(sbs15_df[c('Kids_First_Biospecimen_ID', 'exposure')], by = 'Kids_First_Biospecimen_ID') %>%
+  rename('SBS6_exposure' = 'exposure.x', 'SBS14_exposure' = 'exposure.y', 'SBS15_exposure' = 'exposure') %>%
+  write_tsv(file.path(results_dir, 'MMR_germline_variant_plp_with_MMRsigs.tsv'))
+```  
+  
+```{r}
+dnarepair_plp <- read_tsv(dna_repair_plp_file) %>%
+  rename('Kids_First_Biospecimen_ID_normal' = 'Kids_First_Biospecimen_ID') %>%
+  left_join(hist[,c('Kids_First_Biospecimen_ID_normal', 'Kids_First_Biospecimen_ID_tumor')], by = 'Kids_First_Biospecimen_ID_normal') %>%
+  rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_tumor') %>%
+  left_join(mmr_df[c('Kids_First_Biospecimen_ID', 'sum')], by = 'Kids_First_Biospecimen_ID') %>%
+  rename('MMR_exposure' = 'sum') %>%
+  left_join(sbs6_df[c('Kids_First_Biospecimen_ID', 'exposure')], by = 'Kids_First_Biospecimen_ID') %>%
+  left_join(sbs14_df[c('Kids_First_Biospecimen_ID', 'exposure')], by = 'Kids_First_Biospecimen_ID') %>%
+  left_join(sbs15_df[c('Kids_First_Biospecimen_ID', 'exposure')], by = 'Kids_First_Biospecimen_ID') %>%
+  rename('SBS6_exposure' = 'exposure.x', 'SBS14_exposure' = 'exposure.y', 'SBS15_exposure' = 'exposure') %>%
+  write_tsv(file.path(results_dir, 'DNArepair_germline_variant_plp_with_MMRsigs.tsv'))
+```  

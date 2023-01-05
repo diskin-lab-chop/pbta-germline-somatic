@@ -1,0 +1,198 @@
+Kids_First_Biospecimen_ID_normal	experimental_strategy	L-LP_Call_final	Reasoning_for_call	Hugo_Symbol	HGVS.c	HGVS.p	class	Kids_First_Biospecimen_ID	MMR_exposure	SBS6_exposure	SBS14_exposure	SBS15_exposure
+BS_RVT7EHNX	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.1834C>T	p.Arg612*	DNA_repair	BS_XNYH7VK6	0	0	0	0
+BS_8JEJCH4Z	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	DNA_repair	BS_13DJ6WHW	0	0	0	0
+BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.473G>T	.	DNA_repair	BS_PCVV9GJG	0.136166279387425	0	0	0.136166279387425
+BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FAN1	c.2616delA	p.Asp873fs	DNA_repair	BS_PCVV9GJG	0.136166279387425	0	0	0.136166279387425
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUS81	c.1316delC	p.Pro439fs	DNA_repair	BS_BT83BCEE	0	0	0	0
+BS_KN6FCN12	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.3391A>G	p.Thr1131Ala	DNA_repair	BS_JWDK21ED	0.27584774027892256	0.1892899372762156	0.08655780300270695	0
+BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.2983_2986delGAAA	p.Glu995fs	DNA_repair	BS_X0KN4VVW	0	0	0	0
+BS_ANZ9H60A	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	DNA_repair	BS_0TKQP4XJ	0	0	0	0
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLE4	c.254dupG	p.Cys85fs	DNA_repair	BS_4SCDT7M9	0.11352777551480156	0	0	0.11352777551480156
+BS_XM3ER1N6	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	TP53	c.423C>G	.	DNA_repair	BS_18RH1034	0	0	0	0
+BS_0754AZX0	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DNA2	c.403C>T	p.Arg135*	DNA_repair	BS_20TBZG09	0.5073632518379121	0.07971215598224661	0.24899500437438665	0.17865609148127884
+BS_0QC2QX0P	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA1	c.68_69delAG	p.Glu23fs	DNA_repair	BS_PNXDHDF3	0	0	0	0
+BS_0X88TX85	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PNKP	c.1474_1477delGCTG	p.Ala492fs	DNA_repair	BS_P36C0ABE	0.07955618777086683	0.07955618777086683	0	0
+BS_0YFQF89N	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.733C>T	p.Arg245Cys	DNA_repair	BS_SSYNTXDC	0.06657361634558587	0	0	0
+BS_0YJF1F95	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.1672C>T	p.Arg558Cys	DNA_repair	BS_354DTKHE	0	0	0	0
+BS_1BQ1WBCT	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	APEX1	c.423dupA	p.Val142fs	DNA_repair	BS_QHTDJG77	0	0	0	0
+BS_1GMX5YEM	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD51D	c.1A>G	p.Met1?	DNA_repair	BS_2HNHCSNB	0	0	0	0
+BS_1K0Q5YZY	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.3520_3522delTGG	p.Trp1174del	DNA_repair	BS_10HD18B8	0	0	0	0
+BS_1RA2RC8A	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLK	c.95delA	p.Asp32fs	DNA_repair	BS_M16CDR44	0	0	0	0
+BS_1Z7833P7	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INO80	c.2788C>T	p.Arg930Cys	DNA_repair	BS_6XHDR1WS	0	0	0	0
+BS_1Z7Y81NW	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.137G>T	.	DNA_repair	BS_XKXDH0YJ	0.07336910763452884	0.07336910763452884	0	0
+BS_26CXGVJ0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATM	c.8546G>T	p.Arg2849Leu	DNA_repair	BS_C6GBYR17	0.09048439193399024	0.09048439193399024	0	0
+BS_29YQSB5E	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	XPC	c.2074A>T	p.Lys692*	DNA_repair	BS_CBMAWSAR	0	0	0	0
+BS_2EAATK5V	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.818delT	p.Leu273fs	DNA_repair	BS_DW1CYEXP	0	0	0	0
+BS_30WN9M3C	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.1001T>G	p.Leu334Trp	DNA_repair	BS_922YMFYK	0	0	0	0
+BS_382HZBG4	WGS	Pathogenic	InterVar_Recalculated Pathogenic	EXO1	c.1626T>G	p.Tyr542*	DNA_repair	BS_JC8YV5V9	0.0624408162286568	0	0	0
+BS_3A55810M	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLK	c.1237_1238delAG	p.Arg413fs	DNA_repair	BS_KCN7NG92	0	0	0	0
+BS_3C702XH4	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCNA	c.86A>G	.	DNA_repair	BS_3ZMH8578	0.07919346837615471	0.07919346837615471	0	0
+BS_3CK0QVDX	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.157A>T	p.Lys53*	DNA_repair	BS_H1MNXNHB	0	0	0	0
+BS_3DHNFFV6	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.3802delG	p.Val1268fs	DNA_repair	BS_Z5VJCFNP	0	0	0	0
+BS_3YXGSTJ7	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NSMCE3	c.228delC	p.Val77fs	DNA_repair	BS_886M7JMG	0	0	0	0
+BS_40QCA1MC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GTF2H1	c.1207delT	p.Ser403fs	DNA_repair	BS_GS9JCK55	0	0	0	0
+BS_40QCA1MC	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.7909C>T	p.Arg2637*	DNA_repair	BS_GS9JCK55	0	0	0	0
+BS_40QCA1MC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FANCD2	c.719C>G	p.Ser240*	DNA_repair	BS_GS9JCK55	0	0	0	0
+BS_44WJZ1HP	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLN	c.2135delT	p.Leu712fs	DNA_repair	BS_E8SJ36A6	0	0	0	0
+BS_45VHDFRD	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	DNA_repair	BS_G2016BE5	0	0	0	0
+BS_4AM9C504	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>C	.	DNA_repair	BS_QQP17PDQ	0.2297938984466409	0	0	0
+BS_4EK9WVET	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF1	c.4468_4475dupGATGCAGT	p.Asn1493fs	DNA_repair	BS_J5J0EA7Y	0	0	0	0
+BS_4KXBM5J8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.1138C>T	p.Arg380Trp	DNA_repair	BS_17AXPP1Y	0.12594894571898063	0.12594894571898063	0	0
+BS_4RT8H37A	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TREX1	c.506G>A	p.Arg169His	DNA_repair	BS_XSWF2MR1	0.06200771105677726	0	0	0
+BS_4RV40GPD	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLH	c.936delC	p.Arg313fs	DNA_repair	BS_3AERRZQT	0	0	0	0
+BS_4RVAJBCR	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLG	c.1493delA	p.Lys498fs	DNA_repair	BS_CFPWSZB5	0	0	0	0
+BS_5AXMM8V5	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	UNG	c.162delG	p.Gln55fs	DNA_repair	BS_9D39MFHT	0	0	0	0
+BS_5BCMBVDR	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TELO2	c.392G>A	p.Gly131Asp	DNA_repair	BS_CXDKK6KS	0	0	0	0
+BS_5C23V7CC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PARP2	c.173delA	p.Asn58fs	DNA_repair	BS_Z9NCH2XA	0	0	0	0
+BS_5N2GEGMD	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC2	c.1867dupG	p.Val623fs	DNA_repair	BS_YH60H2FS	0.06281141314361056	0	0	0.06281141314361056
+BS_618WFRXY	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.740C>T	p.Ser247Phe	DNA_repair	BS_C5RDMCCS	0	0	0	0
+BS_63AK4SCF	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAN1	c.31_34delAAAA	p.Lys11fs	DNA_repair	BS_QZTPJ8YW	0	0	0	0
+BS_63JFFF51	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SLX4	c.2512delG	p.Asp838fs	DNA_repair	BS_R7YMKNJN	0	0	0	0
+BS_6FD0SW6E	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.137G>T	.	DNA_repair	BS_VW4XN9Y7	0.4811305613729764	0	0.19178265356896415	0.18275799984343577
+BS_6VTM903X	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.1147delC	p.Ala385fs	DNA_repair	BS_R1G6SG0K	0	0	0	0
+BS_751B2CF8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLE	c.4909delC	p.Leu1637fs	DNA_repair	BS_AWDQEKK1	0.10054837926410572	0	0	0
+BS_7QH9BCJQ	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLN	c.996delT	p.Phe332fs	DNA_repair	BS_DVQYQSVW	0	0	0	0
+BS_7QSPXKMP	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.2551T>C	p.Trp851Arg	DNA_repair	BS_BX8AR74E	0.07516850443308223	0	0	0
+BS_7XEH55CB	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.374C>G	.	DNA_repair	BS_59FR1NC2	0	0	0	0
+BS_88FW45Z8	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.2047C>T	p.Arg683*	DNA_repair	BS_8B1YF57H	0	0	0	0
+BS_8PRJTBE1	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	XRCC2	c.96delT	p.Phe32fs	DNA_repair	BS_F1B71HTZ	0.07050556930297557	0.07050556930297557	0	0
+BS_8Q2EAYJR	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.4143dupT	p.Pro1382fs	DNA_repair	BS_V2MDX7HG	0	0	0	0
+BS_92SK6DD8	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.3558dupG	p.Arg1187fs	DNA_repair	BS_MW6YMRBJ	0	0	0	0
+BS_938K7FSV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NTHL1	c.374delC	p.Pro125fs	DNA_repair	BS_1EQGGHHQ	0.07000261988681851	0.07000261988681851	0	0
+BS_99MW9ECE	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INO80	c.445G>C	p.Glu149Gln	DNA_repair	BS_NWYBD9CA	0	0	0	0
+BS_9F8D3A05	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	CHEK2	c.1556C>T	p.Thr519Met	DNA_repair	BS_H50HR85Y	0	0	0	0
+BS_9NRNDZD0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.10A>G	p.Ser4Gly	DNA_repair	BS_20X874J5	0	0	0	0
+BS_9R1ENMBP	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	WRN	c.2221C>T	p.Arg741*	DNA_repair	BS_HJ95JNFN	0	0	0	0
+BS_9TKZ0YP0	WGS	Pathogenic	InterVar_Recalculated Pathogenic	RAD54B	c.821G>A	p.Trp274*	DNA_repair	BS_CWQ35N2K	0.09588586728123544	0	0	0.09588586728123544
+BS_9XMMXFXW	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.514C>T	p.Arg172Cys	DNA_repair	BS_ZAH4FHV2	0	0	0	0
+BS_AGNSAKZG	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	UBE2T	c.172C>G	.	DNA_repair	BS_2P7MJGM7	0	0	0	0
+BS_BGW6PHHK	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HELQ	c.1581T>A	p.Tyr527*	DNA_repair	BS_BR1X3R68	0	0	0	0
+BS_BVRH3WGW	WGS	Pathogenic	InterVar_Recalculated Pathogenic	POLM	c.762G>A	p.Trp254*	DNA_repair	BS_C3X4AEK5	0	0	0	0
+BS_BZ7FK347	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	DNA_repair	BS_KAD49R68	0.11153120939062015	0	0	0
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NEIL3	c.1558_1561delGGGA	p.Gly520fs	DNA_repair	BS_KAD49R68	0.11153120939062015	0	0	0
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.65C>T	p.Pro22Leu	DNA_repair	BS_KAD49R68	0.11153120939062015	0	0	0
+BS_C75Y7S77	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TREX1	c.315_316delTC	p.Gln106fs	DNA_repair	BS_7BNQBB26	0.06909247436093433	0	0	0
+BS_C8EYP5BV	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	DNA_repair	BS_8TFBNHT0	0	0	0	0
+BS_CJFTT8ZC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FANCD2	c.919dupC	p.Leu307fs	DNA_repair	BS_XKP747AS	0	0	0	0
+BS_CTQ82WX9	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	DCLRE1C	c.241C>T	p.Arg81*	DNA_repair	BS_VDSR4X6N	0	0	0	0
+BS_CZGNQ9KQ	WGS	Pathogenic	InterVar_Recalculated Pathogenic	ASCC3	c.4882C>T	p.Arg1628*	DNA_repair	BS_Z7R92XX6	0.06543324580918819	0	0	0
+BS_D48QXYW6	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.1831dupA	p.Ile611fs	DNA_repair	BS_Q6GVRAWK	0	0	0	0
+BS_D64Q07W9	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ALKBH1	c.794_795insGG	p.Thr266fs	DNA_repair	BS_GRECE8Q9	0.0900552611750349	0.0900552611750349	0	0
+BS_DCEAZ94R	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.7909C>T	p.Arg2637*	DNA_repair	BS_T1SNKF50	0	0	0	0
+BS_DJ7XB1DM	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.1437_1439delGGA	p.Glu480del	DNA_repair	BS_VQC2PE2B	0	0	0	0
+BS_E1EPMTD5	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FANCI	c.1427_1439delGTTGTTCTTCTAA	p.Ser476fs	DNA_repair	BS_4ZKN0WGS	0.09308514556719052	0.09308514556719052	0	0
+BS_E1SWA20C	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RAD51D	c.958C>T	p.Arg320*	DNA_repair	BS_WCNPE0AC	0	0	0	0
+BS_E7JTAP8Y	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RFC3	c.417dupA	p.Leu140fs	DNA_repair	BS_HTGDSPQA	0	0	0	0
+BS_ER05WTNS	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SOX4	c.361G>A	p.Ala121Thr	DNA_repair	BS_Y3ETG5AE	0	0	0	0
+BS_EVZW31ZP	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.3802delG	p.Val1268fs	DNA_repair	BS_02W5H7K5	0	0	0	0
+BS_EXKVBK51	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1300_1306delGATAAGA	p.Asp434fs	DNA_repair	BS_376Q9QKG	0.08328482797153883	0	0	0.08328482797153883
+BS_F0WR427W	WGS	Pathogenic	InterVar_Recalculated Pathogenic	NHEJ1	c.169C>T	p.Arg57*	DNA_repair	BS_NMQTPVFW	0	0	0	0
+BS_F46C86A9	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DCLRE1A	c.2218G>T	p.Gly740*	DNA_repair	BS_SYWRCE3Z	0	0	0	0
+BS_F46C86A9	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLK	c.446G>T	p.Arg149Leu	DNA_repair	BS_SYWRCE3Z	0	0	0	0
+BS_FJ9W9C74	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAAP100	c.148delG	p.Glu50fs	DNA_repair	BS_40FX713C	0	0	0	0
+BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	XPC	c.2034-1569dupT	.	DNA_repair	BS_STNH7YSX	0	0	0	0
+BS_GEYA8N9C	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BRCA2	c.6239dupT	p.Leu2080fs	DNA_repair	BS_AGAW7M7W	0.06453725210300529	0.06453725210300529	0	0
+BS_GJWAV3E5	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS2	c.11C>G	p.Ser4*	DNA_repair	BS_A1DV9T7G	0	0	0	0
+BS_GVA39GGG	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLQ	c.1156G>T	p.Glu386*	DNA_repair	BS_9NF39QAW	0	0	0	0
+BS_HHJZ05XC	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF2	c.784C>T	p.Arg262*	DNA_repair	BS_3MYQP7P5	0	0	0	0
+BS_HJ99CJ2R	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	TP53	c.644G>A	.	DNA_repair	BS_9GJHMA3J	0	0	0	0
+BS_HNWNZFHA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TP53	c.833delC	p.Pro278fs	DNA_repair	BS_XEVMEYFS	0	0	0	0
+BS_HT2S4SW0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MLH3	c.1364_1365delAG	p.Glu455fs	DNA_repair	BS_928HWFFM	0	0	0	0
+BS_J4WKRNHA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.1181G>A	p.Arg394Gln	DNA_repair	BS_36HCZ3KW	0.0724298203623474	0	0	0
+BS_J5596HKA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF1	c.7666delA	p.Arg2556fs	DNA_repair	BS_XVNNWN2Z	0.12519077292058872	0.06232675299141066	0	0
+BS_J7WQHJDQ	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CHEK2	c.277delT	p.Trp93fs	DNA_repair	BS_6Y7FX7QJ	0	0	0	0
+BS_J996NDK4	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	APTX	c.191_192delAG	p.Glu64fs	DNA_repair	BS_R913E3VB	0	0	0	0
+BS_J9M165VZ	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	ERCC4	c.1765C>T	p.Arg589Trp	DNA_repair	BS_8SETK1J4	0	0	0	0
+BS_JJNCV530	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	UBE2T	c.432_435delACAG	p.Arg144fs	DNA_repair	BS_8226HD4X	0	0	0	0
+BS_JJNCV530	WGS	Pathogenic	ClinVar Pathogenic -- Conflicting but disease C0027831 was found in P-LP and not in B-LP or VUS	NF1	c.3467A>G	p.Asn1156Ser	DNA_repair	BS_8226HD4X	0	0	0	0
+BS_JTSWHVNR	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF2	c.592C>T	p.Arg198*	DNA_repair	BS_VQEPFE1P	0	0	0	0
+BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1875C>G	p.Tyr625*	DNA_repair	BS_79NQJZ09	0	0	0	0
+BS_JZAENWRM	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD52	c.1102_1106delAACAG	p.Asn368fs	DNA_repair	BS_FXDY881S	0	0	0	0
+BS_K4XGEGW0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>T	.	DNA_repair	BS_80078QDG	0	0	0	0
+BS_K7A7QW76	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.4600C>T	p.Arg1534*	DNA_repair	BS_2NN6ME5A	0.1305360234536007	0	0	0
+BS_KBM2MTND	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RRM2B	c.329G>A	.	DNA_repair	BS_6GN1FGTB	0	0	0	0
+BS_MKYS4YRC	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.544C>T	p.Arg182Cys	DNA_repair	BS_62XRDTM6	0	0	0	0
+BS_MN2FX68Z	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLK	c.557C>T	p.Ala186Val	DNA_repair	BS_DGG7YE8R	0	0	0	0
+BS_N05BJ03T	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.2542G>A	p.Gly848Ser	DNA_repair	BS_PEDGRK8S	0	0	0	0
+BS_N56BGDK6	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCG	c.1158dupC	p.Ser387fs	DNA_repair	BS_XGVSX8BX	0	0	0	0
+BS_NCF4MJ9S	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.514C>T	p.Arg172Cys	DNA_repair	BS_75VHXMZN	0	0	0	0
+BS_NTV9Z7SE	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	DNA_repair	BS_B91XGSA5	0	0	0	0
+BS_NY51QX79	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.577T>G	p.Cys193Gly	DNA_repair	BS_5BNV7MCF	0	0	0	0
+BS_P3W89XQY	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.3585_3586delAC	p.Leu1196fs	DNA_repair	BS_S88G7BXH	0.07809351925494269	0.07809351925494269	0	0
+BS_PAYW4RCK	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- *Latest reported date call is Likely pathogenic date 20220111	ERCC2	c.776G>A	p.Cys259Tyr	DNA_repair	BS_D3ZV6MMY	0.06206799191383538	0.06206799191383538	0	0
+BS_PF7546KW	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RECQL4	c.1573delT	p.Cys525fs	DNA_repair	BS_5NAKYS1S	0	0	0	0
+BS_PFSB20M7	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SHPRH	c.3752_3753delCA	p.Thr1251fs	DNA_repair	BS_JSNJZERZ	0	0	0	0
+BS_PTYP388A	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	XRCC2	c.694C>T	p.Gln232*	DNA_repair	BS_PMFR8NPN	0	0	0	0
+BS_Q1SPJ467	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INO80	c.3581A>G	p.Tyr1194Cys	DNA_repair	BS_8WJR4AA3	0	0	0	0
+BS_Q1SPJ467	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NBN	c.657_661delACAAA	p.Lys219fs	DNA_repair	BS_8WJR4AA3	0	0	0	0
+BS_Q6K6BVTF	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	DNA_repair	BS_EXTEGB51	0	0	0	0
+BS_QG3PYXB4	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA1	c.124delA	p.Ile42fs	DNA_repair	BS_AR2BH0Z4	0	0	0	0
+BS_QG3PYXB4	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PMS2	c.1376C>G	p.Ser459*	DNA_repair	BS_AR2BH0Z4	0	0	0	0
+BS_QGEEVNAS	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC2	c.2164C>T	p.Arg722Trp	DNA_repair	BS_2SG8JNMB	0	0	0	0
+BS_QMBK2FV7	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD51D	c.390dupT	p.Ser131fs	DNA_repair	BS_1S2BHJ8K	0.43023736234898313	0	0	0.12874242074423467
+BS_RG2CTN65	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BRIP1	c.2392C>T	p.Arg798*	DNA_repair	BS_MZJJRDZF	0	0	0	0
+BS_S2N3XTKS	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FANCI	c.3985_*2dupTAAAT	.	DNA_repair	BS_0FQKT8EY	0	0	0	0
+BS_S588W9V2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLG	c.1943C>T	p.Pro648Leu	DNA_repair	BS_93B38HPS	0	0	0	0
+BS_S6EXG9N9	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.77delG	p.Gly26fs	DNA_repair	BS_Z1BBZ01F	0	0	0	0
+BS_SF02KBCG	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.1147delC	p.Ala385fs	DNA_repair	BS_CSY11X7E	0	0	0	0
+BS_SGS26NXP	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	MSH2	c.1906G>C	p.Ala636Pro	DNA_repair	BS_85Q5P8GF	0.3671442926575593	0.19001530610181788	0	0
+BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	UVSSA	c.490C>T	p.Gln164*	DNA_repair	BS_3VKW5988	0	0	0	0
+BS_SP886CE6	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CHEK2	c.1412C>T	p.Ser471Phe	DNA_repair	BS_D09VWF8H	0.06252447929546251	0	0	0.06252447929546251
+BS_SYGXZY9V	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c.524delT	p.Leu175fs	DNA_repair	BS_3ZASRA3A	0	0	0	0
+BS_T3FD64Z7	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF1	c.7389delT	p.Thr2464fs	DNA_repair	BS_KSRYKCDE	0.07518647099835524	0	0	0
+BS_T3VJQSYM	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF1	c.5190delC	p.Leu1731fs	DNA_repair	BS_ZHJFX6C9	0.07543787348853238	0	0	0
+BS_T5TB5NM7	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.2569C>T	p.Arg857*	DNA_repair	BS_PP4WJBNR	0.06173155565541134	0	0	0.06173155565541134
+BS_T5WVTGV8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MPLKIP	c.61delT	p.Trp21fs	DNA_repair	BS_3DYRAZE7	0	0	0	0
+BS_TE01WW4M	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCC	c.1069C>T	p.Gln357*	DNA_repair	BS_1JMTTKMK	0.07245855673167013	0	0	0.07245855673167013
+BS_THDBV4G0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	BRIP1	c.1045G>C	p.Ala349Pro	DNA_repair	BS_B9QP40ER	0	0	0	0
+BS_TTVB22NF	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	APEX1	c.146dupC	p.Asp50fs	DNA_repair	BS_SE82EQF8	0.08703698200550947	0	0	0.08703698200550947
+BS_TV8HD883	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RECQL4	c.2161C>T	p.Arg721*	DNA_repair	BS_9M49SGAQ	0	0	0	0
+BS_TWCW8QZV	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAN1	c.31_34delAAAA	p.Lys11fs	DNA_repair	BS_KG1YMTA4	0	0	0	0
+BS_V733WCVK	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	DNA_repair	BS_5V2XCW17	0.07946270352378695	0	0	0.07946270352378695
+BS_VCCX0CTG	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FAN1	c.2245C>T	p.Arg749*	DNA_repair	BS_JVTQD8HH	0	0	0	0
+BS_VN983YRH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BLM	c.2098C>T	p.Gln700*	DNA_repair	BS_CPYV7AHD	0	0	0	0
+BS_VNBX1SEV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BRIP1	c.2392C>T	p.Arg798*	DNA_repair	BS_SK4H5MJQ	0	0	0	0
+BS_W1T5T8WS	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD17	c.1823dupT	p.Met608fs	DNA_repair	BS_HZV4WDTB	0	0	0	0
+BS_W75GCHPW	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.380C>T	.	DNA_repair	BS_SWHQ8FDW	0	0	0	0
+BS_W7P0FTAQ	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	APEX1	c.423dupA	p.Val142fs	DNA_repair	BS_4GKH983E	0	0	0	0
+BS_WMVYQREN	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MSH3	c.574C>T	p.Gln192*	DNA_repair	BS_JB3J82ZK	0	0	0	0
+BS_WP2FY512	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RBBP8	c.2377C>T	p.Gln793*	DNA_repair	BS_BSM3ZHW4	0	0	0	0
+BS_WP9M8J6W	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD51D	c.140_141insAA	p.Tyr47fs	DNA_repair	BS_BD4RQ1G0	0	0	0	0
+BS_WRRTNKYE	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MMS19	c.1365dupC	p.Ser456fs	DNA_repair	BS_2Z9JQDPV	0	0	0	0
+BS_X0XM8PYJ	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF2	c.1334_1337delAGAG	p.Glu445fs	DNA_repair	BS_VMZMGB7B	0	0	0	0
+BS_XCA92FF3	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SLX4	c.2599delG	p.Glu867fs	DNA_repair	BS_NJV6A585	0.10577222270360712	0	0	0
+BS_XCA92FF3	WGS	Pathogenic	InterVar_Recalculated Pathogenic	NF1	c.789delA	p.Ala264fs	DNA_repair	BS_NJV6A585	0.10577222270360712	0	0	0
+BS_XCKDRRYT	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NSMCE3	c.790C>T	p.Leu264Phe	DNA_repair	BS_MW74GF38	0	0	0	0
+BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c.1010dupA	p.Tyr337fs	DNA_repair	BS_BWZTMWTM	0	0	0	0
+BS_XHT3F34T	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.454_466delCCGCCCGGCACCC	p.Pro152fs	DNA_repair	BS_G9MQM1KK	0	0	0	0
+BS_XKHY9A6D	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA2	c.9154C>T	p.Arg3052Trp	DNA_repair	BS_3BMGF6GN	0	0	0	0
+BS_XN449RAJ	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.497-2661A>G	.	DNA_repair	BS_CGCNC41M	0	0	0	0
+BS_XN449RAJ	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LIG4	c.1144_1145delCT	p.Leu382fs	DNA_repair	BS_CGCNC41M	0	0	0	0
+BS_XR81Q21W	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.1278G>A	p.Trp426*	DNA_repair	BS_6Z213H2V	0	0	0	0
+BS_XR81Q21W	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RRM2B	c.93dupG	p.Ser32fs	DNA_repair	BS_6Z213H2V	0	0	0	0
+BS_YCT0FK91	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	FANCA	c.3605_3607delAAG	p.Glu1202del	DNA_repair	BS_0RF0G9SQ	0	0	0	0
+BS_ZDBEHEPY	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FAN1	c.1899delT	p.Cys633fs	DNA_repair	BS_9E632VPJ	0	0	0	0
+BS_ZMW21B7R	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ERCC2	c.1420delC	p.His474fs	DNA_repair	BS_SMCPASF0	0	0	0	0
+BS_ZP36WDVS	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.7638_7646delTAGAATTTC	p.Arg2547_Ser2549del	DNA_repair	BS_XJZQA3AP	0.06742579649266106	0	0	0.06742579649266106
+BS_ZP36WDVS	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC3	c.1757delA	p.Gln586fs	DNA_repair	BS_XJZQA3AP	0.06742579649266106	0	0	0.06742579649266106
+BS_ZQY1P7NR	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF1	c.6855C>A	p.Tyr2285*	DNA_repair	BS_CDKC1E2B	0	0	0	0
+BS_ZVFTWY6Y	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF2	c.417delG	p.Leu140fs	DNA_repair	BS_NS8G0465	0	0	0	0
+BS_ZY319KJ4	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.7406dupA	p.Asn2469fs	DNA_repair	BS_W2QCHQ7E	0	0	0	0
+BS_0754AZX0	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	MSH6	c.3439-2A>G	.	DNA_repair	BS_20TBZG09	0.5073632518379121	0.07971215598224661	0.24899500437438665	0.17865609148127884
+BS_3E3VYSXT	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TDP2	c.425+1G>A	.	DNA_repair	BS_Y43VC4VG	0	0	0	0
+BS_3X8GAQ2M	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.1376C>T	p.Thr459Ile	DNA_repair	BS_9X9E86DY	0	0	0	0
+BS_4KXBM5J8	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.2170-1G>A	.	DNA_repair	BS_17AXPP1Y	0.12594894571898063	0.12594894571898063	0	0
+BS_61AK2H2N	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PNKP	c.1295_1298+6delCCAGGTAGCG	p.Ala432fs	DNA_repair	BS_17FVWMNV	0.06605705753697284	0.06605705753697284	0	0
+BS_8D40GRF9	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	UIMC1	c.1677-1G>A	.	DNA_repair	BS_P3KD5EQG	0.0790866113098576	0	0	0
+BS_9S3N3Y5W	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.782A>C	p.Asn261Thr	DNA_repair	BS_ABENB1H2	0	0	0	0
+BS_E951SZ7T	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- *Latest reported date call is Likely pathogenic date 20210730	PNKP	c.199-8_199-5delTTCT	.	DNA_repair	BS_T8C13KNH	0	0	0	0
+BS_ESFA9S69	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MSH3	c.2319-1G>A	.	DNA_repair	BS_PZDTK87A	0.09071376690563591	0.09071376690563591	0	0
+BS_F0K8DMTS	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	NF1	c.586+5G>A	.	DNA_repair	BS_947CK40E	0	0	0	0
+BS_GJWAV3E5	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF1	c.7063-1G>C	.	DNA_repair	BS_A1DV9T7G	0	0	0	0
+BS_MDHYHEBH	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RAD50	c.1794-1G>T	.	DNA_repair	BS_QZT3SPY7	0	0	0	0
+BS_PKKNB5PY	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.2851C>T	p.Arg951Trp	DNA_repair	BS_N4B3WB8W	0	0	0	0
+BS_Q7NF95N0	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ATM	c.6095G>A	p.Arg2032Lys	DNA_repair	BS_8W0FNBWF	0	0	0	0
+BS_T77MXWTX	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA2	c.7806-2A>G	.	DNA_repair	BS_F064HMTP	0	0	0	0
+BS_TWCW8QZV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PNKP	c.1295_1298+6delCCAGGTAGCG	p.Ala432fs	DNA_repair	BS_KG1YMTA4	0	0	0	0
+BS_V733WCVK	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC2	c.594+2_594+5delTGAG	.	DNA_repair	BS_5V2XCW17	0.07946270352378695	0	0	0.07946270352378695
+BS_XQ0Y2PMV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CHEK2	c.975+4_975+7delAGTA	.	DNA_repair	BS_MW63FCZC	0	0	0	0

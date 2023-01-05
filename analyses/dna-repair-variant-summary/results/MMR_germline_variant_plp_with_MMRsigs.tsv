@@ -1,0 +1,16 @@
+Kids_First_Biospecimen_ID_normal	experimental_strategy	L-LP_Call_final	Reasoning_for_call	Hugo_Symbol	HGVS.c	HGVS.p	class	Kids_First_Biospecimen_ID	MMR_exposure	SBS6_exposure	SBS14_exposure	SBS15_exposure
+BS_1Z7Y81NW	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.137G>T	.	MMR	BS_XKXDH0YJ	0.07336910763452884	0.07336910763452884	0	0
+BS_382HZBG4	WGS	Pathogenic	InterVar_Recalculated Pathogenic	EXO1	c.1626T>G	p.Tyr542*	MMR	BS_JC8YV5V9	0.0624408162286568	0	0	0
+BS_3C702XH4	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCNA	c.86A>G	.	MMR	BS_3ZMH8578	0.07919346837615471	0.07919346837615471	0	0
+BS_6FD0SW6E	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.137G>T	.	MMR	BS_VW4XN9Y7	0.4811305613729764	0	0.19178265356896415	0.18275799984343577
+BS_D48QXYW6	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	PMS2	c.1831dupA	p.Ile611fs	MMR	BS_Q6GVRAWK	0	0	0	0
+BS_E7JTAP8Y	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RFC3	c.417dupA	p.Leu140fs	MMR	BS_HTGDSPQA	0	0	0	0
+BS_GJWAV3E5	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS2	c.11C>G	p.Ser4*	MMR	BS_A1DV9T7G	0	0	0	0
+BS_HT2S4SW0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MLH3	c.1364_1365delAG	p.Glu455fs	MMR	BS_928HWFFM	0	0	0	0
+BS_QG3PYXB4	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PMS2	c.1376C>G	p.Ser459*	MMR	BS_AR2BH0Z4	0	0	0	0
+BS_SGS26NXP	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	MSH2	c.1906G>C	p.Ala636Pro	MMR	BS_85Q5P8GF	0.3671442926575593	0.19001530610181788	0	0
+BS_SYGXZY9V	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c.524delT	p.Leu175fs	MMR	BS_3ZASRA3A	0	0	0	0
+BS_WMVYQREN	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MSH3	c.574C>T	p.Gln192*	MMR	BS_JB3J82ZK	0	0	0	0
+BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c.1010dupA	p.Tyr337fs	MMR	BS_BWZTMWTM	0	0	0	0
+BS_0754AZX0	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	MSH6	c.3439-2A>G	.	MMR	BS_20TBZG09	0.5073632518379121	0.07971215598224661	0.24899500437438665	0.17865609148127884
+BS_ESFA9S69	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MSH3	c.2319-1G>A	.	MMR	BS_PZDTK87A	0.09071376690563591	0.09071376690563591	0	0

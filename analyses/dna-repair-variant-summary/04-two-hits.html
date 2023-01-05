@@ -430,12 +430,12 @@ font-size: 0.95em;
 <p>Load packages and set directories</p>
 <pre class="r"><code>library(data.table)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
 ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
+## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
 ## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ─────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::between()   masks data.table::between()
 ## ✖ dplyr::filter()    masks stats::filter()
 ## ✖ dplyr::first()     masks data.table::first()
@@ -477,7 +477,7 @@ dna_repair_file &lt;- file.path(input_dir, &#39;Knijnenburg_paper&#39;, &#39;dna
          experimental_strategy == &quot;WGS&quot;,
          tumor_descriptor != &quot;Derived Cell Line&quot;)</code></pre>
 <pre><code>## Rows: 2840 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (32): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
 ## dbl  (5): OS_days, age_last_update_days, normal_fraction, tumor_fraction, tu...
@@ -486,7 +486,7 @@ dna_repair_file &lt;- file.path(input_dir, &#39;Knijnenburg_paper&#39;, &#39;dna
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>integrated_hist &lt;- read_tsv(histologies_file)</code></pre>
 <pre><code>## Rows: 838 Columns: 10
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (10): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_...
 ## 
@@ -495,7 +495,7 @@ dna_repair_file &lt;- file.path(input_dir, &#39;Knijnenburg_paper&#39;, &#39;dna
 <pre class="r"><code>repair_genes &lt;- read_tsv(dna_repair_file, col_names = F) %&gt;%
   rename(&#39;genes&#39; = X1)</code></pre>
 <pre><code>## Rows: 279 Columns: 1
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): X1
 ## 
@@ -504,7 +504,7 @@ dna_repair_file &lt;- file.path(input_dir, &#39;Knijnenburg_paper&#39;, &#39;dna
 <pre class="r"><code>cpgs &lt;- read_tsv(cpg_file, col_names = F) %&gt;%
   rename(&#39;genes&#39; = X1)</code></pre>
 <pre><code>## Rows: 200 Columns: 1
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): X1
 ## 
@@ -518,7 +518,7 @@ dna_repair_file &lt;- file.path(input_dir, &#39;Knijnenburg_paper&#39;, &#39;dna
   filter(Hugo_Symbol %in% repair_genes$genes &amp; Hugo_Symbol %in% cpgs$genes) %&gt;%
   arrange(Matched_Norm_Sample_Barcode)</code></pre>
 <pre><code>## Rows: 197 Columns: 8
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (8): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
 ## 
@@ -529,7 +529,7 @@ dna_repair_file &lt;- file.path(input_dir, &#39;Knijnenburg_paper&#39;, &#39;dna
   mutate(VAF = t_alt_count / t_depth) %&gt;%
   select(Matched_Norm_Sample_Barcode, Tumor_Sample_Barcode, Hugo_Symbol, Transcript_ID, HGVSc, HGVSp, VAF, SIFT, PolyPhen, Variant_Classification, HotSpotAllele, ONCOGENIC, MUTATION_EFFECT, VARIANT_IN_ONCOKB)</code></pre>
 <pre><code>## Rows: 576 Columns: 143
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (81): Hugo_Symbol, Center, NCBI_Build, Chromosome, Strand, Variant_Class...
 ## dbl (37): Entrez_Gene_Id, Start_Position, End_Position, t_depth, t_ref_count...
@@ -553,8 +553,8 @@ mutations</p>
                 Hugo_Symbol_somatic = Hugo_Symbol) %&gt;%
   group_by(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor_maf) %&gt;%
   summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;Kids_First_Biospecimen_ID_normal&#39;. You can
-## override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Kids_First_Biospecimen_ID_normal&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <pre class="r"><code>collapsed_germ_som &lt;- collapsed %&gt;%
   left_join(collapsed_somatic, by = &quot;Kids_First_Biospecimen_ID_normal&quot;) %&gt;%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Hugo_Symbol,

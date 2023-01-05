@@ -33,21 +33,22 @@ histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
 
 dna_repair_plp_file <- file.path(results_dir, 'dna_repair_germline_plp_summary.tsv')
 gsva_file <- file.path(input_dir, 'gsva_scores.tsv')
+
+mmr_plp_file <- file.path(results_dir, 'mmr_germline_variant_plp.tsv')
 ```
 
 Read in DNA repair variant file and pull DNA repair/control samples
 
 ```{r}
-dna_repair_plp <- read_tsv(dna_repair_plp_file) %>%
-    rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_normal')
+dna_repair_plp <- read_tsv(dna_repair_plp_file)
 
 repair_germline <- dna_repair_plp %>%
   filter(dna_repair_germline == 'Yes') %>%
-  pull(Kids_First_Biospecimen_ID)
+  pull(Kids_First_Biospecimen_ID_normal)
 
 ctrl_germline <- dna_repair_plp %>%
   filter(ner_germline == 'No') %>%
-  pull(Kids_First_Biospecimen_ID)
+  pull(Kids_First_Biospecimen_ID_normal)
 ```
 
 ## GSVA score difference between samples with and without DNA repair germline variants
@@ -114,7 +115,7 @@ ggplot(gsva_res, aes(x = hallmark, y = score_diff)) +
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "gsva_diff_DNArepair_vs_other.png"), 
+  file.path(plot_dir, "gsva_diff_DNArepair_vs_other.pdf"), 
   width = 30, height = 20, units = "cm")
 ```
 
@@ -125,11 +126,11 @@ pull MMR and non-MMR gene germline variant samples and corresponding somatic IDs
 ```{r}
 mmr_germline <- dna_repair_plp %>%
   filter(mmr_germline == 'Yes') %>%
-  pull(Kids_First_Biospecimen_ID)
+  pull(Kids_First_Biospecimen_ID_normal)
 
 mmr_ctrl_germline <- dna_repair_plp %>%
   filter(mmr_germline == 'No') %>%
-  pull(Kids_First_Biospecimen_ID)
+  pull(Kids_First_Biospecimen_ID_normal)
 
 mmr_ids <- hist %>%
   filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %>%
@@ -185,7 +186,7 @@ ggplot(mmr_res, aes(x = hallmark, y = score_diff)) +
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "gsva_diff_MMR_vs_other.png"), 
+  file.path(plot_dir, "gsva_diff_MMR_vs_other.pdf"), 
   width = 30, height = 20, units = "cm")
 ```
 
@@ -196,11 +197,11 @@ pull DNA repair, non-MMR gene germline variant samples and corresponding somatic
 ```{r}
 nonmmr_germline <- dna_repair_plp %>%
   filter(mmr_germline == 'No' & dna_repair_germline == 'Yes') %>%
-  pull(Kids_First_Biospecimen_ID)
+  pull(Kids_First_Biospecimen_ID_normal)
 
 nonmmr_ctrl_germline <- dna_repair_plp %>%
   filter(dna_repair_germline == 'No') %>%
-  pull(Kids_First_Biospecimen_ID)
+  pull(Kids_First_Biospecimen_ID_normal)
 
 nonmmr_ids <- hist %>%
   filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% nonmmr_germline]) %>%
@@ -257,7 +258,7 @@ ggplot(nonmmr_res, aes(x = hallmark, y = score_diff)) +
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "gsva_diff_DNArepair_nonMMR_vs_other.png"), 
+  file.path(plot_dir, "gsva_diff_DNArepair_nonMMR_vs_other.pdf"), 
   width = 30, height = 20, units = "cm")
 ```
 
@@ -284,7 +285,23 @@ ggplot(repair_scores, aes(x = germline_variant, y = gsea_score, fill = germline_
   scale_fill_npg()
 
 ggsave(
-  file.path(plot_dir, "DNArepair_gsva_score_byGroup_violinPlot.png"), 
-  width = 30, height = 20, units = "cm")
+  file.path(plot_dir, "DNArepair_gsva_score_byGroup_violinPlot.pdf"), 
+  width = 20, height = 15, units = "cm")
 ```
 
+```{r}
+bs_df <- mmr_germline %>%
+  as.data.frame() %>%
+  rename('Kids_First_Biospecimen_ID' = '.') %>%
+  left_join(hist[, c('Kids_First_Biospecimen_ID', 'Kids_First_Participant_ID')], by = 'Kids_First_Biospecimen_ID') %>%
+  rename('Kids_First_Biospecimen_ID_normal' = 'Kids_First_Biospecimen_ID') %>%
+  left_join(hist[hist$sample_type == 'Tumor' & hist$experimental_strategy == 'RNA-Seq', c('Kids_First_Biospecimen_ID', 'Kids_First_Participant_ID')], by = 'Kids_First_Participant_ID')
+```
+
+```{r}
+mmr_plp <- read_tsv(mmr_plp_file) %>%
+  rename('Kids_First_Biospecimen_ID_normal' = 'Kids_First_Biospecimen_ID') %>%
+  left_join(bs_df[,c('Kids_First_Biospecimen_ID_normal', 'Kids_First_Biospecimen_ID')], by = 'Kids_First_Biospecimen_ID_normal') %>%
+  left_join(repair_scores[,c('Kids_First_Biospecimen_ID', 'gsea_score')], by = 'Kids_First_Biospecimen_ID') %>%
+  write_tsv(file.path(results_dir, 'MMR_germline_variant_plp_with_DNArepair_gsea.tsv'))
+``` 
