@@ -1,0 +1,59 @@
+Kids_First_Biospecimen_ID	experimental_strategy	L-LP_Call_final	Reasoning_for_call	Hugo_Symbol	HGVS.c	HGVS.p	class
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUS81	c.1316delC	p.Pro439fs	HR
+BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.2983_2986delGAAA	p.Glu995fs	HR
+BS_ANZ9H60A	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	HR
+BS_0754AZX0	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DNA2	c.403C>T	p.Arg135*	HR
+BS_0QC2QX0P	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA1	c.68_69delAG	p.Glu23fs	HR
+BS_0YJF1F95	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.1672C>T	p.Arg558Cys	HR
+BS_1GMX5YEM	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD51D	c.1A>G	p.Met1?	HR
+BS_1Z7833P7	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INO80	c.2788C>T	p.Arg930Cys	HR
+BS_30WN9M3C	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.1001T>G	p.Leu334Trp	HR
+BS_382HZBG4	WGS	Pathogenic	InterVar_Recalculated Pathogenic	EXO1	c.1626T>G	p.Tyr542*	HR
+BS_3C702XH4	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCNA	c.86A>G	.	HR
+BS_3YXGSTJ7	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NSMCE3	c.228delC	p.Val77fs	HR
+BS_4KXBM5J8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.1138C>T	p.Arg380Trp	HR
+BS_4RV40GPD	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLH	c.936delC	p.Arg313fs	HR
+BS_5C23V7CC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PARP2	c.173delA	p.Asn58fs	HR
+BS_618WFRXY	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.740C>T	p.Ser247Phe	HR
+BS_63JFFF51	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SLX4	c.2512delG	p.Asp838fs	HR
+BS_8PRJTBE1	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	XRCC2	c.96delT	p.Phe32fs	HR
+BS_99MW9ECE	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INO80	c.445G>C	p.Glu149Gln	HR
+BS_9NRNDZD0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.10A>G	p.Ser4Gly	HR
+BS_9R1ENMBP	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	WRN	c.2221C>T	p.Arg741*	HR
+BS_9TKZ0YP0	WGS	Pathogenic	InterVar_Recalculated Pathogenic	RAD54B	c.821G>A	p.Trp274*	HR
+BS_9XMMXFXW	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.514C>T	p.Arg172Cys	HR
+BS_BGW6PHHK	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HELQ	c.1581T>A	p.Tyr527*	HR
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.65C>T	p.Pro22Leu	HR
+BS_C8EYP5BV	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	HR
+BS_E1SWA20C	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RAD51D	c.958C>T	p.Arg320*	HR
+BS_E7JTAP8Y	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RFC3	c.417dupA	p.Leu140fs	HR
+BS_EXKVBK51	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1300_1306delGATAAGA	p.Asp434fs	HR
+BS_GEYA8N9C	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BRCA2	c.6239dupT	p.Leu2080fs	HR
+BS_GVA39GGG	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLQ	c.1156G>T	p.Glu386*	HR
+BS_J4WKRNHA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.1181G>A	p.Arg394Gln	HR
+BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1875C>G	p.Tyr625*	HR
+BS_JZAENWRM	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD52	c.1102_1106delAACAG	p.Asn368fs	HR
+BS_NCF4MJ9S	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.514C>T	p.Arg172Cys	HR
+BS_NTV9Z7SE	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	HR
+BS_NY51QX79	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54L	c.577T>G	p.Cys193Gly	HR
+BS_PF7546KW	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RECQL4	c.1573delT	p.Cys525fs	HR
+BS_PTYP388A	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	XRCC2	c.694C>T	p.Gln232*	HR
+BS_Q1SPJ467	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INO80	c.3581A>G	p.Tyr1194Cys	HR
+BS_Q1SPJ467	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NBN	c.657_661delACAAA	p.Lys219fs	HR
+BS_QG3PYXB4	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA1	c.124delA	p.Ile42fs	HR
+BS_QMBK2FV7	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD51D	c.390dupT	p.Ser131fs	HR
+BS_RG2CTN65	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BRIP1	c.2392C>T	p.Arg798*	HR
+BS_THDBV4G0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	BRIP1	c.1045G>C	p.Ala349Pro	HR
+BS_TV8HD883	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RECQL4	c.2161C>T	p.Arg721*	HR
+BS_VN983YRH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BLM	c.2098C>T	p.Gln700*	HR
+BS_VNBX1SEV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	BRIP1	c.2392C>T	p.Arg798*	HR
+BS_WP2FY512	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RBBP8	c.2377C>T	p.Gln793*	HR
+BS_WP9M8J6W	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD51D	c.140_141insAA	p.Tyr47fs	HR
+BS_XCA92FF3	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SLX4	c.2599delG	p.Glu867fs	HR
+BS_XCKDRRYT	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NSMCE3	c.790C>T	p.Leu264Phe	HR
+BS_XKHY9A6D	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA2	c.9154C>T	p.Arg3052Trp	HR
+BS_3X8GAQ2M	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.1376C>T	p.Thr459Ile	HR
+BS_8D40GRF9	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	UIMC1	c.1677-1G>A	.	HR
+BS_9S3N3Y5W	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.782A>C	p.Asn261Thr	HR
+BS_MDHYHEBH	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RAD50	c.1794-1G>T	.	HR
+BS_T77MXWTX	WGS	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	BRCA2	c.7806-2A>G	.	HR

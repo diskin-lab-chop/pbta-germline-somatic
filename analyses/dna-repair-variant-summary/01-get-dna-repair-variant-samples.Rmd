@@ -1,0 +1,157 @@
+---
+title: 'Query germline samples for DNA repair variants'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "2022-12-14"
+---
+  
+```{r load libraries and set directories}
+library(data.table)
+library(tidyverse)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
+results_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input", "Knijnenburg_paper")
+plot_dir <- file.path(analysis_dir, 'plots')
+```
+
+Set histology, PLP variant, and gene lists
+
+```{r}
+histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies',
+                              'results',"germline-primary-plus-tumor-histologies-CBTN-dx.tsv")
+plotgroup_file <- file.path(analysis_dir, "input", "hist_with_plotGroup.csv")
+
+plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+
+dna_repair_file <- file.path(input_dir, 'dna_repair_all.txt')
+ber_file <- file.path(input_dir, 'base_excision_repair.txt')
+hr_file <- file.path(input_dir, 'homologous_recombination.txt')
+mmr_file <- file.path(input_dir, 'mismatch_repair.txt')
+ner_file <- file.path(input_dir, 'nucleotide_excision_repair.txt')
+nhej_file <- file.path(input_dir, 'nonhomologous_end_joining.txt')
+
+cpg_file <- file.path(root_dir, 'analyses', 'oncokb-annotation', 'input', 'cpg.txt')
+```
+
+Load gene lists
+```{r}
+repair_genes <- read_tsv(dna_repair_file, col_names = F) %>%
+  rename('genes' = X1)
+ber_genes <- read_tsv(ber_file, col_names = F) %>%
+  rename('genes' = X1)
+hr_genes <- read_tsv(hr_file, col_names = F) %>%
+  rename('genes' = X1)
+mmr_genes <- read_tsv(mmr_file, col_names = F) %>%
+  rename('genes' = X1)
+ner_genes <- read_tsv(ner_file, col_names = F) %>%
+  rename('genes' = X1)
+nhej_genes <- read_tsv(nhej_file, col_names = F) %>%
+  rename('genes' = X1)
+
+cpgs <- read_tsv(cpg_file, col_names = F) %>%
+  rename('genes' = X1)
+```
+
+Read plp variant file and filter for 838 samples in CBTN histology: 
+
+```{r load germline}
+hist <- read_tsv(histologies_file)
+
+germline <- read_tsv(plp_file) %>%
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)
+```
+
+Subset `germline` to include only genes in DNA repair pathways and write to output
+
+```{r subset germline}
+repair_germline <- germline %>%
+  filter(Hugo_Symbol %in% repair_genes$genes) %>%
+  add_column(class = 'DNA_repair') %>%
+  readr::write_tsv(file.path(results_dir, 'dna_repair_germline_variant_plp.tsv'))
+
+ber_germline <- germline %>%
+  filter(Hugo_Symbol %in% ber_genes$genes) %>%
+  add_column(class = 'BER') %>%
+  readr::write_tsv(file.path(results_dir, 'ber_germline_variant_plp.tsv'))
+
+hr_germline <- germline %>%
+  filter(Hugo_Symbol %in% hr_genes$genes) %>%
+  add_column(class = 'HR') %>%
+  readr::write_tsv(file.path(results_dir, 'hr_germline_variant_plp.tsv'))
+
+mmr_germline <- germline %>%
+  filter(Hugo_Symbol %in% mmr_genes$genes) %>%
+  add_column(class = 'MMR') %>%
+  readr::write_tsv(file.path(results_dir, 'mmr_germline_variant_plp.tsv'))
+
+ner_germline <- germline %>%
+  filter(Hugo_Symbol %in% ner_genes$genes) %>%
+  add_column(class = 'NER') %>%
+  readr::write_tsv(file.path(results_dir, 'ner_germline_variant_plp.tsv'))
+
+nhej_germline <- germline %>%
+  filter(Hugo_Symbol %in% nhej_genes$genes) %>%
+  add_column(class = 'NHEJ') %>%
+  readr::write_tsv(file.path(results_dir, 'nhej_germline_variant_plp.tsv'))
+```
+
+Create summary file indicating presence/absence of DNA repair germline variants for each sample
+
+```{r create summary}
+dna_repair_summary <- hist %>%
+  select(Kids_First_Biospecimen_ID_normal) %>%
+  distinct() %>%
+  mutate(
+    dna_repair_germline = ifelse(Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID,
+                                      'Yes', 'No'),
+    ber_germline = ifelse(Kids_First_Biospecimen_ID_normal %in% ber_germline$Kids_First_Biospecimen_ID,
+                                 'Yes', 'No'),
+    hr_germline = ifelse(Kids_First_Biospecimen_ID_normal %in% hr_germline$Kids_First_Biospecimen_ID,
+                                 'Yes', 'No'),
+    mmr_germline = ifelse(Kids_First_Biospecimen_ID_normal %in% mmr_germline$Kids_First_Biospecimen_ID,
+                                 'Yes', 'No'),
+    ner_germline = ifelse(Kids_First_Biospecimen_ID_normal %in% ner_germline$Kids_First_Biospecimen_ID,
+                                 'Yes', 'No'),
+    nhej_germline = ifelse(Kids_First_Biospecimen_ID_normal %in% nhej_germline$Kids_First_Biospecimen_ID,
+                                 'Yes', 'No')
+    ) %>%
+  readr::write_tsv(file.path(results_dir, 'dna_repair_germline_plp_summary.tsv'))
+```
+
+```{r add plotgroups}
+plotgroup <- read_csv(plotgroup_file)
+head(plotgroup)
+
+plot_df <- repair_germline %>%
+  bind_rows(ber_germline) %>%
+  bind_rows(hr_germline) %>%
+  bind_rows(mmr_germline) %>%
+  bind_rows(ner_germline) %>%
+  bind_rows(nhej_germline) %>%
+  rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
+  left_join(plotgroup[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "broad_histology_hex")], by = 'Kids_First_Biospecimen_ID_normal') %>%
+  count(class, plot_group, broad_histology_hex)
+
+plot_df$class <- factor(plot_df$class, levels = c('DNA_repair', 'BER', 'HR', 'MMR', 'NER', 'NHEJ'))
+plot_df$plot_group <- factor(plot_df$plot_group, levels = unique(plot_df$plot_group))
+```
+
+```{r plot by group}
+ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
+  geom_bar(position="stack", stat="identity") +
+  labs(y = 'count', x = 'germline variant class', fill = 'plot group') + 
+  theme_minimal()
+
+ggsave(
+  file.path(plot_dir, "dna_repair_samples_by_plot_group.pdf"), 
+  width = 25, height = 25, units = "cm")
+```
+

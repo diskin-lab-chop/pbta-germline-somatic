@@ -1,0 +1,14 @@
+Kids_First_Biospecimen_ID	experimental_strategy	L-LP_Call_final	Reasoning_for_call	Hugo_Symbol	HGVS.c	HGVS.p	class
+BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.2983_2986delGAAA	p.Glu995fs	NHEJ
+BS_0X88TX85	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PNKP	c.1474_1477delGCTG	p.Ala492fs	NHEJ
+BS_BVRH3WGW	WGS	Pathogenic	InterVar_Recalculated Pathogenic	POLM	c.762G>A	p.Trp254*	NHEJ
+BS_CTQ82WX9	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	DCLRE1C	c.241C>T	p.Arg81*	NHEJ
+BS_EXKVBK51	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1300_1306delGATAAGA	p.Asp434fs	NHEJ
+BS_F0WR427W	WGS	Pathogenic	InterVar_Recalculated Pathogenic	NHEJ1	c.169C>T	p.Arg57*	NHEJ
+BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1875C>G	p.Tyr625*	NHEJ
+BS_Q1SPJ467	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NBN	c.657_661delACAAA	p.Lys219fs	NHEJ
+BS_XN449RAJ	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LIG4	c.1144_1145delCT	p.Leu382fs	NHEJ
+BS_61AK2H2N	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PNKP	c.1295_1298+6delCCAGGTAGCG	p.Ala432fs	NHEJ
+BS_E951SZ7T	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- *Latest reported date call is Likely pathogenic date 20210730	PNKP	c.199-8_199-5delTTCT	.	NHEJ
+BS_MDHYHEBH	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RAD50	c.1794-1G>T	.	NHEJ
+BS_TWCW8QZV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PNKP	c.1295_1298+6delCCAGGTAGCG	p.Ala432fs	NHEJ
