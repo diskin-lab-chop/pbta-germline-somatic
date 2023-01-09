@@ -42,10 +42,10 @@ germline <- read_tsv(plp_file) %>%
 
 
 ```{r get LFS TP53}
-samples <- unique(germline$Kids_First_Biospecimen_ID)
-LFS <- ifelse(samples %in% germline[grepl('Li-Fraumeni', germline$cancer_predispositions),]$Kids_First_Biospecimen_ID,
+patients <- unique(germline$Kids_First_Participant_ID)
+LFS <- ifelse(samples %in% germline[grepl('Li-Fraumeni', germline$cancer_predispositions),]$Kids_First_Participant_ID,
               'Yes', 'No')
-tp53_plp <- ifelse(samples %in% germline[grepl('TP53', germline$Hugo_Symbol),]$Kids_First_Biospecimen_ID,
+tp53_plp <- ifelse(samples %in% germline[grepl('TP53', germline$Hugo_Symbol),]$Kids_First_Participant_ID,
                    'Yes', 'No')
 table(LFS, tp53_plp)
 
