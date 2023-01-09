@@ -42,6 +42,7 @@ cpg_file <- file.path(root_dir, 'analyses', 'oncokb-annotation', 'input', 'cpg.t
 ```
 
 Load gene lists
+
 ```{r}
 repair_genes <- read_tsv(dna_repair_file, col_names = F) %>%
   rename('genes' = X1)
@@ -126,6 +127,8 @@ dna_repair_summary <- hist %>%
   readr::write_tsv(file.path(results_dir, 'dna_repair_germline_plp_summary.tsv'))
 ```
 
+Create data frame and add plot groups for plotting
+
 ```{r add plotgroups}
 plotgroup <- read_csv(plotgroup_file)
 head(plotgroup)
@@ -144,6 +147,8 @@ plot_df$class <- factor(plot_df$class, levels = c('DNA_repair', 'BER', 'HR', 'MM
 plot_df$plot_group <- factor(plot_df$plot_group, levels = unique(plot_df$plot_group))
 ```
 
+Plot DNA repair germline variant prevalence by plot group
+
 ```{r plot by group}
 ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
   geom_bar(position="stack", stat="identity") +
@@ -152,6 +157,6 @@ ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
 
 ggsave(
   file.path(plot_dir, "dna_repair_samples_by_plot_group.pdf"), 
-  width = 25, height = 25, units = "cm")
+  width = 16, height = 16, units = "cm")
 ```
 
