@@ -22,7 +22,7 @@ analysis_dir <- file.path(root_dir, "analyses", "predisposition-variants")
 results_dir <- file.path(analysis_dir, "results")
 input_dir <- file.path(analysis_dir, "input")
 
-histologies_file <- file.path(data_dir,"pbta-histologies.tsv")
+histologies_file <- file.path(data_dir,"histologies.tsv")
 plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
 plp_wgs_unfiltered_file <- file.path(input_dir, 'all_TP53_variants_PLP.tsv')
