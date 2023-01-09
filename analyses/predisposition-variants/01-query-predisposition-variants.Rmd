@@ -33,7 +33,7 @@ vus_wxs_filtered_file <- file.path(input_dir, 'PNOC_88_WXS_VUS_TP53_pass_filters
 
 
 ```{r load files}
-hist <- read_tsv(histologies_file) %>%
+hist <- read_tsv(histologies_file, guess_max = 100000) %>%
   dplyr::select(Kids_First_Biospecimen_ID, Kids_First_Participant_ID, cancer_predispositions)
 
 germline <- read_tsv(plp_file) %>%
