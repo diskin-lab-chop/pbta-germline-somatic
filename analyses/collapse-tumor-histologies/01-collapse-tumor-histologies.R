@@ -15,12 +15,52 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
-# load v11 OpenPedCan histologies file
+# load v11_plus OpenPedCan histologies file + additional samples
 v11_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000) %>%
   filter(cohort == "PBTA") %>%
-  # update cancer_group to NA if non-tumor
-  mutate(cancer_group = case_when(broad_histology == "Non-tumor" ~ NA_character_,
-         TRUE ~ as.character(cancer_group)))
+  # update choroid plexus from benign to tumor category
+  mutate(broad_histology = case_when(pathology_diagnosis == "Choroid plexus papilloma" ~ "Choroid plexus tumor",
+                                     pathology_diagnosis == "Choroid plexus carcinoma" ~ "Choroid plexus tumor",
+                                     pathology_free_text_diagnosis == "choroid plexus cyst" ~ "Choroid plexus tumor",
+                                     # make cavernoma benign tumor
+                                     pathology_diagnosis == "Cavernoma" ~ "Benign tumor",
+                                     # meningiomatosis --> meningioma
+                                     pathology_free_text_diagnosis == "meningioangiomatosis" ~ "Meningioma",
+                                     # MPNST --> NF
+                                     grepl("MPNST", pathology_diagnosis) ~ "Tumor of cranial and paraspinal nerves",
+                                     # move these from benign to other tumor
+                                     pathology_free_text_diagnosis %in% c("fibrous dysplasia",
+                                                                          "osteoblastoma",
+                                                                          "pituitary macroadenoma",
+                                                                          "pituitary adenoma",
+                                                                          "prolactinoma",
+                                                                          "perineuroma") ~ "Other tumor",
+                                     broad_histology == "Other" ~ "Other tumor",
+                                     # pineoblastoma
+                                     pathology_free_text_diagnosis == "pnet - pineoblastoma with calcification" ~ "Tumor of pineal region",
+                                     # move oligo II to LGG
+                                     pathology_free_text_diagnosis == "oligodendroglioma who ii" ~ "Low-grade astrocytic tumor",
+                                     pathology_diagnosis == "Oligodendroglioma" ~ "Low-grade astrocytic tumor",
+                                     TRUE ~ as.character(broad_histology)),
+         # update cancer_group to NA if non-tumor
+         cancer_group = case_when(broad_histology %in% c("Non-tumor", "Benign Tumor") ~ NA_character_,
+                                  grepl("MPNST", pathology_diagnosis) ~ "Neurofibroma/Plexiform",
+                                  pathology_free_text_diagnosis == "meningioangiomatosis" ~ "Meningioma",
+                                  # move these from benign to other tumor
+                                  pathology_free_text_diagnosis %in% c("fibrous dysplasia",
+                                                                       "osteoblastoma",
+                                                                       "pituitary macroadenoma",
+                                                                       "pituitary adenoma",
+                                                                       "prolactinoma",
+                                                                       "perineuroma") ~ "Other tumor",
+                                  broad_histology == "Other tumor" ~ "Other tumor",
+                                  # pineoblastoma
+                                  pathology_free_text_diagnosis == "pnet - pineoblastoma with calcification" ~ "Pineoblastoma",
+                                  TRUE ~ as.character(cancer_group)),
+
+  )
+                                     
+  
 
 # pull cell line info for PT_C2D4JXS1, which has no tumor WGS
 BS_AFBPM6CN <- v11_hist %>%
