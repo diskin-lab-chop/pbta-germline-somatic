@@ -56,7 +56,6 @@ Neuronal and mixed neuronal-glial tumor	Desmoplastic infantile astrocytoma and g
 Neuronal and mixed neuronal-glial tumor	Extraventricular neurocytoma	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	NA	NA	NA
 Neuronal and mixed neuronal-glial tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	6	Other CNS	FALSE
 Neuronal and mixed neuronal-glial tumor	Neuroepithelial neoplasm	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	NA	NA	NA
-Neuronal and mixed neuronal-glial tumor	Neuroepithelial neoplasm	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
 Neuronal and mixed neuronal-glial tumor	Rosette-forming glioneuronal tumor	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5	6	Other CNS	FALSE
 Neuronal and mixed neuronal-glial tumor	Neurocytoma	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
 Neuronal and mixed neuronal-glial tumor	NA	Neuronal and mixed neuronal-glial tumor	Neuronal and mixed neuronal-glial tumor	#685815	NA	#b5b5b5			
@@ -65,7 +64,7 @@ Non-tumor	NA	Benign tumor or non-cancer	Benign tumor or non-cancer	NA	NA	NA	NA	N
 Other tumor	Other tumor	Other tumor	Other tumor	#808080	NA	#b5b5b5	NA	NA	NA
 Other tumor	Ganglioneuroma	Embryonal tumor	Other embryonal tumor	#220040	Other ET	#b08ccf			
 Pre-cancerous lesion	NA	Other tumor	Benign tumor or non-cancer	NA	NA	NA	12	NA	NA
-Tumor of cranial and paraspinal nerves	Neurofibroma/Plexiform	Other tumor	Other tumor	NA	NFP	NA	NA	NA	NA
+Tumor of cranial and paraspinal nerves	Neurofibroma/Plexiform	Neurofibroma plexiform	Neurofibroma plexiform	NA	NFP	NA	NA	NA	NA
 Tumor of cranial and paraspinal nerves	Malignant peripheral nerve sheath tumor	Tumor of cranial and paraspinal nerves	Other tumor	#808080	NA	#b5b5b5	5	Other CNS	FALSE
 Tumor of cranial and paraspinal nerves	Schwannoma	Tumor of cranial and paraspinal nerves	Schwannoma	#ffaa00	Schwannoma	#ab7200	5	Other CNS	TRUE
 Tumor of pineal region	Pineoblastoma	Pineoblastoma	Pineoblastoma	NA	NA	#b5b5b5	12	Other CNS	FALSE
