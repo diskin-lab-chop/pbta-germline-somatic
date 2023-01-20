@@ -82,14 +82,15 @@ germline_ids_meta <- v11_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 sample_id_normal =  sample_id) %>%
-  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal)
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal) %>%
+  distinct()
 
 path_dx <- v11_hist %>%
   filter(!is.na(pathology_diagnosis),
          cohort == "PBTA") %>%
   select(Kids_First_Biospecimen_ID, pathology_diagnosis, pathology_free_text_diagnosis) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID) %>%
-  unique()
+  unique() 
   
 # combine germline + tumor ids
 combined <- germline_ids_meta %>%
@@ -110,21 +111,23 @@ combined_append <- combined %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-CBTN-dx.tsv"))
 
 # add cancer/plot group mapping file 
-map_file <- read_tsv(file.path(input_dir, "plot-mapping.tsv"))
+map_file <- read_tsv(file.path(input_dir, "plot-mapping.tsv")) %>%
+  distinct()
 
 # add plot mapping file and old plot groups
 combined_map <- combined %>%
   left_join(path_dx) %>%
-  left_join(prev[,c("Kids_First_Biospecimen_ID_normal", "DISEASE_USING","Other_Description_USE")]) %>%
+ # left_join(prev[,c("Kids_First_Biospecimen_ID_normal", "DISEASE_USING","Other_Description_USE")]) %>%
   left_join(map_file, by = c("broad_histology", "cancer_group")) %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, 
          Kids_First_Biospecimen_ID_tumor, pathology_diagnosis, pathology_free_text_diagnosis, 
-         broad_histology, cancer_group, plot_group, Other_Description_USE, DISEASE_USING, molecular_subtype, broad_histology_display,
+         broad_histology, cancer_group, plot_group, molecular_subtype, broad_histology_display,
          broad_histology_hex, cancer_group_abbreviation, cancer_group_hex, broad_histology_order, 
          oncoprint_group, oncoprint_main) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups.tsv"))
 
 
+combined_map[duplicated(combined_map$Kids_First_Biospecimen_ID_normal),]
 # write plot group counts file
 plot_groups <- combined_map %>%
   count(plot_group) %>%
@@ -132,7 +135,9 @@ plot_groups <- combined_map %>%
   write_tsv(file.path(results_dir, "plot_group_counts.tsv"))
 
 # previous plot groups
-plot_groups_previous <- combined_map %>%
+plot_groups_previous <- combined_append %>%
   count(Other_Description_USE) %>%
   arrange(n) %>%
   write_tsv(file.path(results_dir, "previous_plot_group_counts.tsv"))
+
+
