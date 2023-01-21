@@ -14,8 +14,8 @@ if (!dir.exists(plot_dir)) {
   dir.create(plot_dir, recursive = TRUE)
 }
 
-
-#source("~/Box Sync/D3B-share/manuscripts/02_accepted/Lilly_CBTN_infrastructure/figures/theme.R")
+# source publication theme
+source(file.path(root_dir, "figures", "theme.R"))
 hist <- read_tsv(file.path(root_dir, 
                            "analyses", 
                            "collapse-tumor-histologies", 
@@ -29,21 +29,20 @@ hist_counts <- hist %>%
   mutate(plot_group_n = paste0(plot_group, " (n = ", n, ")")) %>%
   mutate(plot_group_n = fct_rev(fct_infreq(plot_group_n))) %>%
   unique()
-
+as.data.frame(table(hist_counts$plot_group_n))
 
 plot_group_palette <- hist_counts$plot_group_hex
 names(plot_group_palette) <- hist_counts$plot_group_n
 
+"#8f8fbf"
 
-tiff("~/Box Sync/D3B-share/manuscripts/02_accepted/Lilly_CBTN_infrastructure/figures/tumors_by_histology_revision.tiff", height = 2000, width = 3000, res = 300)
-ggplot(tumor_counts, aes(x = cancer_group_display_n, fill = cancer_group_display_n)) +
+tiff(file.path(plot_dir, "histology-distribution.tiff"), height = 2000, width = 3000, res = 300)
+ggplot(hist_counts, aes(x = plot_group_n, fill = plot_group_n)) +
   geom_bar(color = "black", show.legend = FALSE) +
-  scale_fill_manual(values = cancer_group_palette) + 
+  scale_fill_manual(values = plot_group_palette) + 
   xlab("Histology") +
-  ylab("Tumor count") +
-  ylim(c(0,150)) +
+  ylab("Number of patients with tumor diagnosis") +
   coord_flip() + 
-  ggtitle("Number of tumors profiled in OpenPBTA") +
   theme_Publication()
 dev.off()
 
