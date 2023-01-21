@@ -4,8 +4,8 @@ output:
   html_document:
   toc: TRUE
 toc_float: TRUE
-author: Ryan Corbett
-date: "2022-12-14"
+author: Ryan Corbett, Jo Lynne Rokita
+date: "2022-2023"
 ---
   
 ```{r load libraries and set directories}
@@ -20,6 +20,10 @@ analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
 results_dir <- file.path(analysis_dir, "results")
 input_dir <- file.path(analysis_dir, "input", "Knijnenburg_paper")
 plot_dir <- file.path(analysis_dir, 'plots')
+
+# source figure theme
+source(file.path(root_dir, "figures", "theme.R"))
+
 ```
 
 Set histology, PLP variant, and gene lists
