@@ -26,8 +26,7 @@ Set histology, PLP variant, and gene lists
 
 ```{r}
 histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies',
-                              'results',"germline-primary-plus-tumor-histologies-CBTN-dx.tsv")
-plotgroup_file <- file.path(analysis_dir, "input", "hist_with_plotGroup.csv")
+                              'results',"germline-primary-plus-tumor-histologies-plot-groups.tsv")
 
 plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
@@ -130,9 +129,6 @@ dna_repair_summary <- hist %>%
 Create data frame and add plot groups for plotting
 
 ```{r add plotgroups}
-plotgroup <- read_csv(plotgroup_file)
-head(plotgroup)
-
 plot_df <- repair_germline %>%
   bind_rows(ber_germline) %>%
   bind_rows(hr_germline) %>%
@@ -140,8 +136,8 @@ plot_df <- repair_germline %>%
   bind_rows(ner_germline) %>%
   bind_rows(nhej_germline) %>%
   rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
-  left_join(plotgroup[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "broad_histology_hex")], by = 'Kids_First_Biospecimen_ID_normal') %>%
-  count(class, plot_group, broad_histology_hex)
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = 'Kids_First_Biospecimen_ID_normal') %>%
+  count(class, plot_group, plot_group_hex) 
 
 plot_df$class <- factor(plot_df$class, levels = c('DNA_repair', 'BER', 'HR', 'MMR', 'NER', 'NHEJ'))
 plot_df$plot_group <- factor(plot_df$plot_group, levels = unique(plot_df$plot_group))
@@ -150,10 +146,14 @@ plot_df$plot_group <- factor(plot_df$plot_group, levels = unique(plot_df$plot_gr
 Plot DNA repair germline variant prevalence by plot group
 
 ```{r plot by group}
+# palette
+plot_group_palette <- plot_df$plot_group_hex
+names(plot_group_palette) <- plot_df$plot_group
+
 ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
-  geom_bar(position="stack", stat="identity") +
   labs(y = 'count', x = 'germline variant class', fill = 'plot group') + 
-  theme_minimal()
+  scale_fill_manual(values = plot_group_palette) + 
+  theme_Publication()
 
 ggsave(
   file.path(plot_dir, "dna_repair_samples_by_plot_group.pdf"), 
