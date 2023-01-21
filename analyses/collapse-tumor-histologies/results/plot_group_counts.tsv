@@ -1,20 +1,18 @@
 plot_group	n
-Pineoblastoma	5
-Other embryonal tumor	12
+Other CNS embryonal tumor	12
 Germ cell tumor	13
 Schwannoma	13
 Neurofibroma plexiform	14
-Neuronal and mixed neuronal-glial tumor	14
 Choroid plexus tumor	18
-Mesenchymal non-meningothelial tumor	20
-Dysembryoplastic neuroepithelial tumor	21
+Mesenchymal tumor	20
 Meningioma	25
-Benign tumor or non-cancer	26
+Non-neoplastic tumor	26
 Atypical Teratoid Rhabdoid Tumor	27
-Other tumor	28
+Other tumor	33
 Craniopharyngioma	39
 DIPG or DMG	52
 Ependymoma	71
 Other high-grade glioma	76
+Mixed neuronal-glial tumor	79
 Medulloblastoma	97
-Low-grade glioma	267
+Low-grade glioma	223
