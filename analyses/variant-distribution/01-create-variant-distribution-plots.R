@@ -64,7 +64,7 @@ plot_group_palette <- n_per_gene$plot_group_hex
 names(plot_group_palette) <- n_per_gene$plot_group
 
 
-tiff(file.path(plot_dir, "variant-distribution-by-histology.tiff"), height = 1500, width = 4000, res = 300)
+tiff(file.path(plot_dir, "variant-distribution-by-histology.tiff"), height = 1800, width = 4000, res = 300)
 ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill = plot_group)) +
   geom_col(col = "black", size = 0.4) +
   scale_fill_manual(values = plot_group_palette) + 
