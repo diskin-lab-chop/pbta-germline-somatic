@@ -110,8 +110,8 @@ combined_map <- combined %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, 
          Kids_First_Biospecimen_ID_tumor, sample_id_tumor, tumor_descriptor, pathology_diagnosis, pathology_free_text_diagnosis, 
          broad_histology, cancer_group, plot_group, molecular_subtype, broad_histology_display,
-         broad_histology_hex, cancer_group_abbreviation, cancer_group_hex, broad_histology_order, 
-         oncoprint_group, oncoprint_main, germline_sex_estimate) %>%
+         broad_histology_hex, cancer_group_abbreviation, plot_group_hex, broad_histology_order, 
+         oncoprint_group, germline_sex_estimate) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups.tsv"))
 
 # make sure no duplicate normal ids
