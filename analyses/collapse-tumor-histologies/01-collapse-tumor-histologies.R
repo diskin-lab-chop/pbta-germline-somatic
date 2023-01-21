@@ -83,7 +83,7 @@ germline_ids_meta <- v11_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 sample_id_normal =  sample_id) %>%
-  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal) %>%
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, germline_sex_estimate) %>%
   distinct()
 
 path_dx <- v11_hist %>%
@@ -108,13 +108,13 @@ combined_map <- combined %>%
   left_join(path_dx) %>%
   left_join(map_file, by = c("broad_histology", "cancer_group")) %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, 
-         Kids_First_Biospecimen_ID_tumor, pathology_diagnosis, pathology_free_text_diagnosis, 
+         Kids_First_Biospecimen_ID_tumor, sample_id_tumor, tumor_descriptor, pathology_diagnosis, pathology_free_text_diagnosis, 
          broad_histology, cancer_group, plot_group, molecular_subtype, broad_histology_display,
          broad_histology_hex, cancer_group_abbreviation, cancer_group_hex, broad_histology_order, 
-         oncoprint_group, oncoprint_main) %>%
+         oncoprint_group, oncoprint_main, germline_sex_estimate) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups.tsv"))
 
-
+# make sure no duplicate normal ids
 combined_map[duplicated(combined_map$Kids_First_Biospecimen_ID_normal),]
 
 # write plot group counts file
@@ -122,6 +122,21 @@ plot_groups <- combined_map %>%
   count(plot_group) %>%
   arrange(n) %>%
   write_tsv(file.path(results_dir, "plot_group_counts.tsv"))
+
+
+# finally, add relevant clinical information to new histologies and plot group file
+tumor_clin_meta <- v11_hist %>%
+  filter(Kids_First_Biospecimen_ID %in% tumor_ids$Kids_First_Biospecimen_ID_tumor) %>%
+  select(sample_id, tumor_descriptor, race, ethnicity, age_at_diagnosis_days, age_last_update_days, PFS_days, OS_days, OS_status, 
+         extent_of_tumor_resection, CNS_region) %>%
+  dplyr::rename(sample_id_tumor = sample_id)
+  
+
+final_hist <- combined_map %>%
+  left_join(tumor_clin_meta) %>%
+  write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
+
+
 
 
 
