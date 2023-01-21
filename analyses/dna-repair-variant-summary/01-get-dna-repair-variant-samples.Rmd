@@ -60,7 +60,7 @@ cpgs <- read_tsv(cpg_file, col_names = F) %>%
   rename('genes' = X1)
 ```
 
-Read plp variant file and filter for 838 samples in CBTN histology: 
+Read plp variant file and filter for 838 samples in histology: 
 
 ```{r load germline}
 hist <- read_tsv(histologies_file)
@@ -137,9 +137,12 @@ plot_df <- repair_germline %>%
   bind_rows(nhej_germline) %>%
   rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = 'Kids_First_Biospecimen_ID_normal') %>%
-  count(class, plot_group, plot_group_hex) 
+  count(class, plot_group, plot_group_hex) %>%
+  # remove all repair
+  filter(class != "DNA_repair")
 
-plot_df$class <- factor(plot_df$class, levels = c('DNA_repair', 'BER', 'HR', 'MMR', 'NER', 'NHEJ'))
+# reorder descending total
+plot_df$class <- factor(plot_df$class, levels = c('HR', 'BER', 'NER', 'MMR','NHEJ'))
 plot_df$plot_group <- factor(plot_df$plot_group, levels = unique(plot_df$plot_group))
 ```
 
@@ -151,12 +154,13 @@ plot_group_palette <- plot_df$plot_group_hex
 names(plot_group_palette) <- plot_df$plot_group
 
 ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
-  labs(y = 'count', x = 'germline variant class', fill = 'plot group') + 
+  geom_col(col = "black", size = 0.4) +
   scale_fill_manual(values = plot_group_palette) + 
+  labs(y = 'Number of patients with P/LP variant', x = 'Germline variant DNA repair class', fill = 'Tumor diagnosis') + 
   theme_Publication()
 
 ggsave(
   file.path(plot_dir, "dna_repair_samples_by_plot_group.pdf"), 
-  width = 16, height = 16, units = "cm")
+  width = 24, height = 16, units = "cm")
 ```
 
