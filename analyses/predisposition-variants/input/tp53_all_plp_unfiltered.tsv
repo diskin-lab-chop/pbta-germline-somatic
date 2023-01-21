@@ -1,0 +1,11 @@
+Kids_First_Biospecimen_ID	L-LP_Call_final	Reasoning_for_call	Hugo_symbol	Chromosome	Loc	Reference	Alternant_alleles	HGVS.c	HGVS.p
+BS_4AM9C504	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	chr17	7675994	C	G	c.375G>C	.
+BS_7XEH55CB	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	chr17	7675995	G	C	c.374C>G	.
+BS_HJ99CJ2R	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	TP53	chr17	7674887	C	T	c.644G>A	.
+BS_HNWNZFHA	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TP53	chr17	7673786	AG	A	c.833delC	p.Pro278fs
+BS_K4XGEGW0	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	chr17	7675994	C	A	c.375G>T	.
+BS_W75GCHPW	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	chr17	7675232	G	A	c.380C>T	.
+BS_XHT3F34T	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs
+BS_9QFHEWD6	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	chr17	7675139	C	A	c.473G>T	.
+BS_F7G8TA7C	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	chr17	7675139	C	A	c.473G>T	.
+BS_XM3ER1N6	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	TP53	chr17	7675189	G	C	c.423C>G	.
