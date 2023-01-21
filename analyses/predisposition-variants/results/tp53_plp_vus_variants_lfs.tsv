@@ -1,0 +1,16 @@
+Kids_First_Biospecimen_ID	L-LP_Call_final	Hugo_symbol	HGVS.c	HGVS.p	Kids_First_Participant_ID	cancer_predispositions
+BS_7XEH55CB	Pathogenic	TP53	c.374C>G	.	PT_YZ8A8A36	Li-Fraumeni syndrome
+BS_K4XGEGW0	Likely_pathogenic	TP53	c.375G>T	.	PT_PF9EC93Q	Li-Fraumeni syndrome
+BS_W75GCHPW	Pathogenic	TP53	c.380C>T	.	PT_ESHACWF6	Li-Fraumeni syndrome
+BS_XHT3F34T	Pathogenic	TP53	c.454_466delCCGCCCGGCACCC	p.Pro152fs	PT_89XRZBSG	Li-Fraumeni syndrome
+BS_5FP2H6VW	Uncertain_significance	ATP1B2;TP53	c.*4846C>T	.	PT_PFP1ZVHD	Li-Fraumeni syndrome
+BS_5FP2H6VW	Uncertain_significance	TP53	c.541C>A	p.Arg181Ser	PT_PFP1ZVHD	Li-Fraumeni syndrome
+BS_5FP2H6VW	Uncertain_significance	ATP1B2;TP53	c.*4916_*4921delAAAAAA	.	PT_PFP1ZVHD	Li-Fraumeni syndrome
+BS_7XEH55CB	Uncertain_significance	TP53	c.-28-4326C>T	.	PT_YZ8A8A36	Li-Fraumeni syndrome
+BS_7XEH55CB	Uncertain_significance	TP53	c.-5904T>C	.	PT_YZ8A8A36	Li-Fraumeni syndrome
+BS_7XEH55CB	Uncertain_significance	ATP1B2;TP53	c.*3912delT	.	PT_YZ8A8A36	Li-Fraumeni syndrome
+BS_APFT88Y3	Uncertain_significance	TP53	c.993+702C>T	.	PT_VZTTTP3Q	Li-Fraumeni syndrome
+BS_APFT88Y3	Uncertain_significance	TP53	c.673-71delA	.	PT_VZTTTP3Q	Li-Fraumeni syndrome
+BS_W75GCHPW	Uncertain_significance	ATP1B2;TP53	c.*3188C>G	.	PT_ESHACWF6	Li-Fraumeni syndrome
+BS_W75GCHPW	Uncertain_significance	TP53	c.-4486C>A	.	PT_ESHACWF6	Li-Fraumeni syndrome
+BS_XHT3F34T	Uncertain_significance	TP53	c.-4192C>T	.	PT_89XRZBSG	Li-Fraumeni syndrome
