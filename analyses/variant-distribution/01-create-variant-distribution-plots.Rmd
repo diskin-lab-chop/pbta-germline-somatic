@@ -99,6 +99,17 @@ sort(unique(plp_som_not_cpg$Hugo_Symbol))
 genelists <-  list("cpg" = cpg, "somatic_drivers" = somatic_drivers, "somatic_not_cpg" = somatic_not_cpg)
 
 for (each in names(genelists)){
+  
+    # add titles to print
+  if (df == "cpg"){
+    x_axis_title <- "Cancer predisposition gene (CPG)"
+  }
+  
+  if (df == "somatic_drivers"){
+    x_axis_title <- "Somatic driver gene"
+  }
+  
+  
   plot_df <- plp %>%
     filter(Hugo_Symbol %in% genelists[[each]]) %>%
     left_join(hist) 
@@ -130,7 +141,7 @@ dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol, plot_order),
   geom_col(col = "black", size = 0.4) +
   scale_fill_manual(values = plot_group_palette) + 
   ylab("Number of patients with P/LP variants") +
-  xlab("Gene") +
+  xlab(x_axis_title) +
   theme_Publication() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   ylim(0,20) +
