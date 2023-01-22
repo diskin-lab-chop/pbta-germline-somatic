@@ -62,7 +62,7 @@ ggplot(hist_counts, aes(x = plot_group_n, fill = plot_group_n)) +
   theme_Publication()
 dev.off()
 
-# summary of variants
+# summary of variants for all genes or just CPGs
 plp_all_genes <- plp_all %>%
   select(final_call_source) %>%
   table(dnn = c("call", "n")) %>%
@@ -77,11 +77,22 @@ plp_cpgs <- plp_cpg %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_cpgs
 
+# create plots
 dfs <- list("plp_all_genes" = plp_all_genes, "plp_cpgs" = plp_cpgs)
 
 for (df in names(dfs)) {
+  
+  # add titles to print
+  if (df == "plp_all_genes"){
+    title <- "All genes"
+  }
+  
+  if (df == "plp_cpgs"){
+    title <- "CPGs"
+  }
+    
   dev.set(dev.next())
-  tiff(file.path(paste0(plot_dir, df, "-plp-calls.tiff")), height = 1000, width = 1600, res = 300)
+  tiff(file.path(paste0(plot_dir, df, "-calls.tiff")), height = 1000, width = 1600, res = 300)
   
   print(
     dfs[[df]] %>%
@@ -98,7 +109,10 @@ for (df in names(dfs)) {
     legend.position="none"
     ) +
     ylab("Number of germline variants") +
-    xlab("Final call")
+    xlab("Final call") +
+    ggtitle(title) +
+    #left align
+    theme(plot.title = element_text(hjust = 0))   
   )
   dev.off()
   
