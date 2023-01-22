@@ -127,8 +127,8 @@ plot_groups <- combined_map %>%
 # finally, add relevant clinical information to new histologies and plot group file
 tumor_clin_meta <- v11_hist %>%
   filter(Kids_First_Biospecimen_ID %in% tumor_ids$Kids_First_Biospecimen_ID_tumor) %>%
-  select(sample_id, tumor_descriptor, race, ethnicity, age_at_diagnosis_days, age_last_update_days, PFS_days, OS_days, OS_status, 
-         extent_of_tumor_resection, CNS_region) %>%
+  select(sample_id, tumor_descriptor, race, ethnicity, cancer_predispositions, age_at_diagnosis_days, age_last_update_days, PFS_days, OS_days, OS_status, 
+         extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
   dplyr::rename(sample_id_tumor = sample_id)
   
 
