@@ -7,7 +7,7 @@ setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "sample-distribution")
-plot_dir <- file.path(analysis_dir, "plots")
+plot_dir <- file.path(analysis_dir, "plots/")
 
 # If the results directory does not exist, create it
 if (!dir.exists(plot_dir)) {
@@ -16,11 +16,30 @@ if (!dir.exists(plot_dir)) {
 
 # source publication theme
 source(file.path(root_dir, "figures", "theme.R"))
+
+# read in histologies file
 hist <- read_tsv(file.path(root_dir, 
                            "analyses", 
                            "collapse-tumor-histologies", 
                            "results",
                            "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
+
+# read in CPG list
+cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
+
+
+# read in plp file
+plp_all <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv")) %>%
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  # determine whether final call was due to clinvar or intervar
+  mutate(final_call_source = case_when(grepl("ClinVar Likely pathogenic", Reasoning_for_call) ~ "ClinVar - Likely Pathogenic",
+                                       grepl("ClinVar Pathogenic", Reasoning_for_call) ~ "ClinVar - Pathogenic",
+                                       grepl("InterVar_Recalculated Likely_pathogenic", Reasoning_for_call) ~ "InterVar - Likely Pathogenic",
+                                       grepl("InterVar_Recalculated Pathogenic", Reasoning_for_call) ~ "InterVar - Pathogenic"))
+
+plp_cpg <- plp_all %>%
+  filter(Hugo_Symbol %in% cpg)
+
 
 # add n per group in label  
 hist_counts <- hist %>%
@@ -42,4 +61,61 @@ ggplot(hist_counts, aes(x = plot_group_n, fill = plot_group_n)) +
   coord_flip() + 
   theme_Publication()
 dev.off()
+
+# summary of variants for all genes or just CPGs
+plp_all_genes <- plp_all %>%
+  select(final_call_source) %>%
+  table(dnn = c("call", "n")) %>%
+  as.data.frame() %>%
+  mutate(final_call_source = fct_reorder(final_call_source, Freq))
+plp_all_genes
+
+plp_cpgs <- plp_cpg %>%
+  select(final_call_source) %>%
+  table(dnn = c("call", "n")) %>%
+  as.data.frame() %>%
+  mutate(final_call_source = fct_reorder(final_call_source, Freq))
+plp_cpgs
+
+# create plots
+dfs <- list("plp_all_genes" = plp_all_genes, "plp_cpgs" = plp_cpgs)
+
+for (df in names(dfs)) {
+  
+  # add titles to print
+  if (df == "plp_all_genes"){
+    title <- "All genes"
+  }
+  
+  if (df == "plp_cpgs"){
+    title <- "CPGs"
+  }
+    
+  dev.set(dev.next())
+  tiff(file.path(paste0(plot_dir, df, "-calls.tiff")), height = 1000, width = 1600, res = 300)
+  
+  print(
+    dfs[[df]] %>%
+    arrange(Freq) %>%
+    mutate(group=factor(final_call_source, final_call_source)) %>%
+    ggplot( aes(x=final_call_source, y=Freq) ) +
+    geom_segment( aes(x=final_call_source ,xend=final_call_source, y=0, yend=Freq), color="grey") +
+    geom_point(size=3, color="black") +
+    coord_flip() +
+    theme_Publication() +
+    theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="none"
+    ) +
+    ylab("Number of germline variants") +
+    xlab("Final call") +
+    ggtitle(title) +
+    #left align
+    theme(plot.title = element_text(hjust = 0))   
+  )
+  dev.off()
+  
+}
+
 
