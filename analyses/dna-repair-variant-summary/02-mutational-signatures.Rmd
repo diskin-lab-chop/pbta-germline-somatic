@@ -35,8 +35,6 @@ histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies'
 
 plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
-cosmicv3_file <- file.path(input_dir, 'COSMICv3.3_signature_exposures_therapyfiltered.tsv')
-
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 ```
 
