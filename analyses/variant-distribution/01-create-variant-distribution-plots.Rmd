@@ -144,7 +144,7 @@ for (each in names(genelists)){
 
 dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill = plot_group)) +
   geom_col(col = "black", size = 0.4) +
-  scale_fill_manual(values = plot_group_palette) + 
+  scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
   ylab("Number of patients with P/LP variants") +
   xlab(x_axis_title) +
   theme_Publication() +
