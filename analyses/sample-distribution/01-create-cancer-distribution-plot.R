@@ -8,6 +8,7 @@ setwd(root_dir)
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "sample-distribution")
 plot_dir <- file.path(analysis_dir, "plots/")
+input_dir <- file.path(analysis_dir, "input")
 
 # If the results directory does not exist, create it
 if (!dir.exists(plot_dir)) {
@@ -46,7 +47,7 @@ hist_counts <- hist %>%
   count(plot_group) %>%
   inner_join(hist) %>%
   mutate(plot_group_n = paste0(plot_group, " (n = ", n, ")")) %>%
-  mutate(plot_group_n = fct_rev(fct_infreq(plot_group_n))) %>%
+  mutate(plot_group_n = fct_rev(fct_infreq(plot_group_n)),) %>%
   unique()
 
 plot_group_palette <- hist_counts$plot_group_hex
@@ -56,6 +57,36 @@ tiff(file.path(plot_dir, "histology-distribution.tiff"), height = 1500, width = 
 ggplot(hist_counts, aes(x = plot_group_n, fill = plot_group_n)) +
   geom_bar(color = "black", show.legend = FALSE) +
   scale_fill_manual(values = plot_group_palette) + 
+  xlab("Histology") +
+  ylab("Number of patients with tumor diagnosis") +
+  coord_flip() + 
+  theme_Publication()
+dev.off()
+
+
+# current + x01 cohort 
+x01 <- read_tsv(file.path(input_dir, "838_OpenPBTAcohort_1720_X01cohort.tsv")) %>%
+  filter(!is.na(plot_group))
+
+
+# add n per group in label  
+x01_counts <- x01 %>%
+  count(plot_group, cohort) %>%
+  group_by(plot_group) %>%
+  # make sure OpenPBTA is first - relevel factors after this for the plot
+  summarise(n = str_c(n, sep = ", ", collapse = ", ")) %>%
+  inner_join(x01) %>%
+  mutate(plot_group_n = paste0(plot_group, " (n = ", n, ")"),
+         # reorder plot groups in descending order
+         plot_group_n = fct_rev(fct_infreq(plot_group_n)),
+        # now relevel cohort to make OpenPBTA appear first
+        cohort = fct_relevel(cohort, "PBTA X01", "OpenPBTA"))
+
+
+tiff(file.path(plot_dir, "x01-histology-distribution.tiff"), height = 1800, width = 3600, res = 300)
+ggplot(x01_counts, aes(x = plot_group_n, fill = cohort)) +
+  geom_bar(color = "black", show.legend = TRUE) +
+  scale_fill_manual(values = c("OpenPBTA" = "black", "PBTA X01" = "grey")) + 
   xlab("Histology") +
   ylab("Number of patients with tumor diagnosis") +
   coord_flip() + 
