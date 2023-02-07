@@ -1,5 +1,6 @@
 library(ggplot2)
 library(tidyverse) 
+library(tidytext)
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -96,15 +97,17 @@ dev.off()
 # summary of variants for all genes or just CPGs
 plp_all_genes <- plp_all %>%
   select(final_call_source) %>%
-  table(dnn = c("call", "n")) %>%
+  table(dnn = c("final_call_source", "n")) %>%
   as.data.frame() %>%
+  rename("final_call_source" = final_call_source.1) %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_all_genes
 
 plp_cpgs <- plp_cpg %>%
   select(final_call_source) %>%
-  table(dnn = c("call", "n")) %>%
+  table(dnn = c("final_call_source", "n")) %>%
   as.data.frame() %>%
+  rename("final_call_source" = final_call_source.1) %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_cpgs
 
@@ -149,4 +152,73 @@ for (df in names(dfs)) {
   
 }
 
+
+# append plot group to plp_cpg
+plp_cpg <- plp_cpg %>%
+  rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal")
+
+# obtain counts and freq of CPG PLP variants by plot group 
+
+hist_plp_cpg <- plp_cpg %>%
+  distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
+  count(plot_group) %>%
+  dplyr::rename('plp_cpg_n' = n) %>%
+  filter(!is.na(plot_group)) %>%
+  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
+  distinct(plot_group, .keep_all = TRUE) %>%
+  mutate(freq = plp_cpg_n/n*100)
+
+# create count and freq plots by group
+
+tiff(file.path(plot_dir, "histology-CPG-PLP-count.tiff"), height = 1800, width = 2800, res = 300)
+hist_plp_cpg %>%
+  arrange(plp_cpg_n) %>%
+  ggplot(aes(x = factor(plot_group_n, plot_group_n), y = plp_cpg_n, fill = factor(plot_group_n))) +
+  geom_bar(stat = "identity", color = "black", show.legend = FALSE) + 
+  labs(x = "", y = "Number of patients with germline CPG P-LP variant") +
+  scale_fill_manual(values = plot_group_palette) +
+  coord_flip() + 
+  theme_Publication()
+dev.off()
+
+tiff(file.path(plot_dir, "histology-CPG-PLP-freq.tiff"), height = 1800, width = 2500, res = 300)
+hist_plp_cpg %>%
+  arrange(freq) %>%
+  ggplot(aes(x = factor(plot_group_n, plot_group_n), y = freq, fill = factor(plot_group_n))) +
+  geom_bar(stat = "identity", color = "black", show.legend = FALSE) + 
+  labs(x = "", y = "% Patients with germline CPG P-LP variant") +
+  scale_fill_manual(values = plot_group_palette) +
+  coord_flip() + 
+  theme_Publication()
+dev.off()
+
+# obtain gene-level count and freq of PLP variants by plot group 
+
+hist_gene_plp_cpg <- plp_cpg %>%
+  count(plot_group, Hugo_Symbol) %>%
+  dplyr::rename('plp_cpg_n' = n) %>%
+  filter(!is.na(plot_group)) %>%
+  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
+  mutate(freq = plp_cpg_n/n) %>%
+  arrange(plot_group, freq) %>%
+  mutate(Hugo_Symbol = factor(Hugo_Symbol, unique(Hugo_Symbol)))
+
+# Create freq plot
+
+png(file.path(plot_dir, "CPG-PLP-freq-by-histology.png"), height = 5700, width = 5500, res = 300)
+hist_gene_plp_cpg %>%
+  mutate(plot_group_n = factor(plot_group_n, unique(hist_gene_plp_cpg$plot_group_n)),
+         Hugo_Symbol = reorder_within(Hugo_Symbol, freq, plot_group_n)) %>%
+  ggplot(aes(x = Hugo_Symbol, y = freq)) +
+  geom_point(size = 3, show.legend = FALSE) + 
+  geom_segment(aes(x=Hugo_Symbol, xend=Hugo_Symbol, y=0, yend=freq),
+               linewidth = 1,
+               show.legend = FALSE) +
+  labs(x = "", y = "Proportion of patients with germline PLP variant") +
+  coord_flip() +
+  scale_x_reordered() +
+  facet_wrap(~plot_group_n, scale = "free") +
+  theme_Publication()
+dev.off()
 
