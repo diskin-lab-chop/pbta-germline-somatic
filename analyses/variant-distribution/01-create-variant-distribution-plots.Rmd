@@ -158,6 +158,28 @@ tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-histology.tiff")
 print(dist_plot)
 dev.off()
 
+## make cpg plot excluding FGFR1 for R03 grant
+
+if (each == "cpg") {
+  
+  dist_plot <- ggplot(data = n_per_gene[n_per_gene$Hugo_Symbol != "FGFR1",], aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill = plot_group)) +
+  geom_col(col = "black", size = 0.4) +
+  scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
+  ylab("Number of patients with P/LP variants") +
+  xlab(x_axis_title) +
+  theme_Publication() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ylim(0,20) +
+  labs(fill = "Tumor diagnosis")
+  print(dist_plot)
+  
+  dev.set(dev.next())
+  tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-histology_R03.tiff")), height = 1800, width = fig_width, res = 300)
+  print(dist_plot)
+  dev.off()
+  
+}
+
 
 }
 
