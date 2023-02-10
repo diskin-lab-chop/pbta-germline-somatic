@@ -42,6 +42,7 @@ RUN install2.r \
 	BiocManager \
   ComplexHeatmap \
   data.table \
+  ggpubr \
   ggthemes \
 	optparse \
 	pheatmap \
