@@ -80,8 +80,8 @@ x01_counts <- x01 %>%
   mutate(plot_group_n = paste0(plot_group, " (n = ", n, ")"),
          # reorder plot groups in descending order
          plot_group_n = fct_rev(fct_infreq(plot_group_n)),
-        # now relevel cohort to make OpenPBTA appear first
-        cohort = fct_relevel(cohort, "PBTA X01", "OpenPBTA"))
+         # now relevel cohort to make OpenPBTA appear first
+         cohort = fct_relevel(cohort, "PBTA X01", "OpenPBTA"))
 
 
 tiff(file.path(plot_dir, "x01-histology-distribution.tiff"), height = 1800, width = 3600, res = 300)
@@ -111,8 +111,17 @@ plp_cpgs <- plp_cpg %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_cpgs
 
+plp_cpgs_r03 <- plp_cpg %>%
+  filter(Hugo_Symbol != "FGFR1") %>%
+  select(final_call_source) %>%
+  table(dnn = c("final_call_source", "n")) %>%
+  as.data.frame() %>%
+  rename("final_call_source" = final_call_source.1) %>%
+  mutate(final_call_source = fct_reorder(final_call_source, Freq))
+plp_cpgs
+
 # create plots
-dfs <- list("plp_all_genes" = plp_all_genes, "plp_cpgs" = plp_cpgs)
+dfs <- list("plp_all_genes" = plp_all_genes, "plp_cpgs" = plp_cpgs, "plp_cpgs_r03" = plp_cpgs_r03)
 
 for (df in names(dfs)) {
   
@@ -121,32 +130,32 @@ for (df in names(dfs)) {
     title <- "All genes"
   }
   
-  if (df == "plp_cpgs"){
+  if (df %in% c("plp_cpgs", "plp_cpgs_r03")){
     title <- "CPGs"
   }
-    
+  
   dev.set(dev.next())
   tiff(file.path(paste0(plot_dir, df, "-calls.tiff")), height = 1000, width = 1600, res = 300)
   
   print(
     dfs[[df]] %>%
-    arrange(Freq) %>%
-    mutate(group=factor(final_call_source, final_call_source)) %>%
-    ggplot( aes(x=final_call_source, y=Freq) ) +
-    geom_segment( aes(x=final_call_source ,xend=final_call_source, y=0, yend=Freq), color="grey") +
-    geom_point(size=3, color="black") +
-    coord_flip() +
-    theme_Publication() +
-    theme(
-    panel.grid.minor.y = element_blank(),
-    panel.grid.major.y = element_blank(),
-    legend.position="none"
-    ) +
-    ylab("Number of germline variants") +
-    xlab("Final call") +
-    ggtitle(title) +
-    #left align
-    theme(plot.title = element_text(hjust = 0))   
+      arrange(Freq) %>%
+      mutate(group=factor(final_call_source, final_call_source)) %>%
+      ggplot( aes(x=final_call_source, y=Freq) ) +
+      geom_segment( aes(x=final_call_source ,xend=final_call_source, y=0, yend=Freq), color="grey") +
+      geom_point(size=3, color="black") +
+      coord_flip() +
+      theme_Publication() +
+      theme(
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank(),
+        legend.position="none"
+      ) +
+      ylab("Number of germline variants") +
+      xlab("Final call") +
+      ggtitle(title) +
+      #left align
+      theme(plot.title = element_text(hjust = 0))   
   )
   dev.off()
   
@@ -204,10 +213,29 @@ hist_gene_plp_cpg <- plp_cpg %>%
   arrange(plot_group, freq) %>%
   mutate(Hugo_Symbol = factor(Hugo_Symbol, unique(Hugo_Symbol)))
 
-# Create freq plot
+# Create gene-by-histology freq plot
 
 png(file.path(plot_dir, "CPG-PLP-freq-by-histology.png"), height = 5700, width = 5500, res = 300)
 hist_gene_plp_cpg %>%
+  mutate(plot_group_n = factor(plot_group_n, unique(hist_gene_plp_cpg$plot_group_n)),
+         Hugo_Symbol = reorder_within(Hugo_Symbol, freq, plot_group_n)) %>%
+  ggplot(aes(x = Hugo_Symbol, y = freq)) +
+  geom_point(size = 3, show.legend = FALSE) + 
+  geom_segment(aes(x=Hugo_Symbol, xend=Hugo_Symbol, y=0, yend=freq),
+               linewidth = 1,
+               show.legend = FALSE) +
+  labs(x = "", y = "Proportion of patients with germline PLP variant") +
+  coord_flip() +
+  scale_x_reordered() +
+  facet_wrap(~plot_group_n, scale = "free") +
+  theme_Publication()
+dev.off()
+
+# create same plot, excluding FGFR1 for r03 grant: 
+
+png(file.path(plot_dir, "CPG-PLP-freq-by-histology_r03.png"), height = 5700, width = 5500, res = 300)
+hist_gene_plp_cpg %>%
+  filter(Hugo_Symbol != "FGFR1") %>%
   mutate(plot_group_n = factor(plot_group_n, unique(hist_gene_plp_cpg$plot_group_n)),
          Hugo_Symbol = reorder_within(Hugo_Symbol, freq, plot_group_n)) %>%
   ggplot(aes(x = Hugo_Symbol, y = freq)) +
