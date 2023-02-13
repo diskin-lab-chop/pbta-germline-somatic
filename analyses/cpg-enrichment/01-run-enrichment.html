@@ -429,12 +429,12 @@ font-size: 0.95em;
 <p>Load packages and set directories</p>
 <pre class="r"><code>library(data.table)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
+<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
 ## ✔ ggplot2 3.4.0     ✔ purrr   1.0.1
 ## ✔ tibble  3.1.8     ✔ dplyr   1.1.0
 ## ✔ tidyr   1.3.0     ✔ stringr 1.5.0
 ## ✔ readr   2.1.3     ✔ forcats 1.0.0
-## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ───────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::between()   masks data.table::between()
 ## ✖ dplyr::filter()    masks stats::filter()
 ## ✖ dplyr::first()     masks data.table::first()
@@ -464,7 +464,7 @@ pmbb_file &lt;- file.path(input_dir, &quot;PBTA-CPG-PLP-enrichment-PMBB.tsv&quot
 
 hist &lt;- read_tsv(cbtn_histologies_file)</code></pre>
 <pre><code>## Rows: 838 Columns: 30
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (27): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl  (3): broad_histology_order, age_last_update_days, OS_days
@@ -474,7 +474,7 @@ hist &lt;- read_tsv(cbtn_histologies_file)</code></pre>
 <pre class="r"><code>plp &lt;- read_tsv(plp_file) %&gt;%
   filter(Hugo_Symbol %in% cpgs &amp; Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)</code></pre>
 <pre><code>## Rows: 5658 Columns: 7
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (7): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
 ## 
@@ -487,7 +487,7 @@ tests for each CPG</p>
 gnomad_cts &lt;- read_tsv(gnomad_file) %&gt;%
   filter(Hugo_symbol %in% cpgs)</code></pre>
 <pre><code>## Rows: 69 Columns: 3
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): Hugo_symbol
 ## dbl (2): count_with_plp_gnomAD, count_without_plp_gnomAD
@@ -653,19 +653,19 @@ for (i in 1:nrow(cpg_enr_gnomad)){
 <pre class="r"><code># calculate FDRs
 
 cpg_enr_gnomad &lt;- cpg_enr_gnomad %&gt;%
-  mutate(fdr = p.adjust(pvalue, &quot;BH&quot;))
+  mutate(adjusted_p = p.adjust(pvalue, method = &quot;bonferroni&quot;))
 
 # save result
 
 write_tsv(cpg_enr_gnomad, 
-          file.path(results_dir, &quot;CBTN_CPG_PLP_enrichment_gnomAD.tsv&quot;))</code></pre>
+          file.path(results_dir, &quot;PBTA-cpg-plp-enrichment_gnomAD.tsv&quot;))</code></pre>
 <p>Read in PMBB cohort cpg plp frequencies and run Fisher’s exact tests
 for each CPG</p>
 <pre class="r"><code># read in PMBB freqs
 
 pmbb_cts &lt;- read_tsv(pmbb_file)</code></pre>
 <pre><code>## Rows: 66 Columns: 10
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): Hugo_symbol
 ## dbl (9): count_with_plp_CBTTC, count_without_plp_CBTTC, count_with_plp_PMBB_...
@@ -700,12 +700,12 @@ for (i in 1:nrow(cpg_enr_pmbb)){
 # calculate FDRs
 
 cpg_enr_pmbb &lt;- cpg_enr_pmbb %&gt;%
-  mutate(fdr = p.adjust(pvalue, method = &quot;BH&quot;))
+  mutate(adjusted_p = p.adjust(pvalue, method = &quot;bonferroni&quot;))
 
 # save result
 
 write_tsv(cpg_enr_pmbb, 
-          file.path(results_dir, &quot;CBTN_CPG_PLP_enrichment_PMBB.tsv&quot;))</code></pre>
+          file.path(results_dir, &quot;PBTA-cpg-plp-enrichment-PMBB.tsv&quot;))</code></pre>
 <p>Calculate CPG PLP enrichment in CBTN cohort relative to gnomAD by
 gene and histology group</p>
 <pre class="r"><code># calculate number of patients per plot group
@@ -1002,12 +1002,12 @@ for (i in 1:nrow(hist_cpg_enr_gnomad)){
 <pre class="r"><code># calculate FDR 
 
 hist_cpg_enr_gnomad &lt;- hist_cpg_enr_gnomad %&gt;%
-  mutate(fdr = p.adjust(hist_cpg_enr_gnomad$pvalue, method = &quot;BH&quot;))
+  mutate(adjusted_p = p.adjust(hist_cpg_enr_gnomad$pvalue, method = &quot;bonferroni&quot;))
 
 # save output 
 
 write_tsv(hist_cpg_enr_gnomad, 
-          file.path(results_dir, &quot;CBTN_CPG_PLP_enrichment_by_plotGroup_gnomAD.tsv&quot;))</code></pre>
+          file.path(results_dir, &quot;PBTA-cpg-plp-enrichment-by-plotGroup-gnomAD.tsv&quot;))</code></pre>
 <p>Calculate CPG PLP enrichment in CBTN cohort relative to PMBB by gene
 and histology group</p>
 <pre class="r"><code># obtain counts of plp variants by plot group and cpg and merge with PMBB
@@ -1041,12 +1041,57 @@ for (i in 1:nrow(hist_cpg_enr_pmbb)){
 # calculate FDR
 
 hist_cpg_enr_pmbb &lt;- hist_cpg_enr_pmbb %&gt;%
-  mutate(fdr = p.adjust(hist_cpg_enr_pmbb$pvalue, method = &quot;BH&quot;))
+  mutate(adjusted_p = p.adjust(hist_cpg_enr_pmbb$pvalue, method = &quot;bonferroni&quot;))
 
 # save output 
 
 write_tsv(hist_cpg_enr_pmbb, 
-          file.path(results_dir, &quot;CBTN_CPG_PLP_enrichment_by_plotGroup_PMBB.tsv&quot;))</code></pre>
+          file.path(results_dir, &quot;PBTA-cpg-plp-enrichment-by-plotGroup-PMBB.tsv&quot;))</code></pre>
+<p>Combine gene and gene-by-histology PLP enrichment results across
+control cohorts</p>
+<pre class="r"><code>cpg_enr_all &lt;- cpg_enr_gnomad %&gt;%
+  rename(&quot;count_with_plp_PBTA&quot; = n,
+         &quot;count_without_plp_PBTA&quot; = n_without,
+         &quot;oddsRatio_gnomad&quot; = oddsRatio,
+         &quot;pvalue_gnomad&quot; = pvalue,
+         &quot;CI_lower_gnomad&quot; = CI_lower,
+         &quot;CI_upper_gnomad&quot; = CI_upper,
+         &quot;adjusted_p_gnomad&quot; = adjusted_p) %&gt;%
+  left_join(cpg_enr_pmbb[,c(&quot;Hugo_symbol&quot;, &quot;count_with_plp_PMBB_noTumor&quot;,
+                            &quot;count_without_plp_PMBB_noTumor&quot;, &quot;oddsRatio&quot;,
+                            &quot;pvalue&quot;, &quot;CI_lower&quot;, &quot;CI_upper&quot;, &quot;adjusted_p&quot;)],
+            by = &quot;Hugo_symbol&quot;) %&gt;%
+  rename(&quot;oddsRatio_pmbb&quot; = oddsRatio,
+         &quot;pvalue_pmbb&quot; = pvalue,
+         &quot;CI_lower_pmbb&quot; = CI_lower,
+         &quot;CI_upper_pmbb&quot; = CI_upper,
+         &quot;adjusted_p_pmbb&quot; = adjusted_p)
+
+write_tsv(cpg_enr_all,
+          file.path(results_dir, &quot;cpg-plp-enrichment-merged.tsv&quot;))
+
+
+hist_cpg_enr_all &lt;- hist_cpg_enr_gnomad %&gt;%
+  rename(&quot;count_with_plp_PBTA&quot; = n,
+         &quot;count_without_plp_PBTA&quot; = n_without,
+         &quot;plot_group_n&quot; = hist_n,
+         &quot;oddsRatio_gnomad&quot; = oddsRatio,
+         &quot;pvalue_gnomad&quot; = pvalue,
+         &quot;CI_lower_gnomad&quot; = CI_lower,
+         &quot;CI_upper_gnomad&quot; = CI_upper,
+         &quot;adjusted_p_gnomad&quot; = adjusted_p) %&gt;%
+  left_join(hist_cpg_enr_pmbb[,c(&quot;plot_group&quot;, &quot;Hugo_symbol&quot;, &quot;count_with_plp_PMBB_noTumor&quot;,
+                            &quot;count_without_plp_PMBB_noTumor&quot;, &quot;oddsRatio&quot;,
+                            &quot;pvalue&quot;, &quot;CI_lower&quot;, &quot;CI_upper&quot;, &quot;adjusted_p&quot;)],
+            by = c(&quot;plot_group&quot;, &quot;Hugo_symbol&quot;)) %&gt;%
+  rename(&quot;oddsRatio_pmbb&quot; = oddsRatio,
+         &quot;pvalue_pmbb&quot; = pvalue,
+         &quot;CI_lower_pmbb&quot; = CI_lower,
+         &quot;CI_upper_pmbb&quot; = CI_upper,
+         &quot;adjusted_p_pmbb&quot; = adjusted_p)
+
+write_tsv(hist_cpg_enr_all,
+          file.path(results_dir, &quot;plot-group-cpg-plp-enrichment-merged.tsv&quot;))</code></pre>
 
 
 

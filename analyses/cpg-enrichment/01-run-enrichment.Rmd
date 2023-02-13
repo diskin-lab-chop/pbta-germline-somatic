@@ -85,12 +85,12 @@ for (i in 1:nrow(cpg_enr_gnomad)){
 # calculate FDRs
 
 cpg_enr_gnomad <- cpg_enr_gnomad %>%
-  mutate(fdr = p.adjust(pvalue, "BH"))
+  mutate(adjusted_p = p.adjust(pvalue, method = "bonferroni"))
 
 # save result
 
 write_tsv(cpg_enr_gnomad, 
-          file.path(results_dir, "CBTN_CPG_PLP_enrichment_gnomAD.tsv"))
+          file.path(results_dir, "PBTA-cpg-plp-enrichment_gnomAD.tsv"))
 ```
 
 Read in PMBB cohort cpg plp frequencies and run Fisher's exact tests for each CPG  
@@ -129,12 +129,12 @@ for (i in 1:nrow(cpg_enr_pmbb)){
 # calculate FDRs
 
 cpg_enr_pmbb <- cpg_enr_pmbb %>%
-  mutate(fdr = p.adjust(pvalue, method = "BH"))
+  mutate(adjusted_p = p.adjust(pvalue, method = "bonferroni"))
 
 # save result
 
 write_tsv(cpg_enr_pmbb, 
-          file.path(results_dir, "CBTN_CPG_PLP_enrichment_PMBB.tsv"))
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-PMBB.tsv"))
 ```
 
 Calculate CPG PLP enrichment in CBTN cohort relative to gnomAD by gene and histology group  
@@ -178,12 +178,12 @@ for (i in 1:nrow(hist_cpg_enr_gnomad)){
 # calculate FDR 
 
 hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
-  mutate(fdr = p.adjust(hist_cpg_enr_gnomad$pvalue, method = "BH"))
+  mutate(adjusted_p = p.adjust(hist_cpg_enr_gnomad$pvalue, method = "bonferroni"))
 
 # save output 
 
 write_tsv(hist_cpg_enr_gnomad, 
-          file.path(results_dir, "CBTN_CPG_PLP_enrichment_by_plotGroup_gnomAD.tsv"))
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-by-plotGroup-gnomAD.tsv"))
 ```
 
 Calculate CPG PLP enrichment in CBTN cohort relative to PMBB by gene and histology group  
@@ -221,10 +221,60 @@ for (i in 1:nrow(hist_cpg_enr_pmbb)){
 # calculate FDR
 
 hist_cpg_enr_pmbb <- hist_cpg_enr_pmbb %>%
-  mutate(fdr = p.adjust(hist_cpg_enr_pmbb$pvalue, method = "BH"))
+  mutate(adjusted_p = p.adjust(hist_cpg_enr_pmbb$pvalue, method = "bonferroni"))
 
 # save output 
 
 write_tsv(hist_cpg_enr_pmbb, 
-          file.path(results_dir, "CBTN_CPG_PLP_enrichment_by_plotGroup_PMBB.tsv"))
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-by-plotGroup-PMBB.tsv"))
+```
+
+Combine gene and gene-by-histology PLP enrichment results across control cohorts
+
+```{r}
+
+cpg_enr_all <- cpg_enr_gnomad %>%
+  rename("count_with_plp_PBTA" = n,
+         "count_without_plp_PBTA" = n_without,
+         "oddsRatio_gnomad" = oddsRatio,
+         "pvalue_gnomad" = pvalue,
+         "CI_lower_gnomad" = CI_lower,
+         "CI_upper_gnomad" = CI_upper,
+         "adjusted_p_gnomad" = adjusted_p) %>%
+  left_join(cpg_enr_pmbb[,c("Hugo_symbol", "count_with_plp_PMBB_noTumor",
+                            "count_without_plp_PMBB_noTumor", "oddsRatio",
+                            "pvalue", "CI_lower", "CI_upper", "adjusted_p")],
+            by = "Hugo_symbol") %>%
+  rename("oddsRatio_pmbb" = oddsRatio,
+         "pvalue_pmbb" = pvalue,
+         "CI_lower_pmbb" = CI_lower,
+         "CI_upper_pmbb" = CI_upper,
+         "adjusted_p_pmbb" = adjusted_p)
+
+write_tsv(cpg_enr_all,
+          file.path(results_dir, "cpg-plp-enrichment-merged.tsv"))
+
+
+hist_cpg_enr_all <- hist_cpg_enr_gnomad %>%
+  rename("count_with_plp_PBTA" = n,
+         "count_without_plp_PBTA" = n_without,
+         "plot_group_n" = hist_n,
+         "oddsRatio_gnomad" = oddsRatio,
+         "pvalue_gnomad" = pvalue,
+         "CI_lower_gnomad" = CI_lower,
+         "CI_upper_gnomad" = CI_upper,
+         "adjusted_p_gnomad" = adjusted_p) %>%
+  left_join(hist_cpg_enr_pmbb[,c("plot_group", "Hugo_symbol", "count_with_plp_PMBB_noTumor",
+                            "count_without_plp_PMBB_noTumor", "oddsRatio",
+                            "pvalue", "CI_lower", "CI_upper", "adjusted_p")],
+            by = c("plot_group", "Hugo_symbol")) %>%
+  rename("oddsRatio_pmbb" = oddsRatio,
+         "pvalue_pmbb" = pvalue,
+         "CI_lower_pmbb" = CI_lower,
+         "CI_upper_pmbb" = CI_upper,
+         "adjusted_p_pmbb" = adjusted_p)
+
+write_tsv(hist_cpg_enr_all,
+          file.path(results_dir, "plot-group-cpg-plp-enrichment-merged.tsv"))
+
 ```
