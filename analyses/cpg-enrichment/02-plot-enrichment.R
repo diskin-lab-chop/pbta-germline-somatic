@@ -11,7 +11,8 @@ library(ggplot2)
 library(ggthemes)
 library(scales)
 library(ggsci)
-#library(ggpubr)
+library(ggpubr)
+library(tidytext)
 
 # Set directory path
 
@@ -22,6 +23,8 @@ data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "cpg-enrichment")
 input_dir <- file.path(analysis_dir, "results")
 plot_dir <- file.path(analysis_dir, "plots")
+
+source(file.path(root_dir, "figures", "theme.R"))
 
 # Set enrichment file paths
 
@@ -46,20 +49,20 @@ plp <- read_tsv(plp_file) %>%
 # Create 'dummy' data frame with CBTN enrichment values to use as reference in plots
 
 cpg_enr_pbta <- cpg_enr_gnomad %>%
-  select(Hugo_symbol, n, n_without, oddsRatio, pvalue, CI_lower, CI_upper, fdr) %>%
+  select(Hugo_symbol, n, n_without, oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
   mutate(cohort = "PBTA",
          oddsRatio = NA,
          pvalue = NA,
          CI_lower = NA, 
          CI_upper = NA,
-         fdr = NA) %>%
+         adjusted_p = NA) %>%
   rename("n_plp" = n, "n_no_plp" = n_without)
 
 # subset gnomAD and PMBB enrichment results for merging
 
 cpg_enr_gnomad <- cpg_enr_gnomad %>%
   select(Hugo_symbol, count_with_plp_gnomAD, count_without_plp_gnomAD, 
-         oddsRatio, pvalue, CI_lower, CI_upper, fdr) %>%
+         oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
   mutate(cohort = "gnomAD") %>%
   rename("n_plp" = count_with_plp_gnomAD, 
          "n_no_plp" = count_without_plp_gnomAD)
@@ -67,7 +70,7 @@ cpg_enr_gnomad <- cpg_enr_gnomad %>%
 cpg_enr_pmbb <- cpg_enr_pmbb %>%
   select(Hugo_symbol, count_with_plp_PMBB_noTumor, 
          count_without_plp_PMBB_noTumor, 
-         oddsRatio, pvalue, CI_lower, CI_upper, fdr) %>%
+         oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
   mutate(cohort = "PMBB") %>%
   rename("n_plp" = count_with_plp_PMBB_noTumor, 
          "n_no_plp" = count_without_plp_PMBB_noTumor)
@@ -77,16 +80,19 @@ cpg_enr_pmbb <- cpg_enr_pmbb %>%
 cpg_enr_all <- cpg_enr_pbta %>%
   bind_rows(cpg_enr_gnomad, cpg_enr_pmbb) %>%
   mutate(perc_plp = n_plp/(n_plp + n_no_plp) * 100,
-         fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/"))
+         fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/")) %>%
+  arrange(desc(-log10(pvalue))) %>%
+  mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
+         Hugo_symbol = factor(Hugo_symbol, unique(Hugo_symbol)))
 
 # pull significnalty enriched CPGs relative to gnomAD and PMBB cohorts, and obtain those common to both sets
 
 sig_cpgs_gnomad <- cpg_enr_all %>%
-  filter(cohort == "gnomAD" & fdr < 0.05 & fdr > 0) %>%
+  filter(cohort == "gnomAD" & adjusted_p < 0.05 & adjusted_p > 0) %>%
   pull(Hugo_symbol)
 
 sig_cpgs_pmbb <- cpg_enr_all %>%
-  filter(cohort == "PMBB" & fdr < 0.05 & fdr > 0) %>%
+  filter(cohort == "PMBB" & adjusted_p < 0.05 & adjusted_p > 0) %>%
   pull(Hugo_symbol)
 
 sig_cpgs_both <- intersect(sig_cpgs_gnomad, sig_cpgs_pmbb)
@@ -115,20 +121,60 @@ all_source_cts <- cpg_enr_all %>%
   mutate(final_call_source = NA) %>%
   dplyr::select(Hugo_symbol, cohort, final_call_source, n_plp, n_no_plp, perc_plp) %>%
   bind_rows(pbta_source_cts) %>%
-  left_join(cpg_enr_all[,c("Hugo_symbol", "cohort", "fraction")], by = c("Hugo_symbol", "cohort"))
+  left_join(cpg_enr_all[,c("Hugo_symbol", "cohort", "fraction")], by = c("Hugo_symbol", "cohort")) %>%
+  mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
+         Hugo_symbol = factor(Hugo_symbol, unique(cpg_enr_all$Hugo_symbol)))
+
+
+# Create CPG enrichment FDR plot  
+
+pval_plot <- cpg_enr_all %>% 
+  filter(Hugo_symbol %in% sig_cpgs_both) %>%
+  mutate(pvalue = -log10(pvalue)) %>%
+  ggplot(aes(x = pvalue, y = factor(cohort))) +
+  geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
+  labs(x = "-log10(p)", y = "") + 
+  geom_vline(xintercept = -log10(0.05/nrow(cpg_enr_all)), linetype = "dashed") + 
+  facet_wrap(~Hugo_symbol, nrow = 6, scale = "fixed") +
+  coord_cartesian(xlim = c(0,24)) + 
+  theme_Publication() +
+  theme(plot.margin = unit(c(2,1,1,0), "lines"))
+
+
+
+# Create CPG Odds Ratio plot 
+
+enr_plot <- cpg_enr_all %>% 
+  filter(Hugo_symbol %in% sig_cpgs_both) %>%
+  ggplot(aes(x = factor(cohort), y = oddsRatio)) +
+  geom_point(size = 3, color = "#00A087FF",
+             show.legend = FALSE) + 
+  geom_errorbar(aes(ymin = CI_lower, ymax = CI_upper), width = 0.2, 
+                show.legend = FALSE, color = "#00A087FF") +
+  labs(y = "Odds Ratio (95% CI)", x = NULL) + 
+  scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
+                            "PMBB" = "")) +
+  coord_flip() +
+  facet_wrap(~Hugo_symbol, nrow = 6, scale = "fixed") +
+  expand_limits(y=0) +
+  theme_Publication() +
+  theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
+
+
 
 # Create % patients with CPG PLP plot separated by source call, and include fractions as text 
 
 perc_plot <- all_source_cts %>%
-  mutate(cohort = factor(cohort, c("PMBB", "gnomAD", "PBTA"))) %>%
   filter(Hugo_symbol %in% sig_cpgs_both) %>%
   ggplot(aes(x = perc_plp, y = factor(cohort), fill = final_call_source, label = fraction)) +
   geom_bar(stat = "identity", color = "black",
            show.legend = TRUE) + 
   geom_text(x = 2.2, hjust = 0, size = 4, fontface = 2) +
   labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
+  scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
+                              "PMBB" = NULL)) +
   guides(fill = guide_legend(nrow = 1)) +
-  facet_wrap(~Hugo_symbol, nrow = 6, scale = "free") +
+  facet_wrap(~Hugo_symbol, nrow = 6, scale = "fixed") +
   expand_limits(x=2) +
   coord_cartesian(clip = 'off') +
   theme_Publication() +
@@ -140,49 +186,12 @@ perc_plot <- all_source_cts %>%
   )
 
 
-# Create CPG Odds Ratio plot 
-
-enr_plot <- cpg_enr_all %>% 
-  mutate(cohort = factor(cohort, c("PMBB", "gnomAD", "PBTA"))) %>%
-  filter(Hugo_symbol %in% sig_cpgs_both) %>%
-  ggplot(aes(x = factor(cohort), y = oddsRatio)) +
-  geom_point(size = 3, color = "#00A087FF",
-             show.legend = FALSE) + 
-  geom_errorbar(aes(ymin = CI_lower, ymax = CI_upper), width = 0.2, 
-                show.legend = FALSE, color = "#00A087FF") +
-  labs(y = "Odds Ratio (95% CI)", x = NULL) + 
-  scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                            "PMBB" = "")) +
-  coord_flip() +
-  facet_wrap(~Hugo_symbol, nrow = 6, scale = "free") +
-  expand_limits(y=0) +
-  theme_Publication() +
-  theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
-
-# Create CPG enrichment FDR plot  
-
-pval_plot <- cpg_enr_all %>% 
-  mutate(cohort = factor(cohort, c("PMBB", "gnomAD", "PBTA"))) %>%
-  filter(Hugo_symbol %in% sig_cpgs_both) %>%
-  mutate(pvalue = -log10(pvalue)) %>%
-  ggplot(aes(x = pvalue, y = factor(cohort))) +
-  geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
-  labs(x = "-log10(p)", y = "") + 
-  geom_vline(xintercept = -log10(9e-3), linetype = "dashed") + 
-  scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
-                            "PMBB" = NULL)) +
-  facet_wrap(~Hugo_symbol, nrow = 6, scale = "free") +
-  coord_cartesian(xlim = c(0,24)) + 
-  theme_Publication() +
-  theme(plot.margin = unit(c(2,1,1,0), "lines"))
-
-
 # Merge plots and write to output
 
 tiff(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.tiff"),
      width = 10, height = 10, units = "in", res = 300)
 
-ggarrange(perc_plot, pval_plot, enr_plot,
+ggarrange(pval_plot, enr_plot, perc_plot,
           nrow = 1, widths = c(2,1.25,1.5))
 
 dev.off()
@@ -197,13 +206,13 @@ hist_cpg_enr_pmbb <- read_tsv(cpg_hist_enr_pmbb_file)
 # Create a 'dummy' data frame of enrichment results for CBTN to use as reference
 
 hist_cpg_enr_pbta <- hist_cpg_enr_gnomad %>%
-  select(plot_group, Hugo_symbol, n, n_without, hist_n, oddsRatio, pvalue, CI_lower, CI_upper, fdr) %>%
+  select(plot_group, Hugo_symbol, n, n_without, hist_n, oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
   mutate(cohort = "PBTA",
          oddsRatio = NA,
          pvalue = NA,
          CI_lower = NA, 
          CI_upper = NA,
-         fdr = NA) %>%
+         adjusted_p = NA) %>%
   rename("n_plp" = n, "n_no_plp" = n_without)
 
 # Subset gnomAD results for merging
@@ -211,7 +220,7 @@ hist_cpg_enr_pbta <- hist_cpg_enr_gnomad %>%
 hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
   select(plot_group, Hugo_symbol, 
          count_with_plp_gnomAD, count_without_plp_gnomAD, 
-         hist_n, oddsRatio, pvalue, CI_lower, CI_upper, fdr) %>%
+         hist_n, oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
   mutate(cohort = "gnomAD") %>%
   rename("n_plp" = count_with_plp_gnomAD, 
          "n_no_plp" = count_without_plp_gnomAD)
@@ -221,7 +230,7 @@ hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
 hist_cpg_enr_pmbb <- hist_cpg_enr_pmbb %>%
   select(plot_group, Hugo_symbol, count_with_plp_PMBB_noTumor, 
          count_without_plp_PMBB_noTumor, 
-         hist_n, oddsRatio, pvalue, CI_lower, CI_upper, fdr) %>%
+         hist_n, oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
   mutate(cohort = "PMBB") %>%
   rename("n_plp" = count_with_plp_PMBB_noTumor, 
          "n_no_plp" = count_without_plp_PMBB_noTumor)
@@ -234,18 +243,22 @@ hist_cpg_enr_all <- hist_cpg_enr_pbta %>%
     plot_group == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
     TRUE ~ plot_group
   )) %>%
+  filter(!is.na(n_plp)) %>%
   mutate(perc_plp = n_plp/(n_plp + n_no_plp) * 100,
          hist_cpg = paste(plot_group, Hugo_symbol, sep = ":"),
-         fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/"))
+         fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/"),
+         cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA"))) %>%
+  arrange(desc(-log10(pvalue))) %>%
+  mutate(hist_cpg = factor(hist_cpg, unique(hist_cpg)))
 
 # identify significantly enriched CPGs by histology relative to gnomAD and PMBB cohort, and retain those common to both lists
 
 sig_hist_cpgs_gnomad <- hist_cpg_enr_all %>%
-  filter(cohort == "gnomAD" & fdr < 0.01 & fdr > 0) %>%
+  filter(cohort == "gnomAD" & adjusted_p < 0.05 & adjusted_p > 0) %>%
   pull(hist_cpg)
 
 sig_hist_cpgs_pmbb <- hist_cpg_enr_all %>%
-  filter(cohort == "PMBB" & fdr < 0.01 & fdr > 0) %>%
+  filter(cohort == "PMBB" & adjusted_p < 0.05 & adjusted_p > 0) %>%
   pull(hist_cpg)
 
 sig_hist_cpgs_both <- intersect(sig_hist_cpgs_gnomad, sig_hist_cpgs_pmbb)
@@ -295,37 +308,33 @@ all_source_hist_cts <- hist_cpg_enr_all %>%
   bind_rows(pbta_source_hist_cts) %>%
   mutate(hist_cpg = paste(plot_group, Hugo_symbol, sep = ":")) %>%
   left_join(hist_cpg_enr_all[,c("cohort", "hist_cpg", "fraction")], by = c("cohort", "hist_cpg")) %>%
-  distinct(hist_cpg, cohort, final_call_source, .keep_all = T)
+  distinct(hist_cpg, cohort, final_call_source, .keep_all = T) %>%
+  mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
+         hist_cpg = factor(hist_cpg, unique(hist_cpg_enr_all$hist_cpg)))
   
 
 
-# Plot PLP frequency by gene and histology
+# create oddsRatio pvalue plot
 
-hist_perc_plot <- all_source_hist_cts %>%
-  mutate(cohort = factor(cohort, c("PMBB", "gnomAD", "PBTA"))) %>%
+hist_pval_plot <- hist_cpg_enr_all %>% 
   filter(hist_cpg %in% sig_hist_cpgs_both) %>%
-  ggplot(aes(x = perc_plp, y = factor(cohort), fill = final_call_source, label = fraction)) +
-  geom_bar(stat = "identity", color = "black",
-           show.legend = TRUE) + 
-  
-  geom_text(x = 70, hjust = 0, size = 4,
-            fontface = 2) +
-  labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
-  guides(fill = guide_legend(nrow = 1)) +
-  facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "free") +
-  expand_limits(x=65) +
-  coord_cartesian(clip = 'off') +
+  mutate(pvalue = -log10(pvalue)) %>%
+  ggplot(aes(x = pvalue, y = factor(cohort))) +
+  geom_point(size = 3, show.legend = FALSE, 
+             color = "#00A087FF") + 
+  labs(x = "-log10(p)", y = "") + 
+  geom_vline(xintercept = -log10(0.05/nrow(hist_cpg_enr_gnomad)), linetype = "dashed") + 
+#  scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
+#                            "PMBB" = "")) +
+  facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "fixed") +
+  coord_cartesian(xlim = c(0,27)) + 
   theme_Publication() +
-  theme(plot.margin = unit(c(3,4.5,1,1), "lines"),
-        legend.position = c(0.5,1.035)) +
-  scale_fill_manual( values = c('#E64B35FF', '#4DBBD5FF'),
-                     limits = c('ClinVar', 'InterVar'))
+  theme(plot.margin = unit(c(3,1,1,0.5), "lines")) 
 
 
 # create oddsRatio plot
 
 hist_enr_plot <- hist_cpg_enr_all %>% 
-  mutate(cohort = factor(cohort, c("PMBB", "gnomAD", "PBTA"))) %>%
   filter(hist_cpg %in% sig_hist_cpgs_both) %>%
   ggplot(aes(x = factor(cohort), y = oddsRatio)) +
   geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
@@ -335,37 +344,42 @@ hist_enr_plot <- hist_cpg_enr_all %>%
   scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                             "PMBB" = "")) +
   coord_flip() +
-  facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "free") +
+  facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "fixed") +
   expand_limits(y=0) +
   theme_Publication() +
   theme(plot.margin = unit(c(3,0.5,1,1), "lines")) 
 
 
-# create oddsRatio pvalue plot
+# Plot PLP frequency by gene and histology
 
-hist_pval_plot <- hist_cpg_enr_all %>% 
-  mutate(cohort = factor(cohort, c("PMBB", "gnomAD", "PBTA"))) %>%
+hist_perc_plot <- all_source_hist_cts %>%
   filter(hist_cpg %in% sig_hist_cpgs_both) %>%
-  mutate(pvalue = -log10(pvalue)) %>%
-  ggplot(aes(x = pvalue, y = factor(cohort))) +
-  geom_point(size = 3, show.legend = FALSE, 
-             color = "#00A087FF") + 
-  labs(x = "-log10(p)", y = "") + 
-  geom_vline(xintercept = -log10(0.05), linetype = "dashed") + 
+  ggplot(aes(x = perc_plp, y = factor(cohort), fill = final_call_source, label = fraction)) +
+  geom_bar(stat = "identity", color = "black",
+           show.legend = TRUE) + 
+  
+  geom_text(x = 70, hjust = 0, size = 4,
+            fontface = 2) +
+  labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
   scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                             "PMBB" = "")) +
-  facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "free") +
-  coord_cartesian(xlim = c(0,27)) + 
+  guides(fill = guide_legend(nrow = 1)) +
+  facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "fixed") +
+  expand_limits(x=65) +
+  coord_cartesian(clip = 'off') +
   theme_Publication() +
-  theme(plot.margin = unit(c(3,1,1,0.5), "lines")) 
+  theme(plot.margin = unit(c(3,4.5,1,1), "lines"),
+        legend.position = c(0.5,1.035)) +
+  scale_fill_manual( values = c('#E64B35FF', '#4DBBD5FF'),
+                     limits = c('ClinVar', 'InterVar'))
 
 # merge plots and save to output
 
 png(file.path(plot_dir, "sig-hist-CPG-enrichment-PBTA-vs-control.png"),
-     width = 11, height = 20, units = "in", res = 300)
+     width = 11, height = 18, units = "in", res = 300)
 
-ggarrange(hist_perc_plot, hist_pval_plot, hist_enr_plot,
-          nrow = 1, widths = c(2,1.5,1.5))
+ggarrange(hist_pval_plot, hist_enr_plot, hist_perc_plot,
+          nrow = 1, widths = c(1.75,1.25,1.5))
 
 dev.off()
 
