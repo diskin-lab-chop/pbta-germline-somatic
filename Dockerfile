@@ -36,6 +36,10 @@ RUN apt-get -y --no-install-recommends install \
 RUN apt-get update && apt-get -y --no-install-recommends install \
    default-jdk \
    libxt6
+   
+# cmakeis needed for ggpubr to install
+RUN apt-get -y --no-install-recommends install \
+    cmake
 
 # install R packages from CRAN
 RUN install2.r \
