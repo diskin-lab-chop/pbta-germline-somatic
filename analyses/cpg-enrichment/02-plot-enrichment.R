@@ -28,10 +28,10 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 # Set enrichment file paths
 
-cpg_enr_gnomad_file <- file.path(input_dir, "CBTN_CPG_PLP_enrichment_gnomAD.tsv")
-cpg_enr_pmbb_file <- file.path(input_dir, "CBTN_CPG_PLP_enrichment_PMBB.tsv")
-cpg_hist_enr_gnomad_file <- file.path(input_dir, "CBTN_CPG_PLP_enrichment_by_plotGroup_gnomAD.tsv")
-cpg_hist_enr_pmbb_file <- file.path(input_dir, "CBTN_CPG_PLP_enrichment_by_plotGroup_PMBB.tsv")
+cpg_enr_gnomad_file <- file.path(input_dir, "PBTA-cpg-plp-enrichment-gnomAD.tsv")
+cpg_enr_pmbb_file <- file.path(input_dir, "PBTA-cpg-plp-enrichment-PMBB.tsv")
+cpg_hist_enr_gnomad_file <- file.path(input_dir, "PBTA-cpg-plp-enrichment-by-plotGroup-gnomAD.tsv")
+cpg_hist_enr_pmbb_file <- file.path(input_dir, "PBTA-cpg-plp-enrichment-by-plotGroup-PMBB.tsv")
 
 cbtn_histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 plp_file <- file.path(data_dir, "v3", "pbta_germline_plp_calls.tsv")
@@ -141,17 +141,16 @@ pval_plot <- cpg_enr_all %>%
   theme(plot.margin = unit(c(2,1,1,0), "lines"))
 
 
-
 # Create CPG Odds Ratio plot 
 
 enr_plot <- cpg_enr_all %>% 
   filter(Hugo_symbol %in% sig_cpgs_both) %>%
-  ggplot(aes(x = factor(cohort), y = oddsRatio)) +
+  ggplot(aes(x = factor(cohort), y = log10(oddsRatio))) +
   geom_point(size = 3, color = "#00A087FF",
              show.legend = FALSE) + 
-  geom_errorbar(aes(ymin = CI_lower, ymax = CI_upper), width = 0.2, 
+  geom_errorbar(aes(ymin = log10(CI_lower), ymax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
-  labs(y = "Odds Ratio (95% CI)", x = NULL) + 
+  labs(y = "log10-Odds Ratio (95% CI)", x = NULL) + 
   scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                             "PMBB" = "")) +
   coord_flip() +
@@ -248,7 +247,7 @@ hist_cpg_enr_all <- hist_cpg_enr_pbta %>%
          hist_cpg = paste(plot_group, Hugo_symbol, sep = ":"),
          fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/"),
          cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA"))) %>%
-  arrange(desc(-log10(pvalue))) %>%
+  arrange(hist_cpg, desc(-log10(pvalue))) %>%
   mutate(hist_cpg = factor(hist_cpg, unique(hist_cpg)))
 
 # identify significantly enriched CPGs by histology relative to gnomAD and PMBB cohort, and retain those common to both lists
@@ -336,11 +335,11 @@ hist_pval_plot <- hist_cpg_enr_all %>%
 
 hist_enr_plot <- hist_cpg_enr_all %>% 
   filter(hist_cpg %in% sig_hist_cpgs_both) %>%
-  ggplot(aes(x = factor(cohort), y = oddsRatio)) +
+  ggplot(aes(x = factor(cohort), y = log10(oddsRatio))) +
   geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
-  geom_errorbar(aes(ymin = CI_lower, ymax = CI_upper), width = 0.2, 
+  geom_errorbar(aes(ymin = log10(CI_lower), ymax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
-  labs(y = "Odds Ratio (95% CI)", x = NULL) + 
+  labs(y = "log10-Odds Ratio (95% CI)", x = NULL) + 
   scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                             "PMBB" = "")) +
   coord_flip() +

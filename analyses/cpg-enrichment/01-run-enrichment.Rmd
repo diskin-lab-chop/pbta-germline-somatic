@@ -90,7 +90,7 @@ cpg_enr_gnomad <- cpg_enr_gnomad %>%
 # save result
 
 write_tsv(cpg_enr_gnomad, 
-          file.path(results_dir, "PBTA-cpg-plp-enrichment_gnomAD.tsv"))
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-gnomAD.tsv"))
 ```
 
 Read in PMBB cohort cpg plp frequencies and run Fisher's exact tests for each CPG  

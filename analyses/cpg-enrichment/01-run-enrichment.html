@@ -429,12 +429,12 @@ font-size: 0.95em;
 <p>Load packages and set directories</p>
 <pre class="r"><code>library(data.table)
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
+<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
 ## ✔ ggplot2 3.4.0     ✔ purrr   1.0.1
 ## ✔ tibble  3.1.8     ✔ dplyr   1.1.0
 ## ✔ tidyr   1.3.0     ✔ stringr 1.5.0
 ## ✔ readr   2.1.3     ✔ forcats 1.0.0
-## ── Conflicts ───────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::between()   masks data.table::between()
 ## ✖ dplyr::filter()    masks stats::filter()
 ## ✖ dplyr::first()     masks data.table::first()
@@ -464,7 +464,7 @@ pmbb_file &lt;- file.path(input_dir, &quot;PBTA-CPG-PLP-enrichment-PMBB.tsv&quot
 
 hist &lt;- read_tsv(cbtn_histologies_file)</code></pre>
 <pre><code>## Rows: 838 Columns: 30
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (27): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl  (3): broad_histology_order, age_last_update_days, OS_days
@@ -474,7 +474,7 @@ hist &lt;- read_tsv(cbtn_histologies_file)</code></pre>
 <pre class="r"><code>plp &lt;- read_tsv(plp_file) %&gt;%
   filter(Hugo_Symbol %in% cpgs &amp; Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)</code></pre>
 <pre><code>## Rows: 5658 Columns: 7
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (7): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
 ## 
@@ -487,7 +487,7 @@ tests for each CPG</p>
 gnomad_cts &lt;- read_tsv(gnomad_file) %&gt;%
   filter(Hugo_symbol %in% cpgs)</code></pre>
 <pre><code>## Rows: 69 Columns: 3
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): Hugo_symbol
 ## dbl (2): count_with_plp_gnomAD, count_without_plp_gnomAD
@@ -658,14 +658,14 @@ cpg_enr_gnomad &lt;- cpg_enr_gnomad %&gt;%
 # save result
 
 write_tsv(cpg_enr_gnomad, 
-          file.path(results_dir, &quot;PBTA-cpg-plp-enrichment_gnomAD.tsv&quot;))</code></pre>
+          file.path(results_dir, &quot;PBTA-cpg-plp-enrichment-gnomAD.tsv&quot;))</code></pre>
 <p>Read in PMBB cohort cpg plp frequencies and run Fisher’s exact tests
 for each CPG</p>
 <pre class="r"><code># read in PMBB freqs
 
 pmbb_cts &lt;- read_tsv(pmbb_file)</code></pre>
 <pre><code>## Rows: 66 Columns: 10
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): Hugo_symbol
 ## dbl (9): count_with_plp_CBTTC, count_without_plp_CBTTC, count_with_plp_PMBB_...
