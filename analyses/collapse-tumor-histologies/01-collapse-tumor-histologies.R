@@ -131,9 +131,13 @@ tumor_clin_meta <- v11_hist %>%
          extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
   dplyr::rename(sample_id_tumor = sample_id)
   
+ancestry <- read_tsv(file.path(input_dir, "CBTN_PNOC.somalier-ancestry.tsv")) %>%
+  filter(grepl("BS", `#sample_id`)) %>%
+  rename(Kids_First_Biospecimen_ID_normal = `#sample_id`)
 
 final_hist <- combined_map %>%
   left_join(tumor_clin_meta) %>%
+  left_join(ancestry[,c("Kids_First_Biospecimen_ID_normal", "predicted_ancestry")], by = "Kids_First_Biospecimen_ID_normal") %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
 
 

@@ -36,18 +36,25 @@ RUN apt-get -y --no-install-recommends install \
 RUN apt-get update && apt-get -y --no-install-recommends install \
    default-jdk \
    libxt6
+   
+# cmakeis needed for ggpubr to install
+RUN apt-get -y --no-install-recommends install \
+    cmake
 
 # install R packages from CRAN
 RUN install2.r \
 	BiocManager \
   ComplexHeatmap \
   data.table \
+  ggpubr \
+  ggthemes \
 	optparse \
 	pheatmap \
 	RColorBrewer \
 	survival \
   survMisc \
-  survminer
+  survminer \
+  tidytext
 
 	
 # install R packages from GitHub
@@ -58,6 +65,7 @@ RUN ./install_github.r \
 
 # Patchwork for plot compositions
 RUN ./install_github.r  'thomasp85/patchwork' --ref 'c67c6603ba59dd46899f17197f9858bc5672e9f4'
+
 
 
 # Install pip3 and python reqs for oncokb
