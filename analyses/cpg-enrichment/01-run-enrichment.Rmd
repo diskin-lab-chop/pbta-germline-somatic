@@ -1,0 +1,280 @@
+---
+title: 'CPG PLP enrichment analyses'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "February 2023"
+---
+  
+Load packages and set directories
+
+```{r load libraries}
+library(data.table)
+library(tidyverse)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "cpg-enrichment")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+```
+
+Set histologies, germline plp, cpg, and control cohort cpg count file paths
+
+```{r set file paths}
+cbtn_histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+plp_file <- file.path(data_dir, "v3", "pbta_germline_plp_calls.tsv")
+
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+
+gnomad_file <- file.path(input_dir, "PBTA-CPG-PLP-enrichment-gnomAD.tsv")
+
+pmbb_file <- file.path(input_dir, "PBTA-CPG-PLP-enrichment-PMBB.tsv")
+```
+
+Read in plp file and filter for CPGs and 838 samples in hist
+
+```{r filter plp}
+cpgs <- read_lines(cpg_file)
+
+hist <- read_tsv(cbtn_histologies_file)
+
+plp <- read_tsv(plp_file) %>%
+  filter(Hugo_Symbol %in% cpgs & Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)
+```
+
+Read in gnomad cohort cpg plp frequencies and run Fisher's exact tests for each CPG  
+
+```{r gnomad enrichment}
+
+# read in gnomad freqs
+
+gnomad_cts <- read_tsv(gnomad_file) %>%
+  filter(Hugo_symbol %in% cpgs)
+
+# merge cohort counts and gnomad freqs for each cpg 
+
+cpg_enr_gnomad <- plp %>%
+  count(Hugo_Symbol) %>%
+  mutate(n_without = 838-n) %>%
+  dplyr::rename("Hugo_symbol" = Hugo_Symbol) %>%
+  left_join(gnomad_cts[,c("Hugo_symbol", "count_with_plp_gnomAD", "count_without_plp_gnomAD")], by = "Hugo_symbol") %>%
+  distinct(Hugo_symbol, .keep_all = TRUE) %>%
+  mutate(oddsRatio = 0, pvalue = 0, CI_lower = 0, CI_upper = 0)
+
+# run Fisher's exact tests for each cpg 
+
+for (i in 1:nrow(cpg_enr_gnomad)){
+  if(!is.na(cpg_enr_gnomad$count_with_plp_gnomAD[i])) {
+    mat <- matrix(c(cpg_enr_gnomad$n[i], cpg_enr_gnomad$n_without[i],
+                    cpg_enr_gnomad$count_with_plp_gnomAD[i], cpg_enr_gnomad$count_without_plp_gnomAD[i]),
+                  2,2)
+    ftest <- fisher.test(mat)
+    cpg_enr_gnomad$oddsRatio[i] <- ftest$estimate
+    cpg_enr_gnomad$pvalue[i] <- ftest$p.value
+    cpg_enr_gnomad$CI_lower[i] <- ftest$conf.int[1]
+    cpg_enr_gnomad$CI_upper[i] <- ftest$conf.int[2]
+  }
+}
+
+# calculate FDRs
+
+cpg_enr_gnomad <- cpg_enr_gnomad %>%
+  mutate(adjusted_p = p.adjust(pvalue, method = "bonferroni"))
+
+# save result
+
+write_tsv(cpg_enr_gnomad, 
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-gnomAD.tsv"))
+```
+
+Read in PMBB cohort cpg plp frequencies and run Fisher's exact tests for each CPG  
+
+```{r pmbb enrichment}
+
+# read in PMBB freqs
+
+pmbb_cts <- read_tsv(pmbb_file)
+
+# merge cohort counts and PMBB freqs for each cpg 
+
+cpg_enr_pmbb <- plp %>%
+  count(Hugo_Symbol) %>%
+  mutate(n_without = 838-n) %>%
+  dplyr::rename("Hugo_symbol" = Hugo_Symbol) %>%
+  left_join(pmbb_cts[,c("Hugo_symbol", "count_with_plp_PMBB_noTumor", "count_without_plp_PMBB_noTumor")], by = "Hugo_symbol") %>%
+  distinct(Hugo_symbol, .keep_all = TRUE) %>%
+  mutate(oddsRatio = 0, pvalue = 0, CI_lower = 0, CI_upper = 0)
+
+# run Fisher's exact tests for each cpg 
+
+for (i in 1:nrow(cpg_enr_pmbb)){
+  if(!is.na(cpg_enr_pmbb$count_with_plp_PMBB_noTumor[i])) {
+    mat <- matrix(c(cpg_enr_pmbb$n[i], cpg_enr_pmbb$n_without[i],
+                    cpg_enr_pmbb$count_with_plp_PMBB_noTumor[i], cpg_enr_pmbb$count_without_plp_PMBB_noTumor[i]),
+                  2,2)
+    ftest <- fisher.test(mat)
+    cpg_enr_pmbb$oddsRatio[i] <- ftest$estimate
+    cpg_enr_pmbb$pvalue[i] <- ftest$p.value
+    cpg_enr_pmbb$CI_lower[i] <- ftest$conf.int[1]
+    cpg_enr_pmbb$CI_upper[i] <- ftest$conf.int[2]
+  }
+}
+
+# calculate FDRs
+
+cpg_enr_pmbb <- cpg_enr_pmbb %>%
+  mutate(adjusted_p = p.adjust(pvalue, method = "bonferroni"))
+
+# save result
+
+write_tsv(cpg_enr_pmbb, 
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-PMBB.tsv"))
+```
+
+Calculate CPG PLP enrichment in CBTN cohort relative to gnomAD by gene and histology group  
+
+```{r gnomad enrichment by hist}
+
+# calculate number of patients per plot group
+
+hist_cts <- hist %>%
+  count(plot_group) %>%
+  rename("hist_n" = n)
+
+# obtain counts of plp variants by plot group and cpg
+
+hist_cpg_enr_gnomad <- plp %>%
+  dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group")], by = "Kids_First_Biospecimen_ID_normal") %>%
+  count(plot_group, Hugo_Symbol) %>%
+  left_join(hist_cts, by = "plot_group") %>%
+  mutate(n_without = hist_n - n) %>%
+  dplyr::rename("Hugo_symbol" = Hugo_Symbol) %>%
+  left_join(gnomad_cts[,c("Hugo_symbol", "count_with_plp_gnomAD", "count_without_plp_gnomAD")], by = "Hugo_symbol") %>%
+  distinct(plot_group, Hugo_symbol, .keep_all = TRUE) %>%
+  mutate(oddsRatio = 0, pvalue = 0, CI_lower = 0, CI_upper = 0)
+
+# run Fisher's exact test for each cpg and plot group
+
+for (i in 1:nrow(hist_cpg_enr_gnomad)){
+  if(!is.na(hist_cpg_enr_gnomad$count_with_plp_gnomAD[i])) {
+    mat <- matrix(c(hist_cpg_enr_gnomad$n[i], hist_cpg_enr_gnomad$n_without[i],
+                    hist_cpg_enr_gnomad$count_with_plp_gnomAD[i], hist_cpg_enr_gnomad$count_without_plp_gnomAD[i]),
+                  2,2)
+    ftest <- fisher.test(mat)
+    hist_cpg_enr_gnomad$oddsRatio[i] <- ftest$estimate
+    hist_cpg_enr_gnomad$pvalue[i] <- ftest$p.value
+    hist_cpg_enr_gnomad$CI_lower[i] <- ftest$conf.int[1]
+    hist_cpg_enr_gnomad$CI_upper[i] <- ftest$conf.int[2]
+  }
+}
+
+# calculate FDR 
+
+hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
+  mutate(adjusted_p = p.adjust(hist_cpg_enr_gnomad$pvalue, method = "bonferroni"))
+
+# save output 
+
+write_tsv(hist_cpg_enr_gnomad, 
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-by-plotGroup-gnomAD.tsv"))
+```
+
+Calculate CPG PLP enrichment in CBTN cohort relative to PMBB by gene and histology group  
+
+```{r pmbb enrichment by hist}
+
+# obtain counts of plp variants by plot group and cpg and merge with PMBB
+
+hist_cpg_enr_pmbb <- plp %>%
+  dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group")], by = "Kids_First_Biospecimen_ID_normal") %>%
+  count(plot_group, Hugo_Symbol) %>%
+  left_join(hist_cts, by = "plot_group") %>%
+  mutate(n_without = hist_n - n) %>%
+  dplyr::rename("Hugo_symbol" = Hugo_Symbol) %>%
+  left_join(pmbb_cts[,c("Hugo_symbol", "count_with_plp_PMBB_noTumor", "count_without_plp_PMBB_noTumor")], by = "Hugo_symbol") %>%
+  distinct(plot_group, Hugo_symbol, .keep_all = TRUE) %>%
+  mutate(oddsRatio = 0, pvalue = 0, CI_lower = 0, CI_upper = 0)
+
+# run Fisher's exact test by cpg and plot group 
+
+for (i in 1:nrow(hist_cpg_enr_pmbb)){
+  if(!is.na(hist_cpg_enr_pmbb$count_with_plp_PMBB_noTumor[i])) {
+    mat <- matrix(c(hist_cpg_enr_pmbb$n[i], hist_cpg_enr_pmbb$n_without[i],
+                    hist_cpg_enr_pmbb$count_with_plp_PMBB_noTumor[i], hist_cpg_enr_pmbb$count_without_plp_PMBB_noTumor[i]),
+                  2,2)
+    ftest <- fisher.test(mat)
+    hist_cpg_enr_pmbb$oddsRatio[i] <- ftest$estimate
+    hist_cpg_enr_pmbb$pvalue[i] <- ftest$p.value
+    hist_cpg_enr_pmbb$CI_lower[i] <- ftest$conf.int[1]
+    hist_cpg_enr_pmbb$CI_upper[i] <- ftest$conf.int[2]
+  }
+}
+
+# calculate FDR
+
+hist_cpg_enr_pmbb <- hist_cpg_enr_pmbb %>%
+  mutate(adjusted_p = p.adjust(hist_cpg_enr_pmbb$pvalue, method = "bonferroni"))
+
+# save output 
+
+write_tsv(hist_cpg_enr_pmbb, 
+          file.path(results_dir, "PBTA-cpg-plp-enrichment-by-plotGroup-PMBB.tsv"))
+```
+
+Combine gene and gene-by-histology PLP enrichment results across control cohorts
+
+```{r}
+
+cpg_enr_all <- cpg_enr_gnomad %>%
+  rename("count_with_plp_PBTA" = n,
+         "count_without_plp_PBTA" = n_without,
+         "oddsRatio_gnomad" = oddsRatio,
+         "pvalue_gnomad" = pvalue,
+         "CI_lower_gnomad" = CI_lower,
+         "CI_upper_gnomad" = CI_upper,
+         "adjusted_p_gnomad" = adjusted_p) %>%
+  left_join(cpg_enr_pmbb[,c("Hugo_symbol", "count_with_plp_PMBB_noTumor",
+                            "count_without_plp_PMBB_noTumor", "oddsRatio",
+                            "pvalue", "CI_lower", "CI_upper", "adjusted_p")],
+            by = "Hugo_symbol") %>%
+  rename("oddsRatio_pmbb" = oddsRatio,
+         "pvalue_pmbb" = pvalue,
+         "CI_lower_pmbb" = CI_lower,
+         "CI_upper_pmbb" = CI_upper,
+         "adjusted_p_pmbb" = adjusted_p)
+
+write_tsv(cpg_enr_all,
+          file.path(results_dir, "cpg-plp-enrichment-merged.tsv"))
+
+
+hist_cpg_enr_all <- hist_cpg_enr_gnomad %>%
+  rename("count_with_plp_PBTA" = n,
+         "count_without_plp_PBTA" = n_without,
+         "plot_group_n" = hist_n,
+         "oddsRatio_gnomad" = oddsRatio,
+         "pvalue_gnomad" = pvalue,
+         "CI_lower_gnomad" = CI_lower,
+         "CI_upper_gnomad" = CI_upper,
+         "adjusted_p_gnomad" = adjusted_p) %>%
+  left_join(hist_cpg_enr_pmbb[,c("plot_group", "Hugo_symbol", "count_with_plp_PMBB_noTumor",
+                            "count_without_plp_PMBB_noTumor", "oddsRatio",
+                            "pvalue", "CI_lower", "CI_upper", "adjusted_p")],
+            by = c("plot_group", "Hugo_symbol")) %>%
+  rename("oddsRatio_pmbb" = oddsRatio,
+         "pvalue_pmbb" = pvalue,
+         "CI_lower_pmbb" = CI_lower,
+         "CI_upper_pmbb" = CI_upper,
+         "adjusted_p_pmbb" = adjusted_p)
+
+write_tsv(hist_cpg_enr_all,
+          file.path(results_dir, "plot-group-cpg-plp-enrichment-merged.tsv"))
+
+```
