@@ -1,0 +1,141 @@
+---
+title: 'Query germline samples for DNA repair variants'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett, Jo Lynne Rokita
+date: "2022-2023"
+---
+  
+```{r load libraries and set directories}
+library(data.table)
+library(tidyverse)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
+results_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input")
+plot_dir <- file.path(analysis_dir, 'plots')
+
+# source figure theme
+source(file.path(root_dir, "figures", "theme.R"))
+```
+
+Set histology, PLP variant, and gene lists
+
+```{r}
+histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies',
+                              'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+```
+
+Read plp variant file and filter for 838 samples in histology: 
+
+```{r load germline, hist, cpg}
+hist <- read_tsv(histologies_file)
+
+germline <- read_tsv(plp_file) %>%
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)
+```
+
+Using DNA repair gene lists obtained from Knijnenburg et al. and Broad GSEA, identify patients with germline PLP variants in DNA repair genes and save results to separate outputs
+
+```{r}
+# Define repair list directories and results directories
+repair_gene_source <- c("Knijnenburg_paper", "broad")
+output_names <- c("Knijnenburg_repair_genes", "Broad_GO_repair_genes")
+
+# loop through two gene list inputs
+for (i in 1:length(repair_gene_source)){
+  
+  # define gene list-specific results and plots dir
+  results_dir <- file.path(analysis_dir, "results", output_names[i])
+  plot_dir <- file.path(analysis_dir, "plots", output_names[i])
+  
+  # read in full DNA repair gene list and specific pathway gene lists
+  repair_genes <- read_lines(file.path(input_dir, repair_gene_source[i], 'dna_repair_all.txt'))
+  ber_genes <- read_lines(file.path(input_dir, repair_gene_source[i], 'base_excision_repair.txt'))
+  hr_genes <- read_lines(file.path(input_dir, repair_gene_source[i], 'homologous_recombination.txt'))
+  mmr_genes <- read_lines(file.path(input_dir, repair_gene_source[i], 'mismatch_repair.txt'))
+  ner_genes <- read_lines(file.path(input_dir, repair_gene_source[i], 'nucleotide_excision_repair.txt'))
+  nhej_genes <- read_lines(file.path(input_dir, repair_gene_source[i], 'nonhomologous_end_joining.txt'))
+
+  # filter germline PLP variants for DNA repair genes 
+  repair_germline <- germline %>%
+    filter(Hugo_Symbol %in% repair_genes) %>%
+  
+  #add columns indicating if gene is involved in specific DNA repair pathways
+    mutate(BER = case_when(
+      Hugo_Symbol %in% ber_genes ~ 'Yes',
+      TRUE ~ 'No')) %>%
+    mutate(HR = case_when(
+      Hugo_Symbol %in% hr_genes ~ 'Yes',
+      TRUE ~ 'No')) %>%
+    mutate(MMR = case_when(
+      Hugo_Symbol %in% mmr_genes ~ 'Yes',
+      TRUE ~ 'No')) %>%
+    mutate(NER = case_when(
+      Hugo_Symbol %in% ner_genes ~ 'Yes',
+      TRUE ~ 'No')) %>%
+    mutate(NHEJ = case_when(
+      Hugo_Symbol %in% nhej_genes ~ 'Yes',
+      TRUE ~ 'No')) %>%
+    
+    # write output to file
+    readr::write_tsv(file.path(results_dir, paste0('dna_repair_germline_variant_plp_', repair_gene_source[i], '.tsv')))
+
+  # define `plot_df` for plotting DNA repair pathway PLP variants by plot group 
+  
+  plot_df <- repair_germline %>%
+    filter(BER == "Yes") %>%
+    bind_rows(repair_germline[repair_germline$HR == "Yes",]) %>%
+    bind_rows(repair_germline[repair_germline$MMR == "Yes",]) %>%
+    bind_rows(repair_germline[repair_germline$NER == "Yes",]) %>%
+    bind_rows(repair_germline[repair_germline$NHEJ == "Yes",])
+  
+  
+  plot_df <- plot_df %>%
+    bind_rows(repair_germline[!repair_germline$Kids_First_Biospecimen_ID %in% plot_df$Kids_First_Biospecimen_ID,]) %>%
+    mutate(class = c(rep('BER', nrow(repair_germline[repair_germline$BER == "Yes",])),
+                     rep('HR', nrow(repair_germline[repair_germline$HR == "Yes",])),
+                     rep('MMR', nrow(repair_germline[repair_germline$MMR == "Yes",])),
+                     rep('NER', nrow(repair_germline[repair_germline$NER == "Yes",])),
+                     rep('NHEJ', nrow(repair_germline[repair_germline$NHEJ == "Yes",])),
+                     rep('Other', nrow(repair_germline[!repair_germline$Kids_First_Biospecimen_ID %in% plot_df$Kids_First_Biospecimen_ID,]))
+                     )
+           ) %>%
+    rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
+    
+    # add plot group 
+    left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = 'Kids_First_Biospecimen_ID_normal') %>%
+    count(class, plot_group, plot_group_hex) %>%
+  
+    mutate(class = factor(class)) %>% 
+    mutate(class = fct_relevel(class, c("BER", "HR", "MMR",
+                                       "NER", "NHEJ", "Other")))
+    
+    # define plot group pallete 
+    plot_group_palette <- plot_df$plot_group_hex
+    names(plot_group_palette) <- plot_df$plot_group
+
+    # Create barplot of DNA repair pathway germline variant prevalence by plot group
+    ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
+    geom_col(col = "black", size = 0.4) +
+    labs(y = 'Number of patients with P/LP variant', x = 'Germline variant DNA repair class', fill = 'Tumor diagnosis') +
+    #geom_bar(position="stack", stat="identity", color = "black") +
+    #labs(y = 'count', x = 'germline variant class', fill = 'plot group') + 
+    scale_fill_manual(values = plot_group_palette) + 
+    theme_Publication()
+    
+    ggsave(
+    file.path(plot_dir, paste0("dna_repair_samples_by_plot_group_", repair_gene_source[i], ".pdf")), 
+    width = 24, height = 16, units = "cm")
+}
+```
+
+
