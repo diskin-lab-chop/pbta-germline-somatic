@@ -11,10 +11,12 @@ date: "2022-12-14"
 Load packages and set directories
 
 ```{r load libraries}
-library(data.table)
-library(tidyverse)
-library(ggplot2)
-library(ggsci)
+suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+  library(ggplot2)
+  library(ggsci)
+})
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 setwd(root_dir)
@@ -41,11 +43,11 @@ tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 Read in histologies, germline PLP, and tmb file
 
 ```{r read files}
-hist <- read_tsv(histologies_file) 
+hist <- read_tsv(histologies_file,show_col_types = FALSE) 
 
-plp <- read_tsv(plp_file)
+plp <- read_tsv(plp_file,show_col_types = FALSE)
 
-tmb <- read_tsv(tmb_file) %>%
+tmb <- read_tsv(tmb_file,show_col_types = FALSE) %>%
   dplyr::rename("Kids_First_Biospecimen_ID" = "Tumor_Sample_Barcode")
 
 ```
@@ -105,7 +107,7 @@ for (i in 1:length(cosmic_files)){
         dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
       }
     
-    dna_repair_plp <- read_tsv(dna_repair_plp_file)
+    dna_repair_plp <- read_tsv(dna_repair_plp_file,show_col_types = FALSE)
     
     # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
     allRepair_germline <- dna_repair_plp %>%
@@ -226,11 +228,10 @@ Plot exposures of signatures of interest by group (MMR germline variant samples,
 plot_sigs <- c(mmr_sigs, "SBS3", "SBS5", "SBS9")
 
 ## Loop through cosmicv3 results files to generate separate results files and plots
-
 for (i in 1:length(cosmic_files)){
   
   # Read in COSMICv3 signature weights and set any exposures < 0.06 as 0
-  cosmicv3_sigs <- read_tsv(cosmic_files[i]) %>%
+  cosmicv3_sigs <- read_tsv(cosmic_files[i],show_col_types = FALSE) %>%
   tidyr::gather(-Kids_First_Biospecimen_ID, key = "signature", value = "exposure") %>%
   mutate(exposure = case_when(
     exposure < 0.06 ~ 0, 
@@ -246,8 +247,6 @@ for (i in 1:length(cosmic_files)){
   mmr_sigs <- c('SBS6', 'SBS14', 'SBS15', 'SBS20', 'SBS21', 'SBS26', 'SBS44')
   repair_sigs <- c('SBS30', 'SBS36', 'SBS3', 'SBS9', 'SBS10a', 'SBS10b', 'SBS10c', 'SBS10d')
   
-  
-
   # create plots for each DNA repair gene list source
   for (j in 1:length(repair_gene_source)){
     
@@ -262,7 +261,7 @@ for (i in 1:length(cosmic_files)){
         dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
       }
     
-    dna_repair_plp <- read_tsv(dna_repair_plp_file)
+    dna_repair_plp <- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
   
     # Define BS_ids for normal and corresponding tumor IDs for each sample group 
     
