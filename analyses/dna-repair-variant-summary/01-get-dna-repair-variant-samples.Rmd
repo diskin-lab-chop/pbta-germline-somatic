@@ -9,8 +9,10 @@ date: "2022-2023"
 ---
   
 ```{r load libraries and set directories}
-library(data.table)
-library(tidyverse)
+suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+})
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 setwd(root_dir)
@@ -37,9 +39,9 @@ plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 Read plp variant file and filter for 838 samples in histology: 
 
 ```{r load germline, hist, cpg}
-hist <- read_tsv(histologies_file)
+hist <- read_tsv(histologies_file,show_col_types = FALSE)
 
-germline <- read_tsv(plp_file) %>%
+germline <- read_tsv(plp_file, show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)
 ```
 
@@ -69,7 +71,7 @@ for (i in 1:length(repair_gene_source)){
   repair_germline <- germline %>%
     filter(Hugo_Symbol %in% repair_genes) %>%
   
-  #add columns indicating if gene is involved in specific DNA repair pathways
+  # add columns indicating if gene is involved in specific DNA repair pathways
     mutate(BER = case_when(
       Hugo_Symbol %in% ber_genes ~ 'Yes',
       TRUE ~ 'No')) %>%
@@ -90,7 +92,6 @@ for (i in 1:length(repair_gene_source)){
     readr::write_tsv(file.path(results_dir, paste0('dna_repair_germline_variant_plp_', repair_gene_source[i], '.tsv')))
 
   # define `plot_df` for plotting DNA repair pathway PLP variants by plot group 
-  
   plot_df <- repair_germline %>%
     filter(BER == "Yes") %>%
     bind_rows(repair_germline[repair_germline$HR == "Yes",]) %>%
@@ -127,8 +128,6 @@ for (i in 1:length(repair_gene_source)){
     ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
     geom_col(col = "black", size = 0.4) +
     labs(y = 'Number of patients with P/LP variant', x = 'Germline variant DNA repair class', fill = 'Tumor diagnosis') +
-    #geom_bar(position="stack", stat="identity", color = "black") +
-    #labs(y = 'count', x = 'germline variant class', fill = 'plot group') + 
     scale_fill_manual(values = plot_group_palette) + 
     theme_Publication()
     
