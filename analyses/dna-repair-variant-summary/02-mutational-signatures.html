@@ -428,22 +428,12 @@ font-size: 0.95em;
 
 
 <p>Load packages and set directories</p>
-<pre class="r"><code>library(data.table)
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::between()   masks data.table::between()
-## ✖ dplyr::filter()    masks stats::filter()
-## ✖ dplyr::first()     masks data.table::first()
-## ✖ dplyr::lag()       masks stats::lag()
-## ✖ dplyr::last()      masks data.table::last()
-## ✖ purrr::transpose() masks data.table::transpose()</code></pre>
-<pre class="r"><code>library(ggplot2)
-library(ggsci)
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+  library(ggplot2)
+  library(ggsci)
+})
 
 root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
 setwd(root_dir)
@@ -457,35 +447,19 @@ COSMICv3 mutational signature weights file, - TMB file</p>
 
 plp_file &lt;- file.path(data_dir, &quot;pbta_germline_plp_calls.tsv&quot;)
 
-tmb_file &lt;- file.path(data_dir, &quot;snv-mutation-tmb-coding.tsv&quot;)</code></pre>
+tmb_file &lt;- file.path(data_dir, &quot;snv-mutation-tmb-coding.tsv&quot;)
+
+maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation&quot;, &quot;results&quot;, &quot;snv-consensus-plus-hotspots-goi-oncokb.maf.tsv&quot;)</code></pre>
 <p>Read in histologies, germline PLP, and tmb file</p>
-<pre class="r"><code>hist &lt;- read_tsv(histologies_file) </code></pre>
-<pre><code>## Rows: 838 Columns: 29
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
-## dbl  (3): broad_histology_order, age_last_update_days, OS_days
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>plp &lt;- read_tsv(plp_file)</code></pre>
-<pre><code>## Rows: 5658 Columns: 7
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (7): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>tmb &lt;- read_tsv(tmb_file) %&gt;%
-  dplyr::rename(&quot;Kids_First_Biospecimen_ID&quot; = &quot;Tumor_Sample_Barcode&quot;)</code></pre>
-<pre><code>## Rows: 2764 Columns: 6
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (3): Tumor_Sample_Barcode, experimental_strategy, cancer_group
-## dbl (3): mutation_count, region_size, tmb
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) 
+
+plp &lt;- read_tsv(plp_file,show_col_types = FALSE)
+
+tmb &lt;- read_tsv(tmb_file,show_col_types = FALSE) %&gt;%
+  dplyr::rename(&quot;Kids_First_Biospecimen_ID&quot; = &quot;Tumor_Sample_Barcode&quot;)
+
+maf &lt;- data.table::fread(maf_file, data.table = F) %&gt;%
+  filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor)</code></pre>
 <p>Comparison of mutational signatures between samples with and without
 germline variants in DNA repair genes will be performed through multiple
 loops to change the following parameters: - COSMICv3 input file: run
@@ -532,6 +506,10 @@ for (i in 1:length(cosmic_files)){
   # Define repair gene source input directories 
   repair_gene_source &lt;- c(&quot;Knijnenburg_repair_genes&quot;, &quot;Broad_GO_repair_genes&quot;)
   
+  input_dir &lt;- c(file.path(analysis_dir, &quot;input&quot;, &quot;Knijnenburg_paper&quot;),
+                 file.path(analysis_dir, &quot;input&quot;, &quot;broad&quot;))
+  names(input_dir) &lt;- repair_gene_source
+  
   # Loop through two DNA repair gene lists
   for (j in 1:length(repair_gene_source)){
     
@@ -546,7 +524,7 @@ for (i in 1:length(cosmic_files)){
         dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
       }
     
-    dna_repair_plp &lt;- read_tsv(dna_repair_plp_file)
+    dna_repair_plp &lt;- read_tsv(dna_repair_plp_file,show_col_types = FALSE)
     
     # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
     allRepair_germline &lt;- dna_repair_plp %&gt;%
@@ -639,63 +617,38 @@ for (i in 1:length(cosmic_files)){
         mutate(signature = fct_relevel(signature, cosmicv3_res$signature)) %&gt;%
         
         ggplot(aes(x = signature, y = exposure_diff, fill = association)) +
-          geom_bar(stat=&quot;identity&quot;) +
+          geom_bar(stat=&quot;identity&quot;, color = &quot;black&quot;) +
           theme_minimal() +
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
                 plot.title = element_text(hjust = 0.5, size = 18)) + 
           labs(x = &#39;COSMIC v3.3 signature&#39;, y = &#39;exposure difference&#39;,
                fill = &#39;association&#39;, title = paste0(plot_names[k], &quot; germline vs. no DNA repair germline&quot;)) +
           geom_hline(yintercept = 0) + 
+          geom_text(aes(x = signature, y = exposure_diff * 1.1,
+                    label = ifelse(pvalue &lt; 0.05, &quot;*&quot;, &quot;&quot;)),
+                    size = 8) +
           scale_fill_npg()
         
         ggsave(
-          file.path(plot_dir, paste0(&quot;cosmicv3_&quot;, cosmic_ids[i], &quot;_signature_diff_&quot;, names(sample_list)[k], &quot;_vs_other.pdf&quot;)), 
-          width = 20, height = 10, units = &quot;cm&quot;)
+          file.path(plot_dir, paste0(&quot;cosmicv3_&quot;, cosmic_ids[i], &quot;_signature_diff_&quot;, names(sample_list)[k], &quot;_vs_other.tiff&quot;)), 
+          width = 17, height = 10, units = &quot;cm&quot;)
   
     }
   }
 }</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 197 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 316 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ## Rows: 2909 Columns: 80
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 197 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 316 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
@@ -709,11 +662,10 @@ repair germline variant samples)</p>
 plot_sigs &lt;- c(mmr_sigs, &quot;SBS3&quot;, &quot;SBS5&quot;, &quot;SBS9&quot;)
 
 ## Loop through cosmicv3 results files to generate separate results files and plots
-
 for (i in 1:length(cosmic_files)){
   
   # Read in COSMICv3 signature weights and set any exposures &lt; 0.06 as 0
-  cosmicv3_sigs &lt;- read_tsv(cosmic_files[i]) %&gt;%
+  cosmicv3_sigs &lt;- read_tsv(cosmic_files[i],show_col_types = FALSE) %&gt;%
   tidyr::gather(-Kids_First_Biospecimen_ID, key = &quot;signature&quot;, value = &quot;exposure&quot;) %&gt;%
   mutate(exposure = case_when(
     exposure &lt; 0.06 ~ 0, 
@@ -729,8 +681,6 @@ for (i in 1:length(cosmic_files)){
   mmr_sigs &lt;- c(&#39;SBS6&#39;, &#39;SBS14&#39;, &#39;SBS15&#39;, &#39;SBS20&#39;, &#39;SBS21&#39;, &#39;SBS26&#39;, &#39;SBS44&#39;)
   repair_sigs &lt;- c(&#39;SBS30&#39;, &#39;SBS36&#39;, &#39;SBS3&#39;, &#39;SBS9&#39;, &#39;SBS10a&#39;, &#39;SBS10b&#39;, &#39;SBS10c&#39;, &#39;SBS10d&#39;)
   
-  
-
   # create plots for each DNA repair gene list source
   for (j in 1:length(repair_gene_source)){
     
@@ -745,7 +695,7 @@ for (i in 1:length(cosmic_files)){
         dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
       }
     
-    dna_repair_plp &lt;- read_tsv(dna_repair_plp_file)
+    dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
   
     # Define BS_ids for normal and corresponding tumor IDs for each sample group 
     
@@ -795,7 +745,7 @@ for (i in 1:length(cosmic_files)){
         ggplot(aes(x = germline_variant, y = exposure, fill = germline_variant)) +
           geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;) +
           geom_boxplot(width=0.1) + 
-          labs(x = &#39;Germline Variant Class&#39;, y = paste0(plot_sigs[k], &quot; Exposure (COSMIC v3.3)&quot;)) +
+          labs(x = &#39;Germline Variant Class&#39;, y = paste0(plot_sigs[k], &quot; Exposure&quot;)) +
           theme_minimal() +
           theme(legend.position = &#39;none&#39;,
                 text = element_text(size = 12)) +
@@ -805,8 +755,8 @@ for (i in 1:length(cosmic_files)){
           scale_fill_npg()
           
         ggsave(
-          file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_&quot;, cosmic_ids[i], &quot;_violinPlot.pdf&quot;)), 
-          width = 10, height = 9, units = &quot;cm&quot;)
+          file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_&quot;, cosmic_ids[i], &quot;_violinPlot.tiff&quot;)), 
+          width = 11, height = 8, units = &quot;cm&quot;)
                  
     }
     
@@ -830,7 +780,7 @@ for (i in 1:length(cosmic_files)){
         ggplot(aes(x = germline_variant, y = sum, fill = germline_variant)) +
           geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;) +
           geom_boxplot(width=0.1) + 
-          labs(x = &#39;Germline Variant Class&#39;, y = &quot;MMR Exposure (COSMIC v3.3)&quot;) +
+          labs(x = &#39;Germline Variant Class&#39;, y = &quot;MMR Exposure&quot;) +
           theme_minimal() +
           theme(legend.position = &#39;none&#39;,
                 text = element_text(size = 12)) +
@@ -840,8 +790,8 @@ for (i in 1:length(cosmic_files)){
           scale_fill_npg()
           
         ggsave(
-          file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_&quot;, cosmic_ids[i], &quot;_violinPlot.pdf&quot;)), 
-          width = 10, height = 9, units = &quot;cm&quot;)
+          file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_&quot;, cosmic_ids[i], &quot;_violinPlot.tiff&quot;)), 
+          width = 11, height = 8, units = &quot;cm&quot;)
         
       # add MMR signature exposure levels to germline plp file and write to output
       plp %&gt;%
@@ -863,23 +813,38 @@ for (i in 1:length(cosmic_files)){
         dplyr::rename(&#39;MMR_exposure&#39; = &#39;sum&#39;) %&gt;%
         left_join(tmb[,c(&#39;Kids_First_Biospecimen_ID&#39;, &#39;tmb&#39;)], by = &quot;Kids_First_Biospecimen_ID&quot;) %&gt;%
         write_tsv(file.path(results_dir, paste0(&quot;MMR_germline_variant_plp_with_MMRsigs_&quot;, cosmic_ids[i], &quot;.tsv&quot;)))
+      
+      mmr_genes &lt;- read_lines(file.path(input_dir[repair_gene_source[j]], &quot;mismatch_repair.txt&quot;))
+
+      collapsed_germline &lt;- dna_repair_plp %&gt;%
+        filter(MMR == &quot;Yes&quot; &amp; Hugo_Symbol %in% mmr_genes) %&gt;%
+        group_by(Kids_First_Biospecimen_ID) %&gt;%
+        summarise(Hugo_Symbol_MMRgermline = str_c(sort(unique(Hugo_Symbol)), collapse = &quot;; &quot;)) %&gt;%
+        rename(&quot;Kids_First_Biospecimen_ID_normal&quot; = Kids_First_Biospecimen_ID)
+
+      collapsed_onco &lt;- maf %&gt;%
+        filter(Hugo_Symbol %in% mmr_genes) %&gt;%
+        dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
+                      Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
+                      Hugo_Symbol_somatic = Hugo_Symbol) %&gt;%
+        group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
+        summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))
+            
+      mmr_df %&gt;%
+        filter(sum &gt; 0.06) %&gt;%
+        rename(&quot;MMR_exposure&quot; = sum) %&gt;%
+        rename(&quot;Kids_First_Biospecimen_ID_tumor&quot; = Kids_First_Biospecimen_ID) %&gt;%
+        left_join(hist[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;, 
+                          &quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
+        left_join(collapsed_germline) %&gt;%
+        left_join(collapsed_onco) %&gt;%
+        select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+               plot_group, molecular_subtype, MMR_exposure, 
+               germline_variant, Hugo_Symbol_MMRgermline, Hugo_Symbol_somatic) %&gt;%
+        write_tsv(file.path(results_dir, paste0(&quot;PBTA_all_samples_with_MMRsigs_&quot;, cosmic_ids[i], &quot;.tsv&quot;)))
+
   }
 }</code></pre>
-<pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr  (1): Kids_First_Biospecimen_ID
-## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 197 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
@@ -891,13 +856,9 @@ for (i in 1:length(cosmic_files)){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Rows: 316 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
@@ -909,21 +870,9 @@ for (i in 1:length(cosmic_files)){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr  (1): Kids_First_Biospecimen_ID
-## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 197 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
@@ -935,13 +884,9 @@ for (i in 1:length(cosmic_files)){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Rows: 316 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
@@ -953,6 +898,9 @@ for (i in 1:length(cosmic_files)){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 
 
 
