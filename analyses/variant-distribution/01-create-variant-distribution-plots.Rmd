@@ -9,8 +9,10 @@ editor_options:
 
 # Load libraries
 ```{r load libraries, set up directories}
-library(ggplot2)
-library(tidyverse) 
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+})
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -53,14 +55,14 @@ hist <- read_tsv(file.path(root_dir,
                            "analyses", 
                            "collapse-tumor-histologies", 
                            "results",
-                           "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
+                           "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"), show_col_types = FALSE)
 ```
 
 
 # Merge clin with germline plp file
 
 ```{r data wrangling}
-plp <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv")) %>%
+plp <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv"), show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
@@ -95,12 +97,11 @@ sort(unique(plp_som_not_cpg$Hugo_Symbol))
 # Create plots
 
 ```{r}
-#genelists <- cpg
 genelists <-  list("cpg" = cpg, "somatic_drivers" = somatic_drivers, "somatic_not_cpg" = somatic_not_cpg)
 
 for (each in names(genelists)){
   
-    # add titles to print
+  # add titles to print
   if (each == "cpg"){
     x_axis_title <- "Cancer predisposition gene (CPG)"
     fig_width <- 4000
@@ -113,7 +114,6 @@ for (each in names(genelists)){
     x_axis_title <- "Somatic driver gene"
     fig_width <- 2000
   }
-  
   
   plot_df <- plp %>%
     filter(Hugo_Symbol %in% genelists[[each]]) %>%
@@ -151,6 +151,7 @@ dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol, plot_order),
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   ylim(0,20) +
   labs(fill = "Tumor diagnosis")
+
 print(dist_plot)
 
 dev.set(dev.next())
@@ -159,10 +160,9 @@ print(dist_plot)
 dev.off()
 
 ## make cpg plot excluding FGFR1 for R03 grant
-
 if (each == "cpg") {
   
-  dist_plot <- ggplot(data = n_per_gene[n_per_gene$Hugo_Symbol != "FGFR1",], aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill = plot_group)) +
+  dist_plot <- ggplot(data = n_per_gene[n_per_gene$Hugo_Symbol != "FGFR1",], aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill =    plot_group)) +
   geom_col(col = "black", size = 0.4) +
   scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
   ylab("Number of patients with P/LP variants") +
