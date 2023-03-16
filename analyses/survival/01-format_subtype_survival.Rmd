@@ -1,0 +1,230 @@
+---
+title: "Format PBTA-germline data for survival analyses"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+author: Ryan Corbett
+date: 2023
+params:
+  plot_ci: TRUE
+---
+
+**Purpose:** 
+
+Format molecular subtype and event-free survival in PBTA-germline cohort for survival analyses
+
+## Setup
+
+#### Packages and functions
+
+Load packages and set directory paths
+```{r load packages, warning=FALSE}
+library(tidyverse)
+library(survival)
+library(ggpubr)
+library(ggplot2)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "survival")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+
+# If the input and results directories do not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+```
+
+Set file paths
+```{r set paths}
+cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+pbta_histologies_file <- file.path(data_dir,"histologies.tsv")
+
+base_histologies_file <- file.path(input_dir, "2023-03-08_histologies-base.tsv")
+
+all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+
+methyl_file <- file.path(input_dir, "cbtn-dkfz-methylation-classification.csv")
+methyl_map_file <- file.path(input_dir, "methylation_to_OPC_subtype.csv")
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+
+epn_subgroup_file <- file.path(input_dir, "EPN_all_data_withsubgroup.tsv")
+
+output_histology <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
+```
+
+Import histologies, plp, methylation, and cpg files
+```{r read files, echo=FALSE}
+hist_cbtn <- read_tsv(cbtn_histologies_file)
+hist_pbta <- read_tsv(pbta_histologies_file)
+hist_base <- read_tsv(base_histologies_file)
+
+all_plp <- read_tsv(all_plp_file)
+
+methyl <- read_csv(methyl_file)
+methyl_map <- read_csv(methyl_map_file)
+
+cpgs <- read_lines(cpg_file)
+```
+
+## Defining molecular subtypes
+
+Add EPN subtypes (currently not reported in histologies file)
+```{r epn subtyping, echo=FALSE}
+epn <- read_tsv(epn_subgroup_file) %>%
+  distinct(Kids_First_Participant_ID, .keep_all = T)
+
+hist_cbtn <- hist_cbtn %>%
+  left_join(epn[,c("Kids_First_Participant_ID", "subgroup")]) %>%
+  mutate(molecular_subtype = case_when(
+    !is.na(subgroup) ~ subgroup,
+    is.na(subgroup) ~ molecular_subtype
+  )) %>%
+  select(-subgroup)
+```
+
+We will prioritize OPC molecular subtype when defining sample subtypes, and will utilize high-confidence methylation subclass call when OPC subtype is unavailable
+```{r add methyl subtype}
+# read in methylation subtypes
+methyl <- methyl %>%
+  filter(dkfz_v12_methylation_subclass_score >= 0.8 & sample_type == "Tumor") %>%
+  left_join(hist_pbta[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID")], by = "Kids_First_Biospecimen_ID")
+
+# read in methyl_map file, which has a key matching methylation subtypes to OPC subtypes when available 
+methyl_map <- methyl_map %>%
+  rename("dkfz_v12_methylation_subclass" = Abbrevation)
+
+# Define 'OPC_methyl_subtype' variable that takes `molecular_subtype` first, and `OPC_molecular_subtype` defined by methylation otherwise  
+hist_cbtn <- hist_cbtn %>%
+  left_join(methyl[,c("Kids_First_Participant_ID", "dkfz_v12_methylation_subclass")], by = "Kids_First_Participant_ID") %>%
+  left_join(methyl_map[,c("dkfz_v12_methylation_subclass", "OPC_molecular_subtype")], by = "dkfz_v12_methylation_subclass") %>%
+  mutate(OPC_methyl_subtype = case_when(
+    !is.na(molecular_subtype) & !grepl("To be classified", molecular_subtype) ~ molecular_subtype,
+    !is.na(OPC_molecular_subtype) ~ OPC_molecular_subtype,
+    grepl("To be classified", molecular_subtype) ~ molecular_subtype,
+    TRUE ~ NA_character_
+  )) %>%
+  
+  # change any "EPN, ST RELA" subtypes call to "EPN, ST ZFTA"
+  mutate(OPC_methyl_subtype = case_when(
+    OPC_methyl_subtype == "EPN, ST RELA" ~ "EPN, ST ZFTA",
+    TRUE ~ OPC_methyl_subtype
+  )) %>%
+  distinct(Kids_First_Participant_ID, .keep_all = T)
+```
+
+For samples in subtyped plot groups that are not subtyped, define as 'to be classified' 
+```{r}
+unclassified_df <- data.frame(plot_group = c("Atypical Teratoid Rhabdoid Tumor", "Craniopharyngioma",
+                                             "DIPG or DMG", "Ependymoma", "Low-grade glioma",
+                                             "Medulloblastoma", "Other high-grade glioma"),
+                              unclassified = c("ATRT, To be classified", "CRANIO, To be classified",
+                                               "HGG, To be classified", "EPN, To be classified",
+                                               "LGG, To be classified", "MB, To be classified",
+                                               "HGG, To be classified")
+                              )
+
+hist_cbtn <- hist_cbtn %>%
+  left_join(unclassified_df) %>%
+  mutate(OPC_methyl_subtype = case_when(
+    is.na(OPC_methyl_subtype) & !is.na(unclassified) ~ unclassified,
+    TRUE ~ OPC_methyl_subtype
+  )) %>%
+  select(-unclassified)
+```
+
+Consolidate subtypes of HGG, LGG, and GNG into broader subgroups
+```{r}
+hist_cbtn <- hist_cbtn %>%
+    mutate(mol_sub_group = case_when(
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("wildtype", OPC_methyl_subtype) ~ "HGG, H3 WT",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("K28", OPC_methyl_subtype) ~ "DMG, H3 K28",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("G35", OPC_methyl_subtype) ~ "HGG, H3 G35",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", OPC_methyl_subtype) ~ "HGG, IDH",
+    plot_group %in% c("Low-grade glioma") & grepl("wildtype", OPC_methyl_subtype) ~ "LGG, WT",
+    plot_group %in% c("Low-grade glioma") & grepl("-BRAF", OPC_methyl_subtype) ~ "LGG, BRAF fusion",
+    plot_group %in% c("Low-grade glioma") & grepl("SEGA", OPC_methyl_subtype) ~ "LGG, SEGA",
+    plot_group %in% c("Low-grade glioma") & !grepl("To be classified", OPC_methyl_subtype) ~ "LGG, Other alteration",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("wildtype", OPC_methyl_subtype) ~ "GNG/GNT, WT",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("-BRAF", OPC_methyl_subtype) ~ "GNG/GNT, BRAF fusion",
+    plot_group %in% c("Mixed neuronal-glial tumor") & !grepl("To be classified", OPC_methyl_subtype) ~ "GNG/GNT, Other alteration",
+    !is.na(OPC_methyl_subtype) ~ OPC_methyl_subtype,
+    is.na(OPC_methyl_subtype) ~ plot_group
+  ))
+```
+
+## Format survival data
+
+Define column `cpgPLP_status` indicating presence or absence of a CPG PLP variant
+
+```{r}
+cpg_bs <- all_plp$Kids_First_Biospecimen_ID[all_plp$Hugo_Symbol %in% cpgs]
+
+hist_cbtn <- hist_cbtn |>
+  mutate(cpgPLP_status = case_when(
+    Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
+    !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "no_cpgPLP"
+  ))
+```
+
+Event-free survival (EFS) status is currently not coded into histologies file. We will add a column indicating if an event (i.e. progression, recurrence, or death) has or hasn't occurred using the information in `subject_diagnoses.tsv`, which records all events. 
+
+A patient will be coded as "EVENT" in `EFS_status` if recorded EFS_days is less than `OS_days` or there is record of an event
+A patient will be coded as "NO EVENT" in `EFS_status` if `OS_status == LIVING` and there is no record of an event
+
+```{r}
+diagnoses <- read_tsv(file.path(input_dir, "subject_diagnoses.tsv"))
+
+# identify patients with event reported
+progression_pts <- diagnoses %>%
+  filter(grepl("Progressive|Recurrence", diagnonsis_type)) %>%
+  pull(subject_id) %>%
+  unique()
+
+deceased_pts <- diagnoses %>%
+  filter(grepl("Deceased-due to disease", OS_status)) %>%
+  pull(subject_id) %>%
+  unique()
+
+# add cohort id from pbta histologies files and format `PFS_days` as numeric
+hist_cbtn <- hist_cbtn %>%
+  select(-OS_days, -PFS_days, -OS_status) %>%
+  left_join(hist_base[,c("Kids_First_Participant_ID", "cohort_participant_id",
+                         "OS_days", "PFS_days", "OS_status")]) %>%
+  distinct(Kids_First_Participant_ID, .keep_all = T) %>%
+  mutate(EFS_days = as.numeric(PFS_days),
+         OS_days = as.numeric(OS_days)) %>%
+  mutate(OS_years = OS_days/365.25,
+         EFS_years = EFS_days/365.25) %>%
+  select(-PFS_days)
+
+# Add `PFS_status` column and code patients using criteria described above.
+hist_cbtn <- hist_cbtn %>%
+  dplyr::mutate(OS_status = case_when(
+    cohort_participant_id %in% deceased_pts ~ "DECEASED",
+    TRUE ~ OS_status
+  )) %>%
+  dplyr::mutate(EFS_status = case_when(
+    EFS_days < OS_days ~ "EVENT",
+    OS_status == "DECEASED" ~ "EVENT",
+    OS_status == "LIVING" & cohort_participant_id %in% progression_pts  ~ "EVENT",
+    OS_status == "LIVING" & !cohort_participant_id %in% progression_pts  ~ "NO EVENT",
+    TRUE ~ NA_character_
+  ))
+
+#There are a subset of deceased patients with `EFS_days` == NA but have `OS_days` reported. This can be used for EFS_days as well
+hist_cbtn <- hist_cbtn %>%
+  dplyr::mutate(EFS_days = case_when(
+    is.na(EFS_days) & OS_status == "DECEASED" & !is.na(OS_days) ~ OS_days,
+    TRUE ~ EFS_days
+  ))
+
+
+# Save output
+write_tsv(hist_cbtn,
+          output_histology)
+```
