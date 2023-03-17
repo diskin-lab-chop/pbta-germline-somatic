@@ -1,0 +1,290 @@
+---
+title: "PBTA-germline survival analyses"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+author: Ryan Corbett
+date: 2023
+params:
+  plot_ci: TRUE
+---
+
+Run Kaplan-Meier survival analyses and Cox proportional hazards models on cancer group in the PBTA-germline cohort
+
+## Usage 
+
+Uses a wrapper function (`survival_analysis`) from utils folder. 
+
+## Setup
+
+#### Packages and functions
+
+Load packages, set directory paths and call setup script
+```{r load packages, warning=FALSE}
+library(tidyverse)
+library(survival)
+library(ggpubr)
+library(ggplot2)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "survival")
+input_dir <- file.path(analysis_dir, "results")
+results_dir <- file.path(analysis_dir, "results")
+
+# If the input and results directories do not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+source(file.path(analysis_dir, "util", "survival_models.R"))
+```
+
+Set metadata path
+```{r set paths}
+cbtn_histologies_file <- file.path(input_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
+```
+
+Read in metadata
+```{r}
+hist_cbtn <- read_tsv(cbtn_histologies_file)
+```
+
+Define plot groups for which survival analyses should be run
+```{r}
+groups <- c("Atypical Teratoid Rhabdoid Tumor",
+            "Craniopharyngioma",
+            "DIPG or DMG|Other high-grade glioma",
+            "Ependymoma",
+            "Low-grade glioma",
+            "Medulloblastoma",
+            "Meningioma",
+            "Mixed neuronal-glial tumor",
+            "Neurofibroma plexiform"
+            )
+
+# create names vector for output files
+plot_names <- c("atrt", "cranio", "hgg", "epn", "lgg", "mb", "mng", "gng_gnt", "nfp")
+names(plot_names) <- groups
+```
+
+Loop through groups and create Kaplan Meier survival and Cox Proportional Hazard models for overall and event-free survival
+```{r}
+for (group in groups){
+  
+  # Define output model files
+  km_os_model_file <- file.path(results_dir, 
+                                    glue::glue("logrank_{plot_names[group]}_OS_cpgPLPstatus.RDS"))
+  
+  coxph_os_model_file <- ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor",
+                                             "Low-grade glioma", "Medulloblastoma", 
+                                             "Mixed neuronal-glial tumor"),
+                             file.path(results_dir,
+                                       glue::glue("cox_{plot_names[group]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
+                             file.path(results_dir,
+                                       glue::glue("cox_{plot_names[group]}_OS_additive_terms_subtype_cpgPLPstatus.RDS"))
+  )
+  
+  km_efs_model_file <- file.path(results_dir, 
+                                    glue::glue("logrank_{plot_names[group]}_EFS_cpgPLPstatus.RDS"))
+  
+  coxph_efs_model_file <- ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor",
+                                               "Low-grade glioma", "Medulloblastoma", 
+                                               "Mixed neuronal-glial tumor"),
+                             file.path(results_dir,
+                                       glue::glue("cox_{plot_names[group]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
+                             file.path(results_dir,
+                                       glue::glue("cox_{plot_names[group]}_EFS_additive_terms_subtype_cpgPLPstatus.RDS"))
+  )
+  
+  # Subset histology
+  group_hist <- hist_cbtn %>%
+    filter(grepl(group, plot_group))
+  
+  if (group == "DIPG or DMG|Other high-grade glioma"){
+    group_hist <- group_hist %>%
+       mutate(mol_sub_group = factor(mol_sub_group,
+                                      c("HGG, H3 WT",
+                                        "HGG, H3 G35",
+                                        "DMG, H3 K28",
+                                        "HGG, IDH"))) %>%
+     arrange(mol_sub_group)
+    }
+  
+   
+  # generate kaplan-meier survival models and save
+  kap_os <- survival_analysis(
+  metadata  = group_hist,
+  ind_var = "cpgPLP_status",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal",
+  days_col = "OS_days",
+  status_col = "OS_status"
+  )
+
+  readr::write_rds(kap_os, km_os_model_file)
+  
+  kap_efs <- survival_analysis(
+  metadata  = group_hist,
+  ind_var = "cpgPLP_status",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal",
+  days_col = "EFS_days",
+  status_col = "EFS_status"
+  )
+
+  readr::write_rds(kap_efs, km_efs_model_file)
+  
+  # For groups where extent_of_tumor_resection is considered, filter out samples with no data
+  if (group %in% c("Atypical Teratoid Rhabdoid Tumor",
+                   "Low-grade glioma", "Medulloblastoma", 
+                   "Mixed neuronal-glial tumor")) {
+     group_hist <- group_hist %>%
+      filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
+    
+  }
+
+  # generate coxph models (including appropriate covariates) and save
+  add_model_os <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|EWS|SEGA", group_hist$mol_sub_group),],
+                                  terms = ifelse(
+                                     group %in% c("Atypical Teratoid Rhabdoid Tumor",
+                                                  "Low-grade glioma", "Medulloblastoma", "Mixed neuronal-glial tumor"), 
+                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status",
+                                      ifelse(
+                                        group == "DIPG or DMG|Other high-grade glioma", "mol_sub_group+cpgPLP_status",
+                                        ifelse(group %in% c("Ependymoma"),
+                                                            "mol_sub_group+cpgPLP_status",
+                                                            "cpgPLP_status"
+                                  ))),
+             coxph_os_model_file,
+             "multivariate",
+             years_col = "OS_years",
+             status_col = "OS_status"
+            )
+  
+  add_model_efs <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|EWS|SEGA", group_hist$mol_sub_group),],
+                                  terms = ifelse(
+                                     group %in% c("Atypical Teratoid Rhabdoid Tumor",
+                                                  "Low-grade glioma", "Medulloblastoma", "Mixed neuronal-glial tumor"), 
+                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status",
+                                      ifelse(
+                                        group == "DIPG or DMG|Other high-grade glioma", "mol_sub_group+cpgPLP_status",
+                                        ifelse(group %in% c("Ependymoma"),
+                                                            "mol_sub_group+cpgPLP_status",
+                                                            "cpgPLP_status"
+                                  ))),
+             coxph_efs_model_file,
+             "multivariate",
+             years_col = "EFS_years",
+             status_col = "EFS_status"
+            )
+  
+}
+
+```
+
+Loop through subtypes with sufficient sample size and build KM and coxph survival models
+
+```{r}
+# define subtype df with histology, subtype, and file names
+subtype_df <- data.frame(hist = c("Craniopharyngioma",
+                                  "Ependymoma",
+                                  rep("DIPG or DMG|Other high-grade glioma", 2),
+                                  "Mixed neuronal-glial tumor",
+                                  rep("Low-grade glioma", 3),
+                                  rep("Medulloblastoma", 3)),
+                         names = c("cranio",
+                                  "epn",
+                                  rep("hgg", 2),
+                                  "gng_gnt",
+                                  rep("lgg", 3),
+                                  rep("mb", 3)),
+                         subtype = c("ADAM", "PF A", "K28", "WT",
+                                     "Other", "BRAF", "Other", "WT", 
+                                     "Group3", "Group4", "SHH"))
+
+# Loop through subtypes and run survival analyses
+for (j in 1:nrow(subtype_df)) {
+  
+  # define output files
+  km_os_model_file <- file.path(results_dir, 
+                                    glue::glue("logrank_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_cpgPLPstatus.RDS"))
+  
+  coxph_os_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma"),
+                             file.path(results_dir,
+                                      glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
+                             file.path(results_dir,
+                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_additive_terms_subtype_cpgPLPstatus.RDS"))
+  )
+  
+  km_efs_model_file <- file.path(results_dir, 
+                                    glue::glue("logrank_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_cpgPLPstatus.RDS"))
+  
+  coxph_efs_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma"),
+                             file.path(results_dir,
+                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
+                             file.path(results_dir,
+                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_additive_terms_subtype_cpgPLPstatus.RDS"))
+  )
+  
+  
+  # Subset metadata for histology subtype
+  subtype_hist <- hist_cbtn %>%
+    filter(grepl(subtype_df$hist[j], plot_group) & grepl(subtype_df$subtype[j], mol_sub_group))
+  
+  
+  # Run kaplan meier survival models and save to output
+  kap_os <- survival_analysis(
+              metadata  = subtype_hist,
+              ind_var = "cpgPLP_status",
+              test = "kap.meier",
+              metadata_sample_col = "Kids_First_Biospecimen_ID_normal",
+              days_col = "OS_days",
+              status_col = "OS_status"
+              )
+
+  readr::write_rds(kap_os, km_os_model_file)
+  
+  kap_efs <- survival_analysis(
+                metadata  = subtype_hist,
+                ind_var = "cpgPLP_status",
+                test = "kap.meier",
+                metadata_sample_col = "Kids_First_Biospecimen_ID_normal",
+                days_col = "EFS_days",
+                status_col = "EFS_status"
+                )
+  
+    readr::write_rds(kap_efs, km_efs_model_file)
+    
+  # For subtypes where extent_of_tumor_resection is considered, filter out samples with no data
+  if (subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma")){
+    subtype_hist <- subtype_hist %>%
+        filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
+  }
+
+
+    # Run coxph models and save to output
+    add_model_os <- fit_save_model(subtype_hist,
+                                  terms = ifelse(subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma"),
+                                                 "extent_of_tumor_resection+cpgPLP_status",
+                                                 "cpgPLP_status"),
+                                   coxph_os_model_file,
+                                   "multivariate",
+                                   years_col = "OS_years",
+                                   status_col = "OS_status")
+    
+    add_model_efs <- fit_save_model(subtype_hist,
+                                  terms = ifelse(subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma"),
+                                                 "extent_of_tumor_resection+cpgPLP_status",
+                                                 "cpgPLP_status"),
+                                     coxph_efs_model_file,
+                                     "multivariate",
+                                     years_col = "EFS_years",
+                                     status_col = "EFS_status"
+                                    )
+
+}
+```
