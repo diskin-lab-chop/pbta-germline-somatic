@@ -80,9 +80,7 @@ for (group in groups){
   km_os_model_file <- file.path(results_dir, 
                                     glue::glue("logrank_{plot_names[group]}_OS_cpgPLPstatus.RDS"))
   
-  coxph_os_model_file <- ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor",
-                                             "Low-grade glioma", "Medulloblastoma", 
-                                             "Mixed neuronal-glial tumor"),
+  coxph_os_model_file <- ifelse(group %in% c("Low-grade glioma"),
                              file.path(results_dir,
                                        glue::glue("cox_{plot_names[group]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
                              file.path(results_dir,
@@ -92,9 +90,7 @@ for (group in groups){
   km_efs_model_file <- file.path(results_dir, 
                                     glue::glue("logrank_{plot_names[group]}_EFS_cpgPLPstatus.RDS"))
   
-  coxph_efs_model_file <- ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor",
-                                               "Low-grade glioma", "Medulloblastoma", 
-                                               "Mixed neuronal-glial tumor"),
+  coxph_efs_model_file <- ifelse(group %in% c("Low-grade glioma"),
                              file.path(results_dir,
                                        glue::glue("cox_{plot_names[group]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
                              file.path(results_dir,
@@ -140,9 +136,7 @@ for (group in groups){
   readr::write_rds(kap_efs, km_efs_model_file)
   
   # For groups where extent_of_tumor_resection is considered, filter out samples with no data
-  if (group %in% c("Atypical Teratoid Rhabdoid Tumor",
-                   "Low-grade glioma", "Medulloblastoma", 
-                   "Mixed neuronal-glial tumor")) {
+  if (group %in% c("Low-grade glioma")) {
      group_hist <- group_hist %>%
       filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
     
@@ -153,12 +147,11 @@ for (group in groups){
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_days+cpgPLP_status",
-                                      ifelse(
-                                        group == "DIPG or DMG|Other high-grade glioma", "mol_sub_group+age_at_diagnosis_days+cpgPLP_status",
-                                        ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor", "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
+                                        ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
+                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
                                                             "mol_sub_group+age_at_diagnosis_days+cpgPLP_status",
                                                             "age_at_diagnosis_days+cpgPLP_status"
-                                  ))),
+                                  )),
              coxph_os_model_file,
              "multivariate",
              years_col = "OS_years",
@@ -169,12 +162,11 @@ for (group in groups){
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_days+cpgPLP_status",
-                                      ifelse(
-                                        group == "DIPG or DMG|Other high-grade glioma", "mol_sub_group+age_at_diagnosis_days+cpgPLP_status",
-                                        ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor", "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
+                                        ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
+                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
                                                             "mol_sub_group+age_at_diagnosis_days+cpgPLP_status",
                                                             "age_at_diagnosis_days+cpgPLP_status"
-                                  ))),
+                                  )),
              coxph_efs_model_file,
              "multivariate",
              years_col = "EFS_years",
@@ -212,7 +204,7 @@ for (j in 1:nrow(subtype_df)) {
   km_os_model_file <- file.path(results_dir, 
                                     glue::glue("logrank_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_cpgPLPstatus.RDS"))
   
-  coxph_os_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma"),
+  coxph_os_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
                              file.path(results_dir,
                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
                              file.path(results_dir,
@@ -222,7 +214,7 @@ for (j in 1:nrow(subtype_df)) {
   km_efs_model_file <- file.path(results_dir, 
                                     glue::glue("logrank_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_cpgPLPstatus.RDS"))
   
-  coxph_efs_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma"),
+  coxph_efs_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
                              file.path(results_dir,
                                        glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
                              file.path(results_dir,
@@ -259,7 +251,7 @@ for (j in 1:nrow(subtype_df)) {
     readr::write_rds(kap_efs, km_efs_model_file)
     
   # For subtypes where extent_of_tumor_resection is considered, filter out samples with no data
-  if (subtype_df$hist[j] %in% c("Low-grade glioma", "Mixed neuronal-glial tumor", "Medulloblastoma")){
+  if (subtype_df$hist[j] %in% c("Low-grade glioma")){
     subtype_hist <- subtype_hist %>%
         filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
   }
