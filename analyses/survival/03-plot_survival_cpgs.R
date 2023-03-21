@@ -92,7 +92,7 @@ file_names["EPN, PF A"] <- "EPN_PF-A"
 for (group in groups){
   
   # Read in coxph models
-  if (grepl("Low-grade glioma|LGG|Mixed|Atypical|Medulloblastoma|MB|GNG", group)){
+  if (grepl("Low-grade glioma|LGG", group)){
     survival_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{file_names[group]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")
@@ -119,7 +119,7 @@ for (group in groups){
 # repeat plotting loop for EFS forest plots
 for (group in groups){
   
-  if (grepl("Low-grade glioma|LGG|Mixed|Atypical|Medulloblastoma|MB|GNG", group)){
+  if (grepl("Low-grade glioma|LGG", group)){
     survival_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{file_names[group]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")
