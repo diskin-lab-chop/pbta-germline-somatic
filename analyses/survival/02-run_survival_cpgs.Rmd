@@ -71,7 +71,7 @@ groups <- c("Atypical Teratoid Rhabdoid Tumor",
             )
 
 # create names vector for output files
-plot_names <- c("atrt", "cranio", "cpt", "hgg", "epn", "lgg", "mb", "mng", "mes", "gng_gnt", "nfp")
+plot_names <- c("atrt", "cpt", "cranio", "hgg", "epn", "lgg", "mb", "mng", "mes", "gng_gnt", "nfp")
 names(plot_names) <- groups
 ```
 
