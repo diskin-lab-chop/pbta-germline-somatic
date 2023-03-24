@@ -58,18 +58,20 @@ hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
 Define plot groups for which survival analyses should be run
 ```{r}
 groups <- c("Atypical Teratoid Rhabdoid Tumor",
+            "Choroid plexus tumor",
             "Craniopharyngioma",
             "DIPG or DMG|Other high-grade glioma",
             "Ependymoma",
             "Low-grade glioma",
             "Medulloblastoma",
             "Meningioma",
+            "Mesenchymal tumor",
             "Mixed neuronal-glial tumor",
             "Neurofibroma plexiform"
             )
 
 # create names vector for output files
-plot_names <- c("atrt", "cranio", "hgg", "epn", "lgg", "mb", "mng", "gng_gnt", "nfp")
+plot_names <- c("atrt", "cranio", "cpt", "hgg", "epn", "lgg", "mb", "mng", "mes", "gng_gnt", "nfp")
 names(plot_names) <- groups
 ```
 
@@ -144,12 +146,12 @@ for (group in groups){
   }
 
   # generate coxph models (including appropriate covariates) and save
-  add_model_os <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|EWS|classified", group_hist$mol_sub_group),],
+  add_model_os <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                         ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
-                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
+                                                            "Ependymoma", "Medulloblastoma", "Mesenchymal tumor", "Mixed neuronal-glial tumor"),
                                                             "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
                                                             "age_at_diagnosis_years+cpgPLP_status"
                                   )),
@@ -159,12 +161,12 @@ for (group in groups){
              status_col = "OS_status"
             )
   
-  add_model_efs <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|EWS|classified", group_hist$mol_sub_group),],
+  add_model_efs <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                         ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
-                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
+                                                            "Ependymoma", "Medulloblastoma", "Mesenchymal tumor", "Mixed neuronal-glial tumor"),
                                                             "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
                                                             "age_at_diagnosis_years+cpgPLP_status"
                                   )),
