@@ -51,7 +51,8 @@ cbtn_histologies_file <- file.path(input_dir, "germline-primary-plus-tumor-histo
 Read in metadata
 ```{r}
 hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
-  dplyr::mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days))
+  dplyr::mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
+  dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25)
 ```
 
 Define plot groups for which survival analyses should be run
@@ -146,11 +147,11 @@ for (group in groups){
   add_model_os <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|EWS|classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
-                                     "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_days+cpgPLP_status",
+                                     "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                         ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
                                                             "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
-                                                            "mol_sub_group+age_at_diagnosis_days+cpgPLP_status",
-                                                            "age_at_diagnosis_days+cpgPLP_status"
+                                                            "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
+                                                            "age_at_diagnosis_years+cpgPLP_status"
                                   )),
              coxph_os_model_file,
              "multivariate",
@@ -161,11 +162,11 @@ for (group in groups){
   add_model_efs <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|EWS|classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
-                                     "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_days+cpgPLP_status",
+                                     "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                         ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
                                                             "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
-                                                            "mol_sub_group+age_at_diagnosis_days+cpgPLP_status",
-                                                            "age_at_diagnosis_days+cpgPLP_status"
+                                                            "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
+                                                            "age_at_diagnosis_years+cpgPLP_status"
                                   )),
              coxph_efs_model_file,
              "multivariate",
@@ -260,8 +261,8 @@ for (j in 1:nrow(subtype_df)) {
     # Run coxph models and save to output
     add_model_os <- fit_save_model(subtype_hist,
                                   terms = ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
-                                                 "extent_of_tumor_resection+age_at_diagnosis_days+cpgPLP_status",
-                                                 "age_at_diagnosis_days+cpgPLP_status"),
+                                                 "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
+                                                 "age_at_diagnosis_years+cpgPLP_status"),
                                    coxph_os_model_file,
                                    "multivariate",
                                    years_col = "OS_years",
@@ -269,8 +270,8 @@ for (j in 1:nrow(subtype_df)) {
     
     add_model_efs <- fit_save_model(subtype_hist,
                                   terms = ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
-                                                 "extent_of_tumor_resection+age_at_diagnosis_days+cpgPLP_status",
-                                                 "age_at_diagnosis_days+cpgPLP_status"),
+                                                 "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
+                                                 "age_at_diagnosis_years+cpgPLP_status"),
                                      coxph_efs_model_file,
                                      "multivariate",
                                      years_col = "EFS_years",
