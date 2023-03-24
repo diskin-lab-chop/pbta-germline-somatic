@@ -21,11 +21,13 @@ plots_dir <- file.path(root_dir, "analyses", "survival", "plots")
 # Define cancer groups and subtypes for plotting
 groups <- c("Atypical Teratoid Rhabdoid Tumor",
             "Craniopharyngioma",
+            "Choroid plexus tumor",
             "DIPG or DMG|Other high-grade glioma",
             "Ependymoma",
             "Low-grade glioma",
             "Medulloblastoma",
             "Meningioma",
+            "Mesenchymal tumor",
             "Mixed neuronal-glial tumor",
             "Neurofibroma plexiform",
             "CRANIO, ADAM", "EPN, PF A",
@@ -36,14 +38,16 @@ groups <- c("Atypical Teratoid Rhabdoid Tumor",
             "MB, Group3", "MB, Group 4", "MB, SHH"
 )
 
-file_names <- c("atrt", "cranio", "epn", "hgg", "lgg", "mb", "mng", "gng_gnt", "nfp", 
+file_names <- c("atrt", "cranio", "cpt", "epn", "hgg", "lgg", "mb", "mng", "mes", "gng_gnt", "nfp", 
                 "cranio_ADAM", "epn_PF A", "hgg_k28", "hgg_WT", "gng_gnt_Other",
                 "lgg_BRAF", "lgg_Other", "lgg_WT", "mb_Group3", "mb_Group4", "mb_SHH")
 names(file_names) <- groups
 
 # Define plot titles
-titles <- c("ATRT", "Craniopharyngioma", "Ependymoma", "HGG", "LGG", "Medulloblastoma", 
-            "Meningioma", "Mixed neuronal-glial tumor", "Neurofibroma Plexiform", 
+titles <- c("ATRT", "Craniopharyngioma", "Choroid plexus tumor", 
+            "Ependymoma", "HGG", "LGG", "Medulloblastoma", 
+            "Meningioma", "Mesenchymal tumor",
+            "Mixed neuronal-glial tumor", "Neurofibroma Plexiform", 
             "CRANIO, ADAM", "EPN, PF A",
             "DMG, H3 K28", "HGG, H3 WT",
             "GNG/GNT Other alteration", 
