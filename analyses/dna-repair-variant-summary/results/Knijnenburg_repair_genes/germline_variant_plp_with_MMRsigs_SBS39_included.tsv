@@ -10,10 +10,10 @@ BS_P8DERG5N	WXS	Pathogenic	InterVar_Recalculated Pathogenic	BLMH	c.571C>T	p.Arg1
 BS_P8DERG5N	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ALG3	c.727delG	p.Val243fs	BS_F6YJDSXZ	0.10052047745067055	0.9689004107785416
 BS_P8DERG5N	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COL18A1	c.4069+5_4082delCCCAGGCCCCCCAGGCCC	p.Gly1357fs	BS_F6YJDSXZ	0.10052047745067055	0.9689004107785416
 BS_P8DERG5N	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CDH13	c.1701delA	p.Ala568fs	BS_F6YJDSXZ	0.10052047745067055	0.9689004107785416
-BS_RVT7EHNX	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.1834C>T	p.Arg612*	BS_XNYH7VK6	NA	1.4985361945854538
-BS_RVT7EHNX	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PGAP3	c.320C>T	p.Ser107Leu	BS_XNYH7VK6	NA	1.4985361945854538
-BS_RVT7EHNX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRAMEF8	c.917_918delAG	p.Glu306fs	BS_XNYH7VK6	NA	1.4985361945854538
-BS_RVT7EHNX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AGAP3	c.115_125dupGCTGCCGCCGC	p.Gln44fs	BS_XNYH7VK6	NA	1.4985361945854538
+BS_RVT7EHNX	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ERCC6	c.1834C>T	p.Arg612*	BS_XNYH7VK6	0	1.4985361945854538
+BS_RVT7EHNX	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PGAP3	c.320C>T	p.Ser107Leu	BS_XNYH7VK6	0	1.4985361945854538
+BS_RVT7EHNX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRAMEF8	c.917_918delAG	p.Glu306fs	BS_XNYH7VK6	0	1.4985361945854538
+BS_RVT7EHNX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AGAP3	c.115_125dupGCTGCCGCCGC	p.Gln44fs	BS_XNYH7VK6	0	1.4985361945854538
 BS_ZWSDP4RT	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	EPB41L4A	c.334A>G	p.Arg112Gly	BS_5YTKXXBY	0.19286575064116512	0.49913051464349106
 BS_ZWSDP4RT	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MYOC	c.1256C>A	.	BS_5YTKXXBY	0.19286575064116512	0.49913051464349106
 BS_ZWSDP4RT	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MYEOV	c.63T>A	p.Cys21*	BS_5YTKXXBY	0.19286575064116512	0.49913051464349106
@@ -33,12 +33,12 @@ BS_53DMYMNP	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GPAT2	
 BS_53DMYMNP	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ETFDH	c.51dupT	p.Ala18fs	BS_YGDHJ68W	0.06407696371249838	0.5284911331519317
 BS_53DMYMNP	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-DRB1	c.126_127insTTAAGTTT	p.Glu43fs	BS_YGDHJ68W	0.06407696371249838	0.5284911331519317
 BS_53DMYMNP	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCA	p.Gly306fs	BS_YGDHJ68W	0.06407696371249838	0.5284911331519317
-BS_8JEJCH4Z	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LIX1L-AS1	n.*1987C>G	.	BS_13DJ6WHW	NA	1.438670306913592
-BS_8JEJCH4Z	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	HADHA	c.2107G>A	p.Gly703Arg	BS_13DJ6WHW	NA	1.438670306913592
-BS_8JEJCH4Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	IFNB1	c.220G>T	p.Glu74*	BS_13DJ6WHW	NA	1.438670306913592
-BS_8JEJCH4Z	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	BS_13DJ6WHW	NA	1.438670306913592
-BS_8JEJCH4Z	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ZNF75A	c.227G>A	p.Trp76*	BS_13DJ6WHW	NA	1.438670306913592
-BS_8JEJCH4Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CABS1	c.298_301delACTG	p.Thr100fs	BS_13DJ6WHW	NA	1.438670306913592
+BS_8JEJCH4Z	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LIX1L-AS1	n.*1987C>G	.	BS_13DJ6WHW	0	1.438670306913592
+BS_8JEJCH4Z	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	HADHA	c.2107G>A	p.Gly703Arg	BS_13DJ6WHW	0	1.438670306913592
+BS_8JEJCH4Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	IFNB1	c.220G>T	p.Glu74*	BS_13DJ6WHW	0	1.438670306913592
+BS_8JEJCH4Z	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	BS_13DJ6WHW	0	1.438670306913592
+BS_8JEJCH4Z	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ZNF75A	c.227G>A	p.Trp76*	BS_13DJ6WHW	0	1.438670306913592
+BS_8JEJCH4Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CABS1	c.298_301delACTG	p.Thr100fs	BS_13DJ6WHW	0	1.438670306913592
 BS_KKBNERGA	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CACNA1E	c.4558G>A	p.Val1520Met	BS_35DRDAFV	0.2779205131321932	0.587212370168813
 BS_KKBNERGA	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	OCA2	c.2228C>T	p.Pro743Leu	BS_35DRDAFV	0.2779205131321932	0.587212370168813
 BS_KKBNERGA	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GOLGA6L6	c.1766_1767insT	p.Arg589fs	BS_35DRDAFV	0.2779205131321932	0.587212370168813
@@ -101,12 +101,12 @@ BS_HA8VYBMA	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-DQ
 BS_HA8VYBMA	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-DQB1	c.176delT	p.Val59fs	BS_9W04ZPRR	0.14671603920892448	0.4260379391897304
 BS_HA8VYBMA	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-DQB1	c.142_143insGAGTGTC	p.Tyr48fs	BS_9W04ZPRR	0.14671603920892448	0.4260379391897304
 BS_HA8VYBMA	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF578	c.1592delG	p.Arg531fs	BS_9W04ZPRR	0.14671603920892448	0.4260379391897304
-BS_F7G8TA7C	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	KIAA0753	c.1104+1G>A	.	BS_PCVV9GJG	NA	1.526752162438914
-BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ETFDH	c.1351G>C	p.Val451Leu	BS_PCVV9GJG	NA	1.526752162438914
-BS_F7G8TA7C	WXS	Pathogenic	InterVar_Recalculated Pathogenic	NUMA1	c.347G>A	p.Trp116*	BS_PCVV9GJG	NA	1.526752162438914
-BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.473G>T	.	BS_PCVV9GJG	NA	1.526752162438914
-BS_F7G8TA7C	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GOLGA8H;GOLGA8N;GOLGA8T	c.740dupG	p.Glu248fs	BS_PCVV9GJG	NA	1.526752162438914
-BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FAN1	c.2616delA	p.Asp873fs	BS_PCVV9GJG	NA	1.526752162438914
+BS_F7G8TA7C	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	KIAA0753	c.1104+1G>A	.	BS_PCVV9GJG	0.2525938010222982	1.526752162438914
+BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ETFDH	c.1351G>C	p.Val451Leu	BS_PCVV9GJG	0.2525938010222982	1.526752162438914
+BS_F7G8TA7C	WXS	Pathogenic	InterVar_Recalculated Pathogenic	NUMA1	c.347G>A	p.Trp116*	BS_PCVV9GJG	0.2525938010222982	1.526752162438914
+BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.473G>T	.	BS_PCVV9GJG	0.2525938010222982	1.526752162438914
+BS_F7G8TA7C	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GOLGA8H;GOLGA8N;GOLGA8T	c.740dupG	p.Glu248fs	BS_PCVV9GJG	0.2525938010222982	1.526752162438914
+BS_F7G8TA7C	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FAN1	c.2616delA	p.Asp873fs	BS_PCVV9GJG	0.2525938010222982	1.526752162438914
 BS_RP8JJ88Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PSRC1	c.708G>A	p.Trp236*	BS_Z61JVJ03	0.4333354305210435	0.5680505855863072
 BS_RP8JJ88Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PROC	c.337G>A	p.Asp113Asn	BS_Z61JVJ03	0.4333354305210435	0.5680505855863072
 BS_RP8JJ88Z	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	BIVM-ERCC5;ERCC5	c.1543C>G	p.Arg515Gly	BS_Z61JVJ03	0.4333354305210435	0.5680505855863072
@@ -122,13 +122,13 @@ BS_69HX9VQM	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZSCAN3
 BS_69HX9VQM	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TBC1D31	c.128dupT	p.Leu43fs	NA	NA	NA
 BS_69HX9VQM	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	SLURP1	c.82delT	p.Cys28fs	NA	NA	NA
 BS_69HX9VQM	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PER1	c.2602delT	p.Trp868fs	NA	NA	NA
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ANKRD35	c.906T>G	p.Tyr302*	BS_BT83BCEE	NA	1.0284071923625664
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SCARB1	c.1338C>A	p.Tyr446*	BS_BT83BCEE	NA	1.0284071923625664
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.319_320insCTCC	p.Gly107fs	BS_BT83BCEE	NA	1.0284071923625664
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.315delG	p.Arg106fs	BS_BT83BCEE	NA	1.0284071923625664
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.201delG	p.Arg68fs	BS_BT83BCEE	NA	1.0284071923625664
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.198delT	p.Pro67fs	BS_BT83BCEE	NA	1.0284071923625664
-BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUS81	c.1316delC	p.Pro439fs	BS_BT83BCEE	NA	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ANKRD35	c.906T>G	p.Tyr302*	BS_BT83BCEE	0	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SCARB1	c.1338C>A	p.Tyr446*	BS_BT83BCEE	0	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.319_320insCTCC	p.Gly107fs	BS_BT83BCEE	0	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.315delG	p.Arg106fs	BS_BT83BCEE	0	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.201delG	p.Arg68fs	BS_BT83BCEE	0	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HLA-C	c.198delT	p.Pro67fs	BS_BT83BCEE	0	1.0284071923625664
+BS_PJZ7YCFW	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUS81	c.1316delC	p.Pro439fs	BS_BT83BCEE	0	1.0284071923625664
 BS_4WVAN083	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CP	c.1995T>A	p.Tyr665*	NA	NA	NA
 BS_4WVAN083	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	F11	c.449C>T	p.Thr150Met	NA	NA	NA
 BS_4WVAN083	WXS	Pathogenic	InterVar_Recalculated Pathogenic	NUP205	c.5500C>T	p.Arg1834*	NA	NA	NA
@@ -216,20 +216,20 @@ BS_5AJNFDME	WXS	Pathogenic	InterVar_Recalculated Pathogenic	CORIN	c.2170C>T	p.Gl
 BS_5AJNFDME	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MCCC2	c.214C>T	p.Arg72*	BS_WPV7N6NQ	0.18896466324555591	0.9088809369380916
 BS_5AJNFDME	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MPIG6B	c.427C>T	p.Arg143*	BS_WPV7N6NQ	0.18896466324555591	0.9088809369380916
 BS_5AJNFDME	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF683	c.196delC	p.Leu66fs	BS_WPV7N6NQ	0.18896466324555591	0.9088809369380916
-BS_KN6FCN12	WXS	Pathogenic	InterVar_Recalculated Pathogenic	GALNT13	c.1236G>A	p.Trp412*	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Pathogenic	InterVar_Recalculated Pathogenic	NME6	c.205C>T	p.Arg69*	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CORIN	c.1117G>A	p.Asp373Asn	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FGFR4	c.547C>T	p.Arg183Cys	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RHOBTB2	c.1804C>T	p.Arg602Cys	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PYCARD	c.513G>A	p.Trp171*	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.3391A>G	p.Thr1131Ala	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NPHS1	c.2596C>T	p.Arg866*	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COL18A1	c.4069+5_4082delCCCAGGCCCCCCAGGCCC	p.Gly1357fs	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KIDINS220	c.*3802_*3805delATAG	.	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MTO1	c.198_201delTCAC	p.His67fs	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RASA3	c.858dupC	p.Val287fs	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ACSM2A	c.1405delA	p.Ser469fs	BS_JWDK21ED	NA	1.1165563802793577
-BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GRWD1	c.813delG	p.Thr272fs	BS_JWDK21ED	NA	1.1165563802793577
+BS_KN6FCN12	WXS	Pathogenic	InterVar_Recalculated Pathogenic	GALNT13	c.1236G>A	p.Trp412*	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Pathogenic	InterVar_Recalculated Pathogenic	NME6	c.205C>T	p.Arg69*	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CORIN	c.1117G>A	p.Asp373Asn	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FGFR4	c.547C>T	p.Arg183Cys	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RHOBTB2	c.1804C>T	p.Arg602Cys	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PYCARD	c.513G>A	p.Trp171*	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.3391A>G	p.Thr1131Ala	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NPHS1	c.2596C>T	p.Arg866*	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COL18A1	c.4069+5_4082delCCCAGGCCCCCCAGGCCC	p.Gly1357fs	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KIDINS220	c.*3802_*3805delATAG	.	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MTO1	c.198_201delTCAC	p.His67fs	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RASA3	c.858dupC	p.Val287fs	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ACSM2A	c.1405delA	p.Ser469fs	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
+BS_KN6FCN12	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GRWD1	c.813delG	p.Thr272fs	BS_JWDK21ED	0.1642987741932483	1.1165563802793577
 BS_39R5Q35B	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AADACL3	c.977delT	p.Leu326fs	NA	NA	NA
 BS_39R5Q35B	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	NA	NA	NA
 BS_39R5Q35B	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	OR8G1	c.865_866insGCTACATATGTTTTTAAATCTAATCTAATTTAA	p.Leu288_Ile289insSerTyrIleCysPheTerIleTerSerAsnLeu	NA	NA	NA
@@ -293,15 +293,15 @@ BS_0TYSHR03	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COQ6	c
 BS_0TYSHR03	WXS	Pathogenic	ClinVar Pathogenic -- *Latest reported date call is Pathogenic date 20200314	BCKDHB	c.33_34delAC	p.Leu12fs	NA	NA	NA
 BS_0TYSHR03	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HARBI1	c.171_174dupTTCT	p.Arg59fs	NA	NA	NA
 BS_0TYSHR03	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ANGPTL6	c.365_375delCGGGCCCGGGG	p.Ala122fs	NA	NA	NA
-BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	HOGA1	c.834G>A	p.Ala278Ala	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SGCG	c.386-1G>A	.	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	F5	c.1601G>A	p.Arg534Gln	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ADH1C	c.232G>T	p.Gly78*	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ALDOC	c.943C>T	p.Arg315*	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TXNRD3	c.54delC	p.Asn19fs	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.2983_2986delGAAA	p.Glu995fs	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	C17orf53	c.1272dupT	p.Pro425fs	BS_X0KN4VVW	NA	0.0881491879167914
-BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GAGE13;GAGE2D;GAGE2E;GAGE8	c.179_180delAG	p.Glu60fs	BS_X0KN4VVW	NA	0.0881491879167914
+BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	HOGA1	c.834G>A	p.Ala278Ala	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SGCG	c.386-1G>A	.	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	F5	c.1601G>A	p.Arg534Gln	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ADH1C	c.232G>T	p.Gly78*	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ALDOC	c.943C>T	p.Arg315*	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TXNRD3	c.54delC	p.Asn19fs	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.2983_2986delGAAA	p.Glu995fs	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	C17orf53	c.1272dupT	p.Pro425fs	BS_X0KN4VVW	0	0.0881491879167914
+BS_CFJYJAA3	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GAGE13;GAGE2D;GAGE2E;GAGE8	c.179_180delAG	p.Glu60fs	BS_X0KN4VVW	0	0.0881491879167914
 BS_S5NZBECP	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RBM8A	c.*6C>G	.	BS_DD69EB5S	0.142664679850098	0.3229668035928472
 BS_S5NZBECP	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ZFYVE16	c.509C>G	p.Ser170*	BS_DD69EB5S	0.142664679850098	0.3229668035928472
 BS_S5NZBECP	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HNRNPCL3;HNRNPCL4	c.78delT	p.Val27fs	BS_DD69EB5S	0.142664679850098	0.3229668035928472
@@ -373,9 +373,9 @@ BS_2AM4ZQ21	WXS	Pathogenic	InterVar_Recalculated Pathogenic	DLEC1	c.2890C>T	p.Gl
 BS_2AM4ZQ21	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MMUT	c.2080C>T	.	NA	NA	NA
 BS_2AM4ZQ21	WXS	Pathogenic	InterVar_Recalculated Pathogenic	PDE1B	c.256C>T	p.Gln86*	NA	NA	NA
 BS_2AM4ZQ21	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCYT1A	c.427delG	p.Asp143fs	NA	NA	NA
-BS_ANZ9H60A	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AADACL3	c.977delT	p.Leu326fs	BS_0TKQP4XJ	NA	1.7909977290148795
-BS_ANZ9H60A	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	BS_0TKQP4XJ	NA	1.7909977290148795
-BS_ANZ9H60A	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_0TKQP4XJ	NA	1.7909977290148795
+BS_ANZ9H60A	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AADACL3	c.977delT	p.Leu326fs	BS_0TKQP4XJ	0	1.7909977290148795
+BS_ANZ9H60A	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RECQL4	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	BS_0TKQP4XJ	0	1.7909977290148795
+BS_ANZ9H60A	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_0TKQP4XJ	0	1.7909977290148795
 BS_40RVSGZF	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RORB	c.640C>T	p.Arg214*	BS_G5VS97AD	0.2519917339886732	0.9656859954967222
 BS_40RVSGZF	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RBM8A	c.*6C>G	.	BS_G5VS97AD	0.2519917339886732	0.9656859954967222
 BS_40RVSGZF	WXS	Pathogenic	InterVar_Recalculated Pathogenic	DLEC1	c.4996C>T	p.Arg1666*	BS_G5VS97AD	0.2519917339886732	0.9656859954967222
@@ -402,15 +402,15 @@ BS_0ZQ4019R	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NPIPB3
 BS_0ZQ4019R	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MAP10	c.2321delC	p.Pro774fs	BS_5XC635HW	0.8071516003250689	159.7511253044256
 BS_0ZQ4019R	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CMYA5	c.5060_5061delAG	p.Glu1687fs	BS_5XC635HW	0.8071516003250689	159.7511253044256
 BS_0ZQ4019R	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SLC12A6	c.2306delT	p.Leu769fs	BS_5XC635HW	0.8071516003250689	159.7511253044256
-BS_8BNM6DE1	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CERKL	c.847C>T	p.Arg283*	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	THRB	c.10A>G	p.Asn4Asp	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ARHGEF3	c.47C>A	p.Ser16*	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	OR4X2	c.261G>A	p.Trp87*	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DISC1	c.2520_2521+2delTCAT	p.Gln841fs	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLE4	c.254dupG	p.Cys85fs	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NPIPA5	c.940_977delACTCCCCTTCCACCCTCAGCTCCACCCTCAGCGGATGA	p.Thr314fs	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GPI	c.1787delT	p.Val596fs	BS_4SCDT7M9	NA	0.6758104406954007
-BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FCGBP	c.3543_3549delCACGTGT	p.Asp1181fs	BS_4SCDT7M9	NA	0.6758104406954007
+BS_8BNM6DE1	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CERKL	c.847C>T	p.Arg283*	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	THRB	c.10A>G	p.Asn4Asp	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Pathogenic	InterVar_Recalculated Pathogenic	ARHGEF3	c.47C>A	p.Ser16*	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	OR4X2	c.261G>A	p.Trp87*	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DISC1	c.2520_2521+2delTCAT	p.Gln841fs	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	POLE4	c.254dupG	p.Cys85fs	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NPIPA5	c.940_977delACTCCCCTTCCACCCTCAGCTCCACCCTCAGCGGATGA	p.Thr314fs	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GPI	c.1787delT	p.Val596fs	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
+BS_8BNM6DE1	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FCGBP	c.3543_3549delCACGTGT	p.Asp1181fs	BS_4SCDT7M9	0.1678451497875459	0.6758104406954007
 BS_DJAEYCW8	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DDX59	c.1372G>C	p.Asp458His	NA	NA	NA
 BS_DJAEYCW8	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CFTR	c.1865G>A	.	NA	NA	NA
 BS_DJAEYCW8	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	VPS11	c.1274G>A	p.Arg425His	NA	NA	NA
@@ -437,14 +437,14 @@ BS_YK5XX7NX	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PAH	c.
 BS_YK5XX7NX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MACC1	c.1652delG	p.Ser551fs	NA	NA	NA
 BS_YK5XX7NX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRPF40B	c.*12264_*12280dupTCACCCTCTAGGTCATC	.	NA	NA	NA
 BS_YK5XX7NX	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ELOB	c.371dupA	p.Thr125fs	NA	NA	NA
-BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MACF1	c.2303T>C	p.Leu768Ser	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Pathogenic	InterVar_Recalculated Pathogenic	MOV10	c.2554C>T	p.Arg852*	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Pathogenic	InterVar_Recalculated Pathogenic	F13B	c.1301C>A	p.Ser434*	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAM111A	c.1180G>A	p.Gly394Arg	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SIK3	c.1343G>C	p.Ser448Thr	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	TP53	c.423C>G	.	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LAMA1	c.6517C>T	p.Arg2173*	BS_18RH1034	NA	NA
-BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_18RH1034	NA	NA
+BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MACF1	c.2303T>C	p.Leu768Ser	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Pathogenic	InterVar_Recalculated Pathogenic	MOV10	c.2554C>T	p.Arg852*	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Pathogenic	InterVar_Recalculated Pathogenic	F13B	c.1301C>A	p.Ser434*	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAM111A	c.1180G>A	p.Gly394Arg	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SIK3	c.1343G>C	p.Ser448Thr	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	TP53	c.423C>G	.	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LAMA1	c.6517C>T	p.Arg2173*	BS_18RH1034	0	NA
+BS_XM3ER1N6	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_18RH1034	0	NA
 BS_31Q3FW1X	WXS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	RBM8A	c.*6C>G	.	NA	NA	NA
 BS_31Q3FW1X	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GPATCH4	c.577C>T	p.Gln193*	NA	NA	NA
 BS_31Q3FW1X	WXS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CCT7	c.1091G>T	p.Cys364Phe	NA	NA	NA
@@ -967,10 +967,10 @@ BS_26J942GD	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TIGD7	
 BS_26J942GD	WGS	Pathogenic	InterVar_Recalculated Pathogenic	HEATR5B	c.1792C>T	p.Arg598*	NA	NA	NA
 BS_26J942GD	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HECW2	c.2825G>T	p.Arg942Leu	NA	NA	NA
 BS_26J942GD	WGS	Pathogenic	InterVar_Recalculated Pathogenic	SLC37A3	c.112C>T	p.Arg38*	NA	NA	NA
-BS_29YQSB5E	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNHIT2	c.763C>T	p.Gln255*	BS_CBMAWSAR	NA	0.6159462722385651
-BS_29YQSB5E	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATP8A2	c.76+4_76+32dupAGCTGGGAGGGGCGCGGCGAGGGAGGGTG	.	BS_CBMAWSAR	NA	0.6159462722385651
-BS_29YQSB5E	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PKN1	c.2398C>T	p.Arg800*	BS_CBMAWSAR	NA	0.6159462722385651
-BS_29YQSB5E	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	XPC	c.2074A>T	p.Lys692*	BS_CBMAWSAR	NA	0.6159462722385651
+BS_29YQSB5E	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNHIT2	c.763C>T	p.Gln255*	BS_CBMAWSAR	0	0.6159462722385651
+BS_29YQSB5E	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATP8A2	c.76+4_76+32dupAGCTGGGAGGGGCGCGGCGAGGGAGGGTG	.	BS_CBMAWSAR	0	0.6159462722385651
+BS_29YQSB5E	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PKN1	c.2398C>T	p.Arg800*	BS_CBMAWSAR	0	0.6159462722385651
+BS_29YQSB5E	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	XPC	c.2074A>T	p.Lys692*	BS_CBMAWSAR	0	0.6159462722385651
 BS_2AQZX79Y	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DPYD	c.1109_1110delTA	p.Ile370fs	NA	NA	NA
 BS_2AQZX79Y	WGS	Pathogenic	InterVar_Recalculated Pathogenic	CLEC4A	c.503C>G	p.Ser168*	NA	NA	NA
 BS_2AQZX79Y	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATP2C2	c.1935delC	p.Val646fs	NA	NA	NA
@@ -1244,18 +1244,18 @@ BS_45VHDFRD	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c
 BS_45VHDFRD	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0950123 was found in P-LP and not in B-LP or VUS	SLC22A5	c.527G>A	p.Gly176Asp	NA	NA	NA
 BS_49Z8WJP2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	LRP1	c.475A>G	p.Thr159Ala	NA	NA	NA
 BS_49Z8WJP2	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	GALNS	c.364G>A	p.Gly122Ser	NA	NA	NA
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INPP5B	c.1718A>G	p.Glu573Gly	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KCNA4	c.1129G>A	p.Val377Ile	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	SMPD1	c.1829_1831delGCC	p.Arg610del	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>C	.	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GP6	c.1129C>T	p.Gln377*	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRTN3	c.769delT	p.Ter257fs	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF560	c.1782_1783delCA	p.His594fs	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CORIN	c.1819G>A	p.Asp607Asn	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF107	c.247C>T	p.Gln83*	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Pathogenic	InterVar_Recalculated Pathogenic	ABRA	c.394G>T	p.Glu132*	BS_QQP17PDQ	NA	1.343882775793233
-BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRUNE2	c.7829_7830delCT	p.Ser2610fs	BS_QQP17PDQ	NA	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	INPP5B	c.1718A>G	p.Glu573Gly	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KCNA4	c.1129G>A	p.Val377Ile	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	SMPD1	c.1829_1831delGCC	p.Arg610del	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>C	.	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GP6	c.1129C>T	p.Gln377*	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRTN3	c.769delT	p.Ter257fs	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF560	c.1782_1783delCA	p.His594fs	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CORIN	c.1819G>A	p.Asp607Asn	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF107	c.247C>T	p.Gln83*	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Pathogenic	InterVar_Recalculated Pathogenic	ABRA	c.394G>T	p.Glu132*	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
+BS_4AM9C504	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRUNE2	c.7829_7830delCT	p.Ser2610fs	BS_QQP17PDQ	0.32001220750141124	1.343882775793233
 BS_4CVBQP6X	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TARDBP	c.1144G>A	p.Ala382Thr	NA	NA	NA
 BS_4CVBQP6X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NKX2-3	c.813_903delCGCGGCCGCCGCCGCCGCCGCCGCCGCCGCCGCAGCAGCGGCGGCCTACAGCAGCAGCTATGGCTGTGCGTACCCGGCGGGCGGCGGCGGC	p.Ala275fs	NA	NA	NA
 BS_4CVBQP6X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DHODH	c.620A>G	p.Tyr207Cys	NA	NA	NA
@@ -1673,13 +1673,13 @@ BS_6VQ446ZB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CA6	c.
 BS_6VQ446ZB	WGS	Pathogenic	InterVar_Recalculated Pathogenic	PLA2G12B	c.376A>T	p.Lys126*	NA	NA	NA
 BS_6VQ446ZB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	APOA1	c.100C>T	p.Arg34*	NA	NA	NA
 BS_6VQ446ZB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	NA	NA	NA
-BS_6VTM903X	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.1147delC	p.Ala385fs	BS_R1G6SG0K	NA	0.7279365035546679
-BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AGBL2	c.2279dupG	p.Asn761fs	BS_R1G6SG0K	NA	0.7279365035546679
-BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	N4BP2L2	c.2048_2049delCT	p.Ser683fs	BS_R1G6SG0K	NA	0.7279365035546679
-BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_R1G6SG0K	NA	0.7279365035546679
-BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF433	c.262C>T	p.Gln88*	BS_R1G6SG0K	NA	0.7279365035546679
-BS_6VTM903X	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	COL4A3	c.4803delT	p.Gly1602fs	BS_R1G6SG0K	NA	0.7279365035546679
-BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CNTNAP3B	c.1599delG	p.Leu534fs	BS_R1G6SG0K	NA	0.7279365035546679
+BS_6VTM903X	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	MUTYH	c.1147delC	p.Ala385fs	BS_R1G6SG0K	0	0.7279365035546679
+BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AGBL2	c.2279dupG	p.Asn761fs	BS_R1G6SG0K	0	0.7279365035546679
+BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	N4BP2L2	c.2048_2049delCT	p.Ser683fs	BS_R1G6SG0K	0	0.7279365035546679
+BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_R1G6SG0K	0	0.7279365035546679
+BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF433	c.262C>T	p.Gln88*	BS_R1G6SG0K	0	0.7279365035546679
+BS_6VTM903X	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	COL4A3	c.4803delT	p.Gly1602fs	BS_R1G6SG0K	0	0.7279365035546679
+BS_6VTM903X	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CNTNAP3B	c.1599delG	p.Leu534fs	BS_R1G6SG0K	0	0.7279365035546679
 BS_6VYD7653	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PLCH2	c.3791_3795delACTTT	p.Asp1264fs	NA	NA	NA
 BS_6VYD7653	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CTRC	c.576_588delGGGCTTCAGGGTG	p.Trp192fs	NA	NA	NA
 BS_6VYD7653	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZBTB42	c.1091G>A	p.Cys364Tyr	NA	NA	NA
@@ -2040,9 +2040,9 @@ BS_9NRNDZD0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FCGBP	
 BS_9NRNDZD0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SCAF1	c.1156_1162delCCCGGCG	p.Pro386fs	NA	NA	NA
 BS_9NRNDZD0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MTA3	c.360delA	p.Lys120fs	NA	NA	NA
 BS_9NRNDZD0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GEMIN5	c.2176dupA	p.Ser726fs	NA	NA	NA
-BS_9R1ENMBP	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAM186A	c.5044G>T	p.Glu1682*	BS_HJ95JNFN	NA	0.16798534697415413
-BS_9R1ENMBP	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KLK7	c.523delG	p.Asp175fs	BS_HJ95JNFN	NA	0.16798534697415413
-BS_9R1ENMBP	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	WRN	c.2221C>T	p.Arg741*	BS_HJ95JNFN	NA	0.16798534697415413
+BS_9R1ENMBP	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	FAM186A	c.5044G>T	p.Glu1682*	BS_HJ95JNFN	0	0.16798534697415413
+BS_9R1ENMBP	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KLK7	c.523delG	p.Asp175fs	BS_HJ95JNFN	0	0.16798534697415413
+BS_9R1ENMBP	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	WRN	c.2221C>T	p.Arg741*	BS_HJ95JNFN	0	0.16798534697415413
 BS_9S3N3Y5W	WGS	Pathogenic	InterVar_Recalculated Pathogenic	LYST	c.7786C>T	p.Arg2596*	NA	NA	NA
 BS_9S3N3Y5W	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	AKR1C2	c.490G>A	.	NA	NA	NA
 BS_9S3N3Y5W	WGS	Pathogenic	InterVar_Recalculated Pathogenic	EXOSC8	c.358C>T	p.Gln120*	NA	NA	NA
@@ -2319,10 +2319,10 @@ BS_BYA3D12Q	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DCHS2	
 BS_BYA3D12Q	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MAFA	c.409G>A	p.Asp137Asn	NA	NA	NA
 BS_BYA3D12Q	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	BOP1	c.194_203delATTCCGGCAG	p.Asp65fs	NA	NA	NA
 BS_BYA3D12Q	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TEX13A	c.58_59delTT	p.Phe20fs	NA	NA	NA
-BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CCDC168	c.12933_12934delAG	p.Gly4312fs	BS_KAD49R68	NA	0.8399267348707706
-BS_BZ7FK347	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	BS_KAD49R68	NA	0.8399267348707706
-BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NEIL3	c.1558_1561delGGGA	p.Gly520fs	BS_KAD49R68	NA	0.8399267348707706
-BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.65C>T	p.Pro22Leu	BS_KAD49R68	NA	0.8399267348707706
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CCDC168	c.12933_12934delAG	p.Gly4312fs	BS_KAD49R68	0.08737091416340297	0.8399267348707706
+BS_BZ7FK347	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLG	c.1399G>A	p.Ala467Thr	BS_KAD49R68	0.08737091416340297	0.8399267348707706
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NEIL3	c.1558_1561delGGGA	p.Gly520fs	BS_KAD49R68	0.08737091416340297	0.8399267348707706
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.65C>T	p.Pro22Leu	BS_KAD49R68	0.08737091416340297	0.8399267348707706
 BS_C2AV5D4A	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DLEC1	c.5052G>A	p.Trp1684*	NA	NA	NA
 BS_C4BTBM7G	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DSG4	c.2042G>A	p.Trp681*	NA	NA	NA
 BS_C4BTBM7G	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TCF4	c.10A>T	p.Lys4*	NA	NA	NA
@@ -2987,12 +2987,12 @@ BS_GAPT45QB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KCNS3	
 BS_GAPT45QB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DYSF	c.991G>T	p.Gly331Trp	NA	NA	NA
 BS_GAPT45QB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCDHGA11	c.227delT	p.Phe76fs	NA	NA	NA
 BS_GAPT45QB	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PSKH2	c.36delG	p.Pro13fs	NA	NA	NA
-BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PPIAL4G	c.70C>T	p.Gln24*	BS_STNH7YSX	NA	0.8679242926997963
-BS_GBQ6A3ST	WGS	Pathogenic	InterVar_Recalculated Pathogenic	MARCHF8	c.430A>T	p.Lys144*	BS_STNH7YSX	NA	0.8679242926997963
-BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZBTB3	c.686delC	p.Pro229fs	BS_STNH7YSX	NA	0.8679242926997963
-BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	XPC	c.2034-1569dupT	.	BS_STNH7YSX	NA	0.8679242926997963
-BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CRYBG3	c.4650_4653delCAAA	p.Asn1550fs	BS_STNH7YSX	NA	0.8679242926997963
-BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SPDYE5	c.259delG	p.Ala87fs	BS_STNH7YSX	NA	0.8679242926997963
+BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PPIAL4G	c.70C>T	p.Gln24*	BS_STNH7YSX	0	0.8679242926997963
+BS_GBQ6A3ST	WGS	Pathogenic	InterVar_Recalculated Pathogenic	MARCHF8	c.430A>T	p.Lys144*	BS_STNH7YSX	0	0.8679242926997963
+BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZBTB3	c.686delC	p.Pro229fs	BS_STNH7YSX	0	0.8679242926997963
+BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	XPC	c.2034-1569dupT	.	BS_STNH7YSX	0	0.8679242926997963
+BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CRYBG3	c.4650_4653delCAAA	p.Asn1550fs	BS_STNH7YSX	0	0.8679242926997963
+BS_GBQ6A3ST	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SPDYE5	c.259delG	p.Ala87fs	BS_STNH7YSX	0	0.8679242926997963
 BS_GCNH4CC0	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ACADM	n.-775C>T	.	NA	NA	NA
 BS_GCNH4CC0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	NA	NA	NA
 BS_GCNH4CC0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	THOC6	c.298T>A	p.Trp100Arg	NA	NA	NA
@@ -3318,12 +3318,12 @@ BS_JTSWHVNR	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	KRT71	
 BS_JTSWHVNR	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PABPN1	c.18_23dupGGCGGC	p.Ala7_Ala8dup	NA	NA	NA
 BS_JTSWHVNR	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF2	c.592C>T	p.Arg198*	NA	NA	NA
 BS_JTSWHVNR	WGS	Pathogenic	InterVar_Recalculated Pathogenic	EIF4E3	c.258G>A	p.Trp86*	NA	NA	NA
-BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PIGV	c.1022C>A	p.Ala341Glu	BS_79NQJZ09	NA	0.7559340613836936
-BS_JWETX0BH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_79NQJZ09	NA	0.7559340613836936
-BS_JWETX0BH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GPR179	c.3934_3935delAG	p.Arg1312fs	BS_79NQJZ09	NA	0.7559340613836936
-BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1875C>G	p.Tyr625*	BS_79NQJZ09	NA	0.7559340613836936
-BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLR1C	c.836G>A	p.Arg279Gln	BS_79NQJZ09	NA	0.7559340613836936
-BS_JWETX0BH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUC3A	c.2175_2176insG	p.Ile726fs	BS_79NQJZ09	NA	0.7559340613836936
+BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PIGV	c.1022C>A	p.Ala341Glu	BS_79NQJZ09	0	0.7559340613836936
+BS_JWETX0BH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATXN3	c.915_916insCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA	p.Gly306fs	BS_79NQJZ09	0	0.7559340613836936
+BS_JWETX0BH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	GPR179	c.3934_3935delAG	p.Arg1312fs	BS_79NQJZ09	0	0.7559340613836936
+BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RAD50	c.1875C>G	p.Tyr625*	BS_79NQJZ09	0	0.7559340613836936
+BS_JWETX0BH	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	POLR1C	c.836G>A	p.Arg279Gln	BS_79NQJZ09	0	0.7559340613836936
+BS_JWETX0BH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUC3A	c.2175_2176insG	p.Ile726fs	BS_79NQJZ09	0	0.7559340613836936
 BS_JXEQWWJH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NKX2-3	c.813_903delCGCGGCCGCCGCCGCCGCCGCCGCCGCCGCCGCAGCAGCGGCGGCCTACAGCAGCAGCTATGGCTGTGCGTACCCGGCGGGCGGCGGCGGC	p.Ala275fs	NA	NA	NA
 BS_JXEQWWJH	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TMEM126B	c.179delA	p.Asn60fs	NA	NA	NA
 BS_JXEQWWJH	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DZIP1L	c.1138C>T	p.Gln380*	NA	NA	NA
@@ -3362,10 +3362,10 @@ BS_K3N0H305	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PCDHGA
 BS_K3N0H305	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	ALDOB	c.1005C>G	p.Asn335Lys	NA	NA	NA
 BS_K44TMQ9G	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	DRD4	c.805_850delCTTCCCCGGGGTCCCTGCGGCCCCGACTGTGCGCCCGCCGCGCCCA	p.Leu269fs	NA	NA	NA
 BS_K44TMQ9G	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	LARS2	c.1565C>A	p.Thr522Asn	NA	NA	NA
-BS_K4XGEGW0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CLCC1	c.1161_1162delTA	p.Tyr387fs	BS_80078QDG	NA	1.7358485853995926
-BS_K4XGEGW0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>T	.	BS_80078QDG	NA	1.7358485853995926
-BS_K4XGEGW0	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	GCDH	c.937C>T	p.Arg313Trp	BS_80078QDG	NA	1.7358485853995926
-BS_K4XGEGW0	WGS	Pathogenic	InterVar_Recalculated Pathogenic	MAML3	c.1542G>A	p.Trp514*	BS_80078QDG	NA	1.7358485853995926
+BS_K4XGEGW0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CLCC1	c.1161_1162delTA	p.Tyr387fs	BS_80078QDG	0	1.7358485853995926
+BS_K4XGEGW0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>T	.	BS_80078QDG	0	1.7358485853995926
+BS_K4XGEGW0	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	GCDH	c.937C>T	p.Arg313Trp	BS_80078QDG	0	1.7358485853995926
+BS_K4XGEGW0	WGS	Pathogenic	InterVar_Recalculated Pathogenic	MAML3	c.1542G>A	p.Trp514*	BS_80078QDG	0	1.7358485853995926
 BS_K65XZGKM	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NDST2	c.2266_2273delTATTCTAC	p.Tyr756fs	NA	NA	NA
 BS_K65XZGKM	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	LYG2	c.127dupA	p.Ile43fs	NA	NA	NA
 BS_K65XZGKM	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	HGD	c.365C>T	p.Ala122Val	NA	NA	NA
@@ -3636,7 +3636,7 @@ BS_N559C2Y0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SPACA3
 BS_N559C2Y0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PRR23C	c.335C>G	p.Ser112*	NA	NA	NA
 BS_N559C2Y0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	EPB41L4A	c.1321C>T	p.Arg441Cys	NA	NA	NA
 BS_N559C2Y0	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PHYKPL	c.1054dupA	p.Ile352fs	NA	NA	NA
-BS_N56BGDK6	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCG	c.1158dupC	p.Ser387fs	BS_XGVSX8BX	NA	0.7279365035546679
+BS_N56BGDK6	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCG	c.1158dupC	p.Ser387fs	BS_XGVSX8BX	0	0.7279365035546679
 BS_N6XWSD15	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	PEX10	c.764dupA	p.Leu256fs	NA	NA	NA
 BS_N6XWSD15	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NFYC	c.852delG	p.Lys285fs	NA	NA	NA
 BS_N6XWSD15	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PTGER2	c.134_144dupTGCTGGCGCGC	p.Arg49fs	NA	NA	NA
@@ -4265,12 +4265,12 @@ BS_SMRT95TG	WGS	Pathogenic	InterVar_Recalculated Pathogenic	PKHD1L1	c.11992G>T	p
 BS_SN2CD2FC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	WDR76	c.787_788delAA	p.Asn263fs	NA	NA	NA
 BS_SN2CD2FC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TRAF7	c.1883G>C	p.Trp628Ser	NA	NA	NA
 BS_SN2CD2FC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ATP2B2	c.275C>T	p.Pro92Leu	NA	NA	NA
-BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	MRPL24	c.247C>T	p.Arg83*	BS_3VKW5988	NA	0.3919658096063596
-BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	OBSCN	c.17200G>T	p.Glu5734*	BS_3VKW5988	NA	0.3919658096063596
-BS_SNRF1RKC	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	UPB1	c.352C>T	p.Gln118*	BS_3VKW5988	NA	0.3919658096063596
-BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	UVSSA	c.490C>T	p.Gln164*	BS_3VKW5988	NA	0.3919658096063596
-BS_SNRF1RKC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUC3A	c.3523_3524insA	p.Pro1175fs	BS_3VKW5988	NA	0.3919658096063596
-BS_SNRF1RKC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF467	c.1594delC	p.Arg532fs	BS_3VKW5988	NA	0.3919658096063596
+BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	MRPL24	c.247C>T	p.Arg83*	BS_3VKW5988	0	0.3919658096063596
+BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	OBSCN	c.17200G>T	p.Glu5734*	BS_3VKW5988	0	0.3919658096063596
+BS_SNRF1RKC	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	UPB1	c.352C>T	p.Gln118*	BS_3VKW5988	0	0.3919658096063596
+BS_SNRF1RKC	WGS	Pathogenic	InterVar_Recalculated Pathogenic	UVSSA	c.490C>T	p.Gln164*	BS_3VKW5988	0	0.3919658096063596
+BS_SNRF1RKC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MUC3A	c.3523_3524insA	p.Pro1175fs	BS_3VKW5988	0	0.3919658096063596
+BS_SNRF1RKC	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ZNF467	c.1594delC	p.Arg532fs	BS_3VKW5988	0	0.3919658096063596
 BS_SP3ND4W3	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	OR14I1	c.117delG	p.Asn40fs	BS_58X7SKJS	0.10002422586818609	0.6719413878966165
 BS_SP3ND4W3	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	LRP1	c.10499G>A	p.Arg3500His	BS_58X7SKJS	0.10002422586818609	0.6719413878966165
 BS_SP3ND4W3	WGS	Pathogenic	InterVar_Recalculated Pathogenic	CYP4F22	c.416G>A	p.Trp139*	BS_58X7SKJS	0.10002422586818609	0.6719413878966165
@@ -4842,10 +4842,10 @@ BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PMS1	c
 BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	APOBEC3A;APOBEC3A_B	c.406dupT	p.Tyr136fs	NA	NA	NA
 BS_XFT4ENH2	WGS	Pathogenic	InterVar_Recalculated Pathogenic	PEX5L	c.85C>T	p.Gln29*	NA	NA	NA
 BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TPRG1;TP63	n.189338143A>G	.	NA	NA	NA
-BS_XHT3F34T	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.454_466delCCGCCCGGCACCC	p.Pro152fs	BS_G9MQM1KK	NA	0.8399267348707706
-BS_XHT3F34T	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	BLOC1S4	c.434delT	p.Val145fs	BS_G9MQM1KK	NA	0.8399267348707706
-BS_XHT3F34T	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TDRD6	c.2805delT	p.Phe935fs	BS_G9MQM1KK	NA	0.8399267348707706
-BS_XHT3F34T	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	STKLD1	c.33delC	p.Thr12fs	BS_G9MQM1KK	NA	0.8399267348707706
+BS_XHT3F34T	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	TP53	c.454_466delCCGCCCGGCACCC	p.Pro152fs	BS_G9MQM1KK	0	0.8399267348707706
+BS_XHT3F34T	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	BLOC1S4	c.434delT	p.Val145fs	BS_G9MQM1KK	0	0.8399267348707706
+BS_XHT3F34T	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TDRD6	c.2805delT	p.Phe935fs	BS_G9MQM1KK	0	0.8399267348707706
+BS_XHT3F34T	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	STKLD1	c.33delC	p.Thr12fs	BS_G9MQM1KK	0	0.8399267348707706
 BS_XJWNW9E8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	HYI	c.352C>T	p.Arg118*	NA	NA	NA
 BS_XJWNW9E8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NXPE2	c.697dupC	p.Leu233fs	NA	NA	NA
 BS_XJWNW9E8	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CASC1	c.272dupT	p.Leu91fs	NA	NA	NA
@@ -5340,7 +5340,7 @@ BS_9G82HJFA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	ABCA3	
 BS_9GT5XCF3	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MYOM2	c.794-18_798delTCCATCGTTTCTGTGCAGTGCCC	p.Leu265fs	NA	NA	NA
 BS_9HVNGAB8	WGS	Pathogenic	InterVar_Recalculated Pathogenic	DSG3	c.2101G>T	p.Glu701*	NA	NA	NA
 BS_9HYDMBBW	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CEP97	c.1027G>A	p.Glu343Lys	NA	NA	NA
-BS_9R1ENMBP	WGS	Pathogenic	InterVar_Recalculated Pathogenic	ZNF446	c.628G>T	p.Glu210*	BS_HJ95JNFN	NA	0.16798534697415413
+BS_9R1ENMBP	WGS	Pathogenic	InterVar_Recalculated Pathogenic	ZNF446	c.628G>T	p.Glu210*	BS_HJ95JNFN	0	0.16798534697415413
 BS_9S3N3Y5W	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	RAD54B	c.782A>C	p.Asn261Thr	NA	NA	NA
 BS_9XHV04WE	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	GYG1	c.143+3G>C	.	NA	NA	NA
 BS_9XMMXFXW	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NARS2	c.824_825delTT	p.Val275fs	NA	NA	NA
@@ -5365,8 +5365,8 @@ BS_BT4WRQCA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	TMEM62
 BS_BVRH3WGW	WGS	Pathogenic	InterVar_Recalculated Pathogenic	FREM1	c.5407+1G>A	.	NA	NA	NA
 BS_BXTHPE56	WGS	Pathogenic	InterVar_Recalculated Pathogenic	SERBP1	c.606-2A>C	.	NA	NA	NA
 BS_BXTHPE56	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COL18A1	c.4069+5_4082delCCCAGGCCCCCCAGGCCC	p.Gly1357fs	NA	NA	NA
-BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COL18A1	c.4069+5_4082delCCCAGGCCCCCCAGGCCC	p.Gly1357fs	BS_KAD49R68	NA	0.8399267348707706
-BS_BZ7FK347	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	SH3TC2	c.279G>A	p.Lys93Lys	BS_KAD49R68	NA	0.8399267348707706
+BS_BZ7FK347	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	COL18A1	c.4069+5_4082delCCCAGGCCCCCCAGGCCC	p.Gly1357fs	BS_KAD49R68	0.08737091416340297	0.8399267348707706
+BS_BZ7FK347	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	SH3TC2	c.279G>A	p.Lys93Lys	BS_KAD49R68	0.08737091416340297	0.8399267348707706
 BS_C2AV5D4A	WGS	Pathogenic	InterVar_Recalculated Pathogenic	VCP	c.811+2T>C	.	NA	NA	NA
 BS_CBVA073E	WGS	Pathogenic	InterVar_Recalculated Pathogenic	PCNT	c.9393+1G>A	.	NA	NA	NA
 BS_CEZVJC67	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	IVD	c.559+1G>A	.	NA	NA	NA
@@ -5625,7 +5625,7 @@ BS_XCA92FF3	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CYB5R3
 BS_XDE7MG7P	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	CRY2	c.943_944insTTT	p.Lys315delinsIleTer	NA	NA	NA
 BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	SIK3	c.1957C>G	p.Gln653Glu	NA	NA	NA
 BS_XFT4ENH2	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	LRG1	c.35dupC	p.Gly13fs	NA	NA	NA
-BS_XHT3F34T	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	AGL	c.2309-1G>A	.	BS_G9MQM1KK	NA	0.8399267348707706
+BS_XHT3F34T	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	AGL	c.2309-1G>A	.	BS_G9MQM1KK	0	0.8399267348707706
 BS_XN449RAJ	WGS	Pathogenic	InterVar_Recalculated Pathogenic	HPD	c.324+2T>A	.	NA	NA	NA
 BS_XQ0Y2PMV	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	CHEK2	c.975+4_975+7delAGTA	.	BS_MW63FCZC	0	0.447960925264411
 BS_XQFPDAB6	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	MACF1	c.14080C>T	p.Arg4694Trp	NA	NA	NA
