@@ -1,13 +1,13 @@
-Kids_First_Biospecimen_ID	experimental_strategy	L-LP_Call_final	Reasoning_for_call	Hugo_Symbol	HGVSc_germ	HGVSp_germ	Kids_First_Biospecimen_ID_tumor	status	copy_number	ploidy	ensembl	cytoband
-BS_4EAVBDKR	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	GJB2	c.19C>T	p.Gln7*	BS_KAZENYZE	gain	4	3	ENSG00000165474	13q12.11
-BS_7CBZW7P6	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	RMRP	c.-604T>C	.	BS_S0T3CQ97	loss	1	2	ENSG00000269900	9p13.3
-BS_88B4WV6J	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	GJB2	c.416G>A	p.Ser139Asn	BS_NHRNZRQV	gain	5	4	ENSG00000165474	13q12.11
-BS_ETAATG3J	WGS	Pathogenic	InterVar_Recalculated Pathogenic	LZTR1	c.1672C>T	p.Gln558*	BS_K3PPH522	loss	2	3	ENSG00000099949	22q11.21
-BS_HHJZ05XC	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF2	c.784C>T	p.Arg262*	BS_3MYQP7P5	loss	1	2	ENSG00000186575	22q12.2
-BS_J5596HKA	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	NF1	c.7666delA	p.Arg2556fs	BS_XVNNWN2Z	loss	2	3	ENSG00000196712	17q11.2
-BS_JNRAKEMV	WGS	Pathogenic	InterVar_Recalculated Pathogenic	PTCH1	c.785T>A	p.Leu262*	BS_PYVPKH11	loss	1	2	ENSG00000185920	9q22.32
-BS_K4XGEGW0	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	TP53	c.375G>T	.	BS_80078QDG	loss	1	2	ENSG00000141510	17p13.1
-BS_TQYACCGG	WGS	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	PTCH1	c.2639dupG	p.Val881fs	BS_PVZJCXS1	loss	1	2	ENSG00000185920	9q22.32
-BS_X0XM8PYJ	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	NF2	c.1334_1337delAGAG	p.Glu445fs	BS_VMZMGB7B	loss	1	2	ENSG00000186575	22q12.2
-BS_3BC5EX6K	WGS	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	GJB2	c.-22-2A>C	.	BS_A3EV6FXK	loss	1	2	ENSG00000165474	13q12.11
-BS_PKKNB5PY	WGS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	FANCA	c.2851C>T	p.Arg951Trp	BS_N4B3WB8W	loss	1	2	ENSG00000187741	16q24.3
+Kids_First_Biospecimen_ID	Kids_First_Biospecimen_ID_tumor	plot_group	molecular_subtype	Hugo_Symbol	L-LP_Call_final	Reasoning_for_call	HGVSc_germ	HGVSp_germ	CNV_status_somatic	copy_number_somatic	ploidy_somatic
+BS_4EAVBDKR	BS_KAZENYZE	Medulloblastoma	MB, SHH	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.19C>T	p.Gln7*	gain	4	3
+BS_7CBZW7P6	BS_S0T3CQ97	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.-604T>C	.	loss	1	2
+BS_88B4WV6J	BS_NHRNZRQV	Low-grade glioma	LGG, BRAF V600E, CDKN2A/B	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.416G>A	p.Ser139Asn	gain	5	4
+BS_ETAATG3J	BS_K3PPH522	Schwannoma	NA	LZTR1	Pathogenic	InterVar_Recalculated Pathogenic	c.1672C>T	p.Gln558*	loss	2	3
+BS_HHJZ05XC	BS_3MYQP7P5	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.784C>T	p.Arg262*	loss	1	2
+BS_J5596HKA	BS_XVNNWN2Z	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.7666delA	p.Arg2556fs	loss	2	3
+BS_JNRAKEMV	BS_PYVPKH11	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	c.785T>A	p.Leu262*	loss	1	2
+BS_K4XGEGW0	BS_80078QDG	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.375G>T	.	loss	1	2
+BS_TQYACCGG	BS_PVZJCXS1	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2639dupG	p.Val881fs	loss	1	2
+BS_X0XM8PYJ	BS_VMZMGB7B	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1334_1337delAGAG	p.Glu445fs	loss	1	2
+BS_3BC5EX6K	BS_A3EV6FXK	Ependymoma	EPN, To be classified	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.-22-2A>C	.	loss	1	2
+BS_PKKNB5PY	BS_N4B3WB8W	Medulloblastoma	MB, Group3	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2851C>T	p.Arg951Trp	loss	1	2
