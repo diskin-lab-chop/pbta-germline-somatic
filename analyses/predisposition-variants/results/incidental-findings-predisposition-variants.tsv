@@ -1,0 +1,34 @@
+Kids_First_Participant_ID	plot_group	molecular_subtype	Hugo_Symbol	L-LP_Call_final	Reasoning_for_call	HGVS.c	HGVS.p	associated_syndrome	clinical_definition
+PT_3CHB9PK5	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	MSH6	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.3439-2A>G	.	Lynch syndrome	NF-1,Other inherited conditions NOS
+PT_A9YAZJNN	Meningioma	NA	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.68_69delAG	p.Glu23fs	BRCA1/2	None documented
+PT_2D1KGV99	Non-neoplastic tumor	NA	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.4351dupC	p.Arg1451fs	Tuberous Sclerosis	None documented
+PT_5SNX4PMK	Non-neoplastic tumor	NA	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.137G>T	.	Lynch syndrome	Other inherited conditions NOS
+PT_WP871F5S	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	c.402delA	p.Glu134fs	Von Hippel-Lindau	Other inherited conditions NOS
+PT_8GN3TQRM	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.375G>C	.	Li-Fraumeni syndrome	None documented
+PT_QEP13FH4	Medulloblastoma	MB, WNT	APC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2995C>T	p.Gln999*	Familial Adenomatous Polyposis	Other inherited conditions NOS
+PT_0SPKM4S8	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.137G>T	.	Lynch syndrome	None documented
+PT_WWZ2Q14R	Medulloblastoma	MB, SHH	SUFU	Pathogenic	InterVar_Recalculated Pathogenic	c.180C>G	p.Tyr60*	Gorlin syndrome	None documented
+PT_8R00BMHH	Low-grade glioma	LGG, RTK	CHEK2	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	c.1556C>T	p.Thr519Met	CHEK2	None documented
+PT_Z7YJ7MSM	Mixed neuronal-glial tumor	NA	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3633delC	p.Gly1212fs	Gorlin syndrome	None documented
+PT_HBT0C66Y	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2356C>T	p.Arg786*	Tuberous Sclerosis	None documented
+PT_VPEMAQBN	DIPG or DMG	DMG, H3 K28, TP53 activated	PMS2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.1831dupA	p.Ile611fs	Lynch syndrome	None documented
+PT_5SKQHRC5	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.473G>T	.	Li-Fraumeni syndrome	None documented
+PT_JV9G8MFD	Atypical Teratoid Rhabdoid Tumor	NA	SMARCB1	Pathogenic	InterVar_Recalculated Pathogenic	c.141C>G	p.Tyr47*	Rhabdoid Tumor Predisposition syndrome	None documented
+PT_BF3PGTF7	Meningioma	NA	BRCA2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.6239dupT	p.Leu2080fs	BRCA1/2	None documented
+PT_9PJR0ZK7	Neurofibroma plexiform	NA	PMS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.11C>G	p.Ser4*	Lynch syndrome	NF-1
+PT_MT27S7S4	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	c.644G>A	.	Li-Fraumeni syndrome	None documented
+PT_7TRGHZBK	Choroid plexus tumor	NA	TP53	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.833delC	p.Pro278fs	Li-Fraumeni syndrome	None documented
+PT_A594A46X	Mixed neuronal-glial tumor	GNG, other MAPK	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.277delT	p.Trp93fs	CHEK2	None documented
+PT_NTEKMKTX	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	c.785T>A	p.Leu262*	Gorlin syndrome	Other inherited conditions NOS
+PT_NCDHZ8H8	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.202-1G>C	.	Gorlin syndrome	None documented
+PT_A0F23R7E	Mixed neuronal-glial tumor	GNG, BRAF V600E	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.124delA	p.Ile42fs	BRCA1/2	None documented
+PT_A0F23R7E	Mixed neuronal-glial tumor	GNG, BRAF V600E	PMS2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1376C>G	p.Ser459*	Lynch syndrome	None documented
+PT_JNEV57VK	DIPG or DMG	DMG, H3 K28, TP53 loss	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.1906G>C	p.Ala636Pro	Lynch syndrome	Other inherited conditions NOS
+PT_27FDWCVZ	Low-grade glioma	LGG, wildtype	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1412C>T	p.Ser471Phe	CHEK2	None documented
+PT_T5KEXCK7	Atypical Teratoid Rhabdoid Tumor	NA	SMARCB1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.977delG	p.Gly326fs	Rhabdoid Tumor Predisposition syndrome	None documented
+PT_387VK1T9	Other high-grade glioma	HGG, H3 wildtype	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.7806-2A>G	.	BRCA1/2	None documented
+PT_DACV00WF	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2639dupG	p.Val881fs	Gorlin syndrome	Other inherited conditions NOS
+PT_Y8RNS9JE	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.9154C>T	p.Arg3052Trp	BRCA1/2	None documented
+PT_G9A050X1	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	c.423C>G	.	Li-Fraumeni syndrome	None documented
+PT_6SH7PV1N	Other high-grade glioma	HGG, H3 wildtype	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.975+4_975+7delAGTA	.	CHEK2	None documented
+PT_T93J9EGZ	Medulloblastoma	MB, To be classified	SUFU	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.528_529insT	p.Met177fs	Gorlin syndrome	None documented
