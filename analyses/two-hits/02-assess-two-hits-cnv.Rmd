@@ -18,6 +18,7 @@ library(tidyverse)
 # define directories 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 analysis_dir <- file.path(root_dir, "analyses", "two-hits")
+input_dir <- file.path(analysis_dir, "input")
 results_dir <- file.path(analysis_dir, "results")
 data_dir <- file.path(root_dir, "data")
 
@@ -35,6 +36,9 @@ histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies",
 # cnv file with annotation 
 cnv_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.gz")
 
+# loh file
+loh_file <- file.path(input_dir, "pbta-plp-all-loh.tsv")
+
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
@@ -44,12 +48,12 @@ Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add hi
 ```{r}
 # rename columns to specify germline
 germline <- read_tsv(plp_file) %>%
-  dplyr::rename(HGVSc_germ = HGVS.c,
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
+                HGVSc_germ = HGVS.c,
                 HGVSp_germ = HGVS.p) 
 
 # renmae bs id column to match plp file
-hist <- read_tsv(histologies_file) %>%
-  rename("Kids_First_Biospecimen_ID" = "Kids_First_Biospecimen_ID_normal")
+hist <- read_tsv(histologies_file)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
@@ -57,9 +61,9 @@ cpgs <- read_lines(cpg_file)
 # filter PLP calls and add plot_group and molecular_subtype
 germline <- germline %>%
   filter(Hugo_Symbol %in% cpgs) %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID", "Kids_First_Biospecimen_ID_tumor",
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor",
                                "plot_group", "molecular_subtype")]) %>%
-  select(Kids_First_Biospecimen_ID, Kids_First_Biospecimen_ID_tumor, 
+  select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
          plot_group, molecular_subtype,
          Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
          HGVSc_germ, HGVSp_germ)
@@ -77,18 +81,37 @@ cnv <- read_tsv(cnv_file) %>%
          "copy_number_somatic" = copy_number,
          "ploidy_somatic" = "ploidy") %>%
   select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
-         CNV_status_somatic, copy_number_somatic, ploidy_somatic)
+         CNV_status_somatic)
 
 # merge germline SNV and somatic CNV calls by bs and gene id
-germline_somatic_gene_matches <- germline %>%
+germline_somatic_cnvs <- germline %>%
   inner_join(cnv, by = c("Kids_First_Biospecimen_ID_tumor", "Hugo_Symbol"))
 
-germline_somatic_gene_matches
+germline_somatic_cnvs
 ```
 
-Save output
+Read in LOH results, and append LOH scores to rows of `germline_somatic_cnvs`
 
-```{r save}
-write_tsv(germline_somatic_gene_matches,
-          file.path(results_dir, "germline-somatic-cnv-two-gene-hits.tsv"))
+```{r}
+loh <- read_tsv(loh_file)
+
+germline_somatic_cnvs <- germline_somatic_cnvs %>%
+  left_join(loh[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "LOH")], by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol"))
+```
+
+Identify patients with germline PLP and somatic LOH in same gene, but no CNV
+
+```{r}
+germline_somatic_loh <- germline %>%
+  left_join(loh[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "LOH")], by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol")) %>%
+  filter(LOH >= 0.3 & !Kids_First_Biospecimen_ID_normal %in% germline_somatic_gene_matches$Kids_First_Biospecimen_ID_normal) %>%
+  mutate(CNV_status_somatic = "neutral") %>%
+  relocate(LOH, .after = last_col())
+```
+
+merge CNV and LOH second hits and save output
+```{r}
+germline_somatic_cnv_loh <- germline_somatic_cnvs %>%
+  bind_rows(germline_somatic_loh) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-cnv-loh-two-gene-hits.tsv"))
 ```
