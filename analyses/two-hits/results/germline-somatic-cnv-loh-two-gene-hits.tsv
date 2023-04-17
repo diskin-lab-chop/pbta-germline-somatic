@@ -3,14 +3,14 @@ BS_4EAVBDKR	BS_KAZENYZE	Medulloblastoma	MB, SHH	GJB2	Pathogenic	ClinVar Pathogen
 BS_7CBZW7P6	BS_S0T3CQ97	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.-604T>C	.	loss	0.3832051282051282
 BS_88B4WV6J	BS_NHRNZRQV	Low-grade glioma	LGG, BRAF V600E, CDKN2A/B	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.416G>A	p.Ser139Asn	gain	0.12729166666666666
 BS_ETAATG3J	BS_K3PPH522	Schwannoma	NA	LZTR1	Pathogenic	InterVar_Recalculated Pathogenic	c.1672C>T	p.Gln558*	loss	0.2416216216216216
-BS_HHJZ05XC	BS_3MYQP7P5	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.784C>T	p.Arg262*	loss	NA
+BS_HHJZ05XC	BS_3MYQP7P5	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.784C>T	p.Arg262*	loss	0.16542857142857142
 BS_J5596HKA	BS_XVNNWN2Z	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.7666delA	p.Arg2556fs	loss	0.1767857142857143
 BS_JNRAKEMV	BS_PYVPKH11	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	c.785T>A	p.Leu262*	loss	0.44696969696969696
 BS_K4XGEGW0	BS_80078QDG	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.375G>T	.	loss	0.34692307692307695
 BS_TQYACCGG	BS_PVZJCXS1	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2639dupG	p.Val881fs	loss	0.42
-BS_X0XM8PYJ	BS_VMZMGB7B	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1334_1337delAGAG	p.Glu445fs	loss	NA
+BS_X0XM8PYJ	BS_VMZMGB7B	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1334_1337delAGAG	p.Glu445fs	loss	0.25
 BS_3BC5EX6K	BS_A3EV6FXK	Ependymoma	EPN, To be classified	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.-22-2A>C	.	loss	0.3615151515151515
-BS_PKKNB5PY	BS_N4B3WB8W	Medulloblastoma	MB, Group3	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2851C>T	p.Arg951Trp	loss	NA
+BS_PKKNB5PY	BS_N4B3WB8W	Medulloblastoma	MB, Group3	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2851C>T	p.Arg951Trp	loss	0.4642
 BS_F7G8TA7C	BS_PCVV9GJG	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.473G>T	.	neutral	0.38
 BS_0YJF1F95	BS_354DTKHE	Meningioma	NA	SMARCE1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.624_627delTGAG	p.Ser208fs	neutral	0.4301754385964912
 BS_14EZDZE6	BS_F9ZTZ4YS	Low-grade glioma	SEGA, wildtype	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1579C>T	p.Gln527*	neutral	0.3680851063829787
