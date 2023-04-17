@@ -1,0 +1,172 @@
+---
+title: 'Plot predisposition variants among cancer predisposition patients'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "2023"
+---
+
+Load packages and set directories
+
+```{r load libraries}
+suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+  library(ggplot2)
+  library(ggsci)
+})
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "predisposition-variants")
+results_dir <- file.path(analysis_dir, "results") 
+plots_dir <- file.path(analysis_dir, "plots")
+
+source(file.path(root_dir, "figures", "theme.R"))
+```
+
+Set paths for: 
+- histologies file, 
+- germline plp variant file,
+
+```{r set paths}
+histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+
+predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
+```
+
+Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
+
+```{r read files}
+hist <- read_tsv(histologies_file,show_col_types = FALSE) 
+
+plp <- read_tsv(plp_file,show_col_types = FALSE)
+
+syndromes <- read_tsv(predispositions_file)
+```
+
+Define cancer predispositions and associated genes
+
+```{r}
+predispositions <- c("Li-Fraumeni syndrome", "NF-1", "NF-2", "Schwannomatosis", "Tuberous Sclerosis")
+predisposition_genes <- c("TP53", "NF1", "NF2", "LZTR1", "TSC1|TSC2")
+names(predisposition_genes) <- predispositions
+```
+
+Loop through cancer predispositions and create a data frame indicating presence/absence of associated gene germline PLP variant
+
+```{r}
+predisposition_list <- list()
+
+suppressWarnings(
+  for (predisposition in predispositions) {
+  
+  predisposition_list[[predisposition]] <- hist %>%
+    filter(grepl(predisposition, cancer_predispositions)) %>%
+    dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal) %>%
+    dplyr::mutate(predisposition = predisposition) %>%
+    dplyr::mutate(plp_variant = case_when(
+      Kids_First_Biospecimen_ID_normal %in% plp$Kids_First_Biospecimen_ID[grepl(predisposition_genes[predisposition], plp$Hugo_Symbol)] ~ "Yes",
+      TRUE ~ "No"
+    ))
+  }
+)
+
+predisposition_df <- Reduce(rbind, predisposition_list)
+```
+
+Create bar plot of patients with/without PLP germline variants in gene associated with each cancer predisposition syndrome
+
+```{r}
+labels <- c("Li-Fraumeni syndrome (TP53)",
+            "NF-1 (NF1)", "NF-2 (NF2)",
+            "Schwannomatosis (LZTR1)",
+            "Tuberous Sclerosis (TSC1/2)")
+
+predisposition_df %>%
+  count(predisposition, plp_variant) %>%
+  mutate(predisposition = fct_relevel(predisposition,
+                                      rev(predispositions))) %>%
+  ggplot(aes(x = n, y = predisposition, fill = plp_variant)) + 
+  geom_bar(stat = "identity", 
+           colour = "black") +
+  labs(x = "No. patients",
+       y = "",
+       fill = "PLP variant") +
+  scale_y_discrete(labels=rev(labels)) +
+  scale_fill_npg() +
+  theme_Publication()
+
+ggsave(file.path(plots_dir, "predisposition-syndrome-plp-prevalence.pdf"),
+       width = 7, height = 4)
+```
+
+```{r}
+syndrome_genes <- syndromes$Hugo_Symbol
+recorded_predispositions <- c("Li-Fraumeni syndrome", 
+                              "NF-1", "NF-2", 
+                              "Schwannomatosis", 
+                              "Tuberous Sclerosis")
+
+predisposition_gene_list <- list()
+
+for (gene in syndrome_genes){
+  gene_plp <- plp %>%
+    filter(Hugo_Symbol == gene)
+  
+  syndrome <- syndromes$predisposition[syndromes$Hugo_Symbol == gene]
+  
+  predisposition_gene_list[[gene]] <- hist %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% gene_plp$Kids_First_Biospecimen_ID) %>%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, cancer_predispositions) %>%
+    dplyr::mutate(Hugo_Symbol = gene) %>%
+    dplyr::mutate(associated_syndrome = syndrome) %>%
+    dplyr::mutate(predisposition = case_when(
+      grepl(syndrome, cancer_predispositions) ~ "Yes",
+      syndrome %in% recorded_predispositions ~ "No",
+      !syndrome %in% recorded_predispositions ~ "Unreported syndrome"
+    )) %>%
+    select(-cancer_predispositions)
+  
+}
+
+predisposition_gene_df <- Reduce(rbind, predisposition_gene_list)
+```
+
+
+```{r}
+
+total_cts <- predisposition_gene_df %>%
+  count(Hugo_Symbol) %>%
+  arrange(n)
+
+labels <- glue::glue("{syndrome_genes} ({syndromes$predisposition})")
+names(labels) <- syndrome_genes
+
+predisposition_gene_df %>%
+  count(Hugo_Symbol, predisposition) %>%
+  mutate(Hugo_Symbol = fct_relevel(Hugo_Symbol,
+                                      total_cts$Hugo_Symbol)) %>%
+  mutate(predisposition = fct_relevel(predisposition,
+                                      c("Yes", "No", "Unreported syndrome"))) %>%
+  ggplot(aes(x = n, y = Hugo_Symbol, fill = predisposition)) + 
+  geom_bar(stat = "identity", 
+           colour = "black") +
+  labs(x = "No. patients",
+       y = "",
+       fill = "PLP variant") +
+  scale_y_discrete(labels=labels) +
+  scale_fill_npg() +
+  theme_Publication()
+
+ggsave(file.path(plots_dir, "predisposition-syndrome-gene-prevalence.pdf"),
+       width = 10, height = 5)
+
+
+```
