@@ -23,6 +23,7 @@ setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "predisposition-variants")
+input_dir <- file.path(analysis_dir, "input")
 results_dir <- file.path(analysis_dir, "results") 
 plots_dir <- file.path(analysis_dir, "plots")
 
@@ -101,10 +102,12 @@ predisposition_df %>%
        fill = "PLP variant") +
   scale_y_discrete(labels=rev(labels)) +
   scale_fill_npg() +
-  theme_Publication()
+  theme_Publication() +
+  theme(legend.position = "top") +
+  guides(fill=guide_legend(ncol=2))
 
 ggsave(file.path(plots_dir, "predisposition-syndrome-plp-prevalence.pdf"),
-       width = 7, height = 4)
+       width = 5, height = 4)
 ```
 
 ```{r}
@@ -160,13 +163,16 @@ predisposition_gene_df %>%
            colour = "black") +
   labs(x = "No. patients",
        y = "",
-       fill = "PLP variant") +
+       fill = "Clinically defined") +
+  theme(legend.position = "top") +
   scale_y_discrete(labels=labels) +
   scale_fill_npg() +
-  theme_Publication()
+  theme_Publication() +
+  theme(legend.position = "top") +
+  guides(fill=guide_legend(ncol=3))
 
 ggsave(file.path(plots_dir, "predisposition-syndrome-gene-prevalence.pdf"),
-       width = 10, height = 5)
+       width = 8, height = 5)
 
 
 ```
