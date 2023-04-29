@@ -206,7 +206,7 @@ for (i in 1:length(cosmic_files)){
         mutate(association = case_when(
           signature %in% mmr_sigs ~ 'MMR',
           signature %in% repair_sigs ~ 'Other repair',
-          TRUE ~ 'non-Repair'
+          TRUE ~ 'Non-Repair'
         )) %>%
         arrange(desc(exposure_diff))
       
@@ -220,7 +220,7 @@ for (i in 1:length(cosmic_files)){
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
                 plot.title = element_text(hjust = 0.5, size = 18)) + 
           labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
-               fill = 'association', title = paste0(plot_names[k], " germline vs. other")) +
+               fill = 'sig etiology', title = paste0(plot_names[k], " germline vs. other")) +
           geom_hline(yintercept = 0) + 
           geom_text(aes(x = signature, y = exposure_diff * 1.1,
                     label = ifelse(pvalue < 0.05, "*", "")),
