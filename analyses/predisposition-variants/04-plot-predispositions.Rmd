@@ -40,6 +40,8 @@ histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies'
 plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
 predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
+
+predispositions_path_review_file <- file.path(input_dir, "predispositions-path-review.tsv")
 ```
 
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
@@ -117,6 +119,8 @@ recorded_predispositions <- c("Li-Fraumeni syndrome",
                               "Schwannomatosis", 
                               "Tuberous Sclerosis")
 
+predispositions_path_review <- read_tsv(predispositions_path_review_file)
+
 predisposition_gene_list <- list()
 
 for (gene in syndrome_genes){
@@ -132,8 +136,8 @@ for (gene in syndrome_genes){
     dplyr::mutate(associated_syndrome = syndrome) %>%
     dplyr::mutate(predisposition = case_when(
       grepl(syndrome, cancer_predispositions) ~ "Yes",
-      syndrome %in% recorded_predispositions ~ "No",
-      !syndrome %in% recorded_predispositions ~ "Unreported syndrome"
+      Kids_First_Biospecimen_ID_normal %in% predispositions_path_review$Kids_First_Biospecimen_ID_normal ~ "Yes",
+      TRUE ~ "No"
     )) %>%
     select(-cancer_predispositions)
   
@@ -157,7 +161,7 @@ predisposition_gene_df %>%
   mutate(Hugo_Symbol = fct_relevel(Hugo_Symbol,
                                       total_cts$Hugo_Symbol)) %>%
   mutate(predisposition = fct_relevel(predisposition,
-                                      c("Yes", "No", "Unreported syndrome"))) %>%
+                                      c("Yes", "No"))) %>%
   ggplot(aes(x = n, y = Hugo_Symbol, fill = predisposition)) + 
   geom_bar(stat = "identity", 
            colour = "black") +
@@ -172,7 +176,7 @@ predisposition_gene_df %>%
   guides(fill=guide_legend(ncol=3))
 
 ggsave(file.path(plots_dir, "predisposition-syndrome-gene-prevalence.pdf"),
-       width = 8, height = 5)
+       width = 6, height = 5)
 
 
 ```
