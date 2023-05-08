@@ -67,7 +67,13 @@ plp <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv"), show_col_typ
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
   select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol) %>%
-  unique()
+  unique() %>%
+  # two cpgs have multi-gene annotations for corresponding variants; we will re-assign to just CPG for plotting purposes
+  dplyr::mutate(Hugo_Symbol = case_when(
+    grepl("ERCC5", Hugo_Symbol) ~ "ERCC5",
+    grepl("RMRP", Hugo_Symbol) ~ "RMRP",
+    TRUE ~ Hugo_Symbol
+  ))
 
 # how many CPG have P/LP?
 plp_cpg <- plp %>%
