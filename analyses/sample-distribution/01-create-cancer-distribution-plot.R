@@ -39,9 +39,11 @@ plp_all <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv")) %>%
                                        grepl("InterVar_Recalculated Likely_pathogenic", Reasoning_for_call) ~ "InterVar - Likely Pathogenic",
                                        grepl("InterVar_Recalculated Pathogenic", Reasoning_for_call) ~ "InterVar - Pathogenic"))
 
-plp_cpg <- plp_all %>%
-  filter(Hugo_Symbol %in% cpg)
+# plp_cpg <- plp_all %>%
+#   filter(Hugo_Symbol %in% cpg)
 
+plp_cpg <- plp_all %>%
+  filter(Hugo_Symbol %in% cpg | grepl("ERCC5|RMRP", Hugo_Symbol))
 
 # add n per group in label  
 hist_counts <- hist %>%
