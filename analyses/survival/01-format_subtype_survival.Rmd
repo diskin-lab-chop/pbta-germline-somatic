@@ -63,7 +63,12 @@ hist_cbtn <- read_tsv(cbtn_histologies_file)
 hist_pbta <- read_tsv(pbta_histologies_file)
 hist_base <- read_tsv(base_histologies_file)
 
-all_plp <- read_tsv(all_plp_file)
+all_plp <- read_tsv(all_plp_file) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    grepl("ERCC5", Hugo_Symbol) ~ "ERCC5",
+    grepl("RMRP", Hugo_Symbol) ~ "RMRP", 
+    TRUE ~ Hugo_Symbol
+  ))
 
 methyl <- read_csv(methyl_file)
 methyl_map <- read_csv(methyl_map_file)
@@ -108,7 +113,6 @@ hist_cbtn <- hist_cbtn %>%
     grepl("To be classified", molecular_subtype) ~ molecular_subtype,
     TRUE ~ NA_character_
   )) %>%
-  
   # change any "EPN, ST RELA" subtypes call to "EPN, ST ZFTA"
   mutate(OPC_methyl_subtype = case_when(
     OPC_methyl_subtype == "EPN, ST RELA" ~ "EPN, ST ZFTA",
