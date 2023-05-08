@@ -48,6 +48,7 @@ RUN install2.r \
   data.table \
   ggpubr \
   ggthemes \
+  msigdbr \
 	optparse \
 	pheatmap \
 	RColorBrewer \
