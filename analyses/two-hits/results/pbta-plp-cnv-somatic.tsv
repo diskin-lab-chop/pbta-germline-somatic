@@ -1,0 +1,23 @@
+Kids_First_Biospecimen_ID_normal	Kids_First_Biospecimen_ID_tumor	plot_group	molecular_subtype	Hugo_Symbol	L-LP_Call_final	Reasoning_for_call	Chromosome	Loc	Reference	Alternant_alleles	HGVS.c	HGVS.p	CNV_status_somatic	proband_germline_vaf	proband_tumor_vaf	loh	mean_LOH_score
+BS_3CK0QVDX	BS_H1MNXNHB	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108227860	A	T	c.157A>T	p.Lys53*	gain	0.59	0.47	-0.03000000000000002	0.18333333333333335
+BS_4EAVBDKR	BS_KAZENYZE	Medulloblastoma	MB, SHH	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189563	G	A	c.19C>T	p.Gln7*	gain	0.44	0.65	0.15000000000000002	0.19
+BS_7CBZW7P6	BS_S0T3CQ97	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35657776	T	C	c.-604T>C	.	loss	0.46	0.11	-0.39	0.38
+BS_85KFJ81X	BS_QSMFVHSB	Ependymoma	EPN, To be classified	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr13	20189559	G	A	c.23C>T	p.Thr8Met	gain	0.5	0.54	0.04000000000000003	0.07
+BS_88B4WV6J	BS_NHRNZRQV	Low-grade glioma	LGG, BRAF V600E, CDKN2A/B	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189166	C	T	c.416G>A	p.Ser139Asn	gain	0.47	0.67	0.17000000000000004	0.17000000000000004
+BS_9F8D3A05	BS_H50HR85Y	Low-grade glioma	LGG, RTK	CHEK2	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	chr22	28694066	G	A	c.1556C>T	p.Thr519Met	loss	0.5	0.47	-0.03000000000000002	0.04500000000000001
+BS_EE7684YB	BS_P6NWC51S	Choroid plexus tumor	NA	SOS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr14	50120301	AC	A	c.3462delG	p.Lys1154fs	gain	0.65	0.54	0.04000000000000003	0.076
+BS_ETAATG3J	BS_K3PPH522	Schwannoma	NA	LZTR1	Pathogenic	InterVar_Recalculated Pathogenic	chr22	20994614	C	T	c.1672C>T	p.Gln558*	loss	0.5	0.76	0.26	0.305
+BS_HHJZ05XC	BS_3MYQP7P5	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	loss	0.46	0.62	0.12	0.17166666666666666
+BS_J5596HKA	BS_XVNNWN2Z	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31356506	TA	T	c.7666delA	p.Arg2556fs	loss	0.35	0.59	0.08999999999999997	0.315
+BS_JNRAKEMV	BS_PYVPKH11	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	chr9	95480550	A	T	c.785T>A	p.Leu262*	loss	0.5	0.92	0.42	0.4433333333333333
+BS_K4XGEGW0	BS_80078QDG	Other high-grade glioma	HGG, H3 wildtype, TP53 loss	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	A	c.375G>T	.	loss	0.5	0.85	0.35	0.3233333333333333
+BS_TP6GSAB6	BS_KP0YNTAK	Other tumor	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852222	C	T	c.1555C>T	p.Leu519Phe	gain	0.53	0.41	-0.09000000000000002	NA
+BS_TQYACCGG	BS_PVZJCXS1	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr9	95461919	T	TC	c.2639dupG	p.Val881fs	loss	0.61	0.91	0.41	0.4625
+BS_X0XM8PYJ	BS_VMZMGB7B	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	loss	0.45	0.86	0.36	0.3733333333333333
+BS_XCKDRRYT	BS_MW74GF38	Meningioma	NA	BAP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	52404529	G	A	c.1174C>T	p.Gln392*	loss	0.5	0.94	0.43999999999999995	0.43999999999999995
+BS_XKHY9A6D	BS_3BMGF6GN	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr13	32380043	C	T	c.9154C>T	p.Arg3052Trp	loss	0.44	0.42	-0.08000000000000002	0.19666666666666668
+BS_XR81Q21W	BS_6Z213H2V	Neurofibroma plexiform	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102875313	C	T	c.4333C>T	p.Leu1445Phe	loss	0.46	0.36	-0.14	NA
+BS_ZH666SJW	BS_5BMNK8SY	Medulloblastoma	MB, Group4	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189299	C	T	c.283G>A	p.Val95Met	loss	0.56	0.5	0	0
+BS_3BC5EX6K	BS_A3EV6FXK	Ependymoma	EPN, To be classified	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	loss	0.47	0.08	-0.42	0.42
+BS_PKKNB5PY	BS_N4B3WB8W	Medulloblastoma	MB, Group3	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89761950	G	A	c.2851C>T	p.Arg951Trp	loss	0.63	1	0.5	0.44
+BS_V733WCVK	BS_5V2XCW17	Ependymoma	EPN, To be classified	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45364832	CCTCA	C	c.594+2_594+5delTGAG	.	loss	0.64	0.52	0.02000000000000001	0.02000000000000001

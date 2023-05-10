@@ -157,7 +157,6 @@ germline_somatic_cnvs_loh_gene %>%
 
 merge CNV and LOH second hits and save output
 ```{r}
-germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs %>%
-  bind_rows(germline_somatic_loh) %>%
-  write_tsv(file.path(results_dir, "germline-somatic-cnv-loh.tsv"))
+write_tsv(germline_somatic_cnvs_loh_gene,
+          file.path(results_dir, "germline-somatic-cnv-loh.tsv"))
 ```
