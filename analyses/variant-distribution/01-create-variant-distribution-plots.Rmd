@@ -110,7 +110,7 @@ for (each in names(genelists)){
   # add titles to print
   if (each == "cpg"){
     x_axis_title <- "Cancer predisposition gene (CPG)"
-    fig_width <- 4000
+    fig_width <- 4200
   }
   if (each == "somatic_drivers"){
     x_axis_title <- "CPG or somatic driver gene"
