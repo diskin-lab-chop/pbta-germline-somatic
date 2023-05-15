@@ -127,23 +127,59 @@ Read in LOH results, and append LOH scores to rows of `germline_somatic_cnvs`
 ```{r}
 loh <- read_tsv(loh_file) %>%
   rename(Kids_First_Biospecimen_ID_normal = BS_ID,
+         Kids_First_Biospecimen_ID_tumor = BS_ID_tumor,
          Chromosome = chr,
          Loc = start)
 
 germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
-  left_join(loh[,c("Kids_First_Biospecimen_ID_normal", "Chromosome", "Loc", "proband_germline_vaf", "proband_tumor_vaf", "loh")], by = c("Kids_First_Biospecimen_ID_normal", "Chromosome", "Loc")) %>%
-  distinct()
+  left_join(loh[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor", 
+                   "Chromosome", "Loc", "proband_germline_vaf", "proband_tumor_vaf", 
+                   "tumor_fraction", "proband_tumor_vaf_corrected", 
+                   "loh_uncorrected")], 
+            by = c("Kids_First_Biospecimen_ID_tumor", "Chromosome", "Loc")) %>%
+  distinct() %>%
+  dplyr::mutate(loh_corrected = loh_uncorrected/tumor_fraction) %>%
+  dplyr::mutate(loh_corrected = case_when(
+    loh_corrected > 0.5 ~ 0.5,
+    loh_corrected < -0.5 ~ -0.5,
+    TRUE ~ loh_corrected
+  ))
+
+
+germline_somatic_cnvs_loh %>%
+  filter(abs(loh_uncorrected) > 0.3 | ((proband_tumor_vaf < 0.4 | proband_tumor_vaf > 0.6) & abs(loh_corrected) > 0.3)) %>%
+  select(Hugo_Symbol, proband_germline_vaf, proband_tumor_vaf,
+         loh_uncorrected, loh_corrected)
+
+
 ```
 
 
 ```{r}
 loh_gene <- read_tsv(loh_gene_file) %>%
-  filter(BS_ID %in% germline$Kids_First_Biospecimen_ID_normal & gene %in% cpgs) %>%
-  dplyr::rename(Kids_First_Biospecimen_ID_normal = BS_ID,
-                Hugo_Symbol = gene)
+  filter(BS_ID_tumor %in% germline$Kids_First_Biospecimen_ID_tumor & gene %in% cpgs) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = BS_ID_tumor,
+                Hugo_Symbol = gene,
+                gene_LOH_score_uncorrected = LOH_score_uncorrected) %>%
+  select(Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
+         gene_LOH_score_uncorrected)
 
 germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
-  left_join(loh_gene)
+  left_join(loh_gene) %>%
+  dplyr::mutate(gene_LOH_score_corrected = gene_LOH_score_uncorrected/tumor_fraction) %>%
+  dplyr::mutate(gene_LOH_score_corrected = case_when(
+    gene_LOH_score_corrected > 0.5 ~ 0.5,
+    TRUE ~ gene_LOH_score_corrected
+  ))
+
+
+germline_somatic_cnvs_loh_gene %>%
+  filter(gene_LOH_score_uncorrected > 0.3 | (gene_LOH_score_uncorrected > .1 & gene_LOH_score_corrected > 0.3)) %>%
+  select(Hugo_Symbol, proband_germline_vaf, proband_tumor_vaf,
+         loh_uncorrected, loh_corrected,
+         gene_LOH_score_uncorrected,
+         gene_LOH_score_corrected)
+
 ```
 ```{r}
 germline_somatic_cnvs_loh_gene %>%
@@ -151,7 +187,7 @@ germline_somatic_cnvs_loh_gene %>%
   write_tsv(file.path(results_dir, "pbta-plp-cnv-somatic.tsv"))
 
 germline_somatic_cnvs_loh_gene %>%
-  filter(abs(loh) > 0.25) %>%
+  filter(abs(loh_uncorrected) > 0.3 | ((proband_tumor_vaf < 0.4 | proband_tumor_vaf > 0.6) & abs(loh_corrected) > 0.3)) %>%
   write_tsv(file.path(results_dir, "pbta-plp-loh-somatic.tsv"))
 ```
 
