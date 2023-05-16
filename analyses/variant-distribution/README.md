@@ -8,7 +8,7 @@ This module creates distribution plots of P-LP variants across 196 cancer predis
 
 ## Folder content 
 
-1. `01-create-cancer-distribution-plot.R` runs plotting script
+1. `01-create-variant-distribution-plots.Rmd` runs plotting script
 
 2. `input/` directory contains the following files:
   - `embryonal-tumor_goi_list.tsv`; list of embryonal tumor driver genes
