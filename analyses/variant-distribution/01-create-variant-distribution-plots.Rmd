@@ -51,7 +51,7 @@ other_genes <- read_lines(file.path(input_dir, "other_goi_list.tsv"))
 
 # cat somatic lists
 somatic_drivers <- unique(c(embryonal_genes, hgg_genes, lgg_genes, other_genes))
-somatic_not_cpg <- setdiff(somatic_drivers, cpg)
+#somatic_not_cpg <- setdiff(somatic_drivers, cpg)
 
 # read in histology file
 hist <- read_tsv(file.path(root_dir, 
@@ -78,19 +78,24 @@ plp_cpg <- plp %>%
   dplyr::mutate(Hugo_Symbol = case_when(
     !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
     TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
-  ))
-length(plp_cpg)
+  )) 
+
+length(unique(plp_cpg$Hugo_Symbol))
 
 # how many somatic drivers have P/LP?
 plp_somatic <- plp %>%
-  filter(Hugo_Symbol %in% somatic_drivers) %>%
-  pull(Hugo_Symbol) %>%
-  unique()
-length(plp_somatic)
+  filter(Hugo_Symbol %in% somatic_drivers)
+
+length(unique(plp_somatic$Hugo_Symbol))
 
 # how many somatic drivers which are not CPG have P/LP?
+# plp_som_not_cpg <- plp %>%
+#   filter(Hugo_Symbol %in% somatic_not_cpg) %>%
+#   left_join(hist) %>%
+#   write_tsv(file.path(results_dir, "plp-variants-in-somatic-drivers-not-cpg.tsv"))
+
 plp_som_not_cpg <- plp %>%
-  filter(Hugo_Symbol %in% somatic_not_cpg) %>%
+  filter(Hugo_Symbol %in% plp_somatic$Hugo_Symbol & !Hugo_Symbol %in% plp_cpg$Hugo_Symbol) %>%
   left_join(hist) %>%
   write_tsv(file.path(results_dir, "plp-variants-in-somatic-drivers-not-cpg.tsv"))
   
@@ -102,7 +107,7 @@ sort(unique(plp_som_not_cpg$Hugo_Symbol))
 # Create plots
 
 ```{r}
-genelists <-  list("cpg" = cpg, "somatic_drivers" = somatic_drivers, "somatic_not_cpg" = somatic_not_cpg)
+plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not_cpg" = plp_som_not_cpg)
 
 for (each in names(genelists)){
   
@@ -120,8 +125,7 @@ for (each in names(genelists)){
     fig_width <- 2000
   }
   
-  plot_df <- plp %>%
-    filter(Hugo_Symbol %in% genelists[[each]]) %>%
+  plot_df <- plplists[[each]] %>%
     left_join(hist) 
 
   # get N per histology per gene
