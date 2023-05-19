@@ -41,6 +41,9 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 # read in cpg and driver lists
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
+multi_cpg <- c(glue::glue("{cpg};"),
+               glue::glue(";{cpg}"))
+
 embryonal_genes <- read_lines(file.path(input_dir, "embryonal-tumor_goi_list.tsv"))
 hgg_genes <- read_lines(file.path(input_dir, "hgat_goi_list.tsv"))
 lgg_genes <- read_lines(file.path(input_dir, "lgat_goi_list.tsv"))
@@ -67,19 +70,15 @@ plp <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv"), show_col_typ
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
   select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol) %>%
-  unique() %>%
-  # two cpgs have multi-gene annotations for corresponding variants; we will re-assign to just CPG for plotting purposes
-  dplyr::mutate(Hugo_Symbol = case_when(
-    grepl("ERCC5", Hugo_Symbol) ~ "ERCC5",
-    grepl("RMRP", Hugo_Symbol) ~ "RMRP",
-    TRUE ~ Hugo_Symbol
-  ))
+  unique()
 
 # how many CPG have P/LP?
 plp_cpg <- plp %>%
-  filter(Hugo_Symbol %in% cpg) %>%
-  pull(Hugo_Symbol) %>%
-  unique()
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+  ))
 length(plp_cpg)
 
 # how many somatic drivers have P/LP?
