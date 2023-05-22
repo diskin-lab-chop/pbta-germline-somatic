@@ -8,6 +8,7 @@ PT_8GN3TQRM	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	Clin
 PT_QEP13FH4	Medulloblastoma	MB, WNT	APC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2995C>T	p.Gln999*	Familial Adenomatous Polyposis	Other inherited conditions NOS
 PT_0SPKM4S8	Other high-grade glioma	HGG, H3 wildtype, TP53 activated	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.137G>T	.	Lynch syndrome	None documented
 PT_WWZ2Q14R	Medulloblastoma	MB, SHH	SUFU	Pathogenic	InterVar_Recalculated Pathogenic	c.180C>G	p.Tyr60*	Gorlin syndrome	None documented
+PT_XP8AM1CH	Non-neoplastic tumor	NA	NTHL1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.374delC	p.Pro125fs	Familial Adenomatous Polyposis	None documented
 PT_8R00BMHH	Low-grade glioma	LGG, RTK	CHEK2	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	c.1556C>T	p.Thr519Met	CHEK2	None documented
 PT_Z7YJ7MSM	Mixed neuronal-glial tumor	NA	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3633delC	p.Gly1212fs	Gorlin syndrome	None documented
 PT_HBT0C66Y	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2356C>T	p.Arg786*	Tuberous Sclerosis	None documented
@@ -19,7 +20,9 @@ PT_9PJR0ZK7	Neurofibroma plexiform	NA	PMS2	Likely_pathogenic	InterVar_Recalculat
 PT_MT27S7S4	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	c.644G>A	.	Li-Fraumeni syndrome	None documented
 PT_7TRGHZBK	Choroid plexus tumor	NA	TP53	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.833delC	p.Pro278fs	Li-Fraumeni syndrome	None documented
 PT_A594A46X	Mixed neuronal-glial tumor	GNG, other MAPK	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.277delT	p.Trp93fs	CHEK2	None documented
+PT_VABP80N2	Low-grade glioma	LGG, KIAA1549-BRAF	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.3074delC	p.Ser1025fs	Gorlin syndrome	None documented
 PT_NTEKMKTX	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	c.785T>A	p.Leu262*	Gorlin syndrome	Other inherited conditions NOS
+PT_2NQPX1R2	Craniopharyngioma	CRANIO, ADAM	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2019delC	p.Tyr674fs	Gorlin syndrome	None documented
 PT_NCDHZ8H8	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.202-1G>C	.	Gorlin syndrome	None documented
 PT_A0F23R7E	Mixed neuronal-glial tumor	GNG, BRAF V600E	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.124delA	p.Ile42fs	BRCA1/2	None documented
 PT_A0F23R7E	Mixed neuronal-glial tumor	GNG, BRAF V600E	PMS2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1376C>G	p.Ser459*	Lynch syndrome	None documented
