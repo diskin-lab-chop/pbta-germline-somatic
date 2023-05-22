@@ -1,0 +1,43 @@
+Term	cpgPLP	no_cpgPLP
+Number Cohort	174	664
+Percent Cohort	20.76	79.24
+Female	85	298
+Male	87	357
+Unknown	2	9
+American Indian or Alaska Native	0	6
+Asian	2	23
+Black or African American	12	56
+More Than One Race	2	9
+Native Hawaiian or Other Pacific Islander	0	1
+Other/Unknown Race	32	109
+White	126	460
+AFR	16	60
+AMR	22	79
+EAS	2	22
+EUR	123	453
+SAS	5	16
+<NA>	6	34
+Hispanic or Latino	14	64
+Not Hispanic or Latino	151	556
+Other/Unknown Ethnicity	9	44
+ATRT	8	19
+Choroid plexus tumor	5	13
+Craniopharyngioma	5	34
+DIPG or DMG	5	47
+Ependymoma	12	59
+Germ cell tumor	3	10
+Low-grade glioma	45	178
+Medulloblastoma	20	77
+Meningioma	7	18
+Mesenchymal tumor	4	16
+Mixed neuronal-glial tumor	10	69
+Neurofibroma plexiform	9	5
+Non-neoplastic tumor	8	18
+Other CNS embryonal tumor	0	12
+Other high-grade glioma	23	53
+Other tumor	6	27
+Schwannoma	4	9
+median_age	7.72	7.96
+median_os_years	4.61	4.47
+median_efs_years	3.07	2.73
+median_tmb	0.34	0.34
