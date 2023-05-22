@@ -41,11 +41,18 @@ Read in plp file and filter for CPGs and 838 samples in hist
 
 ```{r filter plp}
 cpgs <- read_lines(cpg_file)
+multi_cpg <- c(glue::glue("{cpg};"),
+               glue::glue(";{cpg}"))
 
 hist <- read_tsv(cbtn_histologies_file)
 
 plp <- read_tsv(plp_file) %>%
-  filter(Hugo_Symbol %in% cpgs & Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+     !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+     TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+   )) 
 ```
 
 Read in gnomad cohort cpg plp frequencies and run Fisher's exact tests for each CPG  
