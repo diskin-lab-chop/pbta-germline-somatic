@@ -51,8 +51,6 @@ tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
   pull(Kids_First_Biospecimen_ID)
 
 cpg <- read_lines(cpg_file)
-lti_cpg <- c(glue::glue("{cpg};"),
-                glue::glue(";{cpg}"))
 
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% tumor_ids,
