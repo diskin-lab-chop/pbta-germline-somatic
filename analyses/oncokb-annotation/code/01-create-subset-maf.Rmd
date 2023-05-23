@@ -40,7 +40,7 @@ if (!dir.exists(input_dir)) {
 histologies_file <- file.path(data_dir,"histologies.tsv")
 
 # goi file
-goi_file <- file.path(analysis_dir, "input", "cpg.txt")
+cpg_file <- file.path(analysis_dir, "input", "cpg.txt")
 ```
 
 
@@ -50,11 +50,13 @@ tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
                 experimental_strategy != "RNA-Seq") %>%
   pull(Kids_First_Biospecimen_ID)
 
-goi <- read_table(goi_file, col_names = "genes")
+cpg <- read_lines(cpg_file)
+lti_cpg <- c(glue::glue("{cpg};"),
+                glue::glue(";{cpg}"))
 
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% tumor_ids,
-         Hugo_Symbol %in% goi$genes) %>%
+         Hugo_Symbol %in% cpg) %>%
   unique() %>%
   write_tsv(file.path(analysis_dir, params$maf_goi))
 ```
