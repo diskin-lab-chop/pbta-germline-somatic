@@ -42,9 +42,9 @@ if (!dir.exists(results_dir)) {
 Set file paths
 ```{r set paths}
 cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
-pbta_histologies_file <- file.path(data_dir,"histologies.tsv")
+pbta_histologies_file <- file.path(input_dir,"histologies.tsv")
 
-base_histologies_file <- file.path(input_dir, "2023-03-08_histologies-base.tsv")
+base_histologies_file <- file.path(input_dir, "2023-05-10-histologies-base-adapt.tsv")
 
 all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
@@ -70,9 +70,6 @@ all_plp <- read_tsv(all_plp_file) %>%
     TRUE ~ Hugo_Symbol
   ))
 
-methyl <- read_csv(methyl_file)
-methyl_map <- read_csv(methyl_map_file)
-
 cpgs <- read_lines(cpg_file)
 ```
 
@@ -80,84 +77,30 @@ cpgs <- read_lines(cpg_file)
 
 Add EPN subtypes (currently not reported in histologies file)
 ```{r epn subtyping, echo=FALSE}
-epn <- read_tsv(epn_subgroup_file) %>%
-  distinct(Kids_First_Participant_ID, .keep_all = T)
-
 hist_cbtn <- hist_cbtn %>%
-  left_join(epn[,c("Kids_First_Participant_ID", "subgroup")]) %>%
-  mutate(molecular_subtype = case_when(
-    !is.na(subgroup) ~ subgroup,
-    is.na(subgroup) ~ molecular_subtype
-  )) %>%
-  select(-subgroup)
-```
-
-We will prioritize OPC molecular subtype when defining sample subtypes, and will utilize high-confidence methylation subclass call when OPC subtype is unavailable
-```{r add methyl subtype}
-# read in methylation subtypes
-methyl <- methyl %>%
-  filter(dkfz_v12_methylation_subclass_score >= 0.8 & sample_type == "Tumor") %>%
-  left_join(hist_pbta[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID")], by = "Kids_First_Biospecimen_ID")
-
-# read in methyl_map file, which has a key matching methylation subtypes to OPC subtypes when available 
-methyl_map <- methyl_map %>%
-  rename("dkfz_v12_methylation_subclass" = Abbrevation)
-
-# Define 'OPC_methyl_subtype' variable that takes `molecular_subtype` first, and `OPC_molecular_subtype` defined by methylation otherwise  
-hist_cbtn <- hist_cbtn %>%
-  left_join(methyl[,c("Kids_First_Participant_ID", "dkfz_v12_methylation_subclass")], by = "Kids_First_Participant_ID") %>%
-  left_join(methyl_map[,c("dkfz_v12_methylation_subclass", "OPC_molecular_subtype")], by = "dkfz_v12_methylation_subclass") %>%
-  mutate(OPC_methyl_subtype = case_when(
-    !is.na(molecular_subtype) & !grepl("To be classified", molecular_subtype) ~ molecular_subtype,
-    !is.na(OPC_molecular_subtype) ~ OPC_molecular_subtype,
-    grepl("To be classified", molecular_subtype) ~ molecular_subtype,
-    TRUE ~ NA_character_
-  )) %>%
-  # change any "EPN, ST RELA" subtypes call to "EPN, ST ZFTA"
-  mutate(OPC_methyl_subtype = case_when(
-    OPC_methyl_subtype == "EPN, ST RELA" ~ "EPN, ST ZFTA",
-    TRUE ~ OPC_methyl_subtype
-  )) %>%
-  distinct(Kids_First_Participant_ID, .keep_all = T)
-```
-
-For samples in subtyped plot groups that are not subtyped, define as 'to be classified' 
-```{r}
-unclassified_df <- data.frame(plot_group = c("Atypical Teratoid Rhabdoid Tumor", "Craniopharyngioma",
-                                             "DIPG or DMG", "Ependymoma", "Low-grade glioma",
-                                             "Medulloblastoma", "Other high-grade glioma"),
-                              unclassified = c("ATRT, To be classified", "CRANIO, To be classified",
-                                               "HGG, To be classified", "EPN, To be classified",
-                                               "LGG, To be classified", "MB, To be classified",
-                                               "HGG, To be classified")
-                              )
-
-hist_cbtn <- hist_cbtn %>%
-  left_join(unclassified_df) %>%
-  mutate(OPC_methyl_subtype = case_when(
-    is.na(OPC_methyl_subtype) & !is.na(unclassified) ~ unclassified,
-    TRUE ~ OPC_methyl_subtype
-  )) %>%
-  select(-unclassified)
+  rename("Kids_First_Biospecimen_ID" = Kids_First_Biospecimen_ID_tumor) %>%
+  select(-molecular_subtype) %>%
+  left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "molecular_subtype")])
 ```
 
 Consolidate subtypes of HGG, LGG, and GNG into broader subgroups
 ```{r}
 hist_cbtn <- hist_cbtn %>%
     mutate(mol_sub_group = case_when(
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("wildtype", OPC_methyl_subtype) ~ "HGG, H3 WT",
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("K28", OPC_methyl_subtype) ~ "DMG, H3 K28",
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("G35", OPC_methyl_subtype) ~ "HGG, H3 G35",
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", OPC_methyl_subtype) ~ "HGG, IDH",
-    plot_group %in% c("Low-grade glioma") & grepl("SEGA", OPC_methyl_subtype) ~ "LGG, SEGA",
-    plot_group %in% c("Low-grade glioma") & grepl("-BRAF", OPC_methyl_subtype) ~ "LGG, BRAF fusion",
-    plot_group %in% c("Low-grade glioma") & grepl("wildtype", OPC_methyl_subtype) ~ "LGG, WT",
-    plot_group %in% c("Low-grade glioma") & !grepl("To be classified", OPC_methyl_subtype) ~ "LGG, Other alteration",
-    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("wildtype", OPC_methyl_subtype) ~ "GNG/GNT, WT",
-    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("-BRAF", OPC_methyl_subtype) ~ "GNG/GNT, BRAF fusion",
-    plot_group %in% c("Mixed neuronal-glial tumor") & !grepl("To be classified", OPC_methyl_subtype) ~ "GNG/GNT, Other alteration",
-    !is.na(OPC_methyl_subtype) ~ OPC_methyl_subtype,
-    is.na(OPC_methyl_subtype) ~ plot_group
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("wildtype", molecular_subtype) ~ "HGG, H3 WT",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("K28", molecular_subtype) ~ "DMG, H3 K28",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("G35", molecular_subtype) ~ "DHG, H3 G35",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IHG", molecular_subtype) ~ "IHG",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", molecular_subtype) ~ "HGG, IDH",
+    plot_group %in% c("Low-grade glioma") & grepl("SEGA", molecular_subtype) ~ "SEGA",
+    plot_group %in% c("Low-grade glioma") & grepl("-BRAF", molecular_subtype) ~ "LGG, BRAF fusion",
+    plot_group %in% c("Low-grade glioma") & grepl("wildtype", molecular_subtype) ~ "LGG, WT",
+    plot_group %in% c("Low-grade glioma") & grepl("To be classified", molecular_subtype) ~ "LGG, To be classified",
+    plot_group %in% c("Low-grade glioma") ~ "LGG, Other alteration",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("wildtype", molecular_subtype) ~ "GNG/GNT, WT",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("-BRAF", molecular_subtype) ~ "GNG/GNT, BRAF fusion",
+    plot_group %in% c("Mixed neuronal-glial tumor") & !grepl("To be classified", molecular_subtype) ~ "GNG/GNT, Other alteration",
+    !is.na(molecular_subtype) ~ molecular_subtype
   ))
 ```
 
@@ -181,52 +124,21 @@ A patient will be coded as "EVENT" in `EFS_status` if recorded EFS_days is less 
 A patient will be coded as "NO EVENT" in `EFS_status` if `OS_status == LIVING` and there is no record of an event
 
 ```{r}
-diagnoses <- read_tsv(file.path(input_dir, "subject_diagnoses.tsv"))
-
-# identify patients with event reported
-progression_pts <- diagnoses %>%
-  filter(grepl("Progressive|Recurrence", diagnonsis_type)) %>%
-  pull(subject_id) %>%
-  unique()
-
-deceased_pts <- diagnoses %>%
-  filter(grepl("Deceased-due to disease", OS_status)) %>%
-  pull(subject_id) %>%
-  unique()
-
 # add cohort id from pbta histologies files and format `PFS_days` as numeric
 hist_cbtn <- hist_cbtn %>%
   select(-OS_days, -PFS_days, -OS_status) %>%
-  left_join(hist_base[,c("Kids_First_Participant_ID", "cohort_participant_id",
-                         "OS_days", "PFS_days", "OS_status")]) %>%
+  left_join(hist_base[,c("Kids_First_Participant_ID",
+                         "OS_days", "EFS_days", "OS_status", "EFS_event_type")]) %>%
   distinct(Kids_First_Participant_ID, .keep_all = T) %>%
-  mutate(EFS_days = as.numeric(PFS_days),
+  mutate(EFS_days = as.numeric(EFS_days),
          OS_days = as.numeric(OS_days)) %>%
   mutate(OS_years = OS_days/365.25,
          EFS_years = EFS_days/365.25) %>%
-  select(-PFS_days)
-
-# Add `PFS_status` column and code patients using criteria described above.
-hist_cbtn <- hist_cbtn %>%
-  dplyr::mutate(OS_status = case_when(
-    cohort_participant_id %in% deceased_pts ~ "DECEASED",
-    TRUE ~ OS_status
-  )) %>%
   dplyr::mutate(EFS_status = case_when(
-    EFS_days < OS_days ~ "EVENT",
-    OS_status == "DECEASED" ~ "EVENT",
-    OS_status == "LIVING" & cohort_participant_id %in% progression_pts  ~ "EVENT",
-    OS_status == "LIVING" & !cohort_participant_id %in% progression_pts  ~ "NO EVENT",
+    EFS_event_type == "Not Applicable" ~ "NO EVENT",
+    !is.na(EFS_event_type) ~ "EVENT",
     TRUE ~ NA_character_
   ))
-
-#There are a subset of deceased patients with `EFS_days` == NA but have `OS_days` reported. This can be used for EFS_days as well
-hist_cbtn <- hist_cbtn %>%
-  dplyr::mutate(EFS_days = case_when(
-    is.na(EFS_days) & OS_status == "DECEASED" & !is.na(OS_days) ~ OS_days,
-    TRUE ~ EFS_days
-  ))
-
 
 # Save output
 write_tsv(hist_cbtn,
