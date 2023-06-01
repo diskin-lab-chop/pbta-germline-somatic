@@ -49,6 +49,7 @@ pc12 <- hist %>%
   scale_fill_manual(values = okabe_palette,
                     labels=c("AFR (n=76)", "AMR (n=101)", "EAS (n=24)",
                              "EUR (n=576)", "SAS (n=21)")) +
+  labs(fill = "predictd ancestry") +
   theme_Publication()
 
 
@@ -59,6 +60,7 @@ pc34 <- hist %>%
   scale_fill_manual(values = okabe_palette,
                     labels=c("AFR (n=76)", "AMR (n=101)", "EAS (n=24)",
                              "EUR (n=576)", "SAS (n=21)")) +
+  labs(fill = "predicted ancestry") +
   theme_Publication()
 
 ggarrange(pc12, pc34,
