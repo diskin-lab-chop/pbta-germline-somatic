@@ -94,8 +94,10 @@ labels <- c("Li-Fraumeni syndrome (TP53)",
 
 predisposition_df %>%
   count(predisposition, plp_variant) %>%
-  mutate(predisposition = fct_relevel(predisposition,
+  dplyr::mutate(predisposition = fct_relevel(predisposition,
                                       rev(predispositions))) %>%
+  dplyr::mutate(plp_variant = fct_relevel(plp_variant,
+                                      c("Yes", "No"))) %>%
   ggplot(aes(x = n, y = predisposition, fill = plp_variant)) + 
   geom_bar(stat = "identity", 
            colour = "black") +
