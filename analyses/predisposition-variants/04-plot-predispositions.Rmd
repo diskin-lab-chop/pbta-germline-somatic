@@ -167,7 +167,7 @@ predisposition_gene_df %>%
            colour = "black") +
   labs(x = "No. patients",
        y = "",
-       fill = "Clinically defined") +
+       fill = "Contained in pathology report") +
   theme(legend.position = "top") +
   scale_y_discrete(labels=labels) +
   scale_fill_npg() +
