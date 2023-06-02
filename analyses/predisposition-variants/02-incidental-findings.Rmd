@@ -1,5 +1,5 @@
 ---
-title: 'Prevalence of germline P-LP variants in non-clinically-defined patients'
+title: 'Prevalence of germline P-LP variants in predisposition-syndrome-associated genes'
 output: 
   html_document:
   toc: TRUE
@@ -28,7 +28,8 @@ results_dir <- file.path(analysis_dir, "results")
 
 Set paths for: 
 - histologies file, 
-- germline plp variant file,
+- germline plp variant file
+- predisposition syndromes files
 
 ```{r set paths}
 histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -38,7 +39,7 @@ plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
 ```
 
-Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
+Read in histologies, germline PLP, and predispositions file
 
 ```{r read files}
 hist <- read_tsv(histologies_file,show_col_types = FALSE) 
@@ -48,14 +49,15 @@ plp <- read_tsv(plp_file,show_col_types = FALSE)
 predispositions <- read_tsv(predispositions_file)
 ```
 
+See which cancer predispositions are currently reported in histologies file: 
 
 ```{r get predispositions}
 table(hist$cancer_predispositions)
 ```
 
-Four cancer predispositions are present in cohort that have known germline pathogenic variant etiologies: Li-Fraumeni syndrome (TP53), NF-1 (NF1), NF-2 (NF2), and Tuberous Sclerosis (TSC1 and TSC2). We will assess whether any patients harbor germline P-LP variants in these genes AND are not clinically defined with the associated predisposition. 
+Subset PLP file to include only variants in CPGs associated with syndromes in `predispositions`, and include `cancer_predispositions` column to indicate whether syndrome is currently reported.
 
-```{r TP53}
+```{r }
 predisposition_plp_bs <- plp %>%
   filter(Hugo_Symbol %in% predispositions$Hugo_Symbol) %>%
   pull(Kids_First_Biospecimen_ID)
@@ -69,10 +71,12 @@ plp_no_predisposition <- hist %>%
   filter(!str_detect(cancer_predispositions, predisposition)) %>%
   dplyr::rename("associated_syndrome" = predisposition,
                 "clinical_definition" = cancer_predispositions) %>%
-  select(Kids_First_Participant_ID, plot_group, molecular_subtype, 
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID, plot_group, molecular_subtype, 
          Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call, HGVS.c, HGVS.p,
          associated_syndrome, clinical_definition)
 ```
+
+Save output
 
 ```{r}
 write_tsv(plp_no_predisposition,
