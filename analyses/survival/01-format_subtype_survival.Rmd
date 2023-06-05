@@ -89,7 +89,7 @@ hist_cbtn <- hist_cbtn %>%
     mutate(mol_sub_group = case_when(
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("wildtype", molecular_subtype) ~ "HGG, H3 WT",
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("K28", molecular_subtype) ~ "DMG, H3 K28",
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("G35", molecular_subtype) ~ "DHG, H3 G35",
+    grepl("G35", molecular_subtype) ~ "DHG, H3 G35",
     grepl("IHG", molecular_subtype) ~ "IHG",
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", molecular_subtype) ~ "HGG, IDH",
     plot_group %in% c("Low-grade glioma") & grepl("SEGA", molecular_subtype) ~ "SEGA",
