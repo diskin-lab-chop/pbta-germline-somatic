@@ -11,7 +11,7 @@ This module creates a cohort-specific histologies file including participant IDs
 1. `01-collapse-tumor-histologies.R` reads in OpenPedCan V11 histologies file, subsets for patients in germline cohort, and adds additional metadata. 
 
 2. `input/` directory contains the following files: 
-  - `pbta-germline-ancestry-results.tsv`; includes predicted major ancestry from somalier runs
+  - `DEI_CBTN-PNOC_rerun.somalier-ancestry.tsv`; includes predicted major ancestry from somalier runs
   - `plot-mapping.tsv`; defines assignment of broad histologies and cancer groups into `plot_group` used for manuscript figures. 
   - `samples_of_interest.txt`; cohort normal BS IDs. 
   
