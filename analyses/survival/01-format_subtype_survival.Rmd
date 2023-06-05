@@ -57,7 +57,7 @@ epn_subgroup_file <- file.path(input_dir, "EPN_all_data_withsubgroup.tsv")
 output_histology <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 ```
 
-Import histologies, plp, methylation, and cpg files
+Import histologies, plp, and cpg files
 ```{r read files, echo=FALSE}
 hist_cbtn <- read_tsv(cbtn_histologies_file)
 hist_pbta <- read_tsv(pbta_histologies_file)
@@ -75,7 +75,7 @@ cpgs <- read_lines(cpg_file)
 
 ## Defining molecular subtypes
 
-Add EPN subtypes (currently not reported in histologies file)
+Replace current v11 subtypes in `hist_cbtn` with v12 subtypes
 ```{r epn subtyping, echo=FALSE}
 hist_cbtn <- hist_cbtn %>%
   rename("Kids_First_Biospecimen_ID" = Kids_First_Biospecimen_ID_tumor) %>%
@@ -135,7 +135,7 @@ hist_cbtn <- hist_cbtn %>%
   mutate(OS_years = OS_days/365.25,
          EFS_years = EFS_days/365.25) %>%
   dplyr::mutate(EFS_status = case_when(
-    EFS_event_type == "Not Applicable" ~ "NO EVENT",
+    EFS_event_type %in% c("Not Applicable", "Not Reported") ~ "NO EVENT",
     !is.na(EFS_event_type) ~ "EVENT",
     TRUE ~ NA_character_
   ))
