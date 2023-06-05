@@ -48,11 +48,7 @@ base_histologies_file <- file.path(input_dir, "2023-05-10-histologies-base-adapt
 
 all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
-methyl_file <- file.path(input_dir, "cbtn-dkfz-methylation-classification.csv")
-methyl_map_file <- file.path(input_dir, "methylation_to_OPC_subtype.csv")
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
-
-epn_subgroup_file <- file.path(input_dir, "EPN_all_data_withsubgroup.tsv")
 
 output_histology <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 ```
