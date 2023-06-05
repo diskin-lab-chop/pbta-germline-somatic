@@ -62,23 +62,26 @@ predisposition_plp_bs <- plp %>%
   filter(Hugo_Symbol %in% predispositions$Hugo_Symbol) %>%
   pull(Kids_First_Biospecimen_ID)
 
-plp_no_predisposition <- hist %>%
+plp_predisposition_syndromes <- hist %>%
   filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_bs) %>%
   dplyr::rename("Kids_First_Biospecimen_ID" = Kids_First_Biospecimen_ID_normal) %>%
   left_join(plp[,c("Kids_First_Biospecimen_ID", "Hugo_Symbol", "L-LP_Call_final", "Reasoning_for_call", "HGVS.c", "HGVS.p")]) %>%
   left_join(predispositions) %>%
   filter(Hugo_Symbol %in% predispositions$Hugo_Symbol) %>%
-  filter(!str_detect(cancer_predispositions, predisposition)) %>%
-  dplyr::rename("associated_syndrome" = predisposition,
-                "clinical_definition" = cancer_predispositions) %>%
+  dplyr::rename("associated_syndrome" = `Associated Syndrome`,
+                "clinically_reported_syndrome" = cancer_predispositions) %>%
+  dplyr::mutate(incidental_finding = case_when(
+    !str_detect(associated_syndrome, clinically_reported_syndrome) ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID, plot_group, molecular_subtype, 
          Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call, HGVS.c, HGVS.p,
-         associated_syndrome, clinical_definition)
+         associated_syndrome, clinically_reported_syndrome, incidental_finding)
 ```
 
 Save output
 
 ```{r}
-write_tsv(plp_no_predisposition,
+write_tsv(plp_predisposition_syndromes,
           file.path(results_dir, "incidental-findings-predisposition-variants.tsv"))
 ```
