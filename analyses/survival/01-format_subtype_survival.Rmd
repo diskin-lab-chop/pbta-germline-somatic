@@ -114,7 +114,7 @@ cpg_bs <- all_plp$Kids_First_Biospecimen_ID[all_plp$Hugo_Symbol %in% cpgs]
 hist_cbtn <- hist_cbtn |>
   mutate(cpgPLP_status = case_when(
     Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
-    !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "no_cpgPLP"
+    TRUE ~ "no_cpgPLP"
   ))
 ```
 
