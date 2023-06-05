@@ -70,7 +70,7 @@ plp_no_predisposition <- hist %>%
   filter(Hugo_Symbol %in% predispositions$Hugo_Symbol) %>%
   filter(!str_detect(cancer_predispositions, predisposition)) %>%
   dplyr::rename("associated_syndrome" = predisposition,
-                "clinical_definition" = cancer_predispositions) %>%
+                "clinically_reported_syndrome" = cancer_predispositions) %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID, plot_group, molecular_subtype, 
          Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call, HGVS.c, HGVS.p,
          associated_syndrome, clinical_definition)
