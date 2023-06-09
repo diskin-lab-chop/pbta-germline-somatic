@@ -2,6 +2,8 @@
 
 """Using the HGNC Gene Name Database TSV, update any old gene names in the custom fusions TSV
 
+Author: Dan Miller
+
 A lightweight program to iterate through the custom fusions file and check all requested columns
 that contain gene names against the HGNC database. The program does this simply by creating
 a dict from the records in the HGNC file. That dict has old gene names as the keys and any
