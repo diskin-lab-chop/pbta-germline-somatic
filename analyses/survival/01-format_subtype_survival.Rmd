@@ -41,56 +41,34 @@ if (!dir.exists(results_dir)) {
 
 Set file paths
 ```{r set paths}
-cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
-pbta_histologies_file <- file.path(input_dir,"histologies.tsv")
-
-base_histologies_file <- file.path(input_dir, "2023-05-10-histologies-base-adapt.tsv")
+histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
-methyl_file <- file.path(input_dir, "cbtn-dkfz-methylation-classification.csv")
-methyl_map_file <- file.path(input_dir, "methylation_to_OPC_subtype.csv")
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
-
-epn_subgroup_file <- file.path(input_dir, "EPN_all_data_withsubgroup.tsv")
 
 output_histology <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 ```
 
-Import histologies, plp, methylation, and cpg files
+Import histologies, plp, and cpg files
 ```{r read files, echo=FALSE}
-hist_cbtn <- read_tsv(cbtn_histologies_file)
-hist_pbta <- read_tsv(pbta_histologies_file)
-hist_base <- read_tsv(base_histologies_file)
+hist <- read_tsv(histologies_file)
 
-all_plp <- read_tsv(all_plp_file) %>%
-  dplyr::mutate(Hugo_Symbol = case_when(
-    grepl("ERCC5", Hugo_Symbol) ~ "ERCC5",
-    grepl("RMRP", Hugo_Symbol) ~ "RMRP", 
-    TRUE ~ Hugo_Symbol
-  ))
+all_plp <- read_tsv(all_plp_file)
 
 cpgs <- read_lines(cpg_file)
-```
-
-## Defining molecular subtypes
-
-Add EPN subtypes (currently not reported in histologies file)
-```{r epn subtyping, echo=FALSE}
-hist_cbtn <- hist_cbtn %>%
-  rename("Kids_First_Biospecimen_ID" = Kids_First_Biospecimen_ID_tumor) %>%
-  select(-molecular_subtype) %>%
-  left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "molecular_subtype")])
+multi_cpg <- c(glue::glue("{cpg};"),
+               glue::glue(";{cpg}"))
 ```
 
 Consolidate subtypes of HGG, LGG, and GNG into broader subgroups
 ```{r}
-hist_cbtn <- hist_cbtn %>%
+hist <- hist %>%
     mutate(mol_sub_group = case_when(
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("wildtype", molecular_subtype) ~ "HGG, H3 WT",
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("K28", molecular_subtype) ~ "DMG, H3 K28",
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("G35", molecular_subtype) ~ "DHG, H3 G35",
-    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IHG", molecular_subtype) ~ "IHG",
+    grepl("G35", molecular_subtype) ~ "DHG, H3 G35",
+    grepl("IHG", molecular_subtype) ~ "IHG",
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", molecular_subtype) ~ "HGG, IDH",
     plot_group %in% c("Low-grade glioma") & grepl("SEGA", molecular_subtype) ~ "SEGA",
     plot_group %in% c("Low-grade glioma") & grepl("-BRAF", molecular_subtype) ~ "LGG, BRAF fusion",
@@ -109,38 +87,38 @@ hist_cbtn <- hist_cbtn %>%
 Define column `cpgPLP_status` indicating presence or absence of a CPG PLP variant
 
 ```{r}
-cpg_bs <- all_plp$Kids_First_Biospecimen_ID[all_plp$Hugo_Symbol %in% cpgs]
+cpg_bs <- all_plp %>%
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+  )) %>%
+  pull(Kids_First_Biospecimen_ID) %>%
+  unique()
 
-hist_cbtn <- hist_cbtn |>
+hist <- hist %>%
   mutate(cpgPLP_status = case_when(
     Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
-    !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "no_cpgPLP"
+    TRUE ~ "no_cpgPLP"
   ))
 ```
 
-Event-free survival (EFS) status is currently not coded into histologies file. We will add a column indicating if an event (i.e. progression, recurrence, or death) has or hasn't occurred using the information in `subject_diagnoses.tsv`, which records all events. 
-
-A patient will be coded as "EVENT" in `EFS_status` if recorded EFS_days is less than `OS_days` or there is record of an event
-A patient will be coded as "NO EVENT" in `EFS_status` if `OS_status == LIVING` and there is no record of an event
+We will define `EFS_status` as "NO EVENT" if `EFS_event_type` has values "Not Applicable" or "Not Reported", and as "EVENT" in all other cases. 
 
 ```{r}
 # add cohort id from pbta histologies files and format `PFS_days` as numeric
-hist_cbtn <- hist_cbtn %>%
-  select(-OS_days, -PFS_days, -OS_status) %>%
-  left_join(hist_base[,c("Kids_First_Participant_ID",
-                         "OS_days", "EFS_days", "OS_status", "EFS_event_type")]) %>%
-  distinct(Kids_First_Participant_ID, .keep_all = T) %>%
-  mutate(EFS_days = as.numeric(EFS_days),
-         OS_days = as.numeric(OS_days)) %>%
+hist <- hist %>%
+  mutate(EFS_days = as.numeric(EFS_days)) %>%
   mutate(OS_years = OS_days/365.25,
          EFS_years = EFS_days/365.25) %>%
   dplyr::mutate(EFS_status = case_when(
-    EFS_event_type == "Not Applicable" ~ "NO EVENT",
+    EFS_event_type %in% c("Not Applicable", "Not Reported") ~ "NO EVENT",
     !is.na(EFS_event_type) ~ "EVENT",
     TRUE ~ NA_character_
   ))
 
 # Save output
-write_tsv(hist_cbtn,
+write_tsv(hist,
           output_histology)
 ```
