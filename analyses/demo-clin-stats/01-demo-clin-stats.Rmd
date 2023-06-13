@@ -39,7 +39,7 @@ Set file paths
 ```{r set paths}
 cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-base_histologies_file <- file.path(input_dir, "2023-05-10-histologies-base-adapt.tsv")
+#base_histologies_file <- file.path(input_dir, "2023-05-10-histologies-base-adapt.tsv")
 
 all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
@@ -51,7 +51,7 @@ Wrangle data
 ```{r}
 hist <- read_tsv(cbtn_histologies_file)
 
-hist_base <- read_tsv(base_histologies_file)
+#hist_base <- read_tsv(base_histologies_file)
 
 all_plp <- read_tsv(all_plp_file)
 
@@ -73,15 +73,15 @@ cpg_bs <- all_plp %>%
   pull(Kids_First_Biospecimen_ID)
 
 # Append CPG PLP status and survival and TMB data to `hist`
-hist <- hist |>
+hist <- hist %>%
   mutate(cpgPLP_status = case_when(
     Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
     !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "no_cpgPLP"
   ))
 
 hist <- hist %>%
-  dplyr::select(-OS_days, -PFS_days) %>%
-  left_join(hist_base[,c("Kids_First_Participant_ID", "OS_days", "EFS_days")]) %>%
+#  dplyr::select(-OS_days, -PFS_days) %>%
+#  left_join(hist_base[,c("Kids_First_Participant_ID", "OS_days", "EFS_days")]) %>%
   dplyr::mutate(OS_years = as.numeric(OS_days)/365.25,
                 EFS_years = as.numeric(EFS_days)/365.25) %>%
   distinct()
@@ -114,53 +114,70 @@ hist <- hist %>%
 Obtain count and median statistics on demographic and clinical data for patients with and without germline CPG PLP variants
   
 ```{r}
-  freq <- hist %>%
-    count(cpgPLP_status) %>%
-    mutate(`Percent Cohort` = round(n/nrow(hist)*100, 2)) %>%
-    rename("Number Cohort" = "n")
+freq <- hist %>%
+  count(cpgPLP_status) %>%
+  dplyr::mutate(`Percent Cohort` = round(n/nrow(hist)*100, 2)) %>%
+  rename("Number Cohort" = "n") %>%
+  dplyr::mutate(`Number Cohort` = glue::glue("{`Number Cohort`} ({`Percent Cohort`}%)")) %>%
+  dplyr::select(-`Percent Cohort`) %>%
+  column_to_rownames("cpgPLP_status") %>%
+  t() %>%
+  as.data.frame()
+
+sex <- hist %>%
+  count(cpgPLP_status, germline_sex_estimate) %>%
+  spread(germline_sex_estimate, n)
+
+race <- hist %>%
+  count(cpgPLP_status, race) %>%
+  spread(race, n) %>%
+  select(-cpgPLP_status)
+
+ancestry <- hist %>%
+  count(cpgPLP_status, predicted_ancestry) %>%
+  spread(predicted_ancestry, n) %>%
+  select(-cpgPLP_status)
+
+ethnicity <- hist %>%
+  count(cpgPLP_status, ethnicity) %>%
+  spread(ethnicity, n) %>%
+  select(-cpgPLP_status)
+
+group <- hist %>%
+  count(cpgPLP_status, plot_group) %>%
+  spread(plot_group, n) %>%
+  select(-cpgPLP_status)
+
+demo_path <- sex %>%
+  bind_cols(race, ethnicity, ancestry, group) %>%
+  column_to_rownames("cpgPLP_status") %>%
+  t() %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_cpgPLP = round(cpgPLP/sum(hist$cpgPLP_status == "cpgPLP")*100, 1),
+                perc_no_cpgPLP = round(no_cpgPLP/sum(hist$cpgPLP_status == "no_cpgPLP")*100, 1)) %>%
+  dplyr::mutate(cpgPLP = glue::glue("{cpgPLP} ({perc_cpgPLP}%)"),
+                no_cpgPLP = glue::glue("{no_cpgPLP} ({perc_no_cpgPLP}%)")) %>%
+  dplyr::select(-perc_cpgPLP, -perc_no_cpgPLP) %>%
+  dplyr::mutate(cpgPLP = case_when(
+    grepl("NA", cpgPLP) ~ "0 (0%)",
+    TRUE ~ cpgPLP
+  ))
   
-  sex <- hist %>%
-    count(cpgPLP_status, germline_sex_estimate) %>%
-    spread(germline_sex_estimate, n) %>%
-    select(-cpgPLP_status)
-  
-  race <- hist %>%
-    count(cpgPLP_status, race) %>%
-    spread(race, n) %>%
-    select(-cpgPLP_status)
-  
-  ancestry <- hist %>%
-    count(cpgPLP_status, predicted_ancestry) %>%
-    spread(predicted_ancestry, n) %>%
-    select(-cpgPLP_status)
-  
-  ethnicity <- hist %>%
-    count(cpgPLP_status, ethnicity) %>%
-    spread(ethnicity, n) %>%
-    select(-cpgPLP_status)
-  
-  group <- hist %>%
-    count(cpgPLP_status, plot_group) %>%
-    spread(plot_group, n) %>%
-    select(-cpgPLP_status)
-  
-  clin <- hist %>%
-    group_by(cpgPLP_status) %>%
-    summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
-              median_os_years = round(median(OS_years, na.rm = T), 2),
-              median_efs_years = round(median(EFS_years, na.rm = T), 2),
-              median_tmb = round(median(tmb, na.rm = T), 2)) %>%
-    select(-cpgPLP_status)
+
+clin <- hist %>%
+  group_by(cpgPLP_status) %>%
+  summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
+            median_os_years = round(median(OS_years, na.rm = T), 2),
+            median_efs_years = round(median(EFS_years, na.rm = T), 2),
+            median_tmb = round(median(tmb, na.rm = T), 2)) %>%
+  column_to_rownames("cpgPLP_status") %>%
+  t() %>%
+  as.data.frame() %>%
+  dplyr::mutate(cpgPLP = as.character(cpgPLP),
+                no_cpgPLP = as.character(no_cpgPLP))
 
 stats <- freq %>%
-    bind_cols(sex, race, ancestry, ethnicity, group, clin) %>%
-    column_to_rownames("cpgPLP_status") %>%
-    t() %>%
-    as.data.frame() %>%
-    mutate(cpgPLP = case_when(
-      is.na(cpgPLP) ~ 0,
-      !is.na(cpgPLP) ~ cpgPLP
-    )) %>%
+  bind_rows(demo_path, clin) %>%
   rownames_to_column("Term")
 
 write_tsv(stats, 
@@ -207,8 +224,10 @@ Obtain same summary statistics for each histology group
 
 
 ```{r}
-stats_list <- list()
+groups <- unique(hist$plot_group)
+groups <- groups[groups != "Other CNS embryonal tumor"]
 
+stats_list <- list()
 
 for (group in groups) {
   
@@ -225,21 +244,17 @@ for (group in groups) {
   
   freq <- group_hist %>%
     count(cpgPLP_status) %>%
-    mutate(`Percent Cohort` = round(n/nrow(group_hist)*100, 2)) %>%
-    rename("Number Cohort" = "n")
-  
-  clin <- group_hist %>%
-    group_by(cpgPLP_status) %>%
-    summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
-              median_os_years = round(median(OS_years, na.rm = T), 2),
-              median_efs_years = round(median(EFS_years, na.rm = T), 2),
-              median_tmb = round(median(tmb, na.rm = T), 2)) %>%
-    select(-cpgPLP_status)
-  
+    dplyr::mutate(`Percent Cohort` = round(n/nrow(group_hist)*100, 2)) %>%
+    rename("Number Cohort" = "n") %>%
+    dplyr::mutate(`Number Cohort` = glue::glue("{`Number Cohort`} ({`Percent Cohort`}%)")) %>%
+    dplyr::select(-`Percent Cohort`) %>%
+    column_to_rownames("cpgPLP_status") %>%
+    t() %>%
+    as.data.frame()
+
   sex <- group_hist %>%
     count(cpgPLP_status, germline_sex_estimate) %>%
-    spread(germline_sex_estimate, n) %>%
-    select(-cpgPLP_status)
+    spread(germline_sex_estimate, n)
   
   race <- group_hist %>%
     count(cpgPLP_status, race) %>%
@@ -255,16 +270,38 @@ for (group in groups) {
     count(cpgPLP_status, ethnicity) %>%
     spread(ethnicity, n) %>%
     select(-cpgPLP_status)
-
-  stats_list[[group]] <- freq %>%
-    bind_cols(sex, race, ancestry, ethnicity, clin) %>%
+ 
+  demo_path <- sex %>%
+    bind_cols(race, ethnicity, ancestry) %>%
     column_to_rownames("cpgPLP_status") %>%
     t() %>%
     as.data.frame() %>%
-    mutate(cpgPLP = case_when(
-      is.na(cpgPLP) ~ 0,
-      !is.na(cpgPLP) ~ cpgPLP
+    dplyr::mutate(perc_cpgPLP = round(cpgPLP/sum(group_hist$cpgPLP_status == "cpgPLP")*100, 1),
+                  perc_no_cpgPLP = round(no_cpgPLP/sum(group_hist$cpgPLP_status == "no_cpgPLP")*100, 1)) %>%
+    dplyr::mutate(cpgPLP = glue::glue("{cpgPLP} ({perc_cpgPLP}%)"),
+                  no_cpgPLP = glue::glue("{no_cpgPLP} ({perc_no_cpgPLP}%)")) %>%
+    dplyr::select(-perc_cpgPLP, -perc_no_cpgPLP) %>%
+    dplyr::mutate(cpgPLP = case_when(
+      grepl("NA", cpgPLP) ~ "0 (0%)",
+      TRUE ~ cpgPLP
     ))
+    
+  
+  clin <- group_hist %>%
+    group_by(cpgPLP_status) %>%
+    summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
+              median_os_years = round(median(OS_years, na.rm = T), 2),
+              median_efs_years = round(median(EFS_years, na.rm = T), 2),
+              median_tmb = round(median(tmb, na.rm = T), 2)) %>%
+    column_to_rownames("cpgPLP_status") %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(cpgPLP = as.character(cpgPLP),
+                  no_cpgPLP = as.character(no_cpgPLP))
+  
+  stats_list[[group]] <- freq %>%
+    bind_rows(demo_path, clin)
+
 }
 
 write.xlsx(stats_list,
