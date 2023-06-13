@@ -45,12 +45,12 @@ source(file.path(analysis_dir, "util", "survival_models.R"))
 
 Set metadata path
 ```{r set paths}
-cbtn_histologies_file <- file.path(input_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
+histologies_file <- file.path(input_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 ```
 
 Read in metadata
 ```{r}
-hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
+hist <- read_tsv(histologies_file) %>%
   dplyr::mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25)
 ```
@@ -101,7 +101,7 @@ for (group in groups){
   )
   
   # Subset histology
-  group_hist <- hist_cbtn %>%
+  group_hist <- hist %>%
     filter(grepl(group, plot_group))
   
   if (group == "DIPG or DMG|Other high-grade glioma"){
@@ -146,12 +146,12 @@ for (group in groups){
   }
 
   # generate coxph models (including appropriate covariates) and save
-  add_model_os <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|classified", group_hist$mol_sub_group),],
+  add_model_os <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                         ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
-                                                            "Ependymoma", "Medulloblastoma", "Mesenchymal tumor", "Mixed neuronal-glial tumor"),
+                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
                                                             "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
                                                             "age_at_diagnosis_years+cpgPLP_status"
                                   )),
@@ -161,12 +161,12 @@ for (group in groups){
              status_col = "OS_status"
             )
   
-  add_model_efs <- fit_save_model(group_hist[!grepl("EPN, H3 K28|CNS|classified", group_hist$mol_sub_group),],
+  add_model_efs <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                         ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
-                                                            "Ependymoma", "Medulloblastoma", "Mesenchymal tumor", "Mixed neuronal-glial tumor"),
+                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
                                                             "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
                                                             "age_at_diagnosis_years+cpgPLP_status"
                                   )),
@@ -226,7 +226,7 @@ for (j in 1:nrow(subtype_df)) {
   
   
   # Subset metadata for histology subtype
-  subtype_hist <- hist_cbtn %>%
+  subtype_hist <- hist %>%
     filter(grepl(subtype_df$hist[j], plot_group) & grepl(subtype_df$subtype[j], mol_sub_group))
   
   
