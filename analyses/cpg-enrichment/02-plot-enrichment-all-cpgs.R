@@ -22,17 +22,17 @@ setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "cpg-enrichment")
-input_dir <- file.path(analysis_dir, "results")
+input_dir <- file.path(analysis_dir, "input")
 plot_dir <- file.path(analysis_dir, "plots")
 
 source(file.path(root_dir, "figures", "theme.R"))
 
-cpg_enr_file <- file.path(input_dir, "cpg-enrichment.tsv")
-
+cpg_enr_file <- file.path(input_dir, "PBTA-all-CPG-PLP-enrichment.tsv")
 
 cpg_enr <- read_tsv(cpg_enr_file) %>%
+  dplyr::filter(cohort != "PMBB_noCancer") %>%
   dplyr::mutate(cohort = fct_relevel(cohort, 
-                                     c("gnomAD", "PMBB_noTumor", "PMBB_noCancer", "PBTA")))
+                                     c("gnomAD", "PMBB_noTumor", "PBTA")))
 
 
 
@@ -52,14 +52,14 @@ pval_plot <- cpg_enr %>%
 # Create CPG Odds Ratio plot 
 
 enr_plot <- cpg_enr %>% 
-  ggplot(aes(x = factor(cohort), y = log10(OddsRatio))) +
+  ggplot(aes(x = factor(cohort), y = OddsRatio)) +
   geom_point(size = 3, color = "#00A087FF",
              show.legend = FALSE) + 
-  geom_errorbar(aes(ymin = log10(CI_lower), ymax = log10(CI_upper)), width = 0.2, 
+  geom_errorbar(aes(ymin = CI_lower, ymax = CI_upper), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
   labs(y = "log10-Odds Ratio (95% CI)", x = NULL) + 
   scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                            "PMBB" = "")) +
+                            "PMBB_noTumor" = "")) +
   coord_flip() +
   expand_limits(y=0) +
   theme_Publication() +
@@ -73,15 +73,15 @@ perc_plot <- cpg_enr %>%
   ggplot(aes(x = perc_plp, y = factor(cohort), label = fraction)) +
   geom_bar(stat = "identity", color = "black",
            show.legend = TRUE) + 
-  geom_text(x = 20.2, hjust = 0, size = 4, fontface = 2) +
+  geom_text(x = 22, hjust = 0, size = 4, fontface = 2) +
   labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
   scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
-                            "PMBB" = NULL)) +
+                            "PMBB_noTumor" = NULL)) +
   guides(fill = guide_legend(nrow = 1)) +
   expand_limits(x=2) +
   coord_cartesian(clip = 'off') +
   theme_Publication() +
-  theme(plot.margin = unit(c(2,4,1,1), "lines"))
+  theme(plot.margin = unit(c(2,5,1,1), "lines"))
 
 
 # Merge plots and write to output
