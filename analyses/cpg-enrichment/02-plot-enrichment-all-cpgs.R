@@ -86,7 +86,7 @@ perc_plot <- cpg_enr %>%
 
 # Merge plots and write to output
 
-pdf(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.pdf"),
+pdf(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.tiff"),
      width = 8, height = 2.5)
 
 ggarrange(pval_plot, enr_plot, perc_plot,
