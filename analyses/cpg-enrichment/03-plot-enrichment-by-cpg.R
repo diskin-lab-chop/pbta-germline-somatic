@@ -71,7 +71,7 @@ cpg_enr_pmbb <- cpg_enr_pmbb %>%
   select(Hugo_symbol, count_with_plp_PMBB_noTumor, 
          count_without_plp_PMBB_noTumor, 
          oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
-  mutate(cohort = "PMBB") %>%
+  mutate(cohort = "PMBB_noTumor") %>%
   rename("n_plp" = count_with_plp_PMBB_noTumor, 
          "n_no_plp" = count_without_plp_PMBB_noTumor)
 
@@ -82,7 +82,7 @@ cpg_enr_all <- cpg_enr_pbta %>%
   mutate(perc_plp = n_plp/(n_plp + n_no_plp) * 100,
          fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/")) %>%
   arrange(desc(-log10(pvalue))) %>%
-  mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
+  mutate(cohort = factor(cohort, c("gnomAD", "PMBB_noTumor", "PBTA")),
          Hugo_symbol = factor(Hugo_symbol, unique(Hugo_symbol)))
 
 # pull significnalty enriched CPGs relative to gnomAD and PMBB cohorts, and obtain those common to both sets
@@ -92,7 +92,7 @@ sig_cpgs_gnomad <- cpg_enr_all %>%
   pull(Hugo_symbol)
 
 sig_cpgs_pmbb <- cpg_enr_all %>%
-  filter(cohort == "PMBB" & adjusted_p < 0.05 & adjusted_p > 0) %>%
+  filter(cohort == "PMBB_noTumor" & adjusted_p < 0.05 & adjusted_p > 0) %>%
   pull(Hugo_symbol)
 
 sig_cpgs_both <- intersect(sig_cpgs_gnomad, sig_cpgs_pmbb)
@@ -122,7 +122,7 @@ all_source_cts <- cpg_enr_all %>%
   dplyr::select(Hugo_symbol, cohort, final_call_source, n_plp, n_no_plp, perc_plp) %>%
   bind_rows(pbta_source_cts) %>%
   left_join(cpg_enr_all[,c("Hugo_symbol", "cohort", "fraction")], by = c("Hugo_symbol", "cohort")) %>%
-  mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
+  mutate(cohort = factor(cohort, c("gnomAD", "PMBB_noTumor", "PBTA")),
          Hugo_symbol = factor(Hugo_symbol, unique(cpg_enr_all$Hugo_symbol)))
 
 
@@ -152,7 +152,7 @@ enr_plot <- cpg_enr_all %>%
                 show.legend = FALSE, color = "#00A087FF") +
   labs(y = "log10-Odds Ratio (95% CI)", x = NULL) + 
   scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                            "PMBB" = "")) +
+                            "PMBB_noTumor" = "")) +
   coord_flip() +
   facet_wrap(~Hugo_symbol, nrow = 6, scale = "fixed") +
   expand_limits(y=0) +
@@ -171,7 +171,7 @@ perc_plot <- all_source_cts %>%
   geom_text(x = 2.2, hjust = 0, size = 4, fontface = 2) +
   labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
   scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
-                              "PMBB" = NULL)) +
+                              "PMBB_noTumor" = NULL)) +
   guides(fill = guide_legend(nrow = 1)) +
   facet_wrap(~Hugo_symbol, nrow = 6, scale = "fixed") +
   expand_limits(x=2) +
@@ -230,7 +230,7 @@ hist_cpg_enr_pmbb <- hist_cpg_enr_pmbb %>%
   select(plot_group, Hugo_symbol, count_with_plp_PMBB_noTumor, 
          count_without_plp_PMBB_noTumor, 
          hist_n, oddsRatio, pvalue, CI_lower, CI_upper, adjusted_p) %>%
-  mutate(cohort = "PMBB") %>%
+  mutate(cohort = "PMBB_noTumor") %>%
   rename("n_plp" = count_with_plp_PMBB_noTumor, 
          "n_no_plp" = count_without_plp_PMBB_noTumor)
 
@@ -246,7 +246,7 @@ hist_cpg_enr_all <- hist_cpg_enr_pbta %>%
   mutate(perc_plp = n_plp/(n_plp + n_no_plp) * 100,
          hist_cpg = paste(plot_group, Hugo_symbol, sep = ":"),
          fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/"),
-         cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA"))) %>%
+         cohort = factor(cohort, c("gnomAD", "PMBB_noTumor", "PBTA"))) %>%
   arrange(hist_cpg, desc(-log10(pvalue))) %>%
   mutate(hist_cpg = factor(hist_cpg, unique(hist_cpg)))
 
@@ -257,7 +257,7 @@ sig_hist_cpgs_gnomad <- hist_cpg_enr_all %>%
   pull(hist_cpg)
 
 sig_hist_cpgs_pmbb <- hist_cpg_enr_all %>%
-  filter(cohort == "PMBB" & adjusted_p < 0.05 & adjusted_p > 0) %>%
+  filter(cohort == "PMBB_noTumor" & adjusted_p < 0.05 & adjusted_p > 0) %>%
   pull(hist_cpg)
 
 sig_hist_cpgs_both <- intersect(sig_hist_cpgs_gnomad, sig_hist_cpgs_pmbb)
@@ -308,7 +308,7 @@ all_source_hist_cts <- hist_cpg_enr_all %>%
   mutate(hist_cpg = paste(plot_group, Hugo_symbol, sep = ":")) %>%
   left_join(hist_cpg_enr_all[,c("cohort", "hist_cpg", "fraction")], by = c("cohort", "hist_cpg")) %>%
   distinct(hist_cpg, cohort, final_call_source, .keep_all = T) %>%
-  mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
+  mutate(cohort = factor(cohort, c("gnomAD", "PMBB_noTumor", "PBTA")),
          hist_cpg = factor(hist_cpg, unique(hist_cpg_enr_all$hist_cpg)))
   
 
@@ -341,7 +341,7 @@ hist_enr_plot <- hist_cpg_enr_all %>%
                 show.legend = FALSE, color = "#00A087FF") +
   labs(y = "log10-Odds Ratio (95% CI)", x = NULL) + 
   scale_x_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                            "PMBB" = "")) +
+                            "PMBB_noTumor" = "")) +
   coord_flip() +
   facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "fixed") +
   expand_limits(y=0) +
@@ -361,7 +361,7 @@ hist_perc_plot <- all_source_hist_cts %>%
             fontface = 2) +
   labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
   scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                            "PMBB" = "")) +
+                            "PMBB_noTumor" = "")) +
   guides(fill = guide_legend(nrow = 1)) +
   facet_wrap(~hist_cpg, nrow = length(sig_hist_cpgs_both), scale = "fixed") +
   expand_limits(x=65) +
