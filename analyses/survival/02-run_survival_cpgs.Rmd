@@ -108,9 +108,10 @@ for (group in groups){
     group_hist <- group_hist %>%
        mutate(mol_sub_group = factor(mol_sub_group,
                                       c("HGG, H3 WT",
-                                        "HGG, H3 G35",
+                                        "DHG, H3 G35",
                                         "DMG, H3 K28",
-                                        "HGG, IDH"))) %>%
+                                        "HGG, IDH",
+                                        "IHG"))) %>%
      arrange(mol_sub_group)
     }
   
