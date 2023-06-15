@@ -50,10 +50,10 @@ all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
 km_mmr_output_pdf <- file.path(plots_dir,
-                             glue::glue("MMR_km_survival_all_histologies.pdf"))
+                             glue::glue("MMR_km_survival_hgg.pdf"))
 
 km_brca_output_pdf <- file.path(plots_dir,
-                             glue::glue("BRCA_km_survival_all_histologies.pdf"))
+                             glue::glue("BRCA_km_survival_hgg.pdf"))
 ```
 
 Import data
@@ -100,7 +100,7 @@ Run Kaplain meier tests for survival by MMR germline variant status and plot cur
 ```{r}
 kap_os <- survival_analysis(
   metadata  = hgg_hist,
-  ind_var = "germline_variant",
+  ind_var = "MMR_variant",
   test = "kap.meier",
   metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
   days_col = "OS_days",
@@ -109,7 +109,7 @@ kap_os <- survival_analysis(
 
 kap_efs <- survival_analysis(
   metadata  = hgg_hist,
-  ind_var = "germline_variant",
+  ind_var = "MMR_variant",
   test = "kap.meier",
   metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
   days_col = "EFS_days",
@@ -117,7 +117,7 @@ kap_efs <- survival_analysis(
   )
 
 km_plot <- plotKM(model = list(kap_os, kap_efs),
-                    variable = "germline_variant",
+                    variable = "MMR_variant",
                     combined = T, 
                     title = "HGG")
 
@@ -165,7 +165,7 @@ Write HGG sample histologies with MMR germline variants to output
     
 ```{r}
 mmr_hist <- hgg_hist %>%
-    filter(grepl("MMR PLP", germline_variant)) %>%
+    filter(grepl("MMR PLP", MMR_variant)) %>%
     select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal,
            plot_group, molecular_subtype, mol_sub_group, OS_days, OS_status, EFS_days, EFS_status,
            extent_of_tumor_resection) %>%
