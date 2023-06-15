@@ -43,6 +43,8 @@ Set file paths
 ```{r set paths}
 histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
+base_histologies_file <- file.path(data_dir, "histologies-base.tsv")
+
 all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -57,8 +59,8 @@ hist <- read_tsv(histologies_file)
 all_plp <- read_tsv(all_plp_file)
 
 cpgs <- read_lines(cpg_file)
-multi_cpg <- c(glue::glue("{cpg};"),
-               glue::glue(";{cpg}"))
+multi_cpg <- c(glue::glue("{cpgs};"),
+               glue::glue(";{cpgs}"))
 ```
 
 Consolidate subtypes of HGG, LGG, and GNG into broader subgroups
@@ -89,10 +91,10 @@ Define column `cpgPLP_status` indicating presence or absence of a CPG PLP varian
 ```{r}
 cpg_bs <- all_plp %>%
   filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
-  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  filter(Hugo_Symbol %in% cpgs | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
   dplyr::mutate(Hugo_Symbol = case_when(
     !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
-    TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = "|"))
   )) %>%
   pull(Kids_First_Biospecimen_ID) %>%
   unique()
@@ -107,9 +109,15 @@ hist <- hist %>%
 We will define `EFS_status` as "NO EVENT" if `EFS_event_type` has values "Not Applicable" or "Not Reported", and as "EVENT" in all other cases. 
 
 ```{r}
-# add cohort id from pbta histologies files and format `PFS_days` as numeric
+# add OS data from base histologies file
+hist_base <- read_tsv(base_histologies_file) %>%
+  distinct(Kids_First_Participant_ID, .keep_all = T)
+
 hist <- hist %>%
-  mutate(EFS_days = as.numeric(EFS_days)) %>%
+  dplyr::select(-OS_days, -OS_status) %>%
+  left_join(hist_base[,c("Kids_First_Participant_ID", "OS_days", "OS_status")]) %>%
+  mutate(EFS_days = as.numeric(EFS_days),
+         OS_days = as.numeric(OS_days)) %>%
   mutate(OS_years = OS_days/365.25,
          EFS_years = EFS_days/365.25) %>%
   dplyr::mutate(EFS_status = case_when(
