@@ -12,6 +12,8 @@ date: "2022-2023"
 suppressPackageStartupMessages({
   library(data.table)
   library(tidyverse)
+  library(ComplexHeatmap)
+  library(circlize)
 })
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -134,7 +136,109 @@ for (i in 1:length(repair_gene_source)){
     ggsave(
     file.path(plot_dir, paste0("dna_repair_samples_by_plot_group_", repair_gene_source[i], ".pdf")), 
     width = 24, height = 16, units = "cm")
+    
+    # Add columns indicate presence/absence of DNA repair P-LP variants to histologies file
+    hist_repair <- hist %>%
+      dplyr::mutate(`All Repair` = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(BER = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID[repair_germline$BER == "Yes"] ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(HR = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID[repair_germline$HR == "Yes"] ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(MMR = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID[repair_germline$MMR == "Yes"] ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(NER = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID[repair_germline$NER == "Yes"] ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(NHEJ = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID[repair_germline$NHEJ == "Yes"] ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(Other = case_when(
+        `All Repair` == "Yes" & BER == "No" & HR == "No" & NER == "No" & MMR == "No" & NHEJ == "No" ~ "Yes",
+        TRUE ~ "No"
+      )) %>%
+      dplyr::mutate(plot_group = case_when(
+        plot_group %in% c("DIPG or DMG", "Other high-grade glioma") ~ "High-grade glioma",
+        TRUE ~ plot_group
+      ))
+
+    # Run DNA repair gene P-LP enrichment by histology group and repair pathway
+    
+    groups <- unique(hist_repair$plot_group)
+    groups <- groups[order(groups)]
+    paths <- c("All Repair", "BER", "HR", "MMR", "NER", "NHEJ", "Other")
+    
+    # Define odds Ratios and p-value matrices
+    
+    enr_mat <- matrix(0, length(groups), length(paths),
+                      dimnames = list(groups, paths))
+    pval_mat <- enr_mat
+    
+    # Run Fisher's exact tests by histology and repair pathway
+    for (group in groups) {
+      
+      for (path in paths){
+        
+        in_hist_path <- hist_repair %>%
+          dplyr::filter(plot_group == group & hist_repair[,path] == "Yes") %>%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        in_hist_no_path <- hist_repair %>%
+          dplyr::filter(plot_group == group & hist_repair[,path] == "No") %>%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        no_hist_in_path <- hist_repair %>%
+          dplyr::filter(plot_group != group & hist_repair[,path] == "Yes") %>%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        no_hist_no_path <- hist_repair %>%
+          dplyr::filter(plot_group != group & hist_repair[,path] == "No") %>%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        mat <- matrix(c(length(in_hist_path), length(in_hist_no_path),
+                        length(no_hist_in_path), length(no_hist_no_path)),
+                      2, 2)
+        enr_mat[group, path] <- fisher.test(mat)$estimate
+        pval_mat[group, path] <- fisher.test(mat)$p.value
+      }
+    }
+  
+  # create text matrix of odds ratios and asterisk in cases of statistical significance
+  sig_mat <- ifelse(pval_mat < 0.05 & enr_mat > 1, "*", "")
+  
+  fill_mat <- matrix(glue::glue("{round(enr_mat, 2)} {sig_mat}"), 
+                     length(groups), length(paths))
+  
+  # Plot enrichment heatmap
+  
+  col_fun = colorRamp2(c(0, 6), c("white", "red"))
+  
+  tiff(file.path(plot_dir, paste0("dna_repair_enr_by_plot_group_", repair_gene_source[i], ".tiff")),
+        width = 7, height = 6, units = "in", res = 300)
+  
+  enr_heatmap <- Heatmap(enr_mat,
+                         name = "Odds ratio",
+                         cluster_rows = F,
+                         cluster_columns = F,
+                         rect_gp = gpar(col = "black", lwd = 2),
+                         col = col_fun,
+                         cell_fun = function(j, i, x, y, width, height, fill) {
+                         grid.text(sprintf("%s", fill_mat[i, j]), x, y, gp = gpar(fontsize = 10))
+                 })
+  
+  print(enr_heatmap)
+
+  dev.off()
+
 }
 ```
-
-
