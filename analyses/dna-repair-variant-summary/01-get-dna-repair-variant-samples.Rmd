@@ -216,15 +216,15 @@ for (i in 1:length(repair_gene_source)){
   # create text matrix of odds ratios and asterisk in cases of statistical significance
   sig_mat <- ifelse(pval_mat < 0.05 & enr_mat > 1, "*", "")
   
-  fill_mat <- matrix(glue::glue("{round(enr_mat, 2)} {sig_mat}"), 
+  fill_mat <- matrix(glue::glue("{round(enr_mat, 1)} {sig_mat}"), 
                      length(groups), length(paths))
   
   # Plot enrichment heatmap
   
   col_fun = colorRamp2(c(0, 6), c("white", "red"))
   
-  tiff(file.path(plot_dir, paste0("dna_repair_enr_by_plot_group_", repair_gene_source[i], ".tiff")),
-        width = 7, height = 6, units = "in", res = 300)
+  pdf(file.path(plot_dir, paste0("dna_repair_enr_by_plot_group_", repair_gene_source[i], ".pdf")),
+        width = 6, height = 6)
   
   enr_heatmap <- Heatmap(enr_mat,
                          name = "Odds ratio",
