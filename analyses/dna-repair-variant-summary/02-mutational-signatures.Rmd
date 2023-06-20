@@ -16,6 +16,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(ggplot2)
   library(ggsci)
+  library(ggpubr)
 })
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -332,8 +333,24 @@ for (i in 1:length(cosmic_files)){
         mutate(germline_variant = factor(germline_variant)) %>% 
         mutate(germline_variant = fct_relevel(germline_variant,
                                               c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
-               ) %>%
-        
+               )
+      
+      
+      data_summary <- function(x) {
+         m <- mean(x)
+         ymin <- m-sd(x)
+         ymax <- m+sd(x)
+         return(c(y=m,ymin=ymin,ymax=ymax))
+      }
+      
+      comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"), 
+                          c("MMR", "Non-repair"))
+      
+      comparisons_brca <- list(c("BRCA/interacting", "MMR"), c("BRCA/interacting", "Other repair"), 
+                          c("BRCA/interacting", "Non-repair"))
+      
+              
+      sbs_df %>%
         # generate violin plot and save 
         ggplot(aes(x = germline_variant, y = exposure, fill = germline_variant)) +
           geom_violin(binaxis = "y", stackdir = "center") +
@@ -346,7 +363,10 @@ for (i in 1:length(cosmic_files)){
                                       paste0("BRCA/interacting\n (n=", length(brca_ids), ")"),
                                       paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
                                       paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
-          scale_fill_npg()
+          scale_fill_npg() +
+          stat_summary(fun.data=data_summary,
+                show.legend = F) + 
+          stat_compare_means(comparisons = comparisons_mmr, size = 3)
           
         ggsave(
           file.path(plot_dir, paste0(plot_sigs[k], "_signature_byGroup_", cosmic_ids[i], "_violinPlot.tiff")), 
@@ -383,7 +403,10 @@ for (i in 1:length(cosmic_files)){
                                       paste0("BRCA/interacting\n (n=", length(brca_ids), ")"), 
                                       paste0("Other repair\n (n=", length(otherRepair_ids), ")"), 
                                       paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
-          scale_fill_npg()
+          scale_fill_npg() +
+          stat_summary(fun.data=data_summary,
+                show.legend = F) + 
+          stat_compare_means(comparisons = comparisons_mmr)
           
         ggsave(
           file.path(plot_dir, paste0("mmr_signature_byGroup_", cosmic_ids[i], "_violinPlot.tiff")), 
