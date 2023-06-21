@@ -376,7 +376,20 @@ for (i in 1:length(repair_gene_source)){
       mutate(germline_variant = factor(germline_variant)) %>% 
       mutate(germline_variant = fct_relevel(germline_variant,
                                             c("MMR", "BRCA/interacting", "Non-repair"))
-             ) %>%
+             )
+    
+    data_summary <- function(x) {
+       m <- mean(x)
+       ymin <- m-sd(x)
+       ymax <- m+sd(x)
+       return(c(y=m,ymin=ymin,ymax=ymax))
+    }
+
+    comparisons <- list(c("MMR", "BRCA/interacting"), c("MMR", "Non-repair"),
+                        c("BRCA/interacting", "Non-repair"))
+
+    
+    score_df %>%
       
       # generate violin plot and save
       ggplot(aes(x = germline_variant, y = mean_gsea_score, fill = germline_variant)) +
@@ -393,7 +406,10 @@ for (i in 1:length(repair_gene_source)){
         scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
                                     paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
                                     paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
-        scale_fill_npg()
+        scale_fill_npg() +
+        stat_summary(fun.data=data_summary,
+                show.legend = F) + 
+        stat_compare_means(comparisons = comparisons, size = 3)
         
       ggsave(
         file.path(plot_dir, paste0(pathways[j], "_gsea_score_byGroup_violinPlot.tiff")), 
@@ -508,7 +524,20 @@ for (i in 1:length(repair_gene_source)){
         TRUE ~ "Non-repair"
       )) %>%
       mutate(germline_variant = factor(germline_variant,
-                                       c("MMR", "BRCA/interacting", "Non-repair"))) %>% 
+                                       c("MMR", "BRCA/interacting", "Non-repair")))
+    
+    data_summary <- function(x) {
+       m <- mean(x)
+       ymin <- m-sd(x)
+       ymax <- m+sd(x)
+       return(c(y=m,ymin=ymin,ymax=ymax))
+    }
+
+    comparisons <- list(c("MMR", "BRCA/interacting"), c("MMR", "Non-repair"),
+                        c("BRCA/interacting", "Non-repair"))
+
+    
+    score_df %>%
 
       # generate violin plot and save
       ggplot(aes(x = germline_variant, y = mean_gsea_score, fill = germline_variant)) +
@@ -525,7 +554,10 @@ for (i in 1:length(repair_gene_source)){
         scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
                                     paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
                                     paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
-        scale_fill_npg()
+        scale_fill_npg() +
+        stat_summary(fun.data=data_summary,
+                show.legend = F) + 
+        stat_compare_means(comparisons = comparisons, size = 3)
         
       ggsave(
         file.path(plot_dir, paste0(pathways[j], "_gsea_score_byGroup_violinPlot.tiff")), 
