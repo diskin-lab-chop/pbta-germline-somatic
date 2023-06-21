@@ -1,0 +1,207 @@
+---
+title: "Explore germline variant distributions"
+output: html_notebook
+author: Jo Lynne Rokita
+date: 2023
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "variant-distribution")
+input_dir <- file.path(analysis_dir, "input")
+plot_dir <- file.path(analysis_dir, "plots/")
+results_dir <- file.path(analysis_dir, "results")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+if (!dir.exists(plot_dir)) {
+  dir.create(plot_dir, recursive = TRUE)
+}
+```
+
+# Load files
+```{r load figure theme, files}
+# source publication theme
+source(file.path(root_dir, "figures", "theme.R"))
+
+# read in cpg and driver lists
+cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
+multi_cpg <- c(glue::glue("{cpg};"),
+               glue::glue(";{cpg}"))
+
+embryonal_genes <- read_lines(file.path(input_dir, "embryonal-tumor_goi_list.tsv"))
+hgg_genes <- read_lines(file.path(input_dir, "hgat_goi_list.tsv"))
+lgg_genes <- read_lines(file.path(input_dir, "lgat_goi_list.tsv"))
+other_genes <- read_lines(file.path(input_dir, "other_goi_list.tsv"))
+
+# cat somatic lists
+somatic_drivers <- unique(c(embryonal_genes, hgg_genes, lgg_genes, other_genes))
+#somatic_not_cpg <- setdiff(somatic_drivers, cpg)
+
+# read in histology file
+hist <- read_tsv(file.path(root_dir, 
+                           "analyses", 
+                           "collapse-tumor-histologies", 
+                           "results",
+                           "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"), show_col_types = FALSE)
+```
+
+
+# Merge clin with germline plp file
+
+```{r data wrangling}
+plp <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv"), show_col_types = FALSE) %>%
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
+  # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
+  select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol) %>%
+  unique()
+
+# how many CPG have P/LP?
+plp_cpg <- plp %>%
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+  )) 
+
+length(unique(plp_cpg$Hugo_Symbol))
+
+# how many somatic drivers have P/LP?
+plp_somatic <- plp %>%
+  filter(Hugo_Symbol %in% somatic_drivers)
+
+length(unique(plp_somatic$Hugo_Symbol))
+
+# how many somatic drivers which are not CPG have P/LP?
+# plp_som_not_cpg <- plp %>%
+#   filter(Hugo_Symbol %in% somatic_not_cpg) %>%
+#   left_join(hist) %>%
+#   write_tsv(file.path(results_dir, "plp-variants-in-somatic-drivers-not-cpg.tsv"))
+
+plp_som_not_cpg <- plp %>%
+  filter(Hugo_Symbol %in% plp_somatic$Hugo_Symbol & !Hugo_Symbol %in% plp_cpg$Hugo_Symbol) %>%
+  left_join(hist) %>%
+  write_tsv(file.path(results_dir, "plp-variants-in-somatic-drivers-not-cpg.tsv"))
+  
+length(unique(plp_som_not_cpg$Hugo_Symbol))
+sort(unique(plp_som_not_cpg$Hugo_Symbol))
+
+```
+
+# Create plots
+
+```{r}
+plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not_cpg" = plp_som_not_cpg)
+
+for (each in names(genelists)){
+  
+  # add titles to print
+  if (each == "cpg"){
+    x_axis_title <- "Cancer predisposition gene (CPG)"
+    fig_width <- 4200
+  }
+  if (each == "somatic_drivers"){
+    x_axis_title <- "CPG or somatic driver gene"
+    fig_width <- 4000
+  }  
+  if (each == "somatic_not_cpg"){
+    x_axis_title <- "Somatic driver gene"
+    fig_width <- 2000
+  }
+  
+  plot_df <- plplists[[each]] %>%
+    left_join(hist) 
+
+  # get N per histology per gene
+  n_per_hist <- plot_df %>%
+    count(Hugo_Symbol, plot_group) %>%
+    dplyr::rename(hist_n = n)
+
+  # create N per gene desc order for plot
+  n_per_gene <- plot_df %>%
+    left_join(hist) %>%
+    count(Hugo_Symbol) %>%
+    dplyr::rename(gene_n = n) %>%
+    arrange(desc(gene_n)) %>%
+    # create plot order desc by gene
+    mutate(plot_order = row_number()) %>%
+    # add back histology info
+    left_join(n_per_hist) %>%
+    left_join(plot_df[,c("plot_group", "plot_group_hex")]) %>%
+    distinct()
+
+  # palette
+  plot_group_palette <- n_per_gene$plot_group_hex
+  names(plot_group_palette) <- n_per_gene$plot_group
+
+
+dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill = plot_group)) +
+  geom_col(col = "black", size = 0.4) +
+  scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
+  ylab("Number of patients with P/LP variants") +
+  xlab(x_axis_title) +
+  theme_Publication() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ylim(0,20) +
+  labs(fill = "Tumor diagnosis")
+
+print(dist_plot)
+
+dev.set(dev.next())
+tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-histology.tiff")), height = 1800, width = fig_width, res = 300)
+print(dist_plot)
+dev.off()
+
+## make cpg plot excluding FGFR1 for R03 grant
+if (each == "cpg") {
+  
+  dist_plot <- ggplot(data = n_per_gene[n_per_gene$Hugo_Symbol != "FGFR1",], aes(x = reorder(Hugo_Symbol, plot_order), y = hist_n, fill =    plot_group)) +
+  geom_col(col = "black", size = 0.4) +
+  scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
+  ylab("Number of patients with P/LP variants") +
+  xlab(x_axis_title) +
+  theme_Publication() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ylim(0,20) +
+  labs(fill = "Tumor diagnosis")
+  print(dist_plot)
+  
+  dev.set(dev.next())
+  tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-histology_R03.tiff")), height = 1800, width = fig_width, res = 300)
+  print(dist_plot)
+  dev.off()
+  
+}
+
+
+}
+
+```
+
+# print session info
+```{r session info}
+sessionInfo()
+```
+
+
+
+
+
+
+

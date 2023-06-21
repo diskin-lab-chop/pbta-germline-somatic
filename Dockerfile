@@ -44,10 +44,10 @@ RUN apt-get -y --no-install-recommends install \
 # install R packages from CRAN
 RUN install2.r \
 	BiocManager \
-  ComplexHeatmap \
   data.table \
   ggpubr \
   ggthemes \
+  msigdbr \
 	optparse \
 	pheatmap \
 	RColorBrewer \
@@ -55,13 +55,22 @@ RUN install2.r \
   survMisc \
   survminer \
   tidytext
+  
+  
+# install R packages from Bioconductor 
+RUN ./install_bioc.r \
+  ComplexHeatmap \
+  GSVA 
 
-	
 # install R packages from GitHub
 
 # Maftools
 RUN ./install_github.r \
 	PoisonAlien/maftools
+	
+RUN ./install_github.r \
+	clauswilke/colorblindr
+
 
 # Patchwork for plot compositions
 RUN ./install_github.r  'thomasp85/patchwork' --ref 'c67c6603ba59dd46899f17197f9858bc5672e9f4'
@@ -69,6 +78,7 @@ RUN ./install_github.r  'thomasp85/patchwork' --ref 'c67c6603ba59dd46899f17197f9
 
 
 # Install pip3 and python reqs for oncokb
+RUN apt-get update
 RUN apt-get -y --no-install-recommends install \
     python3-pip python3-dev
 RUN pip3 install \

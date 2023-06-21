@@ -16,7 +16,7 @@ if (!dir.exists(results_dir)) {
 }
 
 # load v11_plus OpenPedCan histologies file + additional samples
-v11_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000) %>%
+v12_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000) %>%
   filter(cohort == "PBTA") %>%
   # update choroid plexus from benign to tumor category
   mutate(broad_histology = case_when(pathology_diagnosis == "Choroid plexus papilloma" ~ "Choroid plexus tumor",
@@ -41,6 +41,8 @@ v11_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000)
                                      # move oligo II to LGG
                                      pathology_free_text_diagnosis == "oligodendroglioma who ii" ~ "Low-grade astrocytic tumor",
                                      pathology_diagnosis == "Oligodendroglioma" ~ "Low-grade astrocytic tumor",
+                                     # neuronal glial NOS to mixed neuronal-glial tumor
+                                     pathology_diagnosis == "Glial-neuronal tumor NOS" ~ "Neuronal and mixed neuronal-glial tumor",
                                      TRUE ~ as.character(broad_histology)),
          # update cancer_group to NA if non-tumor
          cancer_group = case_when(broad_histology %in% c("Non-tumor", "Benign Tumor") ~ NA_character_,
@@ -57,13 +59,13 @@ v11_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000)
                                   # pineoblastoma
                                   pathology_free_text_diagnosis == "pnet - pineoblastoma with calcification" ~ "Pineoblastoma",
                                   TRUE ~ as.character(cancer_group)),
-
+         
   )
-                                     
-  
+
+
 
 # pull cell line info for PT_C2D4JXS1, which has no tumor WGS
-BS_AFBPM6CN <- v11_hist %>%
+BS_AFBPM6CN <- v12_hist %>%
   filter(Kids_First_Biospecimen_ID == "BS_AFBPM6CN") %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID)
 
@@ -74,25 +76,25 @@ germline_ids <- read_lines(file.path(input_dir, "samples_of_interest.txt"))
 tumor_ids <- read_tsv(file.path(data_dir, "independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv")) %>%
   bind_rows(BS_AFBPM6CN) %>%
   select(Kids_First_Biospecimen_ID) %>%
-  inner_join(v11_hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID", "sample_id", "tumor_descriptor", "pathology_diagnosis", "pathology_free_text_diagnosis", "cancer_group", "broad_histology", "molecular_subtype")]) %>%
-dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
-              sample_id_tumor = sample_id)
+  inner_join(v12_hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID", "sample_id", "tumor_descriptor", "pathology_diagnosis", "pathology_free_text_diagnosis", "cancer_group", "broad_histology", "molecular_subtype")]) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
+                sample_id_tumor = sample_id)
 
 # gather additional germline metadata
-germline_ids_meta <- v11_hist %>%
+germline_ids_meta <- v12_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 sample_id_normal =  sample_id) %>%
   dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, germline_sex_estimate) %>%
   distinct()
 
-path_dx <- v11_hist %>%
+path_dx <- v12_hist %>%
   filter(!is.na(pathology_diagnosis),
          cohort == "PBTA") %>%
   select(Kids_First_Biospecimen_ID, pathology_diagnosis, pathology_free_text_diagnosis) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID) %>%
   unique() 
-  
+
 # combine germline + tumor ids
 combined <- germline_ids_meta %>%
   left_join(tumor_ids) %>%
@@ -125,19 +127,26 @@ plot_groups <- combined_map %>%
 
 
 # finally, add relevant clinical information to new histologies and plot group file
-tumor_clin_meta <- v11_hist %>%
+tumor_clin_meta <- v12_hist %>%
   filter(Kids_First_Biospecimen_ID %in% tumor_ids$Kids_First_Biospecimen_ID_tumor) %>%
-  select(sample_id, tumor_descriptor, race, ethnicity, cancer_predispositions, age_at_diagnosis_days, age_last_update_days, PFS_days, OS_days, OS_status, 
+  select(sample_id, tumor_descriptor, race, ethnicity, cancer_predispositions, age_at_diagnosis_days, age_last_update_days, OS_days, OS_status, 
          extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
   dplyr::rename(sample_id_tumor = sample_id)
-  
-ancestry <- read_tsv(file.path(input_dir, "CBTN_PNOC.somalier-ancestry.tsv")) %>%
-  filter(grepl("BS", `#sample_id`)) %>%
+
+# Most recent event-free survival (EFS) data must be pulled from base histologies file
+hist_base <- read_tsv(file.path(data_dir, "histologies-base.tsv"),
+                      guess_max = 100000) %>%
+  distinct(Kids_First_Participant_ID, .keep_all = T)
+
+# Add ancestry prediction results from Somalier
+ancestry <- read_tsv(file.path(input_dir, "DEI_CBTN-PNOC_rerun.somalier-ancestry.tsv")) %>%
   rename(Kids_First_Biospecimen_ID_normal = `#sample_id`)
 
+# Create final histologies file and write to output
 final_hist <- combined_map %>%
   left_join(tumor_clin_meta) %>%
-  left_join(ancestry[,c("Kids_First_Biospecimen_ID_normal", "predicted_ancestry")], by = "Kids_First_Biospecimen_ID_normal") %>%
+  left_join(hist_base[,c("Kids_First_Participant_ID", "EFS_days", "EFS_event_type")]) %>%
+  left_join(ancestry[,c("Kids_First_Biospecimen_ID_normal", "predicted_ancestry", "PC1", "PC2", "PC3", "PC4", "PC5")]) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
 
 
