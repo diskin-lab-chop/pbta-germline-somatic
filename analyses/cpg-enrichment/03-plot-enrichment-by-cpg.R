@@ -187,7 +187,7 @@ perc_plot <- all_source_cts %>%
 
 # Merge plots and write to output
 
-tiff(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.tiff"),
+tiff(file.path(plot_dir, "sig-gene-plp-enrichment-PBTA-vs-control.tiff"),
      width = 10, height = 10, units = "in", res = 300)
 
 ggarrange(pval_plot, enr_plot, perc_plot,
