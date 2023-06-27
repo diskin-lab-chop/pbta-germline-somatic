@@ -24,8 +24,8 @@ Diffuse astrocytic and oligodendroglial tumor	Diffuse midline glioma	High-grade 
 Diffuse astrocytic and oligodendroglial tumor	Gliosarcoma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5       	3	High-grade glioma
 Diffuse astrocytic and oligodendroglial tumor	High-grade glioma/astrocytoma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5       	3	High-grade glioma
 Diffuse astrocytic and oligodendroglial tumor	High-grade glioma	High-grade glioma	Other high-grade glioma	#ff80e5	Other HGG	#ffccf5       	3	High-grade glioma
-Diffuse astrocytic and oligodendroglial tumor	Infant-type hemispheric glioma	High-grade glioma	DIPG or DMG	#ff80e5	IHG	#ff40d9       	3	High-grade glioma
-Diffuse astrocytic and oligodendroglial tumor	Diffuse hemispheric glioma	High-grade glioma	DIPG or DMG	#ff80e5	DHG	#ff40d9       	3	High-grade glioma
+Diffuse astrocytic and oligodendroglial tumor	Infant-type hemispheric glioma	High-grade glioma	Other high-grade glioma	#ff80e5	IHG	#ffccf5       	3	High-grade glioma
+Diffuse astrocytic and oligodendroglial tumor	Diffuse hemispheric glioma	High-grade glioma	Other high-grade glioma	#ff80e5	DHG	#ffccf5       	3	High-grade glioma
 Ependymal tumor	Ependymoma	Ependymoma	Ependymoma	#2200ff	EPN	#2200ff	4	Ependymoma
 Embryonal tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	Atypical Teratoid Rhabdoid Tumor	#220040	ATRT	#4d0d85        	5	Embryonal tumor
 Embryonal tumor	Medulloblastoma	Embryonal tumor	Medulloblastoma	#220040	MB	#a340ff       	5	Embryonal tumor
