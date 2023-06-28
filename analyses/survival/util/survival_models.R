@@ -1,6 +1,6 @@
 # Functions for conducting survival analyses
 #
-# C. Savonen and SJ Spielman for ALSF - CCDL, Ryan Corbett for D3b
+# C. Savonen and SJ Spielman for ALSF - CCDL
 #
 # 2019, 2022
 #
