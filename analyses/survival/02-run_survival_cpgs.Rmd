@@ -71,13 +71,20 @@ groups <- c("Atypical Teratoid Rhabdoid Tumor",
             )
 
 # create names vector for output files
-plot_names <- c("atrt", "cpt", "cranio", "hgg", "epn", "lgg", "mb", "mng", "mes", "gng_gnt", "nfp")
+plot_names <- c("ATRT", "CPT", "CRANIO", "HGG", "EPN", "LGG", "MB", "MNG", "MES", "GNG-GNT", "NFP")
 names(plot_names) <- groups
 ```
 
 Loop through groups and create Kaplan Meier survival and Cox Proportional Hazard models for overall and event-free survival
 ```{r}
 for (group in groups){
+  
+  results_dir <- file.path(analysis_dir, "results", plot_names[group])
+    
+  if (!dir.exists(results_dir)) {
+      dir.create(results_dir)
+      
+    }
   
   # Define output model files
   km_os_model_file <- file.path(results_dir, 
@@ -185,50 +192,56 @@ Loop through subtypes with sufficient sample size and build KM and coxph surviva
 
 ```{r}
 # define subtype df with histology, subtype, and file names
-subtype_df <- data.frame(hist = c("Craniopharyngioma",
-                                  "Ependymoma",
-                                  rep("DIPG or DMG|Other high-grade glioma", 2),
-                                  "Mixed neuronal-glial tumor",
-                                  rep("Low-grade glioma", 3),
-                                  rep("Medulloblastoma", 3)),
-                         names = c("cranio",
-                                  "epn",
-                                  rep("hgg", 2),
-                                  "gng_gnt",
-                                  rep("lgg", 3),
-                                  rep("mb", 3)),
-                         subtype = c("ADAM", "PF A", "K28", "WT",
-                                     "Other", "BRAF", "Other", "WT", 
-                                     "Group3", "Group4", "SHH"))
+subtypes <- hist %>%
+  count(mol_sub_group, plot_group) %>%
+  filter(n >=10 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
+  dplyr::mutate(hist = unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[1])),
+                subtype = case_when(
+                  grepl(",", mol_sub_group) ~ unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[2])),
+                  TRUE ~ NA_character_)) %>%
+  dplyr::mutate(hist = case_when(
+    grepl("GNG/GNT", hist) ~ "GNG-GNT",
+    TRUE ~ hist
+  )) %>%
+  dplyr::mutate(subtype = str_replace_all(subtype, " ", "-")) %>%
+  write_tsv(file.path(analysis_dir, "results", "subtypes-for-survival.tsv"))
+
 
 # Loop through subtypes and run survival analyses
-for (j in 1:nrow(subtype_df)) {
+for (j in 1:nrow(subtypes)) {
+  
+    results_dir <- file.path(analysis_dir, "results", subtypes$hist[j])
+    
+    if (!dir.exists(results_dir)) {
+      dir.create(results_dir)
+      
+    }
   
   # define output files
   km_os_model_file <- file.path(results_dir, 
-                                    glue::glue("logrank_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_cpgPLPstatus.RDS"))
+                                    glue::glue("logrank_{subtypes$hist[j]}_{subtypes$subtype[j]}_OS_cpgPLPstatus.RDS"))
   
-  coxph_os_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
+  coxph_os_model_file <- ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
                              file.path(results_dir,
-                                      glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
+                                      glue::glue("cox_{subtypes$hist[j]}_{subtypes$subtype[j]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
                              file.path(results_dir,
-                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_OS_additive_terms_subtype_cpgPLPstatus.RDS"))
+                                       glue::glue("cox_{subtypes$hist[j]}_{subtypes$subtype[j]}_OS_additive_terms_subtype_cpgPLPstatus.RDS"))
   )
   
   km_efs_model_file <- file.path(results_dir, 
-                                    glue::glue("logrank_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_cpgPLPstatus.RDS"))
+                                    glue::glue("logrank_{subtypes$hist[j]}_{subtypes$subtype[j]}_EFS_cpgPLPstatus.RDS"))
   
-  coxph_efs_model_file <- ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
+  coxph_efs_model_file <- ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
                              file.path(results_dir,
-                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
+                                       glue::glue("cox_{subtypes$hist[j]}_{subtypes$subtype[j]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")),
                              file.path(results_dir,
-                                       glue::glue("cox_{subtype_df$names[j]}_{subtype_df$subtype[j]}_EFS_additive_terms_subtype_cpgPLPstatus.RDS"))
+                                       glue::glue("cox_{subtypes$hist[j]}_{subtypes$subtype[j]}_EFS_additive_terms_subtype_cpgPLPstatus.RDS"))
   )
   
   
   # Subset metadata for histology subtype
   subtype_hist <- hist %>%
-    filter(grepl(subtype_df$hist[j], plot_group) & grepl(subtype_df$subtype[j], mol_sub_group))
+    filter(grepl(subtypes$plot_group[j], plot_group) & grepl(subtypes$mol_sub_group[j], mol_sub_group))
   
   
   # Run kaplan meier survival models and save to output
@@ -241,7 +254,8 @@ for (j in 1:nrow(subtype_df)) {
               status_col = "OS_status"
               )
 
-  readr::write_rds(kap_os, km_os_model_file)
+  readr::write_rds(kap_os, 
+                   str_replace_all(km_os_model_file, " ", "-"))
   
   kap_efs <- survival_analysis(
                 metadata  = subtype_hist,
@@ -252,10 +266,11 @@ for (j in 1:nrow(subtype_df)) {
                 status_col = "EFS_status"
                 )
   
-    readr::write_rds(kap_efs, km_efs_model_file)
+    readr::write_rds(kap_efs, 
+                   str_replace_all(km_efs_model_file, " ", "-"))
     
   # For subtypes where extent_of_tumor_resection is considered, filter out samples with no data
-  if (subtype_df$hist[j] %in% c("Low-grade glioma")){
+  if (subtypes$plot_group[j] %in% c("Low-grade glioma")){
     subtype_hist <- subtype_hist %>%
         filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
   }
@@ -263,7 +278,7 @@ for (j in 1:nrow(subtype_df)) {
 
     # Run coxph models and save to output
     add_model_os <- fit_save_model(subtype_hist,
-                                  terms = ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
+                                  terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
                                                  "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                                  "age_at_diagnosis_years+cpgPLP_status"),
                                    coxph_os_model_file,
@@ -272,7 +287,7 @@ for (j in 1:nrow(subtype_df)) {
                                    status_col = "OS_status")
     
     add_model_efs <- fit_save_model(subtype_hist,
-                                  terms = ifelse(subtype_df$hist[j] %in% c("Low-grade glioma"),
+                                  terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
                                                  "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
                                                  "age_at_diagnosis_years+cpgPLP_status"),
                                      coxph_efs_model_file,
