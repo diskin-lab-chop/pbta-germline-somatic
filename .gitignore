@@ -13,3 +13,4 @@ tmp*
 # Result of running docker image locally. Should not be tracked
 .rstudio/
 
+analyses/survival/input/2023-05-10-histologies-base-adapt.tsv
