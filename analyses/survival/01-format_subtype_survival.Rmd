@@ -114,8 +114,8 @@ hist_base <- read_tsv(base_histologies_file) %>%
   distinct(Kids_First_Participant_ID, .keep_all = T)
 
 hist <- hist %>%
-  dplyr::select(-OS_days, -OS_status) %>%
-  left_join(hist_base[,c("Kids_First_Participant_ID", "OS_days", "OS_status")]) %>%
+  dplyr::select(-OS_days, -OS_status, -EFS_days, -EFS_event_type) %>%
+  left_join(hist_base[,c("Kids_First_Participant_ID", "OS_days", "OS_status", "EFS_days", "EFS_event_type")]) %>%
   mutate(EFS_days = as.numeric(EFS_days),
          OS_days = as.numeric(OS_days)) %>%
   mutate(OS_years = OS_days/365.25,
