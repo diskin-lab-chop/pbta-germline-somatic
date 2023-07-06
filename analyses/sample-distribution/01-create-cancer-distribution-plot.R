@@ -28,6 +28,8 @@ hist <- read_tsv(file.path(root_dir,
 
 # read in CPG list
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
+multi_cpg <- c(glue::glue("{cpg};"),
+               glue::glue(";{cpg}"))
 
 
 # read in plp file
@@ -40,8 +42,11 @@ plp_all <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv")) %>%
                                        grepl("InterVar_Recalculated Pathogenic", Reasoning_for_call) ~ "InterVar - Pathogenic"))
 
 plp_cpg <- plp_all %>%
-  filter(Hugo_Symbol %in% cpg)
-
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+  ))
 
 # add n per group in label  
 hist_counts <- hist %>%
