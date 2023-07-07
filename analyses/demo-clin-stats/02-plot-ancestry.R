@@ -62,6 +62,6 @@ pc34 <- hist %>%
   theme_Publication()
 
 ggarrange(pc12, pc34,
-          widths = c(1.3,1.9))
+          widths = c(1.3,2.0))
 
 dev.off()

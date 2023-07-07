@@ -37,7 +37,7 @@ if (!dir.exists(results_dir)) {
 Set file paths
 
 ```{r set paths}
-cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+cbtn_histologies_file <- file.path(root_dir, "analyses", "survival", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
 #base_histologies_file <- file.path(input_dir, "2023-05-10-histologies-base-adapt.tsv")
 
@@ -56,8 +56,8 @@ hist <- read_tsv(cbtn_histologies_file)
 all_plp <- read_tsv(all_plp_file)
 
 cpgs <- read_lines(cpg_file)
-multi_cpg <- c(glue::glue("{cpg};"),
-               glue::glue(";{cpg}"))
+multi_cpg <- c(glue::glue("{cpgs};"),
+               glue::glue(";{cpgs}"))
 
 tmb <- read_tsv(file.path(data_dir, "snv-mutation-tmb-coding.tsv")) %>%
   rename("Kids_First_Biospecimen_ID_tumor" = Tumor_Sample_Barcode)
@@ -69,7 +69,7 @@ Merge sample metadata
 # Extract BS IDs of samples with CPG PLP variants
 cpg_bs <- all_plp %>%
   filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
-  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  filter(Hugo_Symbol %in% cpgs | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
   pull(Kids_First_Biospecimen_ID)
 
 # Append CPG PLP status and survival and TMB data to `hist`
