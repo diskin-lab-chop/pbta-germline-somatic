@@ -35,13 +35,13 @@ if (!dir.exists(results_dir)) {
 }
 
 # add histologies file so we can subset maf
-histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-CBTN-dx.tsv")
+histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # remove cell lines from histologies file
-v22_hist_file <- file.path(data_dir,"histologies.tsv")
+v12_hist_file <- file.path(data_dir,"histologies.tsv")
 
 # goi file
-goi_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
 
 ### Load oncokb annotated maf and explore data
@@ -53,20 +53,22 @@ germline <- read_tsv(file.path(root_dir, params$germ_in)) %>%
                 HGVSp_germ = HGVS.p) 
 
 integrated_hist <- read_tsv(histologies_file)
-v22_hist <- read_tsv(v22_hist_file, guess_max = 3000) %>%
+v12_hist <- read_tsv(v12_hist_file, guess_max = 3000) %>%
   filter(!is.na(pathology_diagnosis),
          experimental_strategy == "WGS",
          tumor_descriptor != "Derived Cell Line")
 
 # CPGs
-goi <- read_table(goi_file, col_names = "genes") #%>%
+cpg <- read_lines(cpg_file)
+multi_cpg <- c(glue::glue("{cpg};"),
+                glue::glue(";{cpg}"))
 
 # load maf
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
-  filter(Tumor_Sample_Barcode %in% v22_hist$Kids_First_Biospecimen_ID)
+  filter(Tumor_Sample_Barcode %in% v12_hist$Kids_First_Biospecimen_ID)
 
 # CPGs without somatic hits
-setdiff(goi$genes, unique(maf$Hugo_Symbol))
+setdiff(cpg, unique(maf$Hugo_Symbol))
 
 # table of gene counts by oncogenic effect
 maf %>%
@@ -118,6 +120,11 @@ germline_somatic_gene_matches <- germline %>%
 
 ```{r gene hits by patient}
 collapsed <- germline %>%
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+   dplyr::mutate(Hugo_Symbol = case_when(
+     !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+     TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+   )) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
   #mutate(path_call = paste(`L-LP_Call_final`, Reasoning_for_call, sep = ",")) %>%
   group_by(Kids_First_Biospecimen_ID_normal) %>%
@@ -137,5 +144,3 @@ collapsed_germ_som <- collapsed %>%
   write_tsv(file.path(results_dir, "germline-somatic-collapsed-by-gene.tsv"))
 
 ```
-
-            
