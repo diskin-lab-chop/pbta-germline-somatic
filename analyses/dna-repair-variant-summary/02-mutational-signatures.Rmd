@@ -1,5 +1,5 @@
 ---
-title: 'Mutational Signatures Analysis'
+title: 'Mutational Signatures Analysis in HGG tumors'
 output: 
   html_document:
   toc: TRUE
@@ -16,6 +16,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(ggplot2)
   library(ggsci)
+  library(ggpubr)
 })
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -42,10 +43,11 @@ tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")
 ```
 
-Read in histologies, germline PLP, and tmb file
+Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
 
 ```{r read files}
-hist <- read_tsv(histologies_file,show_col_types = FALSE) 
+hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
+  filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
 
 plp <- read_tsv(plp_file,show_col_types = FALSE)
 
@@ -57,10 +59,10 @@ maf <- data.table::fread(maf_file, data.table = F) %>%
 ```
 
 
-Comparison of mutational signatures between samples with and without germline variants in DNA repair genes will be performed through multiple loops to change the following parameters: 
+Comparison of mutational signatures between HGG samples with and without germline variants in DNA repair genes will be performed through multiple loops to change the following parameters: 
 - COSMICv3 input file: run mutational signatures comparative analyses using results obtained when including SBS39 AND when excluding SBS39
 - DNA repair gene list: run comparative analyses using two separate DNA repair gene lists (one obtained from Knijnenburg et al. 2021 paper, another from Broad GSEA gene list)
-- Pairwise comparisons; run separate comparative analyses of mutational signatures, considering 1) All patients with germline DNA repair variants vs. those without, 2) All patients with germline MMR gene variants vs. those without, and 3) all patients with DNA repair, non-MMR germline variants vs. those without DNA repair variants. 
+- Pairwise comparisons; run separate comparative analyses of mutational signatures, considering 1) All patients with germline DNA repair variants vs. those without, 2) All patients with germline MMR gene variants vs. those without, 3) All patients with germline BRCA/BRCA-interacting gene variants vs. those without, and 4) all patients with other DNA repair germline variants vs. those without DNA repair variants. 
 
 ```{r read mut sigs}
 
@@ -90,7 +92,7 @@ for (i in 1:length(cosmic_files)){
     pull(signature)
   
   # Define MMR-associated and other DNA repair signatures
-  
+
   mmr_sigs <- c('SBS6', 'SBS14', 'SBS15', 'SBS20', 'SBS21', 'SBS26', 'SBS44')
   repair_sigs <- c('SBS30', 'SBS36', 'SBS3', 'SBS9', 'SBS10a', 'SBS10b', 'SBS10c', 'SBS10d')
   
@@ -118,7 +120,7 @@ for (i in 1:length(cosmic_files)){
     
     dna_repair_plp <- read_tsv(dna_repair_plp_file,show_col_types = FALSE)
     
-    # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
+    # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, 3) BRCA and BRCA_interacting genes, and 4) Other DNA repair genes, excluding MMR
     allRepair_germline <- dna_repair_plp %>%
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
@@ -127,17 +129,22 @@ for (i in 1:length(cosmic_files)){
       filter(MMR == "Yes") %>%
       distinct(Kids_First_Biospecimen_ID) %>%
       pull(Kids_First_Biospecimen_ID)
+
+    hr_germline <- dna_repair_plp %>%
+      filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", Hugo_Symbol)) %>%
+      distinct(Kids_First_Biospecimen_ID) %>%
+      pull(Kids_First_Biospecimen_ID)
     
     otherRepair_germline <- dna_repair_plp %>%
-      filter(!Kids_First_Biospecimen_ID %in% mmr_germline) %>%
+      filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, hr_germline)) %>%
       distinct(Kids_First_Biospecimen_ID) %>%
       pull(Kids_First_Biospecimen_ID)
       
     # define list of BS_ids in each group, and names for subsequent plots
-    sample_list <- list(allRepair_germline, mmr_germline, otherRepair_germline)
-    names(sample_list) <- c("All_repair", "MMR", "Other_repair")
+    sample_list <- list(allRepair_germline, mmr_germline, hr_germline, otherRepair_germline)
+    names(sample_list) <- c("All_repair", "MMR", "HR", "Other_repair")
     
-    plot_names <- c("All DNA repair", "MMR", "DNA repair, non-MMR")
+    plot_names <- c("All DNA repair", "MMR", "BRCA/BRCA-interacting", "Other DNA repair")
     
     # Loop through sample lists to compare mutational signatures between group of interest and samples without DNA repair germline variants
     for (k in 1:length(sample_list)){
@@ -151,7 +158,7 @@ for (i in 1:length(cosmic_files)){
           pull(Kids_First_Biospecimen_ID_normal)
         }else{
         ctrl_germline <- hist %>%
-          filter(!Kids_First_Biospecimen_ID_normal %in% repair_germline) %>%
+          filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %>%
           pull(Kids_First_Biospecimen_ID_normal)
       }
       
@@ -200,7 +207,7 @@ for (i in 1:length(cosmic_files)){
         mutate(association = case_when(
           signature %in% mmr_sigs ~ 'MMR',
           signature %in% repair_sigs ~ 'Other repair',
-          TRUE ~ 'non-Repair'
+          TRUE ~ 'Non-Repair'
         )) %>%
         arrange(desc(exposure_diff))
       
@@ -214,7 +221,7 @@ for (i in 1:length(cosmic_files)){
           theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
                 plot.title = element_text(hjust = 0.5, size = 18)) + 
           labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
-               fill = 'association', title = paste0(plot_names[k], " germline vs. no DNA repair germline")) +
+               fill = 'sig etiology', title = paste0(plot_names[k], " germline vs. other")) +
           geom_hline(yintercept = 0) + 
           geom_text(aes(x = signature, y = exposure_diff * 1.1,
                     label = ifelse(pvalue < 0.05, "*", "")),
@@ -233,7 +240,7 @@ for (i in 1:length(cosmic_files)){
 Run mutational signature exposure comparisons between samples with and without DNA repair germline variants using both DNA repair gene list sources (Knijnenburg et al. and GSEA Broad)
 
 
-Plot exposures of signatures of interest by group (MMR germline variant samples, other DNA repair germline variant samples, no DNA repair germline variant samples)
+Plot exposures of signatures of interest by group (MMR germline variant samples, BRCA/BRCA-interacting germline variant samples, other DNA repair germline variant samples, no DNA repair germline variant samples)
 
 ```{r}
 # Define signatures of interest to plot
@@ -281,18 +288,26 @@ for (i in 1:length(cosmic_files)){
       filter(MMR == "Yes") %>%
       distinct(Kids_First_Biospecimen_ID) %>%
       pull(Kids_First_Biospecimen_ID)
-    
-    otherRepair_germline <- dna_repair_plp %>%
-      filter(!Kids_First_Biospecimen_ID %in% mmr_germline) %>%
+
+    brca_germline <- dna_repair_plp %>%
+      filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", Hugo_Symbol)) %>%
       distinct(Kids_First_Biospecimen_ID) %>%
       pull(Kids_First_Biospecimen_ID)
     
+    otherRepair_germline <- hist %>%
+      filter(Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID & !Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
+      pull(Kids_First_Biospecimen_ID_normal)
+    
     ctrl_germline <- hist %>%
-      filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, otherRepair_germline)) %>%
+      filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %>%
       pull(Kids_First_Biospecimen_ID_normal)
       
     mmr_ids <- hist %>%
       filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% mmr_germline]) %>%
+      pull(Kids_First_Biospecimen_ID_tumor)
+
+    brca_ids <- hist %>%
+      filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% brca_germline]) %>%
       pull(Kids_First_Biospecimen_ID_tumor)
     
     otherRepair_ids <- hist %>%
@@ -308,17 +323,34 @@ for (i in 1:length(cosmic_files)){
       
       # Create data frame for plotting
       sbs_df <- cosmicv3_sigs %>%
-        filter(signature == plot_sigs[k] & Kids_First_Biospecimen_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %>%
+        filter(signature == plot_sigs[k] & Kids_First_Biospecimen_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
         mutate(germline_variant = case_when(
           Kids_First_Biospecimen_ID %in% mmr_ids ~ "MMR",
-          Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other DNA Repair",
+          Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/interacting",
+          Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other repair",
           TRUE ~ "Non-repair"
         )) %>%
         mutate(germline_variant = factor(germline_variant)) %>% 
         mutate(germline_variant = fct_relevel(germline_variant,
-                                              c("MMR", "Other DNA Repair", "Non-repair"))
-               ) %>%
-        
+                                              c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
+               )
+      
+      
+      data_summary <- function(x) {
+         m <- mean(x)
+         ymin <- m-sd(x)
+         ymax <- m+sd(x)
+         return(c(y=m,ymin=ymin,ymax=ymax))
+      }
+      
+      comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"), 
+                          c("MMR", "Non-repair"))
+      
+      comparisons_brca <- list(c("BRCA/interacting", "MMR"), c("BRCA/interacting", "Other repair"), 
+                          c("BRCA/interacting", "Non-repair"))
+      
+              
+      sbs_df %>%
         # generate violin plot and save 
         ggplot(aes(x = germline_variant, y = exposure, fill = germline_variant)) +
           geom_violin(binaxis = "y", stackdir = "center") +
@@ -328,9 +360,13 @@ for (i in 1:length(cosmic_files)){
           theme(legend.position = 'none',
                 text = element_text(size = 12)) +
           scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
-                                      paste0("Other DNA Repair\n (n=", length(otherRepair_ids), ")"), 
+                                      paste0("BRCA/interacting\n (n=", length(brca_ids), ")"),
+                                      paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
                                       paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
-          scale_fill_npg()
+          scale_fill_npg() +
+          stat_summary(fun.data=data_summary,
+                show.legend = F) + 
+          stat_compare_means(comparisons = comparisons_mmr, size = 3)
           
         ggsave(
           file.path(plot_dir, paste0(plot_sigs[k], "_signature_byGroup_", cosmic_ids[i], "_violinPlot.tiff")), 
@@ -340,17 +376,18 @@ for (i in 1:length(cosmic_files)){
     
     # Create table of summed MMR deficiency-associated signatures across all samples
     mmr_df <- cosmicv3_sigs %>%
-        filter(signature %in% mmr_sigs & Kids_First_Biospecimen_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %>%
+        filter(signature %in% mmr_sigs & Kids_First_Biospecimen_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
         group_by(Kids_First_Biospecimen_ID) %>%
         summarize(sum = sum(exposure)) %>%
         mutate(germline_variant = case_when(
           Kids_First_Biospecimen_ID %in% mmr_ids ~ "MMR",
-          Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other DNA Repair",
+          Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/interacting",
+          Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other repair",
           TRUE ~ "Non-repair"
         )) %>%
         mutate(germline_variant = factor(germline_variant)) %>% 
         mutate(germline_variant = fct_relevel(germline_variant,
-                                              c("MMR", "Other DNA Repair", "Non-repair"))
+                                              c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
                )
     
     # Create violin plot of MMR exposures by group and save
@@ -362,10 +399,14 @@ for (i in 1:length(cosmic_files)){
           theme_minimal() +
           theme(legend.position = 'none',
                 text = element_text(size = 12)) +
-          scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
-                                      paste0("Other DNA Repair\n (n=", length(otherRepair_ids), ")"), 
+          scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"),
+                                      paste0("BRCA/interacting\n (n=", length(brca_ids), ")"), 
+                                      paste0("Other repair\n (n=", length(otherRepair_ids), ")"), 
                                       paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
-          scale_fill_npg()
+          scale_fill_npg() +
+          stat_summary(fun.data=data_summary,
+                show.legend = F) + 
+          stat_compare_means(comparisons = comparisons_mmr)
           
         ggsave(
           file.path(plot_dir, paste0("mmr_signature_byGroup_", cosmic_ids[i], "_violinPlot.tiff")), 
@@ -393,21 +434,26 @@ for (i in 1:length(cosmic_files)){
         write_tsv(file.path(results_dir, paste0("MMR_germline_variant_plp_with_MMRsigs_", cosmic_ids[i], ".tsv")))
       
       mmr_genes <- read_lines(file.path(input_dir[repair_gene_source[j]], "mismatch_repair.txt"))
+      brca_genes <- c("BRCA1", "BRCA2", "BARD1", "BRIP1", "ATM", "CHEK2", "PALB2", "RAD51", "RAD51C", "RAD51D", "MRE11A")
 
+      # Obtain list of germline variants in MMR and BRCA genes in HGG subjects
       collapsed_germline <- dna_repair_plp %>%
-        filter(MMR == "Yes" & Hugo_Symbol %in% mmr_genes) %>%
+        filter(Hugo_Symbol %in% c(mmr_genes, brca_genes)) %>%
         group_by(Kids_First_Biospecimen_ID) %>%
-        summarise(Hugo_Symbol_MMRgermline = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
+        summarise(Hugo_Symbol_germline = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
         rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
 
+      # Obtain list of oncogenic/likley oncogenic somatic mutataions in MMR and BRCA genes in HGG subjects
       collapsed_onco <- maf %>%
-        filter(Hugo_Symbol %in% mmr_genes) %>%
+        filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance")) %>%
+        filter(Hugo_Symbol %in% c(mmr_genes, brca_genes)) %>%
         dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
                       Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
                       Hugo_Symbol_somatic = Hugo_Symbol) %>%
         group_by(Kids_First_Biospecimen_ID_normal) %>%
         summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = "; "))
-            
+          
+      # Generate summary table for all HGG subjects with MMR exposure  
       mmr_df %>%
         filter(sum > 0.06) %>%
         rename("MMR_exposure" = sum) %>%
@@ -418,8 +464,38 @@ for (i in 1:length(cosmic_files)){
         left_join(collapsed_onco) %>%
         select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
                plot_group, molecular_subtype, MMR_exposure, 
-               germline_variant, Hugo_Symbol_MMRgermline, Hugo_Symbol_somatic) %>%
+               germline_variant, Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, paste0("PBTA_all_samples_with_MMRsigs_", cosmic_ids[i], ".tsv")))
+      
+      # Generate summary table for all HGG subjects with SBS3 exposure  
+      sbs3_df <- cosmicv3_sigs %>%
+        filter(signature == "SBS3" & Kids_First_Biospecimen_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
+        group_by(Kids_First_Biospecimen_ID) %>%
+        mutate(germline_variant = case_when(
+          Kids_First_Biospecimen_ID %in% mmr_ids ~ "MMR",
+          Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/interacting",
+          Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other repair",
+          TRUE ~ "Non-repair"
+        )) %>%
+        mutate(germline_variant = factor(germline_variant)) %>% 
+        mutate(germline_variant = fct_relevel(germline_variant,
+                                              c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
+               )
+      
+                  
+      sbs3_df %>%
+        filter(exposure > 0.06) %>%
+        rename("SBS3_exposure" = exposure) %>%
+        rename("Kids_First_Biospecimen_ID_tumor" = Kids_First_Biospecimen_ID) %>%
+        left_join(hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal", 
+                          "Kids_First_Biospecimen_ID_tumor", "plot_group", "molecular_subtype")]) %>%
+        left_join(collapsed_germline) %>%
+        left_join(collapsed_onco) %>%
+        select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+               plot_group, molecular_subtype, SBS3_exposure, 
+               germline_variant, Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
+        write_tsv(file.path(results_dir, paste0("PBTA_all_samples_with_SBS3sigs_", cosmic_ids[i], ".tsv")))
+      
 
   }
 }
