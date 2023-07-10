@@ -59,6 +59,8 @@ hist_counts <- hist %>%
 plot_group_palette <- hist_counts$plot_group_hex
 names(plot_group_palette) <- hist_counts$plot_group_n
 
+if(!interactive()) pdf(NULL)
+
 tiff(file.path(plot_dir, "histology-distribution.tiff"), height = 1500, width = 2500, res = 300)
 ggplot(hist_counts, aes(x = plot_group_n, fill = plot_group_n)) +
   geom_bar(color = "black", show.legend = FALSE) +
