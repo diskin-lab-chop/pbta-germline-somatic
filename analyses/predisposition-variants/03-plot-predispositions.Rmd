@@ -74,13 +74,15 @@ predisposition_list <- list()
 
 suppressWarnings(
   for (predisposition in predispositions) {
+    
+  genes <- unlist(strsplit(predisposition_genes[predisposition], "[|]"))
   
   predisposition_list[[predisposition]] <- hist %>%
     filter(grepl(predisposition, cancer_predispositions)) %>%
     dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal) %>%
     dplyr::mutate(predisposition = predisposition) %>%
     dplyr::mutate(plp_variant = case_when(
-      Kids_First_Biospecimen_ID_normal %in% plp$Kids_First_Biospecimen_ID[grepl(predisposition_genes[predisposition], plp$Hugo_Symbol)] ~ "Yes",
+      Kids_First_Biospecimen_ID_normal %in% plp$Kids_First_Biospecimen_ID[plp$Hugo_Symbol %in% genes] ~ "Yes",
       TRUE ~ "No"
     ))
   }
