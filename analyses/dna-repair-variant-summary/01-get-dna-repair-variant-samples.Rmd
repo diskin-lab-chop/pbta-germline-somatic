@@ -221,7 +221,7 @@ for (i in 1:length(repair_gene_source)){
   
   # Plot enrichment heatmap
   
-  col_fun = colorRamp2(c(0, 6), c("white", "red"))
+  col_fun = colorRamp2(c(0, 6), c("white", "orangered"))
   
   pdf(file.path(plot_dir, paste0("dna_repair_enr_by_plot_group_", repair_gene_source[i], ".pdf")),
         width = 6, height = 6)
