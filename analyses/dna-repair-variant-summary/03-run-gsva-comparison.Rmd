@@ -300,7 +300,7 @@ Plot scores of Hallmark pathways of interest by group (MMR germline variant samp
 
 ```{r}
 # Define hallmark pathways to plot
-pathways <- c("HALLMARK_PI3K_AKT_MTOR_SIGNALING", "HALLMARK_HEDGEHOG_SIGNALING", "HALLMARK_MYC_TARGETS_V1", "HALLMARK_DNA_REPAIR")
+pathways <- c("HALLMARK_HEDGEHOG_SIGNALING", "HALLMARK_DNA_REPAIR", "HALLMARK_PROTEIN_SECRETION")
 
 # create plots for each DNA repair gene list source
 repair_gene_source <- c("Knijnenburg_repair_genes", "Broad_GO_repair_genes")
@@ -452,8 +452,7 @@ Plot scores of KEGG pathways of interest by group (MMR germline variant samples,
 
 ```{r}
 # Define KEGG pathways to plot
-pathways <- c("KEGG_GLIOMA", "KEGG_DNA_REPLICATION",
-              "KEGG_MISMATCH_REPAIR", "KEGG_SPLICEOSOME")
+pathways <- c("KEGG_GLIOMA", "KEGG_ERBB_SIGNALING_PATHWAY")
 
 # create plots for each DNA repair gene list source
 repair_gene_source <- c("Knijnenburg_repair_genes", "Broad_GO_repair_genes")
