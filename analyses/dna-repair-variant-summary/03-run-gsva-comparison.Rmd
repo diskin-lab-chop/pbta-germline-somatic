@@ -50,11 +50,11 @@ hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
 
 hist_pbta <- read_tsv(pbta_histologies_file) 
 
-scores <- read_tsv(gsva_file)
-hallmarks <- unique(scores$hallmark_name)
+hallmark_scores <- read_tsv(gsva_file)
+hallmark_pathways <- unique(hallmark_scores$hallmark_name)
 
 kegg_scores <- read_tsv(kegg_file)
-pathways <- unique(kegg_scores$kegg_name)
+kegg_pathways <- unique(kegg_scores$kegg_name)
 
 maf <- data.table::fread(maf_file, data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% hist_cbtn$Kids_First_Biospecimen_ID_tumor)
@@ -69,7 +69,7 @@ rna_ids <- hist_pbta %>%
   filter(experimental_strategy == 'RNA-Seq' & sample_id %in% hist_cbtn$sample_id_tumor) %>%
   pull(Kids_First_Biospecimen_ID)
 
-scores <- scores %>%
+hallmark_scores <- hallmark_scores %>%
   filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
   left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID")
 
@@ -165,17 +165,17 @@ for (i in 1:length(repair_gene_source)){
       unique()
     
     # define data frame to store GSVA scores, differences between groups, and corresponding test statistic p-values 
-    gsva_res <- data.frame(hallmark = hallmarks,
-                           repair_score = rep(0, length(hallmarks)),
-                           ctrl_score = rep(0, length(hallmarks)),
-                           score_diff = rep(0, length(hallmarks)),
-                           wilcox_stat = rep(0, length(hallmarks)),
-                           pvalue = rep(0, length(hallmarks)))
+    gsva_res <- data.frame(hallmark = hallmark_pathways,
+                           repair_score = rep(0, length(hallmark_pathways)),
+                           ctrl_score = rep(0, length(hallmark_pathways)),
+                           score_diff = rep(0, length(hallmark_pathways)),
+                           wilcox_stat = rep(0, length(hallmark_pathways)),
+                           pvalue = rep(0, length(hallmark_pathways)))
 
     # loop through hallmark pathways to obtain score means and differences between groups
-    for (k in 1:length(hallmarks)){
-      repair_scores <- scores[scores$hallmark_name == hallmarks[k] & scores$`Kids_First_Participant_ID` %in% repair_ids,]$gsea_score
-      ctrl_scores <- scores[scores$hallmark_name == hallmarks[k] & scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$gsea_score
+    for (k in 1:length(hallmark_pathways)){
+      repair_scores <- hallmark_scores[hallmark_scores$hallmark_name == hallmark_pathways[k] & hallmark_scores$`Kids_First_Participant_ID` %in% repair_ids,]$gsea_score
+      ctrl_scores <- hallmark_scores[hallmark_scores$hallmark_name == hallmark_pathways[k] & hallmark_scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$gsea_score
       gsva_res$repair_score[k] <- mean(repair_scores)
       gsva_res$ctrl_score[k] <- mean(ctrl_scores)
       gsva_res$score_diff[k] <- mean(repair_scores) - mean(ctrl_scores)
@@ -225,17 +225,17 @@ for (i in 1:length(repair_gene_source)){
     
     
     #define data frame to store KEGG GSVA scores, differences between groups, and corresponding test statistic p-values
-    kegg_res <- data.frame(pathway = pathways,
-                           repair_score = rep(0, length(pathways)),
-                           ctrl_score = rep(0, length(pathways)),
-                           score_diff = rep(0, length(pathways)),
-                           wilcox_stat = rep(0, length(pathways)),
-                           pvalue = rep(0, length(pathways)))
+    kegg_res <- data.frame(pathway = kegg_pathways,
+                           repair_score = rep(0, length(kegg_pathways)),
+                           ctrl_score = rep(0, length(kegg_pathways)),
+                           score_diff = rep(0, length(kegg_pathways)),
+                           wilcox_stat = rep(0, length(kegg_pathways)),
+                           pvalue = rep(0, length(kegg_pathways)))
 
     # loop through KEGG pathways to obtain score means and differences between groups
-    for (k in 1:length(pathways)){
-      repair_scores <- kegg_scores[kegg_scores$kegg_name == pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% repair_ids,]$gsea_score
-      ctrl_scores <- kegg_scores[kegg_scores$kegg_name == pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$gsea_score
+    for (k in 1:length(kegg_pathways)){
+      repair_scores <- kegg_scores[kegg_scores$kegg_name == kegg_pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% repair_ids,]$gsea_score
+      ctrl_scores <- kegg_scores[kegg_scores$kegg_name == kegg_pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$gsea_score
       kegg_res$repair_score[k] <- mean(repair_scores)
       kegg_res$ctrl_score[k] <- mean(ctrl_scores)
       kegg_res$score_diff[k] <- mean(repair_scores) - mean(ctrl_scores)
@@ -364,7 +364,7 @@ for (i in 1:length(repair_gene_source)){
   for (j in 1:length(pathways)){
     
     # Create data frame for plotting
-    score_df <- scores %>%
+    score_df <- hallmark_scores %>%
       filter(hallmark_name == pathways[j] & Kids_First_Participant_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %>%
       mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ "MMR",
@@ -432,7 +432,7 @@ for (i in 1:length(repair_gene_source)){
     group_by(Kids_First_Biospecimen_ID_normal) %>%
     summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = "; "))
   
-  scores %>%
+  hallmark_scores %>%
     filter(hallmark_name == "HALLMARK_DNA_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
     filter(gsea_score > 0.4) %>%
     left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal", 
