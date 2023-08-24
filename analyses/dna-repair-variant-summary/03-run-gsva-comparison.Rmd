@@ -66,20 +66,17 @@ Pull BS_ids corresponding to RNA-Seq experiments. Append GSVA scores for samples
 
 ```{r}
 rna_ids <- hist_pbta %>% 
-  filter(experimental_strategy == 'RNA-Seq' & tumor_descriptor == "Initial CNS Tumor") %>%
+  filter(experimental_strategy == 'RNA-Seq' & sample_id %in% hist_cbtn$sample_id_tumor) %>%
   pull(Kids_First_Biospecimen_ID)
 
 scores <- scores %>%
-  filter(Kids_First_Biospecimen_ID %in% rna_ids & data_type == "stranded") %>%
-  left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID") %>%
-  group_by(Kids_First_Participant_ID, hallmark_name) %>%
-      summarize(mean_gsea_score = mean(gsea_score))
+  filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
+  left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID")
+
 
 kegg_scores <- kegg_scores %>%
-  filter(Kids_First_Biospecimen_ID %in% rna_ids & data_type == "stranded") %>%
-  left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID") %>%
-  group_by(Kids_First_Participant_ID, kegg_name) %>%
-      summarize(mean_gsea_score = mean(gsea_score))
+  filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
+  left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID")
 
 # define repair and replication KEGG pathways
 rep_repair <- c("KEGG_DNA_REPLICATION", "KEGG_BASE_EXCISION_REPAIR", "KEGG_HOMOLOGOUS_RECOMBINATION",
@@ -177,8 +174,8 @@ for (i in 1:length(repair_gene_source)){
 
     # loop through hallmark pathways to obtain score means and differences between groups
     for (k in 1:length(hallmarks)){
-      repair_scores <- scores[scores$hallmark_name == hallmarks[k] & scores$`Kids_First_Participant_ID` %in% repair_ids,]$mean_gsea_score
-      ctrl_scores <- scores[scores$hallmark_name == hallmarks[k] & scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$mean_gsea_score
+      repair_scores <- scores[scores$hallmark_name == hallmarks[k] & scores$`Kids_First_Participant_ID` %in% repair_ids,]$gsea_score
+      ctrl_scores <- scores[scores$hallmark_name == hallmarks[k] & scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$gsea_score
       gsva_res$repair_score[k] <- mean(repair_scores)
       gsva_res$ctrl_score[k] <- mean(ctrl_scores)
       gsva_res$score_diff[k] <- mean(repair_scores) - mean(ctrl_scores)
@@ -237,8 +234,8 @@ for (i in 1:length(repair_gene_source)){
 
     # loop through KEGG pathways to obtain score means and differences between groups
     for (k in 1:length(pathways)){
-      repair_scores <- kegg_scores[kegg_scores$kegg_name == pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% repair_ids,]$mean_gsea_score
-      ctrl_scores <- kegg_scores[kegg_scores$kegg_name == pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$mean_gsea_score
+      repair_scores <- kegg_scores[kegg_scores$kegg_name == pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% repair_ids,]$gsea_score
+      ctrl_scores <- kegg_scores[kegg_scores$kegg_name == pathways[k] & kegg_scores$`Kids_First_Participant_ID` %in% ctrl_ids,]$gsea_score
       kegg_res$repair_score[k] <- mean(repair_scores)
       kegg_res$ctrl_score[k] <- mean(ctrl_scores)
       kegg_res$score_diff[k] <- mean(repair_scores) - mean(ctrl_scores)
@@ -258,7 +255,7 @@ for (i in 1:length(repair_gene_source)){
     # create barplot of score differences between groups
     kegg_res <- kegg_res %>%
       filter(!is.na(pvalue)) %>%
-      filter(abs(score_diff) > 0.225) %>%
+      filter(abs(score_diff) > 0.175) %>%
       arrange(desc(score_diff))
 
    kegg_res %>%
@@ -393,7 +390,7 @@ for (i in 1:length(repair_gene_source)){
     score_df %>%
       
       # generate violin plot and save
-      ggplot(aes(x = germline_variant, y = mean_gsea_score, fill = germline_variant)) +
+      ggplot(aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
         geom_violin(binaxis = "y", stackdir = "center",
                     show.legend = FALSE) +
         geom_boxplot(width=0.1,
@@ -437,14 +434,13 @@ for (i in 1:length(repair_gene_source)){
   
   scores %>%
     filter(hallmark_name == "HALLMARK_DNA_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
-    # filter(mean_gsea_score > as.numeric(summary(mean_gsea_score)["3rd Qu."])) %>%
-    filter(mean_gsea_score > 0.4) %>%
+    filter(gsea_score > 0.4) %>%
     left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal", 
                           "Kids_First_Biospecimen_ID_tumor", "plot_group", "molecular_subtype")]) %>%
         left_join(collapsed_germline) %>%
         left_join(collapsed_onco) %>%
         select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-               plot_group, molecular_subtype, mean_gsea_score, 
+               plot_group, molecular_subtype, gsea_score, 
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, "PBTA_all_samples_with_DNArepair_gsva.tsv"))
       
@@ -541,7 +537,7 @@ for (i in 1:length(repair_gene_source)){
     score_df %>%
 
       # generate violin plot and save
-      ggplot(aes(x = germline_variant, y = mean_gsea_score, fill = germline_variant)) +
+      ggplot(aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
         geom_violin(binaxis = "y", stackdir = "center",
                     show.legend = FALSE) +
         geom_boxplot(width=0.1,
@@ -585,13 +581,13 @@ for (i in 1:length(repair_gene_source)){
   
   kegg_scores %>%
     filter(kegg_name == "KEGG_MISMATCH_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
-    filter(mean_gsea_score > .4) %>%
+    filter(gsea_score > .4) %>%
     left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal", 
                           "Kids_First_Biospecimen_ID_tumor", "plot_group", "molecular_subtype")]) %>%
         left_join(collapsed_germline) %>%
         left_join(collapsed_onco) %>%
         select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-               plot_group, molecular_subtype, mean_gsea_score, 
+               plot_group, molecular_subtype, gsea_score, 
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, paste0("PBTA_all_samples_with_MMR_gsva.tsv")))
 }
