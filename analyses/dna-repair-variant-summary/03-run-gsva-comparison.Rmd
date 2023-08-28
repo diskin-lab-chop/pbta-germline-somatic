@@ -189,23 +189,18 @@ for (i in 1:length(repair_gene_source)){
       
       ggplot(aes(x = score_diff, y = hallmark,
                  label = ifelse(pvalue < 0.05, "*", ""))) +
-      theme_minimal() +
       geom_bar(stat="identity", color = "black") +
-      theme(axis.text.x = element_text(size = 8),
-              axis.text.y = element_text(vjust = 0.5, hjust=1, size = 8),
-              axis.title.x = element_text(size = 8),
-              legend.text = element_text(size = 8),
-              plot.title = element_text(size = 10, hjust = 1)) +
       labs(x = 'GSEA score difference', y = NULL,
              title = paste0(plot_names[j], " germline vs. other")) +
       geom_hline(yintercept = 0) + 
-      xlim(-0.3, 0.45) +
+      xlim(-0.2, 0.4) +
       geom_text(hjust = -0.5, vjust = 0.75, size = 7) +
-      scale_fill_npg()
+      scale_fill_npg() + 
+      theme_Publication()
 
     ggsave(
       file.path(plot_dir, paste0("HALLMARK_gsva_diff_", names(sample_list)[j], "_vs_other.tiff")), 
-      width = 14, height = 10, units = "cm")
+      width = 20, height = 14, units = "cm")
     
     #define data frame to store KEGG GSVA scores, differences between groups, and corresponding test statistic p-values
     kegg_res <- data.frame(pathway = kegg_pathways,
@@ -251,22 +246,17 @@ for (i in 1:length(repair_gene_source)){
                  label = ifelse(pvalue < 0.05, "*", ""))) +
       geom_bar(stat="identity", color = "black",
                  show.legend = FALSE) +
-      theme_minimal() +
-      theme(axis.text.x = element_text(size = 8),
-              axis.text.y = element_text(vjust = 0.5, hjust=1, size = 8),
-              axis.title.x = element_text(size = 8),
-              legend.text = element_text(size = 8),
-              plot.title = element_text(size = 10, hjust = 1)) +
       labs(x = 'GSVA score difference', y = NULL, fill = NULL,
-             title = paste0(plot_names[j], " germline vs. no DNA repair germline")) +
+             title = paste0(plot_names[j], " germline vs. other")) +
       geom_vline(xintercept = 0) +
-      xlim(-0.3, 0.60) +
+      xlim(-0.2, 0.4) +
       geom_text(hjust = -0.5, vjust = 0.75, size = 7) +
-      scale_fill_npg()
+      scale_fill_npg() +
+      theme_Publication()
 
     ggsave(
       file.path(plot_dir, paste0("KEGG_gsva_diff_", names(sample_list)[j], "_vs_other.tiff")),
-      width = 16, height = 10, units = "cm")
+      width = 20, height = 14, units = "cm")
 
     }
 }
@@ -366,27 +356,24 @@ for (i in 1:length(repair_gene_source)){
       
       # generate violin plot and save
       ggplot(aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
-        geom_violin(binaxis = "y", stackdir = "center",
+      geom_violin(binaxis = "y", stackdir = "center",
                     show.legend = FALSE) +
-        geom_boxplot(width=0.1,
+      geom_boxplot(width=0.1,
                     show.legend = FALSE) + 
-        labs(x = 'Germline Variant Class', y = " GSVA score",
+      labs(x = 'Germline Variant Class', y = " GSVA score",
              title = hallmark_to_plot[j]) +
-        theme_minimal() +
-        theme(legend.position = 'none',
-              text = element_text(size = 10),
-              plot.title = element_text(hjust = 0.5)) +
-        scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
+      scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
                                     paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
                                     paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
-        scale_fill_npg() +
-        stat_summary(fun.data=data_summary,
+      scale_fill_npg() +
+      stat_summary(fun.data=data_summary,
                 show.legend = F) + 
-        stat_compare_means(comparisons = comparisons, size = 3)
+      stat_compare_means(comparisons = comparisons, size = 3) +
+      theme_Publication()
         
       ggsave(
         file.path(plot_dir, paste0(hallmark_to_plot[j], "_gsea_score_byGroup_violinPlot.tiff")), 
-        width = 10, height = 8, units = "cm")
+        width = 14, height = 10, units = "cm")
                
   }
   
@@ -444,26 +431,23 @@ for (i in 1:length(repair_gene_source)){
 
       # generate violin plot and save
       ggplot(aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
-        geom_violin(binaxis = "y", stackdir = "center",
+      geom_violin(binaxis = "y", stackdir = "center",
                     show.legend = FALSE) +
-        geom_boxplot(width=0.1, show.legend = FALSE) + 
-        labs(x = 'Germline Variant Class', y = "GSVA score",
+      geom_boxplot(width=0.1, show.legend = FALSE) + 
+      labs(x = 'Germline Variant Class', y = "GSVA score",
              title = kegg_to_plot[j]) +
-        theme_minimal() +
-        theme(legend.position = 'none',
-              text = element_text(size = 10),
-              plot.title = element_text(hjust = 0.5)) +
-        scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
+      scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
                                     paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
                                     paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
-        scale_fill_npg() +
-        stat_summary(fun.data=data_summary,
+      scale_fill_npg() +
+      stat_summary(fun.data=data_summary,
                 show.legend = F) + 
-        stat_compare_means(comparisons = comparisons, size = 3)
+      stat_compare_means(comparisons = comparisons, size = 3) +
+      theme_Publication()
         
       ggsave(
         file.path(plot_dir, paste0(kegg_to_plot[j], "_gsea_score_byGroup_violinPlot.tiff")), 
-        width = 10, height = 8, units = "cm")
+        width = 14, height = 10, units = "cm")
                
   }
   
