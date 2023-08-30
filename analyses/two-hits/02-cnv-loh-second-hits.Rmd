@@ -1,0 +1,158 @@
+---
+title: "Assess somatic CNV and LOH second hits"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This analysis identifies patients with germline P-LP variants in cancer predisposition genes that show subsequent seconds CNV or loss of heterozygosity (LOH) hits in tumors 
+
+Set libraries and file paths
+```{r load libraries}
+# load libraries
+library(tidyverse)
+
+# define directories 
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+analysis_dir <- file.path(root_dir, "analyses", "two-hits")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+data_dir <- file.path(root_dir, "data")
+
+# If the input and results directories do not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# germline P-LP calls 
+plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+
+plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
+
+# add histologies file 
+histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+# cnv file with annotation 
+cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.gz")
+cnv_xy_file <- file.path(data_dir, "consensus_seg_annotated_cn_x_and_y.tsv.gz")
+
+# LOH variant and gene files
+loh_variant_file <- file.path(data_dir, "pbta-plp-all-loh.tsv")
+loh_gene_file <- file.path(input_dir, "pbta-all-gene-loh.tsv.gz")
+
+# cpg file
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+```
+
+Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add histology
+
+```{r}
+# Full P-LP results
+plp_full <- read_tsv(plp_full_file)
+
+# Load abridged P-LP file and append variant coordinates
+germline <- read_tsv(plp_file) %>%
+  left_join(plp_full[,c("Kids_First_Biospecimen_ID", "Hugo_Symbol", "HGVS.c", "Chromosome", "Loc", "Reference", "Alternant_alleles")]) %>%
+  rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
+  dplyr::filter(!is.na(Chromosome))
+
+hist <- read_tsv(histologies_file)
+
+# CPGs
+cpgs <- read_lines(cpg_file)
+multi_cpg <- c(glue::glue("{cpgs};"),
+               glue::glue(";{cpgs}"))
+
+# filter PLP calls for cpgs, and add plot_group and molecular_subtype
+germline <- germline %>%
+  filter(Hugo_Symbol %in% cpgs | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = "|"))
+  )) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor",
+                               "plot_group", "molecular_subtype")]) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
+         plot_group, molecular_subtype,
+         Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
+         Chromosome, Loc, Reference, Alternant_alleles,
+         HGVS.c, HGVS.p)
+```
+
+Load CNV files, and identify patients with germline PLP variant and somatic CNV in same CPG
+```{r}
+# filter cnv to patients in cohort and CPG calls only
+cnv_auto <- read_tsv(cnv_auto_file) %>%
+  filter(biospecimen_id %in% hist$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
+  rename("Hugo_Symbol" = gene_symbol,
+         "Kids_First_Biospecimen_ID_tumor" = biospecimen_id,
+         "CNV_status_somatic" = status,
+         "copy_number_somatic" = copy_number,
+         "ploidy_somatic" = "ploidy") %>%
+  select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
+         CNV_status_somatic)
+
+cnv_xy <- read_tsv(cnv_xy_file) %>%
+  filter(biospecimen_id %in% hist$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
+  rename("Hugo_Symbol" = gene_symbol,
+         "Kids_First_Biospecimen_ID_tumor" = biospecimen_id,
+         "CNV_status_somatic" = status,
+         "copy_number_somatic" = copy_number,
+         "ploidy_somatic" = "ploidy") %>%
+  select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
+         CNV_status_somatic)
+
+# merge cnv tables
+cnv <- cnv_auto %>%
+  bind_rows(cnv_xy)
+
+# merge germline SNV and somatic CNV calls by bs and gene id
+germline_somatic_cnvs <- germline %>%
+  left_join(cnv, by = c("Kids_First_Biospecimen_ID_tumor", "Hugo_Symbol")) %>%
+  dplyr::mutate(CNV_status_somatic = case_when(
+    is.na(CNV_status_somatic) ~ "neutral",
+    TRUE ~ CNV_status_somatic
+  )) %>%
+  distinct()
+```
+
+Read in LOH results, and append LOH scores to rows of `germline_somatic_cnvs`
+```{r}
+loh <- read_tsv(loh_variant_file) %>%
+  rename(Kids_First_Biospecimen_ID_normal = BS_ID,
+         Kids_First_Biospecimen_ID_tumor = BS_ID_tumor,
+         Chromosome = chr,
+         Loc = start,
+         LOH = loh_uncorrected) %>%
+  filter(!is.na(proband_tumor_alt_depth))
+
+
+germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
+  left_join(loh[,c("Kids_First_Biospecimen_ID_tumor", 
+                   "Chromosome", "Loc", "proband_germline_vaf", "proband_tumor_vaf", 
+                   "LOH")], 
+            by = c("Kids_First_Biospecimen_ID_tumor", "Chromosome", "Loc")) %>%
+  distinct()
+
+```
+
+Load gene LOH data and append to `germline_somatic_cnvs_loh`
+```{r}
+loh_gene <- read_tsv(loh_gene_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% germline$Kids_First_Biospecimen_ID_tumor & Hugo_Symbol %in% cpgs) %>%
+  dplyr::rename(gene_LOH = LOH_score) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
+         gene_LOH)
+
+germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
+  left_join(loh_gene)
+
+```
+
+Save CNV and LOH scores for all samples to output
+```{r}
+write_tsv(germline_somatic_cnvs_loh_gene,
+          file.path(results_dir, "germline-somatic-cnv-loh.tsv"))
+```
