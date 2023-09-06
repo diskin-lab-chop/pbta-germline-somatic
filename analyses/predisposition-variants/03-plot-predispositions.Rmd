@@ -31,10 +31,10 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 Set paths for: 
 - histologies file, 
-- germline plp variant file,
+- germline plp variant file
 
 ```{r set paths}
-histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
@@ -46,9 +46,10 @@ predispositions_path_review_file <- file.path(input_dir, "predispositions-path-r
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
 
 ```{r read files}
-hist <- read_tsv(histologies_file,show_col_types = FALSE) 
+hist <- read_tsv(histologies_file, guess_max = 10000, 
+                 show_col_types = FALSE) 
 
-plp <- read_tsv(plp_file,show_col_types = FALSE)
+plp <- read_tsv(plp_file, show_col_types = FALSE)
 
 syndromes <- read_tsv(predispositions_file) %>%
   dplyr::mutate(`Associated Syndrome` = case_when(
@@ -61,9 +62,8 @@ syndromes <- read_tsv(predispositions_file) %>%
 Define cancer predispositions and associated genes
 
 ```{r}
-predispositions <- c("Li-Fraumeni syndrome", "NF-1", "NF-2", "Schwannomatosis", "Tuberous Sclerosis")
-predisposition_genes <- c("TP53", "NF1", "NF2", "LZTR1", "TSC1|TSC2")
-names(predisposition_genes) <- predispositions
+predisposition_genes <- c("Li-Fraumeni syndrome" = "TP53", "NF-1" = "NF1", "NF-2" = "NF2", "Schwannomatosis" = "LZTR1", "Tuberous Sclerosis" = "TSC1|TSC2")
+predispositions <- names(predisposition_genes)
 ```
 
 Loop through cancer predispositions and create a data frame indicating presence/absence of associated gene germline PLP variant
@@ -101,15 +101,17 @@ predisposition_df %>%
 Create bar plot of patients with/without PLP germline variants in gene associated with each cancer predisposition syndrome
 
 ```{r}
-labels <- c("Li-Fraumeni syndrome (TP53)",
-            "NF-1 (NF1)", "NF-2 (NF2)",
-            "Schwannomatosis (LZTR1)",
-            "Tuberous Sclerosis (TSC1/2)")
+labels <- c("Schwannomatosis (LZTR1)",
+            "Li-Fraumeni Syndrome (TP53)",
+            "NF-2 (NF2)",
+            "Tuberous Sclerosis (TSC1/2)",
+            "NF-1 (NF1)")
 
 predisposition_df %>%
   count(predisposition, plp_variant) %>%
   dplyr::mutate(predisposition = fct_relevel(predisposition,
-                                      rev(predispositions))) %>%
+                                      c("Schwannomatosis", "Li-Fraumeni syndrome", 
+                                        "NF-2", "Tuberous Sclerosis", "NF-1"))) %>%
   dplyr::mutate(plp_variant = fct_relevel(plp_variant,
                                       c("Yes", "No"))) %>%
   ggplot(aes(x = n, y = predisposition, fill = plp_variant)) + 
@@ -117,12 +119,13 @@ predisposition_df %>%
            colour = "black") +
   labs(x = "No. patients",
        y = "",
-       fill = "PLP variant") +
-  scale_y_discrete(labels=rev(labels)) +
+       fill = "P/LP variant") +
+  scale_y_discrete(labels=labels) +
   scale_fill_npg() +
   theme_Publication() +
   theme(legend.position = "top") +
-  guides(fill=guide_legend(ncol=2))
+  guides(fill=guide_legend(ncol=2)) +
+  xlim(c(0,30))
 
 ggsave(file.path(plots_dir, "gene-plp-prevalence-by-syndrome.pdf"),
        width = 5, height = 4)
@@ -183,7 +186,7 @@ predisposition_gene_df %>%
            colour = "black") +
   labs(x = "No. patients",
        y = "",
-       fill = "Contained in pathology report") +
+       fill = "Predisposition gene clinically-reported") +
   theme(legend.position = "top") +
   scale_y_discrete(labels=labels) +
   scale_fill_npg() +
