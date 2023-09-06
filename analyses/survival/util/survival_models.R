@@ -7,6 +7,7 @@
 
 # Attach this package
 library(survminer)
+library(patchwork)
 
 # Magrittr pipe
 `%>%` <- dplyr::`%>%`
@@ -318,38 +319,60 @@ plotKM <- function(model,
   
   if (combined == FALSE){
     
+    term <- model$original_data %>%
+      pull(variable)
+    
     if ("OS_days" %in% names(model$original_data)){
       
       event_type <- "OS"
       
-      diff_obj <- survdiff(survival::Surv(OS_days, OS_status) ~ cpgPLP_status,  
+      diff_obj <- survdiff(survival::Surv(OS_days, OS_status) ~ term,  
                            model$original_data)
       diff_pvalue <- 1 - pchisq(diff_obj$chisq, length(diff_obj$n) - 1)
       diff_pvalue_formatted <- format(
         signif(diff_pvalue, 2),
         scientific = FALSE)
       
+      pvalue_label <- ifelse(diff_pvalue_formatted < 0.001, 
+                             paste0(event_type, " P < 0.001"),
+                             paste0(event_type, " P = ", diff_pvalue_formatted))
+      
+      levels <- model$original_data %>%
+        filter(!is.na(OS_days)) %>%
+        pull(variable) %>%
+        unique()
+      
+      levels <- levels[!is.na(levels)]
+      levels <- levels[order(levels)]
     }
     
     if ("EFS_days" %in% names(model$original_data)){
       
       event_type <- "EFS"
       
-      diff_obj <- survdiff(survival::Surv(EFS_days, EFS_status) ~ cpgPLP_status,  
+      diff_obj <- survdiff(survival::Surv(EFS_days, EFS_status) ~ term,  
                            model$original_data)
       diff_pvalue <- 1 - pchisq(diff_obj$chisq, length(diff_obj$n) - 1)
       diff_pvalue_formatted <- format(
         signif(diff_pvalue, 2),
         scientific = FALSE)
       
+      pvalue_label <- ifelse(diff_pvalue_formatted < 0.001, 
+                             paste0(event_type, " P < 0.001"),
+                             paste0(event_type, " P = ", diff_pvalue_formatted))
+      
+      levels <- model$original_data %>%
+        filter(!is.na(EFS_days)) %>%
+        pull(variable) %>%
+        unique()
+      
+      levels <- levels[!is.na(levels)]
+      levels <- levels[order(levels)]
+      
     }
     
-    levels <- model$original_data %>%
-      pull(variable) %>%
-      unique()
-    levels <- levels[order(levels)]
-    
-    colors <- colorblindr::palette_OkabeIto[1:length(levels)]
+    colors <- colorblindr::palette_OkabeIto[1:(length(levels)+1)]
+    colors <- colors[-4]
     lines <- c(rep("solid", length(levels)), 
                rep("dashed", length(levels)))
     labels <- glue::glue("{event_type}:{levels}")
@@ -374,8 +397,8 @@ plotKM <- function(model,
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
                         200, 0.15, 
-                        label = paste0(event_type, " P = ", diff_pvalue_formatted)) +
-      theme(legend.text = element_text(size = 16, color = "black", face = "bold")) +
+                        label = pvalue_label) +
+      theme(legend.text = element_text(size = 16, color = "black")) +
       cowplot::background_grid()
     
     km_plot_table <- km_plot$table
@@ -404,7 +427,8 @@ plotKM <- function(model,
     levels_os <- unique(variable_os[!is.na(data_os$OS_days)][order(variable_os[!is.na(data_os$OS_days)])])
     levels_os <- levels_os[!is.na(levels_os)]
     
-    os_palette <- colorblindr::palette_OkabeIto[1:length(levels_os)]
+    os_palette <- colorblindr::palette_OkabeIto[1:(length(levels_os)+1)]
+    os_palette <- os_palette[-4]
     
     variable_efs <- data_efs %>%
       pull(variable)
@@ -428,12 +452,20 @@ plotKM <- function(model,
       signif(diff_os_pvalue, 2),
       scientific = FALSE)
     
+    os_pvalue_label <- ifelse(diff_os_pvalue_formatted < 0.001, 
+                              "OS P < 0.001",
+                              paste0("OS P = ", diff_os_pvalue_formatted))
+    
     diff_efs_obj <- survdiff(survival::Surv(EFS_days, EFS_status) ~ variable_efs,  
                              data_efs)
     diff_efs_pvalue <- 1 - pchisq(diff_efs_obj$chisq, length(diff_efs_obj$n) - 1)
     diff_efs_pvalue_formatted <- format(
       signif(diff_efs_pvalue, 2),
       scientific = FALSE)
+    
+    efs_pvalue_label <- ifelse(diff_efs_pvalue_formatted < 0.001, 
+                               "EFS P < 0.001",
+                               paste0("EFS P = ", diff_efs_pvalue_formatted))
     
     km_plot <- survminer::ggsurvplot(fit = fit, 
                                      data = data_efs,
@@ -455,10 +487,10 @@ plotKM <- function(model,
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
                         300, 0.15, 
-                        label = paste0("OS P = ", diff_os_pvalue_formatted)) +
+                        label = os_pvalue_label) +
       ggplot2::annotate("text", 
                         300, 0.10, 
-                        label = paste0("EFS P = ", diff_efs_pvalue_formatted)) +
+                        label = efs_pvalue_label) +
       theme(legend.key.size = unit(1, 'cm')) +
       cowplot::background_grid()
     
