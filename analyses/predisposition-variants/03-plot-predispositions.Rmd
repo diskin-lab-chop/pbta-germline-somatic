@@ -19,7 +19,6 @@ suppressPackageStartupMessages({
 })
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "predisposition-variants")
@@ -79,7 +78,7 @@ suppressWarnings(
   
   predisposition_list[[predisposition]] <- hist %>%
     filter(grepl(predisposition, cancer_predispositions)) %>%
-    dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal) %>%
+    dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, sample_id_tumor, plot_group, molecular_subtype) %>%
     dplyr::mutate(predisposition = predisposition) %>%
     dplyr::mutate(plp_variant = case_when(
       Kids_First_Biospecimen_ID_normal %in% plp$Kids_First_Biospecimen_ID[plp$Hugo_Symbol %in% genes] ~ "Yes",
@@ -89,6 +88,14 @@ suppressWarnings(
 )
 
 predisposition_df <- Reduce(rbind, predisposition_list)
+```
+
+Filter for patients that do not show P-LP variant associated with predisposition syndrome, and write to output
+```{r}
+predisposition_df %>%
+  dplyr::filter(plp_variant == "No") %>%
+  write_tsv(file.path(results_dir, "predisposition-patients-no-plp-variants.tsv"))
+  
 ```
 
 Create bar plot of patients with/without PLP germline variants in gene associated with each cancer predisposition syndrome
