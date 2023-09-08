@@ -68,9 +68,6 @@ RUN ./install_bioc.r \
 # Maftools
 RUN ./install_github.r \
 	PoisonAlien/maftools
-	
-#RUN ./install_github.r \
-#	clauswilke/colorblindr
 
 
 # Patchwork for plot compositions
