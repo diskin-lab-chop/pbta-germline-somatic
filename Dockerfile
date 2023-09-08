@@ -48,6 +48,7 @@ RUN install2.r \
   ggpubr \
   ggthemes \
   msigdbr \
+  openxlsx \
 	optparse \
 	pheatmap \
 	RColorBrewer \
@@ -68,13 +69,13 @@ RUN ./install_bioc.r \
 RUN ./install_github.r \
 	PoisonAlien/maftools
 	
-RUN ./install_github.r \
-	clauswilke/colorblindr
+#RUN ./install_github.r \
+#	clauswilke/colorblindr
 
 
 # Patchwork for plot compositions
 RUN ./install_github.r  'thomasp85/patchwork' --ref 'c67c6603ba59dd46899f17197f9858bc5672e9f4'
-
+RUN ./install_github.r 'clauswilke/colorblindr' --ref '90d64f8fc50bee7060be577f180ae019a9bbbb84'
 
 
 # Install pip3 and python reqs for oncokb
