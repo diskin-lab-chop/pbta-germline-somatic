@@ -18,18 +18,20 @@ data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "demo-clin-stats")
 plots_dir <- file.path(analysis_dir, "plots")
 
-# If the input and results directories do not exist, create it
-if (!dir.exists(results_dir)) {
-  dir.create(results_dir, recursive = TRUE)
+# If the plots directory does not exist, create it
+if (!dir.exists(plots_dir)) {
+  dir.create(plots_dir, recursive = TRUE)
 }
 
-## Set file paths
+# Call plotting theme script
+source(file.path(root_dir, "figures", "theme.R"))
 
+
+## Set file paths
 cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 
 ## Read histologies file
-
 hist <- read_tsv(cbtn_histologies_file)
 
 
@@ -38,6 +40,7 @@ okabe_palette <- colorblindr::palette_OkabeIto[c(1:3,5:6)]
 names(okabe_palette) <- c("AFR", "AMR", "EAS", "EUR", "SAS")
 
 
+# Plot PC1 and PC2
 pdf(file.path(plots_dir, "predicted-ancestry-pca.pdf"),
     height = 4, width = 10)
 
@@ -51,7 +54,7 @@ pc12 <- hist %>%
   labs(fill = "predictd ancestry") +
   theme_Publication()
 
-
+# Plot PC3 and PC4
 pc34 <- hist %>%
   ggplot(aes(x = PC3, y = PC4, fill = predicted_ancestry)) +
   geom_point(size=2, shape=23) +
