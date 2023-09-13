@@ -1,5 +1,5 @@
 Hugo_Symbol	Associated Syndrome
-
+	
 BRCA1	BRCA1/2
 BRCA2	BRCA1/2
 CHEK2	CHEK2
@@ -7,10 +7,10 @@ APC	Familial Adenomatous Polyposis
 PTCH1	Gorlin syndrome
 SUFU	Gorlin syndrome
 TP53	Li-Fraumeni syndrome
-PMS2	Lynch syndrome
-MLH1	Lynch syndrome
-MSH2	Lynch syndrome
-MSH6	Lynch syndrome
+PMS2	LS or CMMRD
+MLH1	LS or CMMRD
+MSH2	LS or CMMRD
+MSH6	LS or CMMRD
 NF1	NF-1
 NF2	NF-2
 RB1	Retinoblastoma
