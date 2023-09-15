@@ -55,19 +55,22 @@ syndromes <- read_tsv(predispositions_file) %>%
   dplyr::mutate(`Associated Syndrome` = case_when(
     `Associated Syndrome` == "Familial Adenomatous Polyposis" ~ "FAP",
     `Associated Syndrome` == "Rhabdoid Tumor Predisposition syndrome" ~ "RTPS",
+    `Associated Syndrome` == "ELP1 Medulloblastoma Syndrome" ~ "ELP1 MB syndrome",
+    `Associated Syndrome` == "Melanoma Astrocytoma Syndrome" ~ "MAS",
+    `Associated Syndrome` == "BAP1 Tumor Predisposition Syndrome" ~ "BAP1-TPS",
     TRUE ~ `Associated Syndrome`
   ))
+
+syndrome_genes <- syndromes$Hugo_Symbol
 ```
 
 Define cancer predispositions and associated genes
-
 ```{r}
 predisposition_genes <- c("Li-Fraumeni syndrome" = "TP53", "NF-1" = "NF1", "NF-2" = "NF2", "Schwannomatosis" = "LZTR1", "Tuberous Sclerosis" = "TSC1|TSC2")
 predispositions <- names(predisposition_genes)
 ```
 
 Loop through cancer predispositions and create a data frame indicating presence/absence of associated gene germline PLP variant
-
 ```{r}
 predisposition_list <- list()
 
@@ -99,7 +102,6 @@ predisposition_df %>%
 ```
 
 Create bar plot of patients with/without PLP germline variants in gene associated with each cancer predisposition syndrome
-
 ```{r}
 labels <- c("Schwannomatosis (LZTR1)",
             "Li-Fraumeni Syndrome (TP53)",
@@ -131,55 +133,51 @@ ggsave(file.path(plots_dir, "gene-plp-prevalence-by-syndrome.pdf"),
        width = 5, height = 4)
 ```
 
+Load path report review and incidental findings summary, and change incidental findings to "No" when predisposition is recorded in path review 
 ```{r}
-syndrome_genes <- syndromes$Hugo_Symbol
-recorded_predispositions <- c("Li-Fraumeni syndrome", 
-                              "NF-1", "NF-2", 
-                              "Schwannomatosis", 
-                              "Tuberous Sclerosis")
-
 predispositions_path_review <- read_tsv(predispositions_path_review_file)
 
-predisposition_gene_list <- list()
+incidental_df <- read_tsv(file.path(results_dir, "incidental-findings-predisposition-variants.tsv"))
 
-for (gene in syndrome_genes){
-  gene_plp <- plp %>%
-    filter(Hugo_Symbol == gene)
-  
-  syndrome <- syndromes$`Associated Syndrome`[syndromes$Hugo_Symbol == gene]
-  
-  predisposition_gene_list[[gene]] <- hist %>%
-    filter(Kids_First_Biospecimen_ID_normal %in% gene_plp$Kids_First_Biospecimen_ID) %>%
-    dplyr::select(Kids_First_Biospecimen_ID_normal, cancer_predispositions) %>%
-    dplyr::mutate(Hugo_Symbol = gene) %>%
-    dplyr::mutate(associated_syndrome = syndrome) %>%
-    dplyr::mutate(predisposition = case_when(
-      grepl(syndrome, cancer_predispositions) ~ "Yes",
-      Kids_First_Biospecimen_ID_normal %in% predispositions_path_review$Kids_First_Biospecimen_ID_normal ~ "Yes",
-      TRUE ~ "No"
-    )) %>%
-    select(-cancer_predispositions)
-  
-}
+incidental_df <- incidental_df %>%
+  dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID) %>%
+  left_join(predispositions_path_review[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "cancer_predispositions_path")]) %>%
+  dplyr::rename("path_report_findings" = cancer_predispositions_path) %>%
+  dplyr::mutate(path_report_findings = case_when(
+    !is.na(path_report_findings) ~ glue::glue("{path_report_findings} confirmed"),
+    is.na(path_report_findings) ~ ""
+  ),
+  incidental_finding = case_when(
+    incidental_finding == "No" | path_report_findings != "" ~ "No",
+    TRUE ~ "Yes"
+  ))
 
-predisposition_gene_df <- Reduce(rbind, predisposition_gene_list)
+# Save update incidental findings
+write_tsv(incidental_df,
+          file.path(results_dir, "incidental-findings-predisposition-variants-path-review.tsv"))
+
 ```
 
-
+Plot predisposition gene variant count, and distinguish between patients who have predisposition reporter vs. those who do not
 ```{r}
-
-total_cts <- predisposition_gene_df %>%
+# Calculate predisposition gene counts for ordering plot
+total_cts <- incidental_df %>%
   count(Hugo_Symbol) %>%
   arrange(n)
 
+# Define plot labels
 labels <- glue::glue("{syndrome_genes} ({syndromes$`Associated Syndrome`})")
 names(labels) <- syndrome_genes
 
-predisposition_gene_df %>%
+incidental_df %>%
+  dplyr::mutate(predisposition = case_when(
+    incidental_finding == "Yes" ~ "No",
+    incidental_finding == "No" ~ "Yes"
+  )) %>%
   count(Hugo_Symbol, predisposition) %>%
-  mutate(Hugo_Symbol = fct_relevel(Hugo_Symbol,
+  dplyr::mutate(Hugo_Symbol = fct_relevel(Hugo_Symbol,
                                       total_cts$Hugo_Symbol)) %>%
-  mutate(predisposition = fct_relevel(predisposition,
+  dplyr::mutate(predisposition = fct_relevel(predisposition,
                                       c("Yes", "No"))) %>%
   ggplot(aes(x = n, y = Hugo_Symbol, fill = predisposition)) + 
   geom_bar(stat = "identity", 
@@ -195,6 +193,6 @@ predisposition_gene_df %>%
   guides(fill=guide_legend(ncol=3))
 
 ggsave(file.path(plots_dir, "syndrome-prevalence-by-gene.pdf"),
-       width = 7, height = 5)
+       width = 7, height = 6)
 ```
 
