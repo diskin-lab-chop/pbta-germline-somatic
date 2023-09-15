@@ -64,6 +64,8 @@ Comparison of mutational signatures between HGG samples with and without germlin
 - DNA repair gene list: run comparative analyses using two separate DNA repair gene lists (one obtained from Knijnenburg et al. 2021 paper, another from Broad GSEA gene list)
 - Pairwise comparisons; run separate comparative analyses of mutational signatures, considering 1) All patients with germline DNA repair variants vs. those without, 2) All patients with germline MMR gene variants vs. those without, 3) All patients with germline BRCA/BRCA-interacting gene variants vs. those without, and 4) all patients with other DNA repair germline variants vs. those without DNA repair variants. 
 
+Consistent with [current practices](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6357558/pdf/bbx082.pdf), we set signature exposures < 0.06 to zero to exclude spurious signatures. 
+
 ```{r read mut sigs}
 
 # Define cosmicV3 results files, one excluding and one including SBS39 from analysis 
@@ -283,7 +285,6 @@ for (i in 1:length(cosmic_files)){
     dna_repair_plp <- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
   
     # Define BS_ids for normal and corresponding tumor IDs for each sample group 
-    
     mmr_germline <- dna_repair_plp %>%
       filter(MMR == "Yes") %>%
       distinct(Kids_First_Biospecimen_ID) %>%
@@ -335,38 +336,39 @@ for (i in 1:length(cosmic_files)){
                                               c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
                )
       
+      # data_summary <- function(x) {
+      #    m <- mean(x)
+      #    ymin <- m-sd(x)
+      #    ymax <- m+sd(x)
+      #    return(c(y=m,ymin=ymin,ymax=ymax))
+      # }
+      # 
+      # comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"), 
+      #                     c("MMR", "Non-repair"))
+      # 
+      # comparisons_brca <- list(c("BRCA/interacting", "MMR"), c("BRCA/interacting", "Other repair"), 
+      #                     c("BRCA/interacting", "Non-repair"))
+      # 
+      #         
+      # sbs_df %>%
+      #   # generate violin plot and save 
+      #   ggplot(aes(x = germline_variant, y = exposure, fill = germline_variant)) +
+      #     geom_violin(binaxis = "y", stackdir = "center") +
+      #     geom_boxplot(width=0.1) + 
+      #     labs(x = 'Germline Variant Class', y = paste0(plot_sigs[k], " Exposure")) +
+      #     theme_minimal() +
+      #     theme(legend.position = 'none',
+      #           text = element_text(size = 12)) +
+      #     scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
+      #                                 paste0("BRCA/interacting\n (n=", length(brca_ids), ")"),
+      #                                 paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
+      #                                 paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
+      #     scale_fill_npg() +
+      #     stat_summary(fun.data=data_summary,
+      #           show.legend = F) + 
+      #     stat_compare_means(comparisons = comparisons_mmr, size = 3)
       
-      data_summary <- function(x) {
-         m <- mean(x)
-         ymin <- m-sd(x)
-         ymax <- m+sd(x)
-         return(c(y=m,ymin=ymin,ymax=ymax))
-      }
-      
-      comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"), 
-                          c("MMR", "Non-repair"))
-      
-      comparisons_brca <- list(c("BRCA/interacting", "MMR"), c("BRCA/interacting", "Other repair"), 
-                          c("BRCA/interacting", "Non-repair"))
-      
-              
-      sbs_df %>%
-        # generate violin plot and save 
-        ggplot(aes(x = germline_variant, y = exposure, fill = germline_variant)) +
-          geom_violin(binaxis = "y", stackdir = "center") +
-          geom_boxplot(width=0.1) + 
-          labs(x = 'Germline Variant Class', y = paste0(plot_sigs[k], " Exposure")) +
-          theme_minimal() +
-          theme(legend.position = 'none',
-                text = element_text(size = 12)) +
-          scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
-                                      paste0("BRCA/interacting\n (n=", length(brca_ids), ")"),
-                                      paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
-                                      paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
-          scale_fill_npg() +
-          stat_summary(fun.data=data_summary,
-                show.legend = F) + 
-          stat_compare_means(comparisons = comparisons_mmr, size = 3)
+      plot_exposure_violin(sbs_df, "germline_variant", y = "exposure", plot_sigs[k])
           
         ggsave(
           file.path(plot_dir, paste0(plot_sigs[k], "_signature_byGroup_", cosmic_ids[i], "_violinPlot.tiff")), 
@@ -482,7 +484,6 @@ for (i in 1:length(cosmic_files)){
                                               c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
                )
       
-                  
       sbs3_df %>%
         filter(exposure > 0.06) %>%
         rename("SBS3_exposure" = exposure) %>%
@@ -495,8 +496,12 @@ for (i in 1:length(cosmic_files)){
                plot_group, molecular_subtype, SBS3_exposure, 
                germline_variant, Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, paste0("PBTA_all_samples_with_SBS3sigs_", cosmic_ids[i], ".tsv")))
-      
 
   }
 }
+```
+
+```{r}
+sessionInfo()
+
 ```
