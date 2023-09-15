@@ -1,7 +1,8 @@
-## Plot PBTA ancestry
+## Plot PBTA ancestry prediction from Somalier analysis
 
 ## Ryan Corbett
 ## 2023
+
 
 #### Load packagers
 
@@ -30,17 +31,16 @@ source(file.path(root_dir, "figures", "theme.R"))
 ## Set file paths
 cbtn_histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-
 ## Read histologies file
 hist <- read_tsv(cbtn_histologies_file)
 
-
 # define colorblind-friendly palette
 okabe_palette <- colorblindr::palette_OkabeIto[c(1:3,5:6)]
+
+# assign predicted ancestries to each palette color: African (AFR), admixed American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS)
 names(okabe_palette) <- c("AFR", "AMR", "EAS", "EUR", "SAS")
 
-
-# Plot PC1 and PC2
+# Plot PC1 and PC2 from Somalier ancestry prediction
 pdf(file.path(plots_dir, "predicted-ancestry-pca.pdf"),
     height = 4, width = 10)
 
