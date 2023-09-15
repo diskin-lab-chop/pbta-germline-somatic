@@ -71,7 +71,7 @@ plp_predisposition_syndromes <- hist %>%
   dplyr::rename("associated_syndrome" = `Associated Syndrome`,
                 "clinically_reported_syndrome" = cancer_predispositions) %>%
   dplyr::mutate(incidental_finding = case_when(
-    !str_detect(associated_syndrome, clinically_reported_syndrome) ~ "Yes",
+    !str_detect(clinically_reported_syndrome, associated_syndrome) ~ "Yes",
     TRUE ~ "No"
   )) %>%
   select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID, plot_group, molecular_subtype, 
