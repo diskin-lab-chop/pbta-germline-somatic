@@ -61,8 +61,7 @@ maf <- data.table::fread(maf_file, data.table = F) %>%
 
 
 Comparison of mutational signatures between HGG samples with and without germline variants in DNA repair genes will be performed through multiple loops to change the following parameters: 
-- COSMICv3 input file: run mutational signatures comparative analyses using results obtained when including SBS39 AND when excluding SBS39
-- DNA repair gene list: run comparative analyses using two separate DNA repair gene lists (one obtained from Knijnenburg et al. 2021 paper, another from Broad GSEA gene list)
+- DNA repair gene list: run comparative analyses using two separate DNA repair gene lists (one obtained from [Knijnenburg et al. 2021 paper](https://pubmed.ncbi.nlm.nih.gov/29617664/), another from [Broad GSEA gene lists](https://www.gsea-msigdb.org/gsea/msigdb/human/genesets.jsp?collection=CP:KEGG))
 - Pairwise comparisons; run separate comparative analyses of mutational signatures, considering 1) All patients with germline DNA repair variants vs. those without, 2) All patients with germline MMR gene variants vs. those without, 3) All patients with germline BRCA/BRCA-interacting gene variants vs. those without, and 4) all patients with other DNA repair germline variants vs. those without DNA repair variants. 
 
 Consistent with [current practices](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6357558/pdf/bbx082.pdf), we set signature exposures < 0.06 to zero to exclude spurious signatures. 
@@ -122,13 +121,13 @@ for (j in 1:length(repair_gene_source)){
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
 
-  hr_germline <- dna_repair_plp %>%
+  brca_germline <- dna_repair_plp %>%
     filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", Hugo_Symbol)) %>%
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
   
   otherRepair_germline <- dna_repair_plp %>%
-    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, hr_germline)) %>%
+    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, brca_germline)) %>%
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
   
@@ -137,8 +136,8 @@ for (j in 1:length(repair_gene_source)){
     pull(Kids_First_Biospecimen_ID_normal)
     
   # define list of BS_ids in each group, and names for subsequent plots
-  sample_list <- list(allRepair_germline, mmr_germline, hr_germline, otherRepair_germline)
-  names(sample_list) <- c("All_repair", "MMR", "HR", "Other_repair")
+  sample_list <- list(allRepair_germline, mmr_germline, brca_germline, otherRepair_germline)
+  names(sample_list) <- c("All_repair", "MMR", "BRCA", "Other_repair")
   
   plot_names <- c("DNA repair", "MMR", "BRCA/BRCA-interacting", "Other DNA repair")
   
