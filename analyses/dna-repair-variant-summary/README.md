@@ -9,9 +9,9 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
 ## Folder content 
 
 1. `01-get-dna-repair-variant-samples.Rmd` identifies and plots summary of germline samples with P-LP variants in DNA repair genes. 
-2. `02-mutational-signatures.Rmd` compares mutational signature exposure levels in high-grade glioma patients with versus without germline P-LP variants in DNA repair genes
-3. `03-run-gsva-comparison.Rmd` compares gene set variation analysis (GSVA) scores in high-grade glioma patients with versus without germline P-LP variants in DNA repair genes
-4. `run-kegg-gsva.R` runs GSVA analysis of KEGG pathways in PBTA samples 
+2. `02-mutational-signatures.Rmd` compares mutational signature exposure levels in high-grade glioma patients with versus without germline P-LP variants in DNA repair genes.
+3. `03-run-gsva-comparison.Rmd` compares gene set variation analysis (GSVA) scores in high-grade glioma patients with versus without germline P-LP variants in DNA repair genes.
+4. `run-kegg-gsva.R` runs GSVA analysis of KEGG pathways in PBTA samples. 
 
 4. `input/` directory contains the following files:
   - `COSMICv3.3_signature_exposures_therapyFiltered_pretx.tsv`
@@ -26,14 +26,14 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
   - `pbta-hallmark-gsva-scores.tsv`
     
 
-3. `results/` directory contains the following files: 
+3. `results/` directory contains the following files in both `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/`: 
   - `pbta-kegg-gsva-scores.tsv`
   - mutational signatures and gsva score differences tables in HGG tumors of patients with vs without DNA repair gene germline P-LP variants. 
   
-4. `plots/` directory contains the following figures in both the `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/`: 
+4. `plots/` directory contains the following figures in both `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/`: 
   - Summary and enrichment of DNA repair genes by histology (`dna_repair_samples_by_plot_group_*` and `dna_repair_enr_by_plot_group_*`)
   - Bar plots of COSMICv3 signature exposure differences in HGG patients with versus without P-LP variants in DNA repair genes. 
-  - Violin plots of COSMICv3 signature exposure weights in HGG patients with 1) MMR gene P-LP variants, 2) BRCA/BRCA-interacting gene P-LP variants, and 3) No DNA repair germline variants
+  - Violin plots of COSMICv3 signature exposure weights in HGG patients with 1) MMR gene P-LP variants, 2) BRCA/BRCA-interacting gene P-LP variants, and 3) No DNA repair germline variants.
   - Bar plots of GSVA score differences in HGG patients with versus without P-LP variants in DNA repair genes. 
-  - Violin plots of GSVA scores in HGG patients with 1) MMR gene P-LP variants, 2) BRCA/BRCA-interacting gene P-LP variants, and 3) No DNA repair germline variants
+  - Violin plots of GSVA scores in HGG patients with 1) MMR gene P-LP variants, 2) BRCA/BRCA-interacting gene P-LP variants, and 3) No DNA repair germline variants.
   
