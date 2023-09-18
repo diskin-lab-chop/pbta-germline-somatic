@@ -14,7 +14,6 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
 4. `run-kegg-gsva.R` runs GSVA analysis of KEGG pathways in PBTA samples. 
 
 4. `input/` directory contains the following files:
-  - `COSMICv3.3_signature_exposures_therapyFiltered_pretx.tsv`
   - `COSMICv3.3_signature_exposures_SBS39_included.tsv`
   - `broad/` and `Knijnenburg_paper/` contain the following DNA repair pathway gene lists from GSEA and Knijnenburg et al. 2021:
       - `dna_repair_all.txt`
