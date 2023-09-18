@@ -116,11 +116,18 @@ for (i in 1:length(repair_gene_source)){
     
     # add plot group 
     left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = 'Kids_First_Biospecimen_ID_normal') %>%
-    count(class, plot_group, plot_group_hex) %>%
+    count(class, plot_group, plot_group_hex)
   
-    mutate(class = factor(class)) %>% 
-    mutate(class = fct_relevel(class, c("BER", "HR", "MMR",
-                                       "NER", "NHEJ", "Other")))
+    # define x axis order  
+    level_order <- plot_df %>%
+      group_by(class) %>%
+      summarise(total_n = sum(n)) %>%
+      arrange(total_n) %>%
+      pull(class)
+    
+    plot_df <- plot_df %>%
+      dplyr::mutate(class = factor(class)) %>%
+      dplyr::mutate(class = fct_relevel(class, level_order))
     
     # define plot group pallete 
     plot_group_palette <- plot_df$plot_group_hex

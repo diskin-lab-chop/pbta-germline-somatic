@@ -71,13 +71,12 @@ histology_rna_df <- histology_df %>%
   dplyr::filter(cohort != "TCGA") %>%
   dplyr::filter(!is.na(broad_histology)) %>%
   dplyr::filter(broad_histology != "Non-tumor") %>%  
-  dplyr::filter(broad_histology != "Other tumor") %>%
   dplyr::filter(!is.na(cancer_group)) 
 
 
 # First filter expression data to exclude GTEx and TCGA
 expression_data <- expression_data %>% 
-  dplyr::select(histology_rna_df$Kids_First_Biospecimen_ID)
+  dplyr::select(any_of(c(histology_rna_df$Kids_First_Biospecimen_ID)))
 
 # for each type of the RNA library, we subset the expression matrix accordingly and run gsea scores for each RNA library 
 rna_library_list <- histology_rna_df %>% pull(RNA_library) %>% unique()
@@ -98,7 +97,7 @@ for(i in 1:length(rna_library_list)){
   # Filter the expression data to this RNA library type
   # Subset to the remaining samples 
   expression_data_each <- expression_data %>% 
-    dplyr::select(rna_library_type_bs_id)
+    dplyr::select(any_of(c(rna_library_type_bs_id)))
   
   ### Rownames are genes and column names are samples
   expression_data_each_log2_matrix <- as.matrix( log2(expression_data_each + 1) )

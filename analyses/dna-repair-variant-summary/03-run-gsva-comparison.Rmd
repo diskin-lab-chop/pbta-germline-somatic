@@ -20,12 +20,12 @@ library(ggsci)
 library(ggpubr)
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
 input_dir <- file.path(analysis_dir, "input")
 
+source(file.path(analysis_dir, "util", "gsva_functions.R"))
 source(file.path(root_dir, "figures", "theme.R"))
 ```
 
@@ -111,21 +111,21 @@ for (i in 1:length(repair_gene_source)){
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
   
-  hr_germline <- dna_repair_plp %>%
+  brca_germline <- dna_repair_plp %>%
     filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
     filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
 
   otherRepair_germline <- dna_repair_plp %>%
-    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, hr_germline) & Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, brca_germline) & Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
     
    # define list of BS_ids in each group, and names for subsequent plots
-  sample_list <- list(allRepair_germline, mmr_germline, hr_germline, otherRepair_germline)
-  names(sample_list) <- c("All_repair", "MMR", "HR", "Other_repair")
-  plot_names <- c("All DNA repair", "MMR", "BRCA/BRCA-interacting", "Other DNA repair")
+  sample_list <- list(allRepair_germline, mmr_germline, brca_germline, otherRepair_germline)
+  names(sample_list) <- c("All_repair", "MMR", "BRCA", "Other_repair")
+  plot_names <- c("DNA repair", "MMR", "BRCA/BRCA-interacting", "Other DNA repair")
   
   # Loop through sample lists to compare GSVA scores between group of interest and samples without DNA repair germline variants
   for (j in 1:length(sample_list)){
@@ -179,28 +179,14 @@ for (i in 1:length(repair_gene_source)){
     
     # create barplot of score differences between groups
     gsva_res <- gsva_res %>%
-      dplyr::filter(!is.na(pvalue) & abs(score_diff) > 0.1) %>%
-      dplyr::arrange(desc(score_diff))
+      dplyr::filter(!is.na(pvalue) & abs(score_diff) > 0.1)
     
-    gsva_res %>%
-      mutate(hallmark = factor(hallmark,
-                               gsva_res$hallmark)) %>%
-      dplyr::mutate(x_pos = as.numeric(rownames(gsva_res))) %>%
+    gsva_barplot(gsva_res, "score_diff", "hallmark", plot_names[j])
       
-      ggplot(aes(x = score_diff, y = hallmark,
-                 label = ifelse(pvalue < 0.05, "*", ""))) +
-      geom_bar(stat="identity", color = "black") +
-      labs(x = 'GSEA score difference', y = NULL,
-             title = paste0(plot_names[j], " germline vs. other")) +
-      geom_hline(yintercept = 0) + 
-      xlim(-0.2, 0.4) +
-      geom_text(hjust = -0.5, vjust = 0.75, size = 7) +
-      scale_fill_npg() + 
-      theme_Publication()
 
     ggsave(
       file.path(plot_dir, paste0("HALLMARK_gsva_diff_", names(sample_list)[j], "_vs_other.tiff")), 
-      width = 20, height = 14, units = "cm")
+      width = 15, height = 10, units = "cm")
     
     #define data frame to store KEGG GSVA scores, differences between groups, and corresponding test statistic p-values
     kegg_res <- data.frame(pathway = kegg_pathways,
@@ -232,31 +218,13 @@ for (i in 1:length(repair_gene_source)){
 
     # create barplot of score differences between groups
     kegg_res <- kegg_res %>%
-      filter(!is.na(pvalue) & abs(score_diff) > 0.175) %>%
-      arrange(desc(score_diff))
-   
-    kegg_res %>%
-      dplyr::mutate(pathway = factor(pathway)) %>%
-      dplyr::mutate(pathway = fct_relevel(pathway,
-                                    kegg_res$pathway)
-                    ) %>%
-      dplyr::mutate(x_pos = as.numeric(rownames(kegg_res))) %>%
+      filter(!is.na(pvalue) & abs(score_diff) > 0.175 & !grepl("GLYCOS", pathway))
 
-      ggplot(aes(x = score_diff, y = pathway,
-                 label = ifelse(pvalue < 0.05, "*", ""))) +
-      geom_bar(stat="identity", color = "black",
-                 show.legend = FALSE) +
-      labs(x = 'GSVA score difference', y = NULL, fill = NULL,
-             title = paste0(plot_names[j], " germline vs. other")) +
-      geom_vline(xintercept = 0) +
-      xlim(-0.2, 0.4) +
-      geom_text(hjust = -0.5, vjust = 0.75, size = 7) +
-      scale_fill_npg() +
-      theme_Publication()
+    gsva_barplot(kegg_res, "score_diff", "pathway", plot_names[j])
 
     ggsave(
       file.path(plot_dir, paste0("KEGG_gsva_diff_", names(sample_list)[j], "_vs_other.tiff")),
-      width = 20, height = 14, units = "cm")
+      width = 15, height = 10, units = "cm")
 
     }
 }
@@ -340,36 +308,7 @@ for (i in 1:length(repair_gene_source)){
                                             c("MMR", "BRCA/interacting", "Non-repair"))
              )
     
-    # Define function to return standard deviations
-    data_summary <- function(x) {
-       m <- mean(x)
-       ymin <- m-sd(x)
-       ymax <- m+sd(x)
-       return(c(y=m,ymin=ymin,ymax=ymax))
-    }
-
-    comparisons <- list(c("MMR", "BRCA/interacting"), c("MMR", "Non-repair"),
-                        c("BRCA/interacting", "Non-repair"))
-
-    
-    score_df %>%
-      
-      # generate violin plot and save
-      ggplot(aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
-      geom_violin(binaxis = "y", stackdir = "center",
-                    show.legend = FALSE) +
-      geom_boxplot(width=0.1,
-                    show.legend = FALSE) + 
-      labs(x = 'Germline Variant Class', y = " GSVA score",
-             title = hallmark_to_plot[j]) +
-      scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
-                                    paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
-                                    paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
-      scale_fill_npg() +
-      stat_summary(fun.data=data_summary,
-                show.legend = F) + 
-      stat_compare_means(comparisons = comparisons, size = 3) +
-      theme_Publication()
+    gsva_violin(score_df, "germline_variant", "gsea_score", hallmark_to_plot[j])
         
       ggsave(
         file.path(plot_dir, paste0(hallmark_to_plot[j], "_gsea_score_byGroup_violinPlot.tiff")), 
@@ -417,33 +356,7 @@ for (i in 1:length(repair_gene_source)){
       dplyr::mutate(germline_variant = factor(germline_variant,
                                        c("MMR", "BRCA/interacting", "Non-repair")))
     
-    data_summary <- function(x) {
-       m <- mean(x)
-       ymin <- m-sd(x)
-       ymax <- m+sd(x)
-       return(c(y=m,ymin=ymin,ymax=ymax))
-    }
-
-    comparisons <- list(c("MMR", "BRCA/interacting"), c("MMR", "Non-repair"),
-                        c("BRCA/interacting", "Non-repair"))
-
-    score_df %>%
-
-      # generate violin plot and save
-      ggplot(aes(x = germline_variant, y = gsea_score, fill = germline_variant)) +
-      geom_violin(binaxis = "y", stackdir = "center",
-                    show.legend = FALSE) +
-      geom_boxplot(width=0.1, show.legend = FALSE) + 
-      labs(x = 'Germline Variant Class', y = "GSVA score",
-             title = kegg_to_plot[j]) +
-      scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
-                                    paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
-                                    paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
-      scale_fill_npg() +
-      stat_summary(fun.data=data_summary,
-                show.legend = F) + 
-      stat_compare_means(comparisons = comparisons, size = 3) +
-      theme_Publication()
+    gsva_violin(score_df, "germline_variant", "gsea_score", kegg_to_plot[j])
         
       ggsave(
         file.path(plot_dir, paste0(kegg_to_plot[j], "_gsea_score_byGroup_violinPlot.tiff")), 
@@ -473,11 +386,16 @@ for (i in 1:length(repair_gene_source)){
                           "Kids_First_Biospecimen_ID_tumor", "plot_group", "molecular_subtype")]) %>%
         left_join(collapsed_germline) %>%
         left_join(collapsed_onco) %>%
-        select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+        dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
                plot_group, molecular_subtype, gsea_score, 
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, paste0("PBTA_hgg_samples_with_MMR_gsva.tsv")))
       
 }
+
+```
+
+```{r echo=TRUE}
+sessionInfo()
 
 ```
