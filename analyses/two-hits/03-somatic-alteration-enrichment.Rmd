@@ -105,12 +105,12 @@ cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", 
 
 genes <- plp %>%
   dplyr::count(Hugo_Symbol) %>%
-  dplyr::filter(n >= 4 & Hugo_Symbol %in% cpg) %>%
+  dplyr::filter(n >= 3 & Hugo_Symbol %in% cpg) %>%
   pull(Hugo_Symbol)
 
 ```
 
-Calculate enrichment of Oncogenic SNVs among patients with germline P-LP variant in same gene
+Create empty data frames to store enrichment stats
 ```{r}
 empty_df <- data.frame(row.names = genes,
                      alteration = rep(" ", length(genes)),
@@ -127,6 +127,25 @@ empty_df <- data.frame(row.names = genes,
 snv_df <- empty_df %>%
   dplyr::mutate(alteration = "Oncogenic SNV")
 
+cnv_loss_df <- empty_df %>%
+  mutate(alteration = "CN loss")
+
+cnv_gain_df <- empty_df %>%
+  dplyr::mutate(alteration = "CN gain")
+
+loh_df <- empty_df %>%
+  dplyr::mutate(alteration = "LOH > 0.2")
+
+expr_gain_df <- empty_df %>%
+  dplyr::mutate(alteration = "Expr TPM > 2")
+
+expr_loss_df <- empty_df %>%
+  dplyr::mutate(alteration = "Expr TPM < -2")
+
+```
+
+Loop through genes and calculate enrichment of somatic alterations among patients with germline P-LP variant in same gene
+```{r}
 for (gene in genes){
   
   # identify samples with P-LP variant in gene
@@ -134,266 +153,92 @@ for (gene in genes){
     dplyr::filter(Hugo_Symbol == gene) %>%
     pull(Kids_First_Biospecimen_ID) 
   
-  # extract corresponding tumor IDs
+  # extract corresponding tumor DNA-seq IDs
   plp_gene_tumors <- hist %>%
     dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
     pull(Kids_First_Biospecimen_ID_tumor)
   
-  # Pull tumor IDs of patients without P-LP variant
-  no_plp_tumors <- hist %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
+  # extract corresponding tumor RNA-seq IDs
+  plp_gene_rna <- hist %>%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
+    pull(Kids_First_Biospecimen_ID)
   
-  # Identify patients with/without P-LP variant, and with/without somatic oncoggenic SNV
-  plp_snv <- maf %>%
-    dplyr::filter(Hugo_Symbol == gene & ONCOGENIC %in% c("Oncogenic", "Likely Oncogenic") & Tumor_Sample_Barcode %in% plp_gene_tumors) %>%
-    pull(unique(Tumor_Sample_Barcode))
+  # Filter MAF for only variants in gene
+  gene_maf <- maf %>%
+      dplyr::filter(Hugo_Symbol == gene & ONCOGENIC %in% c("Oncogenic", "Likely Oncogenic")) 
   
-  plp_no_snv <- plp_gene_tumors[!plp_gene_tumors %in% plp_snv]
+  # create contingency table of plp T/F and somatic alteration T/F
+  snv_mat <- table(is_plp = hist$Kids_First_Biospecimen_ID_tumor %in% plp_gene_tumors, 
+                   is_alt = factor(hist$Kids_First_Biospecimen_ID_tumor %in% gene_maf$Tumor_Sample_Barcode, levels = c("FALSE", "TRUE")))
   
-  no_plp_snv <- maf %>%
-    dplyr::filter(Hugo_Symbol == gene & ONCOGENIC %in% c("Oncogenic", "Likely Oncogenic") & Tumor_Sample_Barcode %in% no_plp_tumors) %>%
-    pull(unique(Tumor_Sample_Barcode))
-
-  no_plp_no_snv <- no_plp_tumors[!no_plp_tumors %in% no_plp_snv]
-  
-  # generate matrix of counts to run Fisher test
-  snv_mat <- matrix(c(length(plp_snv), length(plp_no_snv),
-                      length(no_plp_snv), length(no_plp_no_snv)),
-                    2, 2)
-  
-  snv_df[gene, c("n_plp_alt", "n_plp_no_alt", "n_no_plp_alt", "n_no_plp_no_alt")] = c(length(plp_alt), length(plp_no_alt), length(no_plp_alt), length(no_plp_no_alt))
+  # add stats to df 
+  snv_df[gene, c("n_no_plp_no_alt", "n_plp_no_alt", "n_no_plp_alt", "n_plp_alt")] = unlist(snv_mat)
   snv_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(snv_mat)[c("estimate", "p.value", "conf.int")])
-}  
+  
+  # filter cnv df for samples with loss in gene
+  gene_cnv_loss <- cnv %>%
+    dplyr::filter(gene_symbol == gene & status == "loss")
+  
+  # create P/LP and somatic alteration contingency table and store stats in df
+  cnv_loss_mat <- table(is_plp = hist$Kids_First_Biospecimen_ID_tumor %in% plp_gene_tumors,
+                        is_alt = factor(hist$Kids_First_Biospecimen_ID_tumor %in% gene_cnv_loss$biospecimen_id, levels = c("FALSE", "TRUE")))
+  
+  cnv_loss_df[gene, c("n_no_plp_no_alt", "n_plp_no_alt", "n_no_plp_alt", "n_plp_alt")] = unlist(cnv_loss_mat)
+  cnv_loss_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(cnv_loss_mat)[c("estimate", "p.value", "conf.int")])
+  
+  # Repeat for copy number gains
+  gene_cnv_gain <- cnv %>%
+    dplyr::filter(gene_symbol == gene & status == "gain")
+  
+  cnv_gain_mat <- table(is_plp = hist$Kids_First_Biospecimen_ID_tumor %in% plp_gene_tumors,
+                        is_alt = factor(hist$Kids_First_Biospecimen_ID_tumor %in% gene_cnv_gain$biospecimen_id, levels = c("FALSE", "TRUE")))
+  
+  cnv_gain_df[gene, c("n_no_plp_no_alt", "n_plp_no_alt", "n_no_plp_alt", "n_plp_alt")] = unlist(cnv_gain_mat)
+  cnv_gain_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(cnv_gain_mat)[c("estimate", "p.value", "conf.int")])
+  
+  # Filter LOH df for samples exhibiting LOH in gene
+  gene_loh <- loh %>%
+    dplyr::filter(Hugo_Symbol == gene & LOH_score > 0.2)
+  
+  # Create contingency table and store stats for LOH enrichment 
+  loh_mat <- table(is_plp = hist$Kids_First_Biospecimen_ID_tumor %in% plp_gene_tumors,
+                        is_alt = factor(hist$Kids_First_Biospecimen_ID_tumor %in% gene_loh$Kids_First_Biospecimen_ID_tumor, levels = c("FALSE", "TRUE")))
+  
+  loh_df[gene, c("n_no_plp_no_alt", "n_plp_no_alt", "n_no_plp_alt", "n_plp_alt")] = unlist(loh_mat)
+  loh_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(loh_mat)[c("estimate", "p.value", "conf.int")])
 
+  # Filter expr data for samples with expression loss in gene
+  gene_expr_loss <- z_scored_expression %>%
+    dplyr::filter(Hugo_Symbol == gene & expr_zscore < -2)
+  
+  # create P/LP and expr loss contingency table and store stats in expr_loss_df
+  expr_loss_mat <- table(is_plp = hist$Kids_First_Biospecimen_ID[!is.na(hist$Kids_First_Biospecimen_ID)] %in% plp_gene_rna,
+                   is_alt = factor(hist$Kids_First_Biospecimen_ID[!is.na(hist$Kids_First_Biospecimen_ID)] %in% gene_expr_loss$Kids_First_Biospecimen_ID, levels = c("FALSE", "TRUE")))
+  
+  expr_loss_df[gene, c("n_no_plp_no_alt", "n_plp_no_alt", "n_no_plp_alt", "n_plp_alt")] = unlist(expr_loss_mat)
+  expr_loss_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(expr_loss_mat)[c("estimate", "p.value", "conf.int")])
+
+  # Repeat for expression gains
+  gene_expr_gain <- z_scored_expression %>%
+    dplyr::filter(Hugo_Symbol == gene & expr_zscore > 2)
+  
+  expr_gain_mat <- table(is_plp = hist$Kids_First_Biospecimen_ID[!is.na(hist$Kids_First_Biospecimen_ID)] %in% plp_gene_rna,
+                   is_alt = factor(hist$Kids_First_Biospecimen_ID[!is.na(hist$Kids_First_Biospecimen_ID)] %in% gene_expr_gain$Kids_First_Biospecimen_ID, levels = c("FALSE", "TRUE")))
+  
+  expr_gain_df[gene, c("n_no_plp_no_alt", "n_plp_no_alt", "n_no_plp_alt", "n_plp_alt")] = unlist(expr_gain_mat)
+  expr_gain_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(expr_gain_mat)[c("estimate", "p.value", "conf.int")])
+
+
+}  
+```
+
+Perform multiple test correction for each alteration type
+```{r}
 snv_df$bonferroni_p <- p.adjust(snv_df$p, method = "BH")
-
-```
-
-
-Calculate enrichment of CN loss among patients with germline P-LP variant in same gene
-```{r}
-cnv_loss_df <- empty_df %>%
-  mutate(alteration = "CN loss")
-
-for (gene in genes){
-  
-  plp_gene_bs <- plp %>%
-    dplyr::filter(Hugo_Symbol == gene) %>%
-    pull(Kids_First_Biospecimen_ID) 
-  
-  plp_gene_tumors <- hist %>%
-    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  no_plp_tumors <- hist %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  plp_alt <- cnv %>%
-    dplyr::filter(gene_symbol == gene & status == "loss" & biospecimen_id %in% plp_gene_tumors) %>%
-    pull(biospecimen_id) %>%
-    unique()
-  
-  plp_no_alt <- plp_gene_tumors[!plp_gene_tumors %in% plp_alt] 
-  
-  no_plp_alt <- cnv %>%
-    dplyr::filter(gene_symbol == gene & status == "loss" & biospecimen_id %in% no_plp_tumors) %>%
-    pull(biospecimen_id) %>%
-    unique()
-  
-  no_plp_no_alt <- no_plp_tumors[!no_plp_tumors %in% no_plp_alt]
-  
-  alt_mat <- matrix(c(length(plp_alt), length(plp_no_alt),
-                      length(no_plp_alt), length(no_plp_no_alt)),
-                    2, 2)
-  
-  cnv_loss_df[gene, c("n_plp_alt", "n_plp_no_alt", "n_no_plp_alt", "n_no_plp_no_alt")] = c(length(plp_alt), length(plp_no_alt), length(no_plp_alt), length(no_plp_no_alt))
-  cnv_loss_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(alt_mat)[c("estimate", "p.value", "conf.int")])
-}  
-
 cnv_loss_df$bonferroni_p <- p.adjust(cnv_loss_df$p, method = "BH")
-
-```
-
-Calculate enrichment of CN gain among patients with germline P-LP variant in same gene
-```{r}
-cnv_gain_df <- empty_df %>%
-  dplyr::mutate(alteration = "CN gain")
-
-for (gene in genes){
-  
-  plp_gene_bs <- plp %>%
-    dplyr::filter(Hugo_Symbol == gene) %>%
-    pull(Kids_First_Biospecimen_ID) 
-  
-  plp_gene_tumors <- hist %>%
-    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  no_plp_tumors <- hist %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  plp_alt <- cnv %>%
-    dplyr::filter(gene_symbol == gene & status == "gain" & biospecimen_id %in% plp_gene_tumors) %>%
-    pull(biospecimen_id) %>%
-    unique()
-  
-  plp_no_alt <- plp_gene_tumors[!plp_gene_tumors %in% plp_alt] 
-  
-  no_plp_alt <- cnv %>%
-    dplyr::filter(gene_symbol == gene & status == "gain" & biospecimen_id %in% no_plp_tumors) %>%
-    pull(biospecimen_id) %>%
-    unique()
-  
-  no_plp_no_alt <- no_plp_tumors[!no_plp_tumors %in% no_plp_alt]
-  
-  alt_mat <- matrix(c(length(plp_alt), length(plp_no_alt),
-                      length(no_plp_alt), length(no_plp_no_alt)),
-                    2, 2)
-  
-  cnv_gain_df[gene, c("n_plp_alt", "n_plp_no_alt", "n_no_plp_alt", "n_no_plp_no_alt")] = c(length(plp_alt), length(plp_no_alt), length(no_plp_alt), length(no_plp_no_alt))
-  cnv_gain_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(alt_mat)[c("estimate", "p.value", "conf.int")])
-}  
-
 cnv_gain_df$bonferroni_p <- p.adjust(cnv_gain_df$p, method = "BH")
-
-```
-
-Calculate enrichment of loss of heterozygosity (LOH) among patients with germline P-LP variant in same gene
-```{r}
-loh_df <- empty_df %>%
-  dplyr::mutate(alteration = "LOH > 0.2")
-
-for (gene in genes){
-  
-  plp_gene_bs <- plp %>%
-    dplyr::filter(Hugo_Symbol == gene) %>%
-    pull(Kids_First_Biospecimen_ID) 
-  
-  plp_gene_tumors <- hist %>%
-    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  no_plp_tumors <- hist %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  plp_alt <- loh %>%
-    dplyr::filter(Hugo_Symbol == gene & LOH_score > 0.2 & Kids_First_Biospecimen_ID_tumor %in% plp_gene_tumors) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  plp_no_alt <- plp_gene_tumors[!plp_gene_tumors %in% plp_alt]
-  
-  no_plp_alt <- loh %>%
-    dplyr::filter(Hugo_Symbol == gene & LOH_score > 0.2 & Kids_First_Biospecimen_ID_tumor %in% no_plp_tumors) %>%
-    pull(Kids_First_Biospecimen_ID_tumor)
-  
-  no_plp_no_alt <- no_plp_tumors[!no_plp_tumors %in% no_plp_alt]
-  
-  alt_mat <- matrix(c(length(plp_alt), length(plp_no_alt),
-                      length(no_plp_alt), length(no_plp_no_alt)),
-                    2, 2)
-  
-  loh_df[gene, c("n_plp_alt", "n_plp_no_alt", "n_no_plp_alt", "n_no_plp_no_alt")] = c(length(plp_alt), length(plp_no_alt), length(no_plp_alt), length(no_plp_no_alt))
-  loh_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(alt_mat)[c("estimate", "p.value", "conf.int")])
-}  
-
 loh_df$bonferroni_p <- p.adjust(loh_df$p, method = "BH")
-
-```
-
-Calculate enrichment of gene expression loss among patients with germline P-LP variant in same gene
-```{r}
-expr_loss_df <- empty_df %>%
-  dplyr::mutate(alteration = "Expr TPM < -2")
-
-for (gene in genes){
-  
-  plp_gene_bs <- plp %>%
-    dplyr::filter(Hugo_Symbol == gene) %>%
-    pull(Kids_First_Biospecimen_ID) 
-
-  plp_gene_rna <- hist %>%
-    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  no_plp_rna <- hist %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  plp_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore < -2 & Kids_First_Biospecimen_ID %in% plp_gene_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  plp_no_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore >= -2 & Kids_First_Biospecimen_ID %in% plp_gene_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  no_plp_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore < -2 & Kids_First_Biospecimen_ID %in% no_plp_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  no_plp_no_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore >= -2 & Kids_First_Biospecimen_ID %in% no_plp_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  alt_mat <- matrix(c(length(plp_alt), length(plp_no_alt),
-                      length(no_plp_alt), length(no_plp_no_alt)),
-                    2, 2)
-  
-  expr_loss_df[gene, c("n_plp_alt", "n_plp_no_alt", "n_no_plp_alt", "n_no_plp_no_alt")] = c(length(plp_alt), length(plp_no_alt), length(no_plp_alt), length(no_plp_no_alt))
-  expr_loss_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(alt_mat)[c("estimate", "p.value", "conf.int")])
-}  
-
 expr_loss_df$bonferroni_p <- p.adjust(expr_loss_df$p, method = "BH")
-
-```
-
-Calculate enrichment of gene expression loss among patients with germline P-LP variant in same gene
-```{r}
-expr_gain_df <- empty_df %>%
-  dplyr::mutate(alteration = "Expr TPM > 2")
-
-for (gene in genes){
-  
-  plp_gene_bs <- plp %>%
-    dplyr::filter(Hugo_Symbol == gene) %>%
-    pull(Kids_First_Biospecimen_ID) 
-
-  plp_gene_rna <- hist %>%
-    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  no_plp_rna <- hist %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% plp_gene_bs) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  plp_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore > 2 & Kids_First_Biospecimen_ID %in% plp_gene_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  plp_no_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore <= 2 & Kids_First_Biospecimen_ID %in% plp_gene_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  no_plp_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore > 2 & Kids_First_Biospecimen_ID %in% no_plp_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  no_plp_no_alt <- z_scored_expression %>%
-    dplyr::filter(Hugo_Symbol == gene & expr_zscore <= 2 & Kids_First_Biospecimen_ID %in% no_plp_rna) %>%
-    pull(Kids_First_Biospecimen_ID)
-  
-  alt_mat <- matrix(c(length(plp_alt), length(plp_no_alt),
-                      length(no_plp_alt), length(no_plp_no_alt)),
-                    2, 2)
-  
-  expr_gain_df[gene, c("n_plp_alt", "n_plp_no_alt", "n_no_plp_alt", "n_no_plp_no_alt")] = c(length(plp_alt), length(plp_no_alt), length(no_plp_alt), length(no_plp_no_alt))
-  expr_gain_df[gene, c("oddsRatio", "p", "CI_lower", "CI_upper")] <- unlist(fisher.test(alt_mat)[c("estimate", "p.value", "conf.int")])
-}  
-
 expr_gain_df$bonferroni_p <- p.adjust(expr_gain_df$p, method = "BH")
 
 ```
@@ -467,7 +312,7 @@ df_no_plp <- sig_alt_df %>%
                 group = "No germline P-LP")
 
 # merge data frames, and create additional columns for plotting
-df_all <- df_plp %>%
+df_all <- sig_alt_df %>%
   bind_rows(df_no_plp) %>%
   dplyr::mutate(perc = n_alt/(n_alt + n_no_alt) * 100,
                 fraction = glue::glue("{n_alt}/{n_alt + n_no_alt}"),
