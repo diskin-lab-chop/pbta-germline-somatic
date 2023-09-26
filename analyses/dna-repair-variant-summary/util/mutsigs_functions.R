@@ -1,4 +1,11 @@
-
+#' Create data summary
+#'
+#' @param x
+#'
+#' @return data summary table
+#' @export
+#'
+#' @examples
 
 data_summary <- function(x) {
   m <- mean(x)
