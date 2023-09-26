@@ -211,7 +211,7 @@ Obtain same summary statistics for each histology group
 ```{r}
 groups <- unique(hist$plot_group)
 
-# remove Ohter CNS embryonal tumor, since there are no patients with P/LP variants
+# remove `Other CNS embryonal tumor`, since there are no patients with P/LP variants
 groups <- groups[groups != "Other CNS embryonal tumor"]
 
 # Create empty list to store stats
