@@ -264,11 +264,15 @@ for (i in 1:length(repair_gene_source)){
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
   
-  otherRepair_germline <- dna_repair_plp %>%
+  brca_germline <- dna_repair_plp %>%
     filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
     filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
     distinct(Kids_First_Biospecimen_ID) %>%
     pull(Kids_First_Biospecimen_ID)
+  
+  otherRepair_germline <- hist %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID & !Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline <- hist_cbtn %>%
     filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %>%
@@ -276,6 +280,12 @@ for (i in 1:length(repair_gene_source)){
   
   mmr_ids <- hist_pbta %>%
     filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %>%
+    filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+    pull(Kids_First_Participant_ID) %>%
+    unique()
+  
+  brca_ids <- hist_pbta %>%
+    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% brca_germline]) %>%
     filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
     pull(Kids_First_Participant_ID) %>%
     unique()
@@ -297,22 +307,23 @@ for (i in 1:length(repair_gene_source)){
     
     # Create data frame for plotting
     score_df <- hallmark_scores %>%
-      filter(hallmark_name == hallmark_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %>%
+      filter(hallmark_name == hallmark_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
       mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ "MMR",
-        Kids_First_Participant_ID %in% otherRepair_ids ~ "BRCA/interacting",
+        Kids_First_Participant_ID %in% brca_ids ~ "BRCA/BRCA-interacting",
+        Kids_First_Participant_ID %in% otherRepair_ids ~ "Other repair",
         TRUE ~ "Non-repair"
       )) %>%
       mutate(germline_variant = factor(germline_variant)) %>% 
       mutate(germline_variant = fct_relevel(germline_variant,
-                                            c("MMR", "BRCA/interacting", "Non-repair"))
+                                            c("MMR", "BRCA/BRCA-interacting", "Other repair", "Non-repair"))
              )
     
     gsva_violin(score_df, "germline_variant", "gsea_score", hallmark_to_plot[j])
         
       ggsave(
         file.path(plot_dir, paste0(hallmark_to_plot[j], "_gsea_score_byGroup_violinPlot.tiff")), 
-        width = 14, height = 10, units = "cm")
+        width = 14, height = 11, units = "cm")
                
   }
   
@@ -347,20 +358,21 @@ for (i in 1:length(repair_gene_source)){
     
     # Create data frame for plotting
     score_df <- kegg_scores %>%
-      filter(kegg_name == kegg_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %>%
+      filter(kegg_name == kegg_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
       dplyr::mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ "MMR",
-        Kids_First_Participant_ID %in% otherRepair_ids ~ "BRCA/interacting",
+        Kids_First_Participant_ID %in% brca_ids ~ "BRCA/BRCA-interacting",
+        Kids_First_Participant_ID %in% otherRepair_ids ~ "Other repair",
         TRUE ~ "Non-repair"
       )) %>%
       dplyr::mutate(germline_variant = factor(germline_variant,
-                                       c("MMR", "BRCA/interacting", "Non-repair")))
+                                       c("MMR", "BRCA/BRCA-interacting", "Other repair", "Non-repair")))
     
     gsva_violin(score_df, "germline_variant", "gsea_score", kegg_to_plot[j])
         
       ggsave(
         file.path(plot_dir, paste0(kegg_to_plot[j], "_gsea_score_byGroup_violinPlot.tiff")), 
-        width = 14, height = 10, units = "cm")
+        width = 14, height = 11, units = "cm")
                
   }
   

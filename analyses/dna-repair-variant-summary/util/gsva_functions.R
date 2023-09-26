@@ -31,8 +31,8 @@ gsva_barplot <- function(gsva, x, y, plot_name){
 
 gsva_violin <- function(gsva, x, y, title){
   
-  comparisons <- list(c("MMR", "BRCA/interacting"), c("MMR", "Non-repair"),
-                      c("BRCA/interacting", "Non-repair"))
+  comparisons <- list(c("MMR", "BRCA/BRCA-interacting"), c("MMR", "Other repair"),
+                      c("MMR", "Non-repair"))
   
   vplot <- gsva %>%
     ggplot(aes(x = !!rlang::ensym(x), y = !!rlang::ensym(y), fill = !!rlang::ensym(x))) +
@@ -43,7 +43,8 @@ gsva_violin <- function(gsva, x, y, title){
     labs(x = 'Germline Variant Class', y = " GSVA score",
          title = title) +
     scale_x_discrete(labels = c(paste0("MMR\n (n=", length(unique(mmr_ids)), ")"), 
-                                paste0("BRCA/interacting\n (n=", length(unique(otherRepair_ids)), ")"), 
+                                paste0("BRCA/\nBRCA-interacting\n (n=", length(unique(brca_ids)), ")"), 
+                                paste0("Other repair\n (n=", length(unique(otherRepair_ids)), ")"),
                                 paste0("No DNA repair\n (n=", length(unique(ctrl_ids)), ")"))) +
     scale_fill_npg() +
     stat_summary(fun.data=data_summary,
