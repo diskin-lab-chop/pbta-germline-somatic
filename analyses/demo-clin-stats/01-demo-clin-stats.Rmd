@@ -168,7 +168,7 @@ write_tsv(stats,
           file.path(results_dir, "demo-clin-stats-all.tsv"))
 ```
 
-Obtain p-values through appropriate tests for each term (fisher/chi-squared for count data, wilcox.test for continuous data)
+Obtain p-values through appropriate tests for each term (fisher for count data, wilcox.test for continuous data)
 
 ```{r}
 terms = c("sex", "race", "ancestry", "ethnicity",
