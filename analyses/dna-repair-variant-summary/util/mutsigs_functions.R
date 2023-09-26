@@ -1,4 +1,11 @@
-
+#' Create data summary
+#'
+#' @param x
+#'
+#' @return data summary table
+#' @export
+#'
+#' @examples
 
 data_summary <- function(x) {
   m <- mean(x)
@@ -6,7 +13,17 @@ data_summary <- function(x) {
   ymax <- m+sd(x)
   return(c(y=m,ymin=ymin,ymax=ymax))
 }
-
+#' Create plot_exposure_violin
+#'
+#' @param df
+#' @param x 
+#' @param y
+#' @param sig
+#'
+#' @return violin plot
+#' @export
+#'
+#' @examples
 plot_exposure_violin <- function(df, x, y, sig){
   
   comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"),
@@ -25,7 +42,7 @@ plot_exposure_violin <- function(df, x, y, sig){
     theme(legend.position = 'none',
           text = element_text(size = 12)) +
     scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
-                                paste0("BRCA/interacting\n (n=", length(brca_ids), ")"),
+                                paste0("BRCA/\nBRCA-interacting\n (n=", length(brca_ids), ")"),
                                 paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
                                 paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
     scale_fill_npg() +
@@ -46,3 +63,5 @@ plot_exposure_violin <- function(df, x, y, sig){
   return(vplot)
   
 }
+
+
