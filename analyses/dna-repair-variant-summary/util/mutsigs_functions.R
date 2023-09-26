@@ -13,7 +13,17 @@ data_summary <- function(x) {
   ymax <- m+sd(x)
   return(c(y=m,ymin=ymin,ymax=ymax))
 }
-
+#' Create plot_exposure_violin
+#'
+#' @param df
+#' @param x 
+#' @param y
+#' @param sig
+#'
+#' @return violin plot
+#' @export
+#'
+#' @examples
 plot_exposure_violin <- function(df, x, y, sig){
   
   comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"),
