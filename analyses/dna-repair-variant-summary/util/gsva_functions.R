@@ -1,5 +1,15 @@
 ## GSVA plotting functions
 
+#' Create data summary
+#'
+#' @param x
+#'
+#' @return data summary table
+#' @export
+#'
+#' @examples
+
+
 data_summary <- function(x) {
   m <- mean(x)
   ymin <- m-sd(x)
@@ -7,6 +17,17 @@ data_summary <- function(x) {
   return(c(y=m,ymin=ymin,ymax=ymax))
 }
 
+#' Create gsva score difference barplot between two groups
+#'
+#' @param gsva
+#' @param x 
+#' @param y
+#' @param plot_name
+#'
+#' @return barplot plot
+#' @export
+#'
+#' @examples
 
 gsva_barplot <- function(gsva, x, y, plot_name){
   
@@ -28,6 +49,17 @@ gsva_barplot <- function(gsva, x, y, plot_name){
   
 }
 
+#' Create gsva score violin plot
+#'
+#' @param gsva
+#' @param x 
+#' @param y
+#' @param title
+#'
+#' @return violin plot
+#' @export
+#'
+#' @examples
 
 gsva_violin <- function(gsva, x, y, title){
   
