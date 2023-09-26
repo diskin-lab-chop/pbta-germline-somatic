@@ -37,7 +37,7 @@ hist <- read_tsv(cbtn_histologies_file)
 # define colorblind-friendly palette
 okabe_palette <- colorblindr::palette_OkabeIto[c(1:3,5:6)]
 
-# assign predicted ancestries to each palette color: African (AFR), admixed American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS)
+# assign predicted ancestries to each palette color: African (AFR), Admixed American (AMR), East Asian (EAS), European (EUR), and South Asian (SAS)
 names(okabe_palette) <- c("AFR", "AMR", "EAS", "EUR", "SAS")
 
 # Plot PC1 and PC2 from Somalier ancestry prediction
