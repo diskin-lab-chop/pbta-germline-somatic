@@ -397,13 +397,13 @@ for (j in 1:length(repair_gene_source)){
       group_by(Kids_First_Biospecimen_ID) %>%
       dplyr::mutate(germline_variant = case_when(
         Kids_First_Biospecimen_ID %in% mmr_ids ~ "MMR",
-        Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/interacting",
+        Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/BRCA-interacting",
         Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other repair",
         TRUE ~ "Non-repair"
       )) %>%
       dplyr::mutate(germline_variant = factor(germline_variant)) %>% 
       dplyr::mutate(germline_variant = fct_relevel(germline_variant,
-                                            c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
+                                            c("MMR", "BRCA/BRCA-interacting", "Other repair", "Non-repair"))
              )
     
     sbs3_df %>%

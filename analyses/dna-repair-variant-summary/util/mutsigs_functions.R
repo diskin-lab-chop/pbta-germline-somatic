@@ -25,7 +25,7 @@ plot_exposure_violin <- function(df, x, y, sig){
     theme(legend.position = 'none',
           text = element_text(size = 12)) +
     scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
-                                paste0("BRCA/interacting\n (n=", length(brca_ids), ")"),
+                                paste0("BRCA/\nBRCA-interacting\n (n=", length(brca_ids), ")"),
                                 paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
                                 paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
     scale_fill_npg() +
