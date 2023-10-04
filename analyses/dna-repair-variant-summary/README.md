@@ -25,9 +25,11 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
   - `pbta-hallmark-gsva-scores.tsv`
     
 
-3. `results/` directory contains the following files in both `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/`: 
+3. `results/` directory contains the following files: in both `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/`: 
   - `pbta-kegg-gsva-scores.tsv`
-  - mutational signatures and gsva score differences tables in HGG tumors of patients with vs without DNA repair gene germline P-LP variants. 
+  - The following files are found in both `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/` subdirectories:
+    - mutational signature difference tables in HGG tumors of patients with vs without DNA repair gene germline P-LP variants. 
+    - gsva score difference tables in HGG tumors of patients with vs without DNA repair gene germline P-LP variants. 
   
 4. `plots/` directory contains the following figures in both `Broad_GO_repair_genes/` and `Knijnenberg_repair_genes/`: 
   - Summary and enrichment of DNA repair genes by histology (`dna_repair_samples_by_plot_group_*` and `dna_repair_enr_by_plot_group_*`)
