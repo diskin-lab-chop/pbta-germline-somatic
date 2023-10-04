@@ -1,0 +1,327 @@
+---
+title: "PBTA-germline demographic and clinical statistics"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+author: Ryan Corbett
+date: 2023
+params:
+  plot_ci: TRUE
+---
+
+This script generates demographic and clinical summary statistics for patients with and without germline pathogenic/likely pathogenic (P/LP) variants in cancer prediposition genes (CPGs)
+
+## Setup
+
+#### Packages and functions
+
+Load packages and set directory paths
+
+```{r}
+library(tidyverse)
+library(openxlsx)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+setwd(root_dir)
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "demo-clin-stats")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+
+# If the input and results directories do not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# Load function script for generating summary tables
+source(file.path(analysis_dir, "util", "summary_functions.R"))
+```
+
+Set file paths
+
+```{r set paths}
+cbtn_histologies_file <- file.path(root_dir, "analyses", "survival", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
+
+all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+```
+
+Wrangle data
+
+```{r}
+hist <- read_tsv(cbtn_histologies_file)
+
+all_plp <- read_tsv(all_plp_file)
+
+cpgs <- read_lines(cpg_file)
+multi_cpg <- c(glue::glue("{cpgs};"),
+               glue::glue(";{cpgs}"))
+
+tmb <- read_tsv(file.path(data_dir, "snv-mutation-tmb-coding.tsv")) %>%
+  rename("Kids_First_Biospecimen_ID_tumor" = Tumor_Sample_Barcode)
+```
+
+Merge sample metadata
+
+```{r}
+# Extract BS IDs of samples with CPG PLP variants
+cpg_bs <- all_plp %>%
+  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  filter(Hugo_Symbol %in% cpgs | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  pull(Kids_First_Biospecimen_ID)
+
+# Append CPG PLP status and TMB data to `hist`
+hist <- hist %>%
+  mutate(cpgPLP_status = case_when(
+    Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
+    !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "no_cpgPLP"
+  )) %>%
+  left_join(tmb[,c("Kids_First_Biospecimen_ID_tumor", "tmb")], by = "Kids_First_Biospecimen_ID_tumor")
+
+# Define OS years and EFS years
+hist <- hist %>%
+  dplyr::mutate(OS_years = as.numeric(OS_days)/365.25,
+                EFS_years = as.numeric(EFS_days)/365.25)
+
+```
+
+Merge other, unreported, and unknown race and ethnicities 
+
+```{r}
+unk_race <- c("Not Reported", "Other", "Reported Unknown")
+unk_ethnicity <- c("Not Available", "Not Reported", "Unavailable/Not Reported")
+
+hist <- hist %>%
+    mutate(race = case_when(
+      race %in% unk_race ~ "Other/Unknown Race",
+      !race %in% unk_race ~ race
+    )) %>%
+    mutate(ethnicity = case_when(
+      ethnicity %in% unk_ethnicity ~ "Other/Unknown Ethnicity",
+      !ethnicity %in% unk_ethnicity ~ ethnicity
+    )) %>%
+  mutate(plot_group = case_when(
+    plot_group == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+    TRUE ~ plot_group
+  ))
+```
+  
+Obtain count and median statistics on demographic and clinical data for patients with and without germline CPG P/LP variants
+  
+```{r}
+# Get count and percent of patients with and without P/LP variants
+freq <- summarize_freq(hist, "cpgPLP_status")
+
+# Look at distribution of following variables among patients with and without P/LP variants: sex, reported race, predicted ancestry, reported ethnicity, and histology group
+sex <- summarize_count(hist, "cpgPLP_status", "germline_sex_estimate")
+
+race <- summarize_count(hist, "cpgPLP_status", "race") %>%
+  select(-cpgPLP_status)
+
+ancestry <- summarize_count(hist, "cpgPLP_status", "predicted_ancestry") %>%
+  select(-cpgPLP_status)
+
+ethnicity <- summarize_count(hist, "cpgPLP_status", "ethnicity") %>%
+  select(-cpgPLP_status)
+
+group <- summarize_count(hist, "cpgPLP_status", "plot_group") %>%
+  select(-cpgPLP_status)
+
+# merge stats and add %
+demo_path <- sex %>%
+  bind_cols(race, ethnicity, ancestry, group) %>%
+  column_to_rownames("cpgPLP_status") %>%
+  t() %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_cpgPLP = round(cpgPLP/sum(hist$cpgPLP_status == "cpgPLP")*100, 1),
+                perc_no_cpgPLP = round(no_cpgPLP/sum(hist$cpgPLP_status == "no_cpgPLP")*100, 1)) %>%
+  dplyr::mutate(cpgPLP = glue::glue("{cpgPLP} ({perc_cpgPLP}%)"),
+                no_cpgPLP = glue::glue("{no_cpgPLP} ({perc_no_cpgPLP}%)")) %>%
+  dplyr::select(-perc_cpgPLP, -perc_no_cpgPLP) %>%
+  dplyr::mutate(cpgPLP = case_when(
+    grepl("NA", cpgPLP) ~ "0 (0%)",
+    TRUE ~ cpgPLP
+  ))
+  
+# Calculate median survival and tmb for each group
+clin <- hist %>%
+  group_by(cpgPLP_status) %>%
+  summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
+            median_os_years = round(median(OS_years, na.rm = T), 2),
+            median_efs_years = round(median(EFS_years, na.rm = T), 2),
+            median_tmb = round(median(tmb, na.rm = T), 2)) %>%
+  column_to_rownames("cpgPLP_status") %>%
+  t() %>%
+  as.data.frame() %>%
+  dplyr::mutate(cpgPLP = as.character(cpgPLP),
+                no_cpgPLP = as.character(no_cpgPLP))
+
+# Merge stats and save
+stats <- freq %>%
+  bind_rows(demo_path, clin) %>%
+  rownames_to_column("Term")
+
+write_tsv(stats, 
+          file.path(results_dir, "demo-clin-stats-all.tsv"))
+```
+
+Obtain p-values through appropriate tests for each term (fisher for count data, wilcox.test for continuous data)
+
+```{r}
+terms = c("sex", "race", "ancestry", "ethnicity",
+          "group", "age", "OS_years", "EFS_years", "tmb")
+
+sex_p <- fisher.test(table(hist$germline_sex_estimate, hist$cpgPLP_status))$p.value
+
+race_p <- fisher.test(table(hist$race, hist$cpgPLP_status))$p.value
+
+ancestry_p <- fisher.test(table(hist$predicted_ancestry, hist$cpgPLP_status))$p.value
+
+ethnicity_p <- fisher.test(table(hist$ethnicity, hist$cpgPLP_status))$p.value
+
+# compute p-value by Monte Carlo simulation here due to large table size
+group_p <- fisher.test(table(hist$plot_group, hist$cpgPLP_status), simulate.p.value = TRUE)$p.value
+
+age_p <- wilcox.test(as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "cpgPLP"]),
+                     as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "no_cpgPLP"]))$p.value
+
+os_p <- wilcox.test(hist$OS_years[hist$cpgPLP_status == "cpgPLP"],
+          hist$OS_years[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+
+efs_p <- wilcox.test(hist$EFS_years[hist$cpgPLP_status == "cpgPLP"],
+          hist$EFS_years[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+
+tmb_p <- wilcox.test(hist$tmb[hist$cpgPLP_status == "cpgPLP"],
+          hist$tmb[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+
+# Merge p-values and write to output
+pvals <- data.frame(term = terms,
+                    pvalue = c(sex_p, race_p, ancestry_p, ethnicity_p, 
+                               group_p, age_p, os_p, efs_p, tmb_p))
+
+write_tsv(pvals, 
+          file.path(results_dir, "demo-clin-pvals-all.tsv"))
+```
+
+Obtain same summary statistics for each histology group
+
+```{r}
+groups <- unique(hist$plot_group)
+
+# remove `Other CNS embryonal tumor`, since there are no patients with P/LP variants
+groups <- groups[groups != "Other CNS embryonal tumor"]
+
+# Create empty list to store stats
+stats_list <- list()
+
+for (group in groups) {
+  
+  group_hist <- hist %>%
+    filter(plot_group == group)
+  
+  freq <- summarize_freq(group_hist, "cpgPLP_status")
+
+  sex <- summarize_count(group_hist, "cpgPLP_status", "germline_sex_estimate")
+  
+  race <- summarize_count(group_hist, "cpgPLP_status", "race") %>%
+    select(-cpgPLP_status)
+  
+  ancestry <- summarize_count(group_hist, "cpgPLP_status", "predicted_ancestry") %>%
+    select(-cpgPLP_status)
+  
+  ethnicity <- summarize_count(group_hist, "cpgPLP_status", "ethnicity") %>%
+    select(-cpgPLP_status)
+ 
+  demo_path <- sex %>%
+    bind_cols(race, ethnicity, ancestry) %>%
+    column_to_rownames("cpgPLP_status") %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(perc_cpgPLP = round(cpgPLP/sum(group_hist$cpgPLP_status == "cpgPLP")*100, 1),
+                  perc_no_cpgPLP = round(no_cpgPLP/sum(group_hist$cpgPLP_status == "no_cpgPLP")*100, 1)) %>%
+    dplyr::mutate(cpgPLP = glue::glue("{cpgPLP} ({perc_cpgPLP}%)"),
+                  no_cpgPLP = glue::glue("{no_cpgPLP} ({perc_no_cpgPLP}%)")) %>%
+    dplyr::select(-perc_cpgPLP, -perc_no_cpgPLP) %>%
+    dplyr::mutate(cpgPLP = case_when(
+      grepl("NA", cpgPLP) ~ "0 (0%)",
+      TRUE ~ cpgPLP
+    ))
+  
+  clin <- group_hist %>%
+    group_by(cpgPLP_status) %>%
+    summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
+              median_os_years = round(median(OS_years, na.rm = T), 2),
+              median_efs_years = round(median(EFS_years, na.rm = T), 2),
+              median_tmb = round(median(tmb, na.rm = T), 2)) %>%
+    column_to_rownames("cpgPLP_status") %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(cpgPLP = as.character(cpgPLP),
+                  no_cpgPLP = as.character(no_cpgPLP))
+  
+  stats_list[[group]] <- freq %>%
+    bind_rows(demo_path, clin)
+
+}
+
+# write stats by group to excel file, with separate tab for each group
+write.xlsx(stats_list,
+           file.path(results_dir, "demo-clin-stats-by-histology.xlsx"),
+           overwrite = TRUE,
+           keepNA = TRUE,
+           rowNames = TRUE)
+```
+
+Obtain corresponding p-values for terms by histology
+
+```{r}
+pvalue_list <- list()
+
+terms = c("age", "sex", "race", "ancestry", "ethnicity",
+          "OS_years", "EFS_years", "tmb")
+
+for (group in groups) {
+  
+  group_hist <- hist %>%
+    filter(plot_group == group)
+  
+  sex_p <- fisher.test(table(group_hist$germline_sex_estimate, group_hist$cpgPLP_status))$p.value
+  
+  race_p <- fisher.test(table(group_hist$race, group_hist$cpgPLP_status))$p.value
+  
+  ancestry_p <- fisher.test(table(group_hist$predicted_ancestry, group_hist$cpgPLP_status))$p.value
+  
+  ethnicity_p <- fisher.test(table(group_hist$ethnicity, group_hist$cpgPLP_status))$p.value
+  
+  age_p <- wilcox.test(as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "cpgPLP"]),
+                       as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "no_cpgPLP"]))$p.value
+
+  os_p <- wilcox.test(group_hist$OS_years[group_hist$cpgPLP_status == "cpgPLP"],
+            group_hist$OS_years[group_hist$cpgPLP_status == "no_cpgPLP"])$p.value
+  
+  efs_p <- wilcox.test(group_hist$EFS_years[group_hist$cpgPLP_status == "cpgPLP"],
+            group_hist$EFS_years[group_hist$cpgPLP_status == "no_cpgPLP"])$p.value
+  
+  tmb_p <- wilcox.test(group_hist$tmb[hist$cpgPLP_status == "cpgPLP"],
+            group_hist$tmb[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+  
+  pvalue_list[[group]] <- data.frame(term = terms,
+                                    pvalue = c(age_p, sex_p, race_p, ancestry_p,
+                                               ethnicity_p, os_p, efs_p, tmb_p))
+}
+
+write.xlsx(pvalue_list,
+           file.path(results_dir, "demo-clin-pvalues-by-histology.xlsx"),
+           overwrite = TRUE,
+           keepNA = TRUE,
+           rowNames = TRUE)
+```
+
+
+```{r echo=TRUE}
+sessionInfo()
+
+```

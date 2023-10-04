@@ -1830,11 +1830,22 @@ heterozygosity (LOH) hits in tumors</p>
 <p>Set libraries and file paths</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBsb2FkIGxpYnJhcmllc1xubGlicmFyeSh0aWR5dmVyc2UpXG5cbiMgZGVmaW5lIGRpcmVjdG9yaWVzIFxucm9vdF9kaXIgPC0gcnByb2pyb290OjpmaW5kX3Jvb3QocnByb2pyb290OjpoYXNfZGlyKFwiLmdpdFwiKSlcbmFuYWx5c2lzX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiYW5hbHlzZXNcIiwgXCJ0d28taGl0c1wiKVxuaW5wdXRfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwiaW5wdXRcIilcbnJlc3VsdHNfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwicmVzdWx0c1wiKVxuZGF0YV9kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImRhdGFcIilcblxuIyBJZiB0aGUgaW5wdXQgYW5kIHJlc3VsdHMgZGlyZWN0b3JpZXMgZG8gbm90IGV4aXN0LCBjcmVhdGUgaXRcbmlmICghZGlyLmV4aXN0cyhyZXN1bHRzX2RpcikpIHtcbiAgZGlyLmNyZWF0ZShyZXN1bHRzX2RpciwgcmVjdXJzaXZlID0gVFJVRSlcbn1cblxuIyBnZXJtbGluZSBQLUxQIGNhbGxzIFxucGxwX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcInBidGFfZ2VybWxpbmVfcGxwX2NhbGxzLnRzdlwiKVxuXG5wbHBfZnVsbF9maWxlIDwtIGZpbGUucGF0aChpbnB1dF9kaXIsIFwiUEJUQS04MzgtZ2VybWxpbmVfcGxwLTIwMjMtMDItMDUudHN2XCIpXG5cbiMgYWRkIGhpc3RvbG9naWVzIGZpbGUgXG5oaXN0b2xvZ2llc19maWxlIDwtIGZpbGUucGF0aChyb290X2RpcixcImFuYWx5c2VzXCIsIFwiY29sbGFwc2UtdHVtb3ItaGlzdG9sb2dpZXNcIiwgXCJyZXN1bHRzXCIsIFwiZ2VybWxpbmUtcHJpbWFyeS1wbHVzLXR1bW9yLWhpc3RvbG9naWVzLXBsb3QtZ3JvdXBzLWNsaW4tbWV0YS50c3ZcIilcblxuIyBjbnYgZmlsZSB3aXRoIGFubm90YXRpb24gXG5jbnZfYXV0b19maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgXCJjb25zZW5zdXNfc2VnX2Fubm90YXRlZF9jbl9hdXRvc29tZXMudHN2Lmd6XCIpXG5jbnZfeHlfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwiY29uc2Vuc3VzX3NlZ19hbm5vdGF0ZWRfY25feF9hbmRfeS50c3YuZ3pcIilcblxuIyBMT0ggdmFyaWFudCBhbmQgZ2VuZSBmaWxlc1xubG9oX3ZhcmlhbnRfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwicGJ0YS1wbHAtYWxsLWxvaC50c3ZcIilcbmxvaF9nZW5lX2ZpbGUgPC0gZmlsZS5wYXRoKGlucHV0X2RpciwgXCJwYnRhLWFsbC1nZW5lLWxvaC50c3YuZ3pcIilcblxuIyBjcGcgZmlsZVxuY3BnX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFwib25jb2tiLWFubm90YXRpb25cIiwgXCJpbnB1dFwiLCBcImNwZy50eHRcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgbG9hZCBsaWJyYXJpZXMiLCJsaWJyYXJ5KHRpZHl2ZXJzZSkiXX0= -->
 <pre class="r"><code># load libraries
-library(tidyverse)
-
-# define directories 
+library(tidyverse)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgFxu4pyUIGdncGxvdDIgMy40LjAgICAgIOKclCBwdXJyciAgIDEuMC4xXG7inJQgdGliYmxlICAzLjEuOCAgICAg4pyUIGRwbHlyICAgMS4xLjBcbuKclCB0aWR5ciAgIDEuMy4wICAgICDinJQgc3RyaW5nciAxLjUuMFxu4pyUIHJlYWRyICAgMi4xLjMgICAgIOKclCBmb3JjYXRzIDEuMC4wXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbiJ9 -->
+<pre><code>── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.4.0     ✔ purrr   1.0.1
+✔ tibble  3.1.8     ✔ dplyr   1.1.0
+✔ tidyr   1.3.0     ✔ stringr 1.5.0
+✔ readr   2.1.3     ✔ forcats 1.0.0
+── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgZGVmaW5lIGRpcmVjdG9yaWVzICIsInJvb3RfZGlyIDwtIHJwcm9qcm9vdDo6ZmluZF9yb290KHJwcm9qcm9vdDo6aGFzX2RpcihcIi5naXRcIikpIiwiYW5hbHlzaXNfZGlyIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJhbmFseXNlc1wiLCBcInR3by1oaXRzXCIpIiwiaW5wdXRfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwiaW5wdXRcIikiLCJyZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCBcInJlc3VsdHNcIikiLCJkYXRhX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiZGF0YVwiKSIsIiIsIiMgSWYgdGhlIGlucHV0IGFuZCByZXN1bHRzIGRpcmVjdG9yaWVzIGRvIG5vdCBleGlzdCwgY3JlYXRlIGl0IiwiaWYgKCFkaXIuZXhpc3RzKHJlc3VsdHNfZGlyKSkge1xuICBkaXIuY3JlYXRlKHJlc3VsdHNfZGlyLCByZWN1cnNpdmUgPSBUUlVFKVxufSIsIiIsIiMgZ2VybWxpbmUgUC1MUCBjYWxscyAiLCJwbHBfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwicGJ0YV9nZXJtbGluZV9wbHBfY2FsbHMudHN2XCIpIiwiIiwicGxwX2Z1bGxfZmlsZSA8LSBmaWxlLnBhdGgoaW5wdXRfZGlyLCBcIlBCVEEtODM4LWdlcm1saW5lX3BscC0yMDIzLTAyLTA1LnRzdlwiKSIsIiIsIiMgYWRkIGhpc3RvbG9naWVzIGZpbGUgIiwiI2hpc3RvbG9naWVzX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLFwiYW5hbHlzZXNcIiwgXCJjb2xsYXBzZS10dW1vci1oaXN0b2xvZ2llc1wiLCBcInJlc3VsdHNcIiwgXCJnZXJtbGluZS1wcmltYXJ5LXBsdXMtdHVtb3ItaGlzdG9sb2dpZXMtcGxvdC1ncm91cHMtY2xpbi1tZXRhLnRzdlwiKSIsImhpc3RvbG9naWVzX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcImhpc3RvbG9naWVzLnRzdlwiKSIsInBsb3RfbWFwcGluZ19maWxlIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJhbmFseXNlc1wiLCBcImNvbGxhcHNlLXR1bW9yLWhpc3RvbG9naWVzL2lucHV0L3Bsb3QtbWFwcGluZy50c3ZcIikiLCIiLCIjIGNudiBmaWxlIHdpdGggYW5ub3RhdGlvbiAiLCJjbnZfYXV0b19maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgXCJjb25zZW5zdXNfc2VnX2Fubm90YXRlZF9jbl9hdXRvc29tZXMudHN2Lmd6XCIpIiwiY252X3h5X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcImNvbnNlbnN1c19zZWdfYW5ub3RhdGVkX2NuX3hfYW5kX3kudHN2Lmd6XCIpIiwiIiwiIyBMT0ggdmFyaWFudCBhbmQgZ2VuZSBmaWxlcyIsImxvaF92YXJpYW50X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcInBidGEtcGxwLWFsbC1sb2gudHN2XCIpIiwibG9oX2dlbmVfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwicGJ0YS1hbGwtZ2VuZS1sb2gudHN2Lmd6XCIpIiwiIiwiIyBjcGcgZmlsZSIsImNwZ19maWxlIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJhbmFseXNlc1wiLCBcIm9uY29rYi1hbm5vdGF0aW9uXCIsIFwiaW5wdXRcIiwgXCJjcGcudHh0XCIpIl19 -->
+<pre class="r"><code># define directories 
 root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;two-hits&quot;)
 input_dir &lt;- file.path(analysis_dir, &quot;input&quot;)
@@ -1852,7 +1863,9 @@ plp_file &lt;- file.path(data_dir, &quot;pbta_germline_plp_calls.tsv&quot;)
 plp_full_file &lt;- file.path(input_dir, &quot;PBTA-838-germline_plp-2023-02-05.tsv&quot;)
 
 # add histologies file 
-histologies_file &lt;- file.path(root_dir,&quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;, &quot;results&quot;, &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
+#histologies_file &lt;- file.path(root_dir,&quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;, &quot;results&quot;, &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
+histologies_file &lt;- file.path(data_dir, &quot;histologies.tsv&quot;)
+plot_mapping_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies/input/plot-mapping.tsv&quot;)
 
 # cnv file with annotation 
 cnv_auto_file &lt;- file.path(data_dir, &quot;consensus_seg_annotated_cn_autosomes.tsv.gz&quot;)
@@ -1860,7 +1873,7 @@ cnv_xy_file &lt;- file.path(data_dir, &quot;consensus_seg_annotated_cn_x_and_y.t
 
 # LOH variant and gene files
 loh_variant_file &lt;- file.path(data_dir, &quot;pbta-plp-all-loh.tsv&quot;)
-loh_gene_file &lt;- file.path(input_dir, &quot;pbta-all-gene-loh.tsv.gz&quot;)
+loh_gene_file &lt;- file.path(data_dir, &quot;pbta-all-gene-loh.tsv.gz&quot;)
 
 # cpg file
 cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation&quot;, &quot;input&quot;, &quot;cpg.txt&quot;)</code></pre>
@@ -1871,17 +1884,90 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 and add histology</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBGdWxsIFAtTFAgcmVzdWx0c1xucGxwX2Z1bGwgPC0gcmVhZF90c3YocGxwX2Z1bGxfZmlsZSlcblxuIyBMb2FkIGFicmlkZ2VkIFAtTFAgZmlsZSBhbmQgYXBwZW5kIHZhcmlhbnQgY29vcmRpbmF0ZXNcbmdlcm1saW5lIDwtIHJlYWRfdHN2KHBscF9maWxlKSAlPiVcbiAgbGVmdF9qb2luKHBscF9mdWxsWyxjKFwiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRFwiLCBcIkh1Z29fU3ltYm9sXCIsIFwiSEdWUy5jXCIsIFwiQ2hyb21vc29tZVwiLCBcIkxvY1wiLCBcIlJlZmVyZW5jZVwiLCBcIkFsdGVybmFudF9hbGxlbGVzXCIpXSkgJT4lXG4gIHJlbmFtZShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQpICU+JVxuICBkcGx5cjo6ZmlsdGVyKCFpcy5uYShDaHJvbW9zb21lKSlcblxuaGlzdCA8LSByZWFkX3RzdihoaXN0b2xvZ2llc19maWxlKVxuXG4jIENQR3NcbmNwZ3MgPC0gcmVhZF9saW5lcyhjcGdfZmlsZSlcbm11bHRpX2NwZyA8LSBjKGdsdWU6OmdsdWUoXCJ7Y3Bnc307XCIpLFxuICAgICAgICAgICAgICAgZ2x1ZTo6Z2x1ZShcIjt7Y3Bnc31cIikpXG5cbiMgZmlsdGVyIFBMUCBjYWxscyBmb3IgY3BncywgYW5kIGFkZCBwbG90X2dyb3VwIGFuZCBtb2xlY3VsYXJfc3VidHlwZVxuZ2VybWxpbmUgPC0gZ2VybWxpbmUgJT4lXG4gIGZpbHRlcihIdWdvX1N5bWJvbCAlaW4lIGNwZ3MgfCBncmVwbChwYXN0ZTAobXVsdGlfY3BnLCBjb2xsYXBzZSA9IFwifFwiKSwgSHVnb19TeW1ib2wpKSAlPiVcbiAgZHBseXI6Om11dGF0ZShIdWdvX1N5bWJvbCA9IGNhc2Vfd2hlbihcbiAgICAhZ3JlcGwoXCI7XCIsIEh1Z29fU3ltYm9sKSB+IEh1Z29fU3ltYm9sLFxuICAgIFRSVUUgfiBzdHJfZXh0cmFjdChIdWdvX1N5bWJvbCwgcGFzdGUoY3BncywgY29sbGFwc2UgPSBcInxcIikpXG4gICkpICU+JVxuICBsZWZ0X2pvaW4oaGlzdFssYyhcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsXCIsIFwiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vclwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwicGxvdF9ncm91cFwiLCBcIm1vbGVjdWxhcl9zdWJ0eXBlXCIpXSkgJT4lXG4gIGRwbHlyOjpzZWxlY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIFxuICAgICAgICAgcGxvdF9ncm91cCwgbW9sZWN1bGFyX3N1YnR5cGUsXG4gICAgICAgICBIdWdvX1N5bWJvbCwgYEwtTFBfQ2FsbF9maW5hbGAsIFJlYXNvbmluZ19mb3JfY2FsbCxcbiAgICAgICAgIENocm9tb3NvbWUsIExvYywgUmVmZXJlbmNlLCBBbHRlcm5hbnRfYWxsZWxlcyxcbiAgICAgICAgIEhHVlMuYywgSEdWUy5wKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgRnVsbCBQLUxQIHJlc3VsdHMiLCJwbHBfZnVsbCA8LSByZWFkX3RzdihwbHBfZnVsbF9maWxlKSJdfQ== -->
 <pre class="r"><code># Full P-LP results
-plp_full &lt;- read_tsv(plp_full_file)
+plp_full &lt;- read_tsv(plp_full_file)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZzogT25lIG9yIG1vcmUgcGFyc2luZyBpc3N1ZXMsIGNhbGwgYHByb2JsZW1zKClgIG9uIHlvdXIgZGF0YSBmcmFtZSBmb3IgZGV0YWlscywgZS5nLjpcbiAgZGF0IDwtIHZyb29tKC4uLilcbiAgcHJvYmxlbXMoZGF0KVxuIn0= -->
+<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
+  dat &lt;- vroom(...)
+  problems(dat)</code></pre>
+<!-- rnb-warning-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNTMyOCBDb2x1bW5zOiAyMDhcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICgxNzMpOiBLaWRzIEZpcnN0IFBhcnRpY2lwYW50IElELCBleHBlcmltZW50YWxfc3RyYXRlZ3ksIEluX0V4b21lX0NhcHR1ci4uLlxuZGJsICAoMTkpOiBQUDUsIExvYywgI1ZhcmlhdGlvbklELCBJbmQuMS5BbGxlbGUxRGVwdGgsIEluZC4xLkFsbGVsZTJEZXB0aCwgUy4uLlxubGdsICAoMTYpOiBBbHRlcm5hbnRfZmxhZ19CYWRnZSwgT3RoZXJpbmZvMiwgT3RoZXJpbmZvMywgT3RoZXJpbmZvMi4xLCBPdGhlci4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
+<pre><code>Rows: 5328 Columns: 208
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (173): Kids First Participant ID, experimental_strategy, In_Exome_Captur...
+dbl  (19): PP5, Loc, #VariationID, Ind.1.Allele1Depth, Ind.1.Allele2Depth, S...
+lgl  (16): Alternant_flag_Badge, Otherinfo2, Otherinfo3, Otherinfo2.1, Other...
 
-# Load abridged P-LP file and append variant coordinates
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgTG9hZCBhYnJpZGdlZCBQLUxQIGZpbGUgYW5kIGFwcGVuZCB2YXJpYW50IGNvb3JkaW5hdGVzIiwiZ2VybWxpbmUgPC0gcmVhZF90c3YocGxwX2ZpbGUpICU+JVxuICBsZWZ0X2pvaW4ocGxwX2Z1bGxbLGMoXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEXCIsIFwiSHVnb19TeW1ib2xcIiwgXCJIR1ZTLmNcIiwgXCJDaHJvbW9zb21lXCIsIFwiTG9jXCIsIFwiUmVmZXJlbmNlXCIsIFwiQWx0ZXJuYW50X2FsbGVsZXNcIildKSAlPiVcbiAgcmVuYW1lKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsID0gS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRCkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoIWlzLm5hKENocm9tb3NvbWUpKSJdfQ== -->
+<pre class="r"><code># Load abridged P-LP file and append variant coordinates
 germline &lt;- read_tsv(plp_file) %&gt;%
   left_join(plp_full[,c(&quot;Kids_First_Biospecimen_ID&quot;, &quot;Hugo_Symbol&quot;, &quot;HGVS.c&quot;, &quot;Chromosome&quot;, &quot;Loc&quot;, &quot;Reference&quot;, &quot;Alternant_alleles&quot;)]) %&gt;%
   rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %&gt;%
-  dplyr::filter(!is.na(Chromosome))
+  dplyr::filter(!is.na(Chromosome))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNTY1OCBDb2x1bW5zOiA3XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoNyk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIGV4cGVyaW1lbnRhbF9zdHJhdGVneSwgTC1MUF9DYWxsX2ZpbmFsLCAuLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbkpvaW5pbmcgd2l0aCBgYnkgPSBqb2luX2J5KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIEh1Z29fU3ltYm9sLCBIR1ZTLmMpYFxuIn0= -->
+<pre><code>Rows: 5658 Columns: 7
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (7): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
 
-hist &lt;- read_tsv(histologies_file)
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Joining with `by = join_by(Kids_First_Biospecimen_ID, Hugo_Symbol, HGVS.c)`</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoicGxvdF9tYXBwaW5nIDwtIHJlYWRfdHN2KHBsb3RfbWFwcGluZ19maWxlKSJ9 -->
+<pre class="r"><code>plot_mapping &lt;- read_tsv(plot_mapping_file)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogODEgQ29sdW1uczogOVxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDgpOiBicm9hZF9oaXN0b2xvZ3ksIGNhbmNlcl9ncm91cCwgYnJvYWRfaGlzdG9sb2d5X2Rpc3BsYXksIHBsb3RfZ3JvdXAsLi4uXG5kYmwgKDEpOiBicm9hZF9oaXN0b2xvZ3lfb3JkZXJcblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Rows: 81 Columns: 9
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (8): broad_histology, cancer_group, broad_histology_display, plot_group,...
+dbl (1): broad_histology_order
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiaGlzdCA8LSByZWFkX3RzdihoaXN0b2xvZ2llc19maWxlKSAlPiVcbiAgbGVmdF9qb2luKHBsb3RfbWFwcGluZ1ssYyhcImNhbmNlcl9ncm91cFwiLCBcInBsb3RfZ3JvdXBcIildKSJ9 -->
+<pre class="r"><code>hist &lt;- read_tsv(histologies_file) %&gt;%
+  left_join(plot_mapping[,c(&quot;cancer_group&quot;, &quot;plot_group&quot;)])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZzogT25lIG9yIG1vcmUgcGFyc2luZyBpc3N1ZXMsIGNhbGwgYHByb2JsZW1zKClgIG9uIHlvdXIgZGF0YSBmcmFtZSBmb3IgZGV0YWlscywgZS5nLjpcbiAgZGF0IDwtIHZyb29tKC4uLilcbiAgcHJvYmxlbXMoZGF0KVxuIn0= -->
+<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
+  dat &lt;- vroom(...)
+  problems(dat)</code></pre>
+<!-- rnb-warning-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNDM3MjkgQ29sdW1uczogNTVcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICgzOCk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIHNhbXBsZV9pZCwgYWxpcXVvdF9pZCwgS2lkc19GaXJzdF9QYXJ0aS4uLlxuZGJsICgxNyk6IGFnZV9hdF9kaWFnbm9zaXNfZGF5cywgT1NfZGF5cywgRUZTX2RheXMsIGFnZV9sYXN0X3VwZGF0ZV9kYXlzLCBuby4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoY2FuY2VyX2dyb3VwKWBcbiJ9 -->
+<pre><code>Rows: 43729 Columns: 55
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (38): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
+dbl (17): age_at_diagnosis_days, OS_days, EFS_days, age_last_update_days, no...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Joining with `by = join_by(cancer_group)`</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBsZWZ0X2pvaW4oLiwgcGxvdF9tYXBwaW5nWywgYyhcImNhbmNlcl9ncm91cFwiLCBcInBsb3RfZ3JvdXBcIildKTogRWFjaCByb3cgaW4gYHhgIGlzIGV4cGVjdGVkIHRvIG1hdGNoIGF0IG1vc3QgMSByb3cgaW4gYHlgLlxu4oS5IFJvdyA3IG9mIGB4YCBtYXRjaGVzIG11bHRpcGxlIHJvd3MuXG7ihLkgSWYgbXVsdGlwbGUgbWF0Y2hlcyBhcmUgZXhwZWN0ZWQsIHNldCBgbXVsdGlwbGUgPSBcImFsbFwiYCB0byBzaWxlbmNlIHRoaXMgd2FybmluZy5cbiJ9 -->
+<pre><code>Warning in left_join(., plot_mapping[, c(&quot;cancer_group&quot;, &quot;plot_group&quot;)]): Each row in `x` is expected to match at most 1 row in `y`.
+ℹ Row 7 of `x` matches multiple rows.
+ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
+<!-- rnb-warning-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbImhpc3RfdHVtb3IgPC0gaGlzdCAlPiVcbiAgZHBseXI6OmZpbHRlcihzYW1wbGVfdHlwZSA9PSBcIlR1bW9yXCIgJiBleHBlcmltZW50YWxfc3RyYXRlZ3kgJWluJSBjKFwiV0dTXCIsIFwiV1hTXCIpKSAlPiVcbiAgZHBseXI6OnJlbmFtZShcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQpIiwiIiwiaGlzdF9ub3JtYWwgPC0gaGlzdCAlPiVcbiAgZHBseXI6OmZpbHRlcihzYW1wbGVfdHlwZSA9PSBcIk5vcm1hbFwiKSAlPiVcbiAgZHBseXI6OnJlbmFtZShcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsXCIgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEKSIsIiIsIiIsIiMgQ1BHcyIsImNwZ3MgPC0gcmVhZF9saW5lcyhjcGdfZmlsZSkiLCJtdWx0aV9jcGcgPC0gYyhnbHVlOjpnbHVlKFwie2NwZ3N9O1wiKSxcbiAgICAgICAgICAgICAgIGdsdWU6OmdsdWUoXCI7e2NwZ3N9XCIpKSIsIiIsIiMgZmlsdGVyIFBMUCBjYWxscyBmb3IgY3BncywgYW5kIGFkZCBwbG90X2dyb3VwIGFuZCBtb2xlY3VsYXJfc3VidHlwZSIsImdlcm1saW5lIDwtIGdlcm1saW5lICU+JVxuICBmaWx0ZXIoSHVnb19TeW1ib2wgJWluJSBjcGdzIHwgZ3JlcGwocGFzdGUwKG11bHRpX2NwZywgY29sbGFwc2UgPSBcInxcIiksIEh1Z29fU3ltYm9sKSkgJT4lXG4gIGRwbHlyOjptdXRhdGUoSHVnb19TeW1ib2wgPSBjYXNlX3doZW4oXG4gICAgIWdyZXBsKFwiO1wiLCBIdWdvX1N5bWJvbCkgfiBIdWdvX1N5bWJvbCxcbiAgICBUUlVFIH4gc3RyX2V4dHJhY3QoSHVnb19TeW1ib2wsIHBhc3RlKGNwZ3MsIGNvbGxhcHNlID0gXCJ8XCIpKVxuICApKSAlPiVcbiAgIyBsZWZ0X2pvaW4oaGlzdFssYyhcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsXCIsIFwiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vclwiLFxuICAjICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJwbG90X2dyb3VwXCIsIFwibW9sZWN1bGFyX3N1YnR5cGVcIildKSAlPiVcbiAgbGVmdF9qb2luKGhpc3Rfbm9ybWFsWyxjKFwiS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRFwiLCBcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsXCIpXSkgJT4lXG4gIGxlZnRfam9pbihoaXN0X3R1bW9yWyxjKFwiS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRFwiLCBcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIixcbiAgICAgICAgICAgICAgICAgICAgXCJwbG90X2dyb3VwXCIsIFwibW9sZWN1bGFyX3N1YnR5cGVcIildLCBieSA9IFwiS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRFwiKSAlPiVcbiAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRCwgXG4gICAgICAgICAgICAgICAgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwgXG4gICAgICAgICAgICAgICAgcGxvdF9ncm91cCwgbW9sZWN1bGFyX3N1YnR5cGUsXG4gICAgICAgICAgICAgICAgSHVnb19TeW1ib2wsIGBMLUxQX0NhbGxfZmluYWxgLCBSZWFzb25pbmdfZm9yX2NhbGwsXG4gICAgICAgICAgICAgICAgQ2hyb21vc29tZSwgTG9jLCBSZWZlcmVuY2UsIEFsdGVybmFudF9hbGxlbGVzLFxuICAgICAgICAgICAgICAgIEhHVlMuYywgSEdWUy5wKSAlPiVcbiAgZGlzdGluY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIEh1Z29fU3ltYm9sLCBMb2MsIC5rZWVwX2FsbCA9IFQpIl19 -->
+<pre class="r"><code>hist_tumor &lt;- hist %&gt;%
+  dplyr::filter(sample_type == &quot;Tumor&quot; &amp; experimental_strategy %in% c(&quot;WGS&quot;, &quot;WXS&quot;)) %&gt;%
+  dplyr::rename(&quot;Kids_First_Biospecimen_ID_tumor&quot; = Kids_First_Biospecimen_ID)
+
+hist_normal &lt;- hist %&gt;%
+  dplyr::filter(sample_type == &quot;Normal&quot;) %&gt;%
+  dplyr::rename(&quot;Kids_First_Biospecimen_ID_normal&quot; = Kids_First_Biospecimen_ID)
+
 
 # CPGs
 cpgs &lt;- read_lines(cpg_file)
@@ -1895,43 +1981,85 @@ germline &lt;- germline %&gt;%
     !grepl(&quot;;&quot;, Hugo_Symbol) ~ Hugo_Symbol,
     TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = &quot;|&quot;))
   )) %&gt;%
-  left_join(hist[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;Kids_First_Biospecimen_ID_tumor&quot;,
-                               &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
-         plot_group, molecular_subtype,
-         Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
-         Chromosome, Loc, Reference, Alternant_alleles,
-         HGVS.c, HGVS.p)</code></pre>
+  # left_join(hist[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;Kids_First_Biospecimen_ID_tumor&quot;,
+  #                              &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
+  left_join(hist_normal[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;)]) %&gt;%
+  left_join(hist_tumor[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_tumor&quot;,
+                    &quot;plot_group&quot;, &quot;molecular_subtype&quot;)], by = &quot;Kids_First_Participant_ID&quot;) %&gt;%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
+                Kids_First_Biospecimen_ID_tumor, 
+                plot_group, molecular_subtype,
+                Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
+                Chromosome, Loc, Reference, Alternant_alleles,
+                HGVS.c, HGVS.p) %&gt;%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, Loc, .keep_all = T)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpYFxuIn0= -->
+<pre><code>Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBsZWZ0X2pvaW4oLiwgaGlzdF9ub3JtYWxbLCBjKFwiS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRFwiLCBcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsXCIpXSk6IEVhY2ggcm93IGluIGB4YCBpcyBleHBlY3RlZCB0byBtYXRjaCBhdCBtb3N0IDEgcm93IGluIGB5YC5cbuKEuSBSb3cgMSBvZiBgeGAgbWF0Y2hlcyBtdWx0aXBsZSByb3dzLlxu4oS5IElmIG11bHRpcGxlIG1hdGNoZXMgYXJlIGV4cGVjdGVkLCBzZXQgYG11bHRpcGxlID0gXCJhbGxcImAgdG8gc2lsZW5jZSB0aGlzIHdhcm5pbmcuXG4ifQ== -->
+<pre><code>Warning in left_join(., hist_normal[, c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;)]): Each row in `x` is expected to match at most 1 row in `y`.
+ℹ Row 1 of `x` matches multiple rows.
+ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
+<!-- rnb-warning-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBsZWZ0X2pvaW4oLiwgaGlzdF90dW1vclssIGMoXCJLaWRzX0ZpcnN0X1BhcnRpY2lwYW50X0lEXCIsIFwiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vclwiLCA6IEVhY2ggcm93IGluIGB4YCBpcyBleHBlY3RlZCB0byBtYXRjaCBhdCBtb3N0IDEgcm93IGluIGB5YC5cbuKEuSBSb3cgMSBvZiBgeGAgbWF0Y2hlcyBtdWx0aXBsZSByb3dzLlxu4oS5IElmIG11bHRpcGxlIG1hdGNoZXMgYXJlIGV4cGVjdGVkLCBzZXQgYG11bHRpcGxlID0gXCJhbGxcImAgdG8gc2lsZW5jZSB0aGlzIHdhcm5pbmcuXG4ifQ== -->
+<pre><code>Warning in left_join(., hist_tumor[, c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_tumor&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
+ℹ Row 1 of `x` matches multiple rows.
+ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
+<!-- rnb-warning-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Load CNV files, and identify patients with germline PLP variant and
 somatic CNV in same CPG</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBmaWx0ZXIgY252IHRvIHBhdGllbnRzIGluIGNvaG9ydCBhbmQgQ1BHIGNhbGxzIG9ubHlcbmNudl9hdXRvIDwtIHJlYWRfdHN2KGNudl9hdXRvX2ZpbGUpICU+JVxuICBmaWx0ZXIoYmlvc3BlY2ltZW5faWQgJWluJSBoaXN0JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJiBnZW5lX3N5bWJvbCAlaW4lIGNwZ3MpICU+JVxuICByZW5hbWUoXCJIdWdvX1N5bWJvbFwiID0gZ2VuZV9zeW1ib2wsXG4gICAgICAgICBcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiA9IGJpb3NwZWNpbWVuX2lkLFxuICAgICAgICAgXCJDTlZfc3RhdHVzX3NvbWF0aWNcIiA9IHN0YXR1cyxcbiAgICAgICAgIFwiY29weV9udW1iZXJfc29tYXRpY1wiID0gY29weV9udW1iZXIsXG4gICAgICAgICBcInBsb2lkeV9zb21hdGljXCIgPSBcInBsb2lkeVwiKSAlPiVcbiAgc2VsZWN0KEh1Z29fU3ltYm9sLCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLFxuICAgICAgICAgQ05WX3N0YXR1c19zb21hdGljKVxuXG5jbnZfeHkgPC0gcmVhZF90c3YoY252X3h5X2ZpbGUpICU+JVxuICBmaWx0ZXIoYmlvc3BlY2ltZW5faWQgJWluJSBoaXN0JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJiBnZW5lX3N5bWJvbCAlaW4lIGNwZ3MpICU+JVxuICByZW5hbWUoXCJIdWdvX1N5bWJvbFwiID0gZ2VuZV9zeW1ib2wsXG4gICAgICAgICBcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiA9IGJpb3NwZWNpbWVuX2lkLFxuICAgICAgICAgXCJDTlZfc3RhdHVzX3NvbWF0aWNcIiA9IHN0YXR1cyxcbiAgICAgICAgIFwiY29weV9udW1iZXJfc29tYXRpY1wiID0gY29weV9udW1iZXIsXG4gICAgICAgICBcInBsb2lkeV9zb21hdGljXCIgPSBcInBsb2lkeVwiKSAlPiVcbiAgc2VsZWN0KEh1Z29fU3ltYm9sLCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLFxuICAgICAgICAgQ05WX3N0YXR1c19zb21hdGljKVxuXG4jIG1lcmdlIGNudiB0YWJsZXNcbmNudiA8LSBjbnZfYXV0byAlPiVcbiAgYmluZF9yb3dzKGNudl94eSlcblxuIyBtZXJnZSBnZXJtbGluZSBTTlYgYW5kIHNvbWF0aWMgQ05WIGNhbGxzIGJ5IGJzIGFuZCBnZW5lIGlkXG5nZXJtbGluZV9zb21hdGljX2NudnMgPC0gZ2VybWxpbmUgJT4lXG4gIGxlZnRfam9pbihjbnYsIGJ5ID0gYyhcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiwgXCJIdWdvX1N5bWJvbFwiKSkgJT4lXG4gIGRwbHlyOjptdXRhdGUoQ05WX3N0YXR1c19zb21hdGljID0gY2FzZV93aGVuKFxuICAgIGlzLm5hKENOVl9zdGF0dXNfc29tYXRpYykgfiBcIm5ldXRyYWxcIixcbiAgICBUUlVFIH4gQ05WX3N0YXR1c19zb21hdGljXG4gICkpICU+JVxuICBkaXN0aW5jdCgpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgZmlsdGVyIGNudiB0byBwYXRpZW50cyBpbiBjb2hvcnQgYW5kIENQRyBjYWxscyBvbmx5IiwiY252X2F1dG8gPC0gcmVhZF90c3YoY252X2F1dG9fZmlsZSkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoYmlvc3BlY2ltZW5faWQgJWluJSBnZXJtbGluZSRLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yICYgZ2VuZV9zeW1ib2wgJWluJSBjcGdzKSAlPiVcbiAgZHBseXI6OnJlbmFtZShcIkh1Z29fU3ltYm9sXCIgPSBnZW5lX3N5bWJvbCxcbiAgICAgICAgIFwiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vclwiID0gYmlvc3BlY2ltZW5faWQsXG4gICAgICAgICBcIkNOVl9zdGF0dXNfc29tYXRpY1wiID0gc3RhdHVzLFxuICAgICAgICAgXCJjb3B5X251bWJlcl9zb21hdGljXCIgPSBjb3B5X251bWJlcixcbiAgICAgICAgIFwicGxvaWR5X3NvbWF0aWNcIiA9IFwicGxvaWR5XCIpICU+JVxuICBkcGx5cjo6c2VsZWN0KEh1Z29fU3ltYm9sLCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLFxuICAgICAgICAgQ05WX3N0YXR1c19zb21hdGljKSJdfQ== -->
 <pre class="r"><code># filter cnv to patients in cohort and CPG calls only
 cnv_auto &lt;- read_tsv(cnv_auto_file) %&gt;%
-  filter(biospecimen_id %in% hist$Kids_First_Biospecimen_ID_tumor &amp; gene_symbol %in% cpgs) %&gt;%
-  rename(&quot;Hugo_Symbol&quot; = gene_symbol,
+  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor &amp; gene_symbol %in% cpgs) %&gt;%
+  dplyr::rename(&quot;Hugo_Symbol&quot; = gene_symbol,
          &quot;Kids_First_Biospecimen_ID_tumor&quot; = biospecimen_id,
          &quot;CNV_status_somatic&quot; = status,
          &quot;copy_number_somatic&quot; = copy_number,
          &quot;ploidy_somatic&quot; = &quot;ploidy&quot;) %&gt;%
-  select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
-         CNV_status_somatic)
+  dplyr::select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
+         CNV_status_somatic)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiTXVsdGlwbGUgZmlsZXMgaW4gemlwOiByZWFkaW5nICdjb25zZW5zdXNfc2VnX2Fubm90YXRlZF9jbl9hdXRvc29tZXMudHN2J1xuUm93czogMzkxNzAwMCBDb2x1bW5zOiA3XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoNSk6IGJpb3NwZWNpbWVuX2lkLCBzdGF0dXMsIGVuc2VtYmwsIGdlbmVfc3ltYm9sLCBjeXRvYmFuZFxuZGJsICgyKTogY29weV9udW1iZXIsIHBsb2lkeVxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
+<pre><code>Multiple files in zip: reading &#39;consensus_seg_annotated_cn_autosomes.tsv&#39;
+Rows: 3917000 Columns: 7
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (5): biospecimen_id, status, ensembl, gene_symbol, cytoband
+dbl (2): copy_number, ploidy
 
-cnv_xy &lt;- read_tsv(cnv_xy_file) %&gt;%
-  filter(biospecimen_id %in% hist$Kids_First_Biospecimen_ID_tumor &amp; gene_symbol %in% cpgs) %&gt;%
-  rename(&quot;Hugo_Symbol&quot; = gene_symbol,
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiY252X3h5IDwtIHJlYWRfdHN2KGNudl94eV9maWxlKSAlPiVcbiAgZHBseXI6OmZpbHRlcihiaW9zcGVjaW1lbl9pZCAlaW4lIGdlcm1saW5lJEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJiBnZW5lX3N5bWJvbCAlaW4lIGNwZ3MpICU+JVxuICBkcGx5cjo6cmVuYW1lKFwiSHVnb19TeW1ib2xcIiA9IGdlbmVfc3ltYm9sLFxuICAgICAgICAgXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yXCIgPSBiaW9zcGVjaW1lbl9pZCxcbiAgICAgICAgIFwiQ05WX3N0YXR1c19zb21hdGljXCIgPSBzdGF0dXMsXG4gICAgICAgICBcImNvcHlfbnVtYmVyX3NvbWF0aWNcIiA9IGNvcHlfbnVtYmVyLFxuICAgICAgICAgXCJwbG9pZHlfc29tYXRpY1wiID0gXCJwbG9pZHlcIikgJT4lXG4gIGRwbHlyOjpzZWxlY3QoSHVnb19TeW1ib2wsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsXG4gICAgICAgICBDTlZfc3RhdHVzX3NvbWF0aWMpIn0= -->
+<pre class="r"><code>cnv_xy &lt;- read_tsv(cnv_xy_file) %&gt;%
+  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor &amp; gene_symbol %in% cpgs) %&gt;%
+  dplyr::rename(&quot;Hugo_Symbol&quot; = gene_symbol,
          &quot;Kids_First_Biospecimen_ID_tumor&quot; = biospecimen_id,
          &quot;CNV_status_somatic&quot; = status,
          &quot;copy_number_somatic&quot; = copy_number,
          &quot;ploidy_somatic&quot; = &quot;ploidy&quot;) %&gt;%
-  select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
-         CNV_status_somatic)
+  dplyr::select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
+         CNV_status_somatic)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiTXVsdGlwbGUgZmlsZXMgaW4gemlwOiByZWFkaW5nICdjb25zZW5zdXNfc2VnX2Fubm90YXRlZF9jbl94X2FuZF95LnRzdidcblJvd3M6IDI4NTQ0MSBDb2x1bW5zOiA4XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoNik6IGJpb3NwZWNpbWVuX2lkLCBzdGF0dXMsIGVuc2VtYmwsIGdlbmVfc3ltYm9sLCBjeXRvYmFuZCwgZ2VybWxpbmVfc2UuLi5cbmRibCAoMik6IGNvcHlfbnVtYmVyLCBwbG9pZHlcblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Multiple files in zip: reading &#39;consensus_seg_annotated_cn_x_and_y.tsv&#39;
+Rows: 285441 Columns: 8
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (6): biospecimen_id, status, ensembl, gene_symbol, cytoband, germline_se...
+dbl (2): copy_number, ploidy
 
-# merge cnv tables
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgbWVyZ2UgY252IHRhYmxlcyIsImNudiA8LSBjbnZfYXV0byAlPiVcbiAgYmluZF9yb3dzKGNudl94eSkiLCIiLCIjIG1lcmdlIGdlcm1saW5lIFNOViBhbmQgc29tYXRpYyBDTlYgY2FsbHMgYnkgYnMgYW5kIGdlbmUgaWQiLCJnZXJtbGluZV9zb21hdGljX2NudnMgPC0gZ2VybWxpbmUgJT4lXG4gIGxlZnRfam9pbihjbnYsIGJ5ID0gYyhcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiwgXCJIdWdvX1N5bWJvbFwiKSkgJT4lXG4gIGRwbHlyOjptdXRhdGUoQ05WX3N0YXR1c19zb21hdGljID0gY2FzZV93aGVuKFxuICAgIGlzLm5hKENOVl9zdGF0dXNfc29tYXRpYykgfiBcIm5ldXRyYWxcIixcbiAgICBUUlVFIH4gQ05WX3N0YXR1c19zb21hdGljXG4gICkpICU+JVxuICBkaXN0aW5jdCgpIl19 -->
+<pre class="r"><code># merge cnv tables
 cnv &lt;- cnv_auto %&gt;%
   bind_rows(cnv_xy)
 
@@ -1944,59 +2072,92 @@ germline_somatic_cnvs &lt;- germline %&gt;%
   )) %&gt;%
   distinct()</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBsZWZ0X2pvaW4oLiwgY252LCBieSA9IGMoXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yXCIsIFwiSHVnb19TeW1ib2xcIikpOiBFYWNoIHJvdyBpbiBgeGAgaXMgZXhwZWN0ZWQgdG8gbWF0Y2ggYXQgbW9zdCAxIHJvdyBpbiBgeWAuXG7ihLkgUm93IDg3IG9mIGB4YCBtYXRjaGVzIG11bHRpcGxlIHJvd3MuXG7ihLkgSWYgbXVsdGlwbGUgbWF0Y2hlcyBhcmUgZXhwZWN0ZWQsIHNldCBgbXVsdGlwbGUgPSBcImFsbFwiYCB0byBzaWxlbmNlIHRoaXMgd2FybmluZy5cbiJ9 -->
+<pre><code>Warning in left_join(., cnv, by = c(&quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;Hugo_Symbol&quot;)): Each row in `x` is expected to match at most 1 row in `y`.
+ℹ Row 87 of `x` matches multiple rows.
+ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
+<!-- rnb-warning-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Read in LOH results, and append LOH scores to rows of
 <code>germline_somatic_cnvs</code></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9oIDwtIHJlYWRfdHN2KGxvaF92YXJpYW50X2ZpbGUpICU+JVxuICByZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgPSBCU19JRCxcbiAgICAgICAgIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgPSBCU19JRF90dW1vcixcbiAgICAgICAgIENocm9tb3NvbWUgPSBjaHIsXG4gICAgICAgICBMb2MgPSBzdGFydCxcbiAgICAgICAgIExPSCA9IGxvaF91bmNvcnJlY3RlZCkgJT4lXG4gIGZpbHRlcighaXMubmEocHJvYmFuZF90dW1vcl9hbHRfZGVwdGgpKVxuXG5cbmdlcm1saW5lX3NvbWF0aWNfY252c19sb2ggPC0gZ2VybWxpbmVfc29tYXRpY19jbnZzICU+JVxuICBsZWZ0X2pvaW4obG9oWyxjKFwiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vclwiLCBcbiAgICAgICAgICAgICAgICAgICBcIkNocm9tb3NvbWVcIiwgXCJMb2NcIiwgXCJwcm9iYW5kX2dlcm1saW5lX3ZhZlwiLCBcInByb2JhbmRfdHVtb3JfdmFmXCIsIFxuICAgICAgICAgICAgICAgICAgIFwiTE9IXCIpXSwgXG4gICAgICAgICAgICBieSA9IGMoXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yXCIsIFwiQ2hyb21vc29tZVwiLCBcIkxvY1wiKSkgJT4lXG4gIGRpc3RpbmN0KClcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoibG9oIDwtIHJlYWRfdHN2KGxvaF92YXJpYW50X2ZpbGUpICU+JVxuICByZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgPSBCU19JRCxcbiAgICAgICAgIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgPSBCU19JRF90dW1vcixcbiAgICAgICAgIENocm9tb3NvbWUgPSBjaHIsXG4gICAgICAgICBMb2MgPSBzdGFydCxcbiAgICAgICAgIExPSCA9IGxvaF91bmNvcnJlY3RlZCkgJT4lXG4gIGZpbHRlcighaXMubmEocHJvYmFuZF90dW1vcl9hbHRfZGVwdGgpKSJ9 -->
 <pre class="r"><code>loh &lt;- read_tsv(loh_variant_file) %&gt;%
   rename(Kids_First_Biospecimen_ID_normal = BS_ID,
          Kids_First_Biospecimen_ID_tumor = BS_ID_tumor,
          Chromosome = chr,
          Loc = start,
          LOH = loh_uncorrected) %&gt;%
-  filter(!is.na(proband_tumor_alt_depth))
+  filter(!is.na(proband_tumor_alt_depth))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjM5IENvbHVtbnM6IDIxXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAgKDcpOiBCU19JRCwgZ2VuZSwgY2hyLCByZWYsIGFsdCwgQlNfSURfdHVtb3IsIHZhcmlhbnRfaWRcbmRibCAoMTQpOiBzdGFydCwgZW5kLCBwcm9iYW5kX2dlcm1saW5lX3JlZl9kZXB0aCwgcHJvYmFuZF9nZXJtbGluZV9hbHRfZGVwdGguLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Rows: 239 Columns: 21
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr  (7): BS_ID, gene, chr, ref, alt, BS_ID_tumor, variant_id
+dbl (14): start, end, proband_germline_ref_depth, proband_germline_alt_depth...
 
-
-germline_somatic_cnvs_loh &lt;- germline_somatic_cnvs %&gt;%
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiZ2VybWxpbmVfc29tYXRpY19jbnZzX2xvaCA8LSBnZXJtbGluZV9zb21hdGljX2NudnMgJT4lXG4gIGxlZnRfam9pbihsb2hbLGMoXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yXCIsIFxuICAgICAgICAgICAgICAgICAgIFwiQ2hyb21vc29tZVwiLCBcIkxvY1wiLCBcInByb2JhbmRfZ2VybWxpbmVfdmFmXCIsIFwicHJvYmFuZF90dW1vcl92YWZcIiwgXG4gICAgICAgICAgICAgICAgICAgXCJMT0hcIildLCBcbiAgICAgICAgICAgIGJ5ID0gYyhcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiwgXCJDaHJvbW9zb21lXCIsIFwiTG9jXCIpKSAlPiVcbiAgZGlzdGluY3QoKSJ9 -->
+<pre class="r"><code>germline_somatic_cnvs_loh &lt;- germline_somatic_cnvs %&gt;%
   left_join(loh[,c(&quot;Kids_First_Biospecimen_ID_tumor&quot;, 
                    &quot;Chromosome&quot;, &quot;Loc&quot;, &quot;proband_germline_vaf&quot;, &quot;proband_tumor_vaf&quot;, 
                    &quot;LOH&quot;)], 
             by = c(&quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;Chromosome&quot;, &quot;Loc&quot;)) %&gt;%
-  distinct()
-</code></pre>
+  distinct()</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBsZWZ0X2pvaW4oLiwgbG9oWywgYyhcIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3JcIiwgXCJDaHJvbW9zb21lXCIsIDogRWFjaCByb3cgaW4gYHhgIGlzIGV4cGVjdGVkIHRvIG1hdGNoIGF0IG1vc3QgMSByb3cgaW4gYHlgLlxu4oS5IFJvdyA0MiBvZiBgeGAgbWF0Y2hlcyBtdWx0aXBsZSByb3dzLlxu4oS5IElmIG11bHRpcGxlIG1hdGNoZXMgYXJlIGV4cGVjdGVkLCBzZXQgYG11bHRpcGxlID0gXCJhbGxcImAgdG8gc2lsZW5jZSB0aGlzIHdhcm5pbmcuXG4ifQ== -->
+<pre><code>Warning in left_join(., loh[, c(&quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;Chromosome&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
+ℹ Row 42 of `x` matches multiple rows.
+ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
+<!-- rnb-warning-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Load gene LOH data and append to
 <code>germline_somatic_cnvs_loh</code></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9oX2dlbmUgPC0gcmVhZF90c3YobG9oX2dlbmVfZmlsZSkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciAlaW4lIGdlcm1saW5lJEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJiBIdWdvX1N5bWJvbCAlaW4lIGNwZ3MpICU+JVxuICBkcGx5cjo6cmVuYW1lKGdlbmVfTE9IID0gTE9IX3Njb3JlKSAlPiVcbiAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLCBIdWdvX1N5bWJvbCxcbiAgICAgICAgIGdlbmVfTE9IKVxuXG5nZXJtbGluZV9zb21hdGljX2NudnNfbG9oX2dlbmUgPC0gZ2VybWxpbmVfc29tYXRpY19jbnZzX2xvaCAlPiVcbiAgbGVmdF9qb2luKGxvaF9nZW5lKVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoibG9oX2dlbmUgPC0gcmVhZF90c3YobG9oX2dlbmVfZmlsZSkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciAlaW4lIGdlcm1saW5lJEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJiBIdWdvX1N5bWJvbCAlaW4lIGNwZ3MpICU+JVxuICBkcGx5cjo6cmVuYW1lKGdlbmVfTE9IID0gTE9IX3Njb3JlKSAlPiVcbiAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLCBIdWdvX1N5bWJvbCxcbiAgICAgICAgIGdlbmVfTE9IKSJ9 -->
 <pre class="r"><code>loh_gene &lt;- read_tsv(loh_gene_file) %&gt;%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% germline$Kids_First_Biospecimen_ID_tumor &amp; Hugo_Symbol %in% cpgs) %&gt;%
   dplyr::rename(gene_LOH = LOH_score) %&gt;%
   dplyr::select(Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
-         gene_LOH)
-
-germline_somatic_cnvs_loh_gene &lt;- germline_somatic_cnvs_loh %&gt;%
-  left_join(loh_gene)
-</code></pre>
+         gene_LOH)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiTXVsdGlwbGUgZmlsZXMgaW4gemlwOiByZWFkaW5nICdwYnRhLWFsbC1nZW5lLWxvaC50c3YnXG5Sb3dzOiAxNDk1MjQyNSBDb2x1bW5zOiA0XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoMyk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLCAuLi5cbmRibCAoMSk6IExPSF9zY29yZVxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
+<pre><code>Multiple files in zip: reading &#39;pbta-all-gene-loh.tsv&#39;
+Rows: 14952425 Columns: 4
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (3): Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, ...
+dbl (1): LOH_score
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiZ2VybWxpbmVfc29tYXRpY19jbnZzX2xvaF9nZW5lIDwtIGdlcm1saW5lX3NvbWF0aWNfY252c19sb2ggJT4lXG4gIGxlZnRfam9pbihsb2hfZ2VuZSkifQ== -->
+<pre class="r"><code>germline_somatic_cnvs_loh_gene &lt;- germline_somatic_cnvs_loh %&gt;%
+  left_join(loh_gene)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwgSHVnb19TeW1ib2wpYFxuIn0= -->
+<pre><code>Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor, Hugo_Symbol)`</code></pre>
+<!-- rnb-message-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Save CNV and LOH scores for all samples to output</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVfdHN2KGdlcm1saW5lX3NvbWF0aWNfY252c19sb2hfZ2VuZSxcbiAgICAgICAgICBmaWxlLnBhdGgocmVzdWx0c19kaXIsIFwiZ2VybWxpbmUtc29tYXRpYy1jbnYtbG9oLnRzdlwiKSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoid3JpdGVfdHN2KGdlcm1saW5lX3NvbWF0aWNfY252c19sb2hfZ2VuZSxcbiAgICAgICAgICBmaWxlLnBhdGgocmVzdWx0c19kaXIsIFwiZ2VybWxpbmUtc29tYXRpYy1jbnYtbG9oLnRzdlwiKSkifQ== -->
 <pre class="r"><code>write_tsv(germline_somatic_cnvs_loh_gene,
           file.path(results_dir, &quot;germline-somatic-cnv-loh.tsv&quot;))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXNzZXNzIHNvbWF0aWMgQ05WIGFuZCBMT0ggc2Vjb25kIGhpdHMiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICB0b2M6IFRSVUUKdG9jX2Zsb2F0OiBUUlVFCmF1dGhvcjogUnlhbiBDb3JiZXR0Ci0tLQoKVGhpcyBhbmFseXNpcyBpZGVudGlmaWVzIHBhdGllbnRzIHdpdGggZ2VybWxpbmUgUC1MUCB2YXJpYW50cyBpbiBjYW5jZXIgcHJlZGlzcG9zaXRpb24gZ2VuZXMgdGhhdCBzaG93IHN1YnNlcXVlbnQgc2Vjb25kcyBDTlYgb3IgbG9zcyBvZiBoZXRlcm96eWdvc2l0eSAoTE9IKSBoaXRzIGluIHR1bW9ycyAKClNldCBsaWJyYXJpZXMgYW5kIGZpbGUgcGF0aHMKYGBge3IgbG9hZCBsaWJyYXJpZXN9CiMgbG9hZCBsaWJyYXJpZXMKbGlicmFyeSh0aWR5dmVyc2UpCgojIGRlZmluZSBkaXJlY3RvcmllcyAKcm9vdF9kaXIgPC0gcnByb2pyb290OjpmaW5kX3Jvb3QocnByb2pyb290OjpoYXNfZGlyKCIuZ2l0IikpCmFuYWx5c2lzX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsICJhbmFseXNlcyIsICJ0d28taGl0cyIpCmlucHV0X2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAiaW5wdXQiKQpyZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAicmVzdWx0cyIpCmRhdGFfZGlyIDwtIGZpbGUucGF0aChyb290X2RpciwgImRhdGEiKQoKIyBJZiB0aGUgaW5wdXQgYW5kIHJlc3VsdHMgZGlyZWN0b3JpZXMgZG8gbm90IGV4aXN0LCBjcmVhdGUgaXQKaWYgKCFkaXIuZXhpc3RzKHJlc3VsdHNfZGlyKSkgewogIGRpci5jcmVhdGUocmVzdWx0c19kaXIsIHJlY3Vyc2l2ZSA9IFRSVUUpCn0KCiMgZ2VybWxpbmUgUC1MUCBjYWxscyAKcGxwX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAicGJ0YV9nZXJtbGluZV9wbHBfY2FsbHMudHN2IikKCnBscF9mdWxsX2ZpbGUgPC0gZmlsZS5wYXRoKGlucHV0X2RpciwgIlBCVEEtODM4LWdlcm1saW5lX3BscC0yMDIzLTAyLTA1LnRzdiIpCgojIGFkZCBoaXN0b2xvZ2llcyBmaWxlIApoaXN0b2xvZ2llc19maWxlIDwtIGZpbGUucGF0aChyb290X2RpciwiYW5hbHlzZXMiLCAiY29sbGFwc2UtdHVtb3ItaGlzdG9sb2dpZXMiLCAicmVzdWx0cyIsICJnZXJtbGluZS1wcmltYXJ5LXBsdXMtdHVtb3ItaGlzdG9sb2dpZXMtcGxvdC1ncm91cHMtY2xpbi1tZXRhLnRzdiIpCgojIGNudiBmaWxlIHdpdGggYW5ub3RhdGlvbiAKY252X2F1dG9fZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsICJjb25zZW5zdXNfc2VnX2Fubm90YXRlZF9jbl9hdXRvc29tZXMudHN2Lmd6IikKY252X3h5X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAiY29uc2Vuc3VzX3NlZ19hbm5vdGF0ZWRfY25feF9hbmRfeS50c3YuZ3oiKQoKIyBMT0ggdmFyaWFudCBhbmQgZ2VuZSBmaWxlcwpsb2hfdmFyaWFudF9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgInBidGEtcGxwLWFsbC1sb2gudHN2IikKbG9oX2dlbmVfZmlsZSA8LSBmaWxlLnBhdGgoaW5wdXRfZGlyLCAicGJ0YS1hbGwtZ2VuZS1sb2gudHN2Lmd6IikKCiMgY3BnIGZpbGUKY3BnX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiYW5hbHlzZXMiLCAib25jb2tiLWFubm90YXRpb24iLCAiaW5wdXQiLCAiY3BnLnR4dCIpCmBgYAoKUmVhZCBpbiBQTFAsIGhpc3RvbG9neSwgYW5kIGNwZyBmaWxlcy4gU3Vic2V0IFAtTFAgY2FsbHMgdG8gQ1BHcyBvbmx5IGFuZCBhZGQgaGlzdG9sb2d5CgpgYGB7cn0KIyBGdWxsIFAtTFAgcmVzdWx0cwpwbHBfZnVsbCA8LSByZWFkX3RzdihwbHBfZnVsbF9maWxlKQoKIyBMb2FkIGFicmlkZ2VkIFAtTFAgZmlsZSBhbmQgYXBwZW5kIHZhcmlhbnQgY29vcmRpbmF0ZXMKZ2VybWxpbmUgPC0gcmVhZF90c3YocGxwX2ZpbGUpICU+JQogIGxlZnRfam9pbihwbHBfZnVsbFssYygiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRCIsICJIdWdvX1N5bWJvbCIsICJIR1ZTLmMiLCAiQ2hyb21vc29tZSIsICJMb2MiLCAiUmVmZXJlbmNlIiwgIkFsdGVybmFudF9hbGxlbGVzIildKSAlPiUKICByZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEKSAlPiUKICBkcGx5cjo6ZmlsdGVyKCFpcy5uYShDaHJvbW9zb21lKSkKCmhpc3QgPC0gcmVhZF90c3YoaGlzdG9sb2dpZXNfZmlsZSkKCiMgQ1BHcwpjcGdzIDwtIHJlYWRfbGluZXMoY3BnX2ZpbGUpCm11bHRpX2NwZyA8LSBjKGdsdWU6OmdsdWUoIntjcGdzfTsiKSwKICAgICAgICAgICAgICAgZ2x1ZTo6Z2x1ZSgiO3tjcGdzfSIpKQoKIyBmaWx0ZXIgUExQIGNhbGxzIGZvciBjcGdzLCBhbmQgYWRkIHBsb3RfZ3JvdXAgYW5kIG1vbGVjdWxhcl9zdWJ0eXBlCmdlcm1saW5lIDwtIGdlcm1saW5lICU+JQogIGZpbHRlcihIdWdvX1N5bWJvbCAlaW4lIGNwZ3MgfCBncmVwbChwYXN0ZTAobXVsdGlfY3BnLCBjb2xsYXBzZSA9ICJ8IiksIEh1Z29fU3ltYm9sKSkgJT4lCiAgZHBseXI6Om11dGF0ZShIdWdvX1N5bWJvbCA9IGNhc2Vfd2hlbigKICAgICFncmVwbCgiOyIsIEh1Z29fU3ltYm9sKSB+IEh1Z29fU3ltYm9sLAogICAgVFJVRSB+IHN0cl9leHRyYWN0KEh1Z29fU3ltYm9sLCBwYXN0ZShjcGdzLCBjb2xsYXBzZSA9ICJ8IikpCiAgKSkgJT4lCiAgbGVmdF9qb2luKGhpc3RbLGMoIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsIiwgIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInBsb3RfZ3JvdXAiLCAibW9sZWN1bGFyX3N1YnR5cGUiKV0pICU+JQogIGRwbHlyOjpzZWxlY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIAogICAgICAgICBwbG90X2dyb3VwLCBtb2xlY3VsYXJfc3VidHlwZSwKICAgICAgICAgSHVnb19TeW1ib2wsIGBMLUxQX0NhbGxfZmluYWxgLCBSZWFzb25pbmdfZm9yX2NhbGwsCiAgICAgICAgIENocm9tb3NvbWUsIExvYywgUmVmZXJlbmNlLCBBbHRlcm5hbnRfYWxsZWxlcywKICAgICAgICAgSEdWUy5jLCBIR1ZTLnApCmBgYAoKTG9hZCBDTlYgZmlsZXMsIGFuZCBpZGVudGlmeSBwYXRpZW50cyB3aXRoIGdlcm1saW5lIFBMUCB2YXJpYW50IGFuZCBzb21hdGljIENOViBpbiBzYW1lIENQRwpgYGB7cn0KIyBmaWx0ZXIgY252IHRvIHBhdGllbnRzIGluIGNvaG9ydCBhbmQgQ1BHIGNhbGxzIG9ubHkKY252X2F1dG8gPC0gcmVhZF90c3YoY252X2F1dG9fZmlsZSkgJT4lCiAgZmlsdGVyKGJpb3NwZWNpbWVuX2lkICVpbiUgaGlzdCRLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yICYgZ2VuZV9zeW1ib2wgJWluJSBjcGdzKSAlPiUKICByZW5hbWUoIkh1Z29fU3ltYm9sIiA9IGdlbmVfc3ltYm9sLAogICAgICAgICAiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciIgPSBiaW9zcGVjaW1lbl9pZCwKICAgICAgICAgIkNOVl9zdGF0dXNfc29tYXRpYyIgPSBzdGF0dXMsCiAgICAgICAgICJjb3B5X251bWJlcl9zb21hdGljIiA9IGNvcHlfbnVtYmVyLAogICAgICAgICAicGxvaWR5X3NvbWF0aWMiID0gInBsb2lkeSIpICU+JQogIHNlbGVjdChIdWdvX1N5bWJvbCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwKICAgICAgICAgQ05WX3N0YXR1c19zb21hdGljKQoKY252X3h5IDwtIHJlYWRfdHN2KGNudl94eV9maWxlKSAlPiUKICBmaWx0ZXIoYmlvc3BlY2ltZW5faWQgJWluJSBoaXN0JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJiBnZW5lX3N5bWJvbCAlaW4lIGNwZ3MpICU+JQogIHJlbmFtZSgiSHVnb19TeW1ib2wiID0gZ2VuZV9zeW1ib2wsCiAgICAgICAgICJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yIiA9IGJpb3NwZWNpbWVuX2lkLAogICAgICAgICAiQ05WX3N0YXR1c19zb21hdGljIiA9IHN0YXR1cywKICAgICAgICAgImNvcHlfbnVtYmVyX3NvbWF0aWMiID0gY29weV9udW1iZXIsCiAgICAgICAgICJwbG9pZHlfc29tYXRpYyIgPSAicGxvaWR5IikgJT4lCiAgc2VsZWN0KEh1Z29fU3ltYm9sLCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLAogICAgICAgICBDTlZfc3RhdHVzX3NvbWF0aWMpCgojIG1lcmdlIGNudiB0YWJsZXMKY252IDwtIGNudl9hdXRvICU+JQogIGJpbmRfcm93cyhjbnZfeHkpCgojIG1lcmdlIGdlcm1saW5lIFNOViBhbmQgc29tYXRpYyBDTlYgY2FsbHMgYnkgYnMgYW5kIGdlbmUgaWQKZ2VybWxpbmVfc29tYXRpY19jbnZzIDwtIGdlcm1saW5lICU+JQogIGxlZnRfam9pbihjbnYsIGJ5ID0gYygiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciIsICJIdWdvX1N5bWJvbCIpKSAlPiUKICBkcGx5cjo6bXV0YXRlKENOVl9zdGF0dXNfc29tYXRpYyA9IGNhc2Vfd2hlbigKICAgIGlzLm5hKENOVl9zdGF0dXNfc29tYXRpYykgfiAibmV1dHJhbCIsCiAgICBUUlVFIH4gQ05WX3N0YXR1c19zb21hdGljCiAgKSkgJT4lCiAgZGlzdGluY3QoKQpgYGAKClJlYWQgaW4gTE9IIHJlc3VsdHMsIGFuZCBhcHBlbmQgTE9IIHNjb3JlcyB0byByb3dzIG9mIGBnZXJtbGluZV9zb21hdGljX2NudnNgCmBgYHtyfQpsb2ggPC0gcmVhZF90c3YobG9oX3ZhcmlhbnRfZmlsZSkgJT4lCiAgcmVuYW1lKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsID0gQlNfSUQsCiAgICAgICAgIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgPSBCU19JRF90dW1vciwKICAgICAgICAgQ2hyb21vc29tZSA9IGNociwKICAgICAgICAgTG9jID0gc3RhcnQsCiAgICAgICAgIExPSCA9IGxvaF91bmNvcnJlY3RlZCkgJT4lCiAgZmlsdGVyKCFpcy5uYShwcm9iYW5kX3R1bW9yX2FsdF9kZXB0aCkpCgoKZ2VybWxpbmVfc29tYXRpY19jbnZzX2xvaCA8LSBnZXJtbGluZV9zb21hdGljX2NudnMgJT4lCiAgbGVmdF9qb2luKGxvaFssYygiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciIsIAogICAgICAgICAgICAgICAgICAgIkNocm9tb3NvbWUiLCAiTG9jIiwgInByb2JhbmRfZ2VybWxpbmVfdmFmIiwgInByb2JhbmRfdHVtb3JfdmFmIiwgCiAgICAgICAgICAgICAgICAgICAiTE9IIildLCAKICAgICAgICAgICAgYnkgPSBjKCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yIiwgIkNocm9tb3NvbWUiLCAiTG9jIikpICU+JQogIGRpc3RpbmN0KCkKCmBgYAoKTG9hZCBnZW5lIExPSCBkYXRhIGFuZCBhcHBlbmQgdG8gYGdlcm1saW5lX3NvbWF0aWNfY252c19sb2hgCmBgYHtyfQpsb2hfZ2VuZSA8LSByZWFkX3Rzdihsb2hfZ2VuZV9maWxlKSAlPiUKICBkcGx5cjo6ZmlsdGVyKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgJWluJSBnZXJtbGluZSRLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yICYgSHVnb19TeW1ib2wgJWluJSBjcGdzKSAlPiUKICBkcGx5cjo6cmVuYW1lKGdlbmVfTE9IID0gTE9IX3Njb3JlKSAlPiUKICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIEh1Z29fU3ltYm9sLAogICAgICAgICBnZW5lX0xPSCkKCmdlcm1saW5lX3NvbWF0aWNfY252c19sb2hfZ2VuZSA8LSBnZXJtbGluZV9zb21hdGljX2NudnNfbG9oICU+JQogIGxlZnRfam9pbihsb2hfZ2VuZSkKCmBgYAoKU2F2ZSBDTlYgYW5kIExPSCBzY29yZXMgZm9yIGFsbCBzYW1wbGVzIHRvIG91dHB1dApgYGB7cn0Kd3JpdGVfdHN2KGdlcm1saW5lX3NvbWF0aWNfY252c19sb2hfZ2VuZSwKICAgICAgICAgIGZpbGUucGF0aChyZXN1bHRzX2RpciwgImdlcm1saW5lLXNvbWF0aWMtY252LWxvaC50c3YiKSkKYGBgCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXNzZXNzIHNvbWF0aWMgQ05WIGFuZCBMT0ggc2Vjb25kIGhpdHMiCm91dHB1dDogCiAgaHRtbF9ub3RlYm9vazoKICB0b2M6IFRSVUUKdG9jX2Zsb2F0OiBUUlVFCmF1dGhvcjogUnlhbiBDb3JiZXR0Ci0tLQoKVGhpcyBhbmFseXNpcyBpZGVudGlmaWVzIHBhdGllbnRzIHdpdGggZ2VybWxpbmUgUC1MUCB2YXJpYW50cyBpbiBjYW5jZXIgcHJlZGlzcG9zaXRpb24gZ2VuZXMgdGhhdCBzaG93IHN1YnNlcXVlbnQgc2Vjb25kcyBDTlYgb3IgbG9zcyBvZiBoZXRlcm96eWdvc2l0eSAoTE9IKSBoaXRzIGluIHR1bW9ycyAKClNldCBsaWJyYXJpZXMgYW5kIGZpbGUgcGF0aHMKYGBge3IgbG9hZCBsaWJyYXJpZXN9CiMgbG9hZCBsaWJyYXJpZXMKbGlicmFyeSh0aWR5dmVyc2UpCgojIGRlZmluZSBkaXJlY3RvcmllcyAKcm9vdF9kaXIgPC0gcnByb2pyb290OjpmaW5kX3Jvb3QocnByb2pyb290OjpoYXNfZGlyKCIuZ2l0IikpCmFuYWx5c2lzX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsICJhbmFseXNlcyIsICJ0d28taGl0cyIpCmlucHV0X2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAiaW5wdXQiKQpyZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAicmVzdWx0cyIpCmRhdGFfZGlyIDwtIGZpbGUucGF0aChyb290X2RpciwgImRhdGEiKQoKIyBJZiB0aGUgaW5wdXQgYW5kIHJlc3VsdHMgZGlyZWN0b3JpZXMgZG8gbm90IGV4aXN0LCBjcmVhdGUgaXQKaWYgKCFkaXIuZXhpc3RzKHJlc3VsdHNfZGlyKSkgewogIGRpci5jcmVhdGUocmVzdWx0c19kaXIsIHJlY3Vyc2l2ZSA9IFRSVUUpCn0KCiMgZ2VybWxpbmUgUC1MUCBjYWxscyAKcGxwX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAicGJ0YV9nZXJtbGluZV9wbHBfY2FsbHMudHN2IikKCnBscF9mdWxsX2ZpbGUgPC0gZmlsZS5wYXRoKGlucHV0X2RpciwgIlBCVEEtODM4LWdlcm1saW5lX3BscC0yMDIzLTAyLTA1LnRzdiIpCgojIGFkZCBoaXN0b2xvZ2llcyBmaWxlIAojaGlzdG9sb2dpZXNfZmlsZSA8LSBmaWxlLnBhdGgocm9vdF9kaXIsImFuYWx5c2VzIiwgImNvbGxhcHNlLXR1bW9yLWhpc3RvbG9naWVzIiwgInJlc3VsdHMiLCAiZ2VybWxpbmUtcHJpbWFyeS1wbHVzLXR1bW9yLWhpc3RvbG9naWVzLXBsb3QtZ3JvdXBzLWNsaW4tbWV0YS50c3YiKQpoaXN0b2xvZ2llc19maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgImhpc3RvbG9naWVzLnRzdiIpCnBsb3RfbWFwcGluZ19maWxlIDwtIGZpbGUucGF0aChyb290X2RpciwgImFuYWx5c2VzIiwgImNvbGxhcHNlLXR1bW9yLWhpc3RvbG9naWVzL2lucHV0L3Bsb3QtbWFwcGluZy50c3YiKQoKIyBjbnYgZmlsZSB3aXRoIGFubm90YXRpb24gCmNudl9hdXRvX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAiY29uc2Vuc3VzX3NlZ19hbm5vdGF0ZWRfY25fYXV0b3NvbWVzLnRzdi5neiIpCmNudl94eV9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgImNvbnNlbnN1c19zZWdfYW5ub3RhdGVkX2NuX3hfYW5kX3kudHN2Lmd6IikKCiMgTE9IIHZhcmlhbnQgYW5kIGdlbmUgZmlsZXMKbG9oX3ZhcmlhbnRfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsICJwYnRhLXBscC1hbGwtbG9oLnRzdiIpCmxvaF9nZW5lX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAicGJ0YS1hbGwtZ2VuZS1sb2gudHN2Lmd6IikKCiMgY3BnIGZpbGUKY3BnX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiYW5hbHlzZXMiLCAib25jb2tiLWFubm90YXRpb24iLCAiaW5wdXQiLCAiY3BnLnR4dCIpCmBgYAoKUmVhZCBpbiBQTFAsIGhpc3RvbG9neSwgYW5kIGNwZyBmaWxlcy4gU3Vic2V0IFAtTFAgY2FsbHMgdG8gQ1BHcyBvbmx5IGFuZCBhZGQgaGlzdG9sb2d5CgpgYGB7cn0KIyBGdWxsIFAtTFAgcmVzdWx0cwpwbHBfZnVsbCA8LSByZWFkX3RzdihwbHBfZnVsbF9maWxlKQoKIyBMb2FkIGFicmlkZ2VkIFAtTFAgZmlsZSBhbmQgYXBwZW5kIHZhcmlhbnQgY29vcmRpbmF0ZXMKZ2VybWxpbmUgPC0gcmVhZF90c3YocGxwX2ZpbGUpICU+JQogIGxlZnRfam9pbihwbHBfZnVsbFssYygiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRCIsICJIdWdvX1N5bWJvbCIsICJIR1ZTLmMiLCAiQ2hyb21vc29tZSIsICJMb2MiLCAiUmVmZXJlbmNlIiwgIkFsdGVybmFudF9hbGxlbGVzIildKSAlPiUKICByZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEKSAlPiUKICBkcGx5cjo6ZmlsdGVyKCFpcy5uYShDaHJvbW9zb21lKSkKCnBsb3RfbWFwcGluZyA8LSByZWFkX3RzdihwbG90X21hcHBpbmdfZmlsZSkKCmhpc3QgPC0gcmVhZF90c3YoaGlzdG9sb2dpZXNfZmlsZSkgJT4lCiAgbGVmdF9qb2luKHBsb3RfbWFwcGluZ1ssYygiY2FuY2VyX2dyb3VwIiwgInBsb3RfZ3JvdXAiKV0pCgpoaXN0X3R1bW9yIDwtIGhpc3QgJT4lCiAgZHBseXI6OmZpbHRlcihzYW1wbGVfdHlwZSA9PSAiVHVtb3IiICYgZXhwZXJpbWVudGFsX3N0cmF0ZWd5ICVpbiUgYygiV0dTIiwgIldYUyIpKSAlPiUKICBkcGx5cjo6cmVuYW1lKCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yIiA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQpCgpoaXN0X25vcm1hbCA8LSBoaXN0ICU+JQogIGRwbHlyOjpmaWx0ZXIoc2FtcGxlX3R5cGUgPT0gIk5vcm1hbCIpICU+JQogIGRwbHlyOjpyZW5hbWUoIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsIiA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQpCgoKIyBDUEdzCmNwZ3MgPC0gcmVhZF9saW5lcyhjcGdfZmlsZSkKbXVsdGlfY3BnIDwtIGMoZ2x1ZTo6Z2x1ZSgie2NwZ3N9OyIpLAogICAgICAgICAgICAgICBnbHVlOjpnbHVlKCI7e2NwZ3N9IikpCgojIGZpbHRlciBQTFAgY2FsbHMgZm9yIGNwZ3MsIGFuZCBhZGQgcGxvdF9ncm91cCBhbmQgbW9sZWN1bGFyX3N1YnR5cGUKZ2VybWxpbmUgPC0gZ2VybWxpbmUgJT4lCiAgZmlsdGVyKEh1Z29fU3ltYm9sICVpbiUgY3BncyB8IGdyZXBsKHBhc3RlMChtdWx0aV9jcGcsIGNvbGxhcHNlID0gInwiKSwgSHVnb19TeW1ib2wpKSAlPiUKICBkcGx5cjo6bXV0YXRlKEh1Z29fU3ltYm9sID0gY2FzZV93aGVuKAogICAgIWdyZXBsKCI7IiwgSHVnb19TeW1ib2wpIH4gSHVnb19TeW1ib2wsCiAgICBUUlVFIH4gc3RyX2V4dHJhY3QoSHVnb19TeW1ib2wsIHBhc3RlKGNwZ3MsIGNvbGxhcHNlID0gInwiKSkKICApKSAlPiUKICAjIGxlZnRfam9pbihoaXN0WyxjKCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCIsICJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yIiwKICAjICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInBsb3RfZ3JvdXAiLCAibW9sZWN1bGFyX3N1YnR5cGUiKV0pICU+JQogIGxlZnRfam9pbihoaXN0X25vcm1hbFssYygiS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRCIsICJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCIpXSkgJT4lCiAgbGVmdF9qb2luKGhpc3RfdHVtb3JbLGMoIktpZHNfRmlyc3RfUGFydGljaXBhbnRfSUQiLCAiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciIsCiAgICAgICAgICAgICAgICAgICAgInBsb3RfZ3JvdXAiLCAibW9sZWN1bGFyX3N1YnR5cGUiKV0sIGJ5ID0gIktpZHNfRmlyc3RfUGFydGljaXBhbnRfSUQiKSAlPiUKICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBLaWRzX0ZpcnN0X1BhcnRpY2lwYW50X0lELCAKICAgICAgICAgICAgICAgIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIAogICAgICAgICAgICAgICAgcGxvdF9ncm91cCwgbW9sZWN1bGFyX3N1YnR5cGUsCiAgICAgICAgICAgICAgICBIdWdvX1N5bWJvbCwgYEwtTFBfQ2FsbF9maW5hbGAsIFJlYXNvbmluZ19mb3JfY2FsbCwKICAgICAgICAgICAgICAgIENocm9tb3NvbWUsIExvYywgUmVmZXJlbmNlLCBBbHRlcm5hbnRfYWxsZWxlcywKICAgICAgICAgICAgICAgIEhHVlMuYywgSEdWUy5wKSAlPiUKICBkaXN0aW5jdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwgSHVnb19TeW1ib2wsIExvYywgLmtlZXBfYWxsID0gVCkKYGBgCgpMb2FkIENOViBmaWxlcywgYW5kIGlkZW50aWZ5IHBhdGllbnRzIHdpdGggZ2VybWxpbmUgUExQIHZhcmlhbnQgYW5kIHNvbWF0aWMgQ05WIGluIHNhbWUgQ1BHCmBgYHtyfQojIGZpbHRlciBjbnYgdG8gcGF0aWVudHMgaW4gY29ob3J0IGFuZCBDUEcgY2FsbHMgb25seQpjbnZfYXV0byA8LSByZWFkX3RzdihjbnZfYXV0b19maWxlKSAlPiUKICBkcGx5cjo6ZmlsdGVyKGJpb3NwZWNpbWVuX2lkICVpbiUgZ2VybWxpbmUkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciAmIGdlbmVfc3ltYm9sICVpbiUgY3BncykgJT4lCiAgZHBseXI6OnJlbmFtZSgiSHVnb19TeW1ib2wiID0gZ2VuZV9zeW1ib2wsCiAgICAgICAgICJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yIiA9IGJpb3NwZWNpbWVuX2lkLAogICAgICAgICAiQ05WX3N0YXR1c19zb21hdGljIiA9IHN0YXR1cywKICAgICAgICAgImNvcHlfbnVtYmVyX3NvbWF0aWMiID0gY29weV9udW1iZXIsCiAgICAgICAgICJwbG9pZHlfc29tYXRpYyIgPSAicGxvaWR5IikgJT4lCiAgZHBseXI6OnNlbGVjdChIdWdvX1N5bWJvbCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwKICAgICAgICAgQ05WX3N0YXR1c19zb21hdGljKQoKY252X3h5IDwtIHJlYWRfdHN2KGNudl94eV9maWxlKSAlPiUKICBkcGx5cjo6ZmlsdGVyKGJpb3NwZWNpbWVuX2lkICVpbiUgZ2VybWxpbmUkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciAmIGdlbmVfc3ltYm9sICVpbiUgY3BncykgJT4lCiAgZHBseXI6OnJlbmFtZSgiSHVnb19TeW1ib2wiID0gZ2VuZV9zeW1ib2wsCiAgICAgICAgICJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yIiA9IGJpb3NwZWNpbWVuX2lkLAogICAgICAgICAiQ05WX3N0YXR1c19zb21hdGljIiA9IHN0YXR1cywKICAgICAgICAgImNvcHlfbnVtYmVyX3NvbWF0aWMiID0gY29weV9udW1iZXIsCiAgICAgICAgICJwbG9pZHlfc29tYXRpYyIgPSAicGxvaWR5IikgJT4lCiAgZHBseXI6OnNlbGVjdChIdWdvX1N5bWJvbCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwKICAgICAgICAgQ05WX3N0YXR1c19zb21hdGljKQoKIyBtZXJnZSBjbnYgdGFibGVzCmNudiA8LSBjbnZfYXV0byAlPiUKICBiaW5kX3Jvd3MoY252X3h5KQoKIyBtZXJnZSBnZXJtbGluZSBTTlYgYW5kIHNvbWF0aWMgQ05WIGNhbGxzIGJ5IGJzIGFuZCBnZW5lIGlkCmdlcm1saW5lX3NvbWF0aWNfY252cyA8LSBnZXJtbGluZSAlPiUKICBsZWZ0X2pvaW4oY252LCBieSA9IGMoIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IiLCAiSHVnb19TeW1ib2wiKSkgJT4lCiAgZHBseXI6Om11dGF0ZShDTlZfc3RhdHVzX3NvbWF0aWMgPSBjYXNlX3doZW4oCiAgICBpcy5uYShDTlZfc3RhdHVzX3NvbWF0aWMpIH4gIm5ldXRyYWwiLAogICAgVFJVRSB+IENOVl9zdGF0dXNfc29tYXRpYwogICkpICU+JQogIGRpc3RpbmN0KCkKYGBgCgpSZWFkIGluIExPSCByZXN1bHRzLCBhbmQgYXBwZW5kIExPSCBzY29yZXMgdG8gcm93cyBvZiBgZ2VybWxpbmVfc29tYXRpY19jbnZzYApgYGB7cn0KbG9oIDwtIHJlYWRfdHN2KGxvaF92YXJpYW50X2ZpbGUpICU+JQogIHJlbmFtZShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCA9IEJTX0lELAogICAgICAgICBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yID0gQlNfSURfdHVtb3IsCiAgICAgICAgIENocm9tb3NvbWUgPSBjaHIsCiAgICAgICAgIExvYyA9IHN0YXJ0LAogICAgICAgICBMT0ggPSBsb2hfdW5jb3JyZWN0ZWQpICU+JQogIGZpbHRlcighaXMubmEocHJvYmFuZF90dW1vcl9hbHRfZGVwdGgpKQoKCmdlcm1saW5lX3NvbWF0aWNfY252c19sb2ggPC0gZ2VybWxpbmVfc29tYXRpY19jbnZzICU+JQogIGxlZnRfam9pbihsb2hbLGMoIktpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IiLCAKICAgICAgICAgICAgICAgICAgICJDaHJvbW9zb21lIiwgIkxvYyIsICJwcm9iYW5kX2dlcm1saW5lX3ZhZiIsICJwcm9iYW5kX3R1bW9yX3ZhZiIsIAogICAgICAgICAgICAgICAgICAgIkxPSCIpXSwgCiAgICAgICAgICAgIGJ5ID0gYygiS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciIsICJDaHJvbW9zb21lIiwgIkxvYyIpKSAlPiUKICBkaXN0aW5jdCgpCgpgYGAKCkxvYWQgZ2VuZSBMT0ggZGF0YSBhbmQgYXBwZW5kIHRvIGBnZXJtbGluZV9zb21hdGljX2NudnNfbG9oYApgYGB7cn0KbG9oX2dlbmUgPC0gcmVhZF90c3YobG9oX2dlbmVfZmlsZSkgJT4lCiAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yICVpbiUgZ2VybWxpbmUkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciAmIEh1Z29fU3ltYm9sICVpbiUgY3BncykgJT4lCiAgZHBseXI6OnJlbmFtZShnZW5lX0xPSCA9IExPSF9zY29yZSkgJT4lCiAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLCBIdWdvX1N5bWJvbCwKICAgICAgICAgZ2VuZV9MT0gpCgpnZXJtbGluZV9zb21hdGljX2NudnNfbG9oX2dlbmUgPC0gZ2VybWxpbmVfc29tYXRpY19jbnZzX2xvaCAlPiUKICBsZWZ0X2pvaW4obG9oX2dlbmUpCgpgYGAKClNhdmUgQ05WIGFuZCBMT0ggc2NvcmVzIGZvciBhbGwgc2FtcGxlcyB0byBvdXRwdXQKYGBge3J9CndyaXRlX3RzdihnZXJtbGluZV9zb21hdGljX2NudnNfbG9oX2dlbmUsCiAgICAgICAgICBmaWxlLnBhdGgocmVzdWx0c19kaXIsICJnZXJtbGluZS1zb21hdGljLWNudi1sb2gudHN2IikpCmBgYAo=</div>
 
 
 </div>
