@@ -32,7 +32,9 @@ plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
 
 # add histologies file 
-histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+#histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+histologies_file <- file.path(data_dir, "histologies.tsv")
+plot_mapping_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies/input/plot-mapping.tsv")
 
 # cnv file with annotation 
 cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.gz")
@@ -58,7 +60,19 @@ germline <- read_tsv(plp_file) %>%
   rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
   dplyr::filter(!is.na(Chromosome))
 
-hist <- read_tsv(histologies_file)
+plot_mapping <- read_tsv(plot_mapping_file)
+
+hist <- read_tsv(histologies_file) %>%
+  left_join(plot_mapping[,c("cancer_group", "plot_group")])
+
+hist_tumor <- hist %>%
+  dplyr::filter(sample_type == "Tumor" & experimental_strategy %in% c("WGS", "WXS")) %>%
+  dplyr::rename("Kids_First_Biospecimen_ID_tumor" = Kids_First_Biospecimen_ID)
+
+hist_normal <- hist %>%
+  dplyr::filter(sample_type == "Normal") %>%
+  dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
+
 
 # CPGs
 cpgs <- read_lines(cpg_file)
@@ -72,36 +86,41 @@ germline <- germline %>%
     !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
     TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = "|"))
   )) %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor",
-                               "plot_group", "molecular_subtype")]) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, 
-         plot_group, molecular_subtype,
-         Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
-         Chromosome, Loc, Reference, Alternant_alleles,
-         HGVS.c, HGVS.p)
+  # left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor",
+  #                              "plot_group", "molecular_subtype")]) %>%
+  left_join(hist_normal[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal")]) %>%
+  left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_tumor",
+                    "plot_group", "molecular_subtype")], by = "Kids_First_Participant_ID") %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
+                Kids_First_Biospecimen_ID_tumor, 
+                plot_group, molecular_subtype,
+                Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
+                Chromosome, Loc, Reference, Alternant_alleles,
+                HGVS.c, HGVS.p) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, Loc, .keep_all = T)
 ```
 
 Load CNV files, and identify patients with germline PLP variant and somatic CNV in same CPG
 ```{r}
 # filter cnv to patients in cohort and CPG calls only
 cnv_auto <- read_tsv(cnv_auto_file) %>%
-  filter(biospecimen_id %in% hist$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
-  rename("Hugo_Symbol" = gene_symbol,
+  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
+  dplyr::rename("Hugo_Symbol" = gene_symbol,
          "Kids_First_Biospecimen_ID_tumor" = biospecimen_id,
          "CNV_status_somatic" = status,
          "copy_number_somatic" = copy_number,
          "ploidy_somatic" = "ploidy") %>%
-  select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
+  dplyr::select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
          CNV_status_somatic)
 
 cnv_xy <- read_tsv(cnv_xy_file) %>%
-  filter(biospecimen_id %in% hist$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
-  rename("Hugo_Symbol" = gene_symbol,
+  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
+  dplyr::rename("Hugo_Symbol" = gene_symbol,
          "Kids_First_Biospecimen_ID_tumor" = biospecimen_id,
          "CNV_status_somatic" = status,
          "copy_number_somatic" = copy_number,
          "ploidy_somatic" = "ploidy") %>%
-  select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
+  dplyr::select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
          CNV_status_somatic)
 
 # merge cnv tables
