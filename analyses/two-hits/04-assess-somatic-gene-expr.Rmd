@@ -217,9 +217,10 @@ z_scored_expression %>%
   filter(Hugo_Symbol %in% cpgs_test) %>%
   
   ggplot(aes(x = is_plp, y = expr_zscore)) + 
-  geom_jitter(aes(color = plp_group), width = 0.3, alpha = 0.85) +
+  geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
   geom_boxplot(alpha = 0.25) +
-  stat_compare_means(comparisons = list(c("Yes", "No"))) + 
+  stat_compare_means(comparisons = list(c("Yes", "No")),
+                       method.args = list(alternative = "two.sided")) + 
   labs(x = "Germline P/LP variant", y = "expression z-score", color = "Histology") +
   ylim(c(-5,8)) +
   scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
@@ -228,6 +229,41 @@ z_scored_expression %>%
 
   ggsave(file.path(plot_dir, "cpg-sig-expr-diff-plp-vs-noplp.pdf"),
                  width = 14, height = 7)
+
+```
+
+Plot normalized expression within histologies, for genes that have P/LP variants in >= 3 patients within histology group
+```{r plot expr by P/LP status within hist}
+# define group_gene column
+z_scored_expression <- z_scored_expression %>%
+  dplyr::mutate(group_gene = glue::glue("{Hugo_Symbol}:{plot_group}"))
+
+# Identify histology-gene pairs for which there are at least 3 patients with P/LP variants in group
+plot_group_gene <- z_scored_expression %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE) %>%
+  filter(is_plp == "Yes") %>%
+  count(group_gene) %>%
+  dplyr::filter(n >= 3) %>%
+  pull(group_gene)
+
+# plot expr z-scores by P/LP status within histologies for selected gene-histology pairs
+z_scored_expression %>%
+  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1:Neurofibroma plexiform") %>%
+  
+   ggplot(aes(x = is_plp, y = expr_zscore)) + 
+    geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
+    geom_boxplot(alpha = 0.25) +
+    stat_compare_means(comparisons = list(c("Yes", "No")),
+                       method.args = list(alternative = "two.sided")) + 
+    labs(x = "Germline P/LP variant", y = "expression z-score") +
+    ylim(c(-3,4.5)) +
+    scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
+    facet_wrap(~group_gene, nrow = 2) + 
+    theme_Publication()
+
+  
+  ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
+                   width = 15, height = 5)
 
 ```
 
@@ -273,11 +309,12 @@ for (cpg in cpgs_test){
       filter(Hugo_Symbol == cpg) %>%
       
       ggplot(aes(x = plp_onco, y = expr_zscore)) + 
-      geom_jitter(aes(color = plp_group), width = 0.3, alpha = 0.85) +
+      geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
       geom_boxplot(alpha = 0.25) +
       stat_compare_means(comparisons = list(c("+\n-", "-\n-"),
                                             c("+\n-", "-\n+"),
-                                            c("+\n-", "+\n+"))) + 
+                                            c("+\n-", "+\n+")),
+                       method.args = list(alternative = "two.sided")) + 
       labs(title = cpg, x = NULL, y = "expression z-score", color = "Histology") +
       scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
       theme_Publication() +
@@ -295,10 +332,11 @@ for (cpg in cpgs_test){
           filter(Hugo_Symbol == cpg) %>%
           
           ggplot(aes(x = plp_onco, y = expr_zscore)) + 
-          geom_jitter(aes(color = plp_group), width = 0.3, alpha = 0.85) +
+          geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
           geom_boxplot(alpha = 0.25) +
           stat_compare_means(comparisons = list(c("+\n-", "-\n-"),
-                                                c("+\n-", "-\n+"))) + 
+                                                c("+\n-", "-\n+")),
+                       method.args = list(alternative = "two.sided")) + 
           labs(title = cpg, x = NULL, y = "expression z-score", color = "Histology") +
           scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
           theme_Publication() +
@@ -315,7 +353,7 @@ for (cpg in cpgs_test){
 ```
 
 Print session info
-```{session info}
+```{r session info}
 sessionInfo()
 
 ```
