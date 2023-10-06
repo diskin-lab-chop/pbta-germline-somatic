@@ -88,10 +88,12 @@ cnv <- read_tsv(cnv_file) %>%
   dplyr::filter(biospecimen_id %in% tumor_normal_genome_df$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = biospecimen_id) %>%
   left_join(tumor_normal_genome_df) %>%
-  distinct()
+  distinct() %>%
+  dplyr::filter(gene_symbol %in% plp$Hugo_Symbol)
   
 loh <- read_tsv(loh_file) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% tumor_normal_genome_df$Kids_First_Biospecimen_ID_normal)
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% tumor_normal_genome_df$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::filter(Hugo_Symbol %in% plp$Hugo_Symbol)
 
 expr <- readRDS(expr_file)
 # subset `expr` to only include BS IDs in hist
@@ -115,7 +117,8 @@ z_scored_expression <- z_scored_expression %>%
   rownames_to_column("Hugo_Symbol") %>%
   gather(key = "Kids_First_Biospecimen_ID", value = "expr_zscore", -Hugo_Symbol) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
-  left_join(tumor_normal_rna_df)
+  left_join(tumor_normal_rna_df) %>%
+  dplyr::filter(Hugo_Symbol %in% plp$Hugo_Symbol)
 
 ```
 
