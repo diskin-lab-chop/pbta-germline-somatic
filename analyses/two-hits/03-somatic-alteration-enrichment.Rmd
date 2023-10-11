@@ -122,7 +122,7 @@ z_scored_expression <- z_scored_expression %>%
 
 ```
 
-Identify cancer predisposition genes with P-LP variants in >= 5 patients
+Identify cancer predisposition genes with P-LP variants in >= 4 patients
 ```{r}
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 
@@ -160,10 +160,10 @@ loh_df <- empty_df %>%
   dplyr::mutate(alteration = "LOH > 0.25")
 
 expr_gain_df <- empty_df %>%
-  dplyr::mutate(alteration = "Expr TPM > 2")
+  dplyr::mutate(alteration = "TPM z-score > 2")
 
 expr_loss_df <- empty_df %>%
-  dplyr::mutate(alteration = "Expr TPM < -2")
+  dplyr::mutate(alteration = "TPM z-score < -2")
 
 ```
 
@@ -264,7 +264,7 @@ alt_df <- snv_df %>%
   dplyr::mutate(Hugo_Symbol = rep(genes, 6))
 
 alterations = c("Oncogenic SNV", "CN loss", "CN gain",
-                "LOH > 0.25", "Expr TPM < -2", "Expr TPM > 2")
+                "LOH > 0.25", "TPM z-score < -2", "TPM z-score > 2")
 
 enr_mat <- matrix(alt_df$oddsRatio, 
                   length(genes), length(alterations),
