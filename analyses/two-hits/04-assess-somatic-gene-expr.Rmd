@@ -217,13 +217,16 @@ z_scored_expression %>%
   filter(Hugo_Symbol %in% cpgs_test) %>%
   
   ggplot(aes(x = is_plp, y = expr_zscore)) + 
-  geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
-  geom_boxplot(alpha = 0.25) +
-  stat_compare_means(comparisons = list(c("Yes", "No")),
-                       method.args = list(alternative = "two.sided")) + 
-  labs(x = "Germline P/LP variant", y = "expression z-score", color = "Histology") +
+  geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+  geom_boxplot(alpha = 0.05) +
+  stat_compare_means(method = "wilcox",
+                     comparisons = list(c("Yes", "No")),
+                     method.args = list(alternative = "two.sided")) + 
+  labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
   ylim(c(-5,8)) +
-  scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
+  scale_fill_manual(values = plot_group_palette, 
+                     breaks = sort(names(plot_group_palette)), 
+                     na.translate = F) +
   facet_wrap(~Hugo_Symbol, nrow = 3) + 
   theme_Publication()
 
@@ -251,17 +254,19 @@ z_scored_expression %>%
   dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1:Neurofibroma plexiform") %>%
   
    ggplot(aes(x = is_plp, y = expr_zscore)) + 
-    geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
-    geom_boxplot(alpha = 0.25) +
-    stat_compare_means(comparisons = list(c("Yes", "No")),
+    geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+    geom_boxplot(alpha = 0.05) +
+    stat_compare_means(method = "wilcox",
+                       comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) + 
-    labs(x = "Germline P/LP variant", y = "expression z-score") +
+    labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3,4.5)) +
-    scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
+    scale_fill_manual(values = plot_group_palette, 
+                      breaks = sort(names(plot_group_palette)), 
+                      na.translate = F) +
     facet_wrap(~group_gene, nrow = 2) + 
     theme_Publication()
 
-  
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
                    width = 15, height = 5)
 
@@ -309,22 +314,27 @@ for (cpg in cpgs_test){
       filter(Hugo_Symbol == cpg) %>%
       
       ggplot(aes(x = plp_onco, y = expr_zscore)) + 
-      geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
-      geom_boxplot(alpha = 0.25) +
-      stat_compare_means(comparisons = list(c("+\n-", "-\n-"),
+      geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+      geom_boxplot(alpha = 0.05) +
+      stat_compare_means(method = "wilcox",
+                         comparisons = list(c("+\n-", "-\n-"),
                                             c("+\n-", "-\n+"),
                                             c("+\n-", "+\n+")),
-                       method.args = list(alternative = "two.sided")) + 
-      labs(title = cpg, x = NULL, y = "expression z-score", color = "Histology") +
-      scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
+                         method.args = list(alternative = "two.sided")) + 
+      labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
+      scale_fill_manual(values = plot_group_palette, 
+                        breaks = sort(names(plot_group_palette)), 
+                        na.translate = F) +
       theme_Publication() +
+      theme(legend.key.size = unit(0.35, "cm"),
+            legend.text=element_text(size=6)) +      
       annotate("text", x=5.5, y=-6.45, size = 4.5, label="Germline P/LP") + 
       annotate("text", x=5.5, y=-7.45, size = 4.5, label="Somatic SNV") + 
       coord_cartesian(ylim=c(-5,8), clip="off")
     
     
       ggsave(file.path(plot_dir, glue::glue("{cpg}-expr-by-plp-onco-snv-status.pdf")),
-                       width = 8, height = 4)
+                       width = 7, height = 4)
     
   } else {
     
@@ -332,20 +342,25 @@ for (cpg in cpgs_test){
           filter(Hugo_Symbol == cpg) %>%
           
           ggplot(aes(x = plp_onco, y = expr_zscore)) + 
-          geom_jitter(aes(color = plp_group), width = 0.3, size = 2.5, alpha = 0.85) +
-          geom_boxplot(alpha = 0.25) +
-          stat_compare_means(comparisons = list(c("+\n-", "-\n-"),
+          geom_jitter(aes(fill = plot_group), shape = 21, width = 0.3, size = 2.5, alpha = 0.85) +
+          geom_boxplot(alpha = 0.05) +
+          stat_compare_means(method = "wilcox", 
+                             comparisons = list(c("+\n-", "-\n-"),
                                                 c("+\n-", "-\n+")),
-                       method.args = list(alternative = "two.sided")) + 
-          labs(title = cpg, x = NULL, y = "expression z-score", color = "Histology") +
-          scale_color_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
+                             method.args = list(alternative = "two.sided")) + 
+          labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
+          scale_fill_manual(values = plot_group_palette, 
+                             breaks = sort(names(plot_group_palette)), 
+                             na.translate = F) +
           theme_Publication() +
+          theme(legend.key.size = unit(0.35, "cm"),
+                legend.text=element_text(size=6)) +
           annotate("text", x=4.5, y=-6.45, size = 4.5, label="Germline P/LP") + 
           annotate("text", x=4.5, y=-7.45, size = 4.5, label="Somatic SNV") + 
           coord_cartesian(ylim=c(-5,8), clip="off")
     
           ggsave(file.path(plot_dir, glue::glue("{cpg}-expr-by-plp-onco-snv-status.pdf")),
-                             width = 6, height = 4)
+                             width = 5, height = 4)
     
   }
 }
