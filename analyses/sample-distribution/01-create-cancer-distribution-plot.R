@@ -28,6 +28,8 @@ hist <- read_tsv(file.path(root_dir,
 
 # read in CPG list
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
+multi_cpg <- c(glue::glue("{cpg};"),
+               glue::glue(";{cpg}"))
 
 
 # read in plp file
@@ -40,8 +42,11 @@ plp_all <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls.tsv")) %>%
                                        grepl("InterVar_Recalculated Pathogenic", Reasoning_for_call) ~ "InterVar - Pathogenic"))
 
 plp_cpg <- plp_all %>%
-  filter(Hugo_Symbol %in% cpg)
-
+  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
+    TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
+  ))
 
 # add n per group in label  
 hist_counts <- hist %>%
@@ -53,6 +58,8 @@ hist_counts <- hist %>%
 
 plot_group_palette <- hist_counts$plot_group_hex
 names(plot_group_palette) <- hist_counts$plot_group_n
+
+if(!interactive()) pdf(NULL)
 
 tiff(file.path(plot_dir, "histology-distribution.tiff"), height = 1500, width = 2500, res = 300)
 ggplot(hist_counts, aes(x = plot_group_n, fill = plot_group_n)) +
@@ -121,7 +128,7 @@ plp_cpgs_r03 <- plp_cpg %>%
 plp_cpgs
 
 # create plots
-dfs <- list("plp_all_genes" = plp_all_genes, "plp_cpgs" = plp_cpgs, "plp_cpgs_r03" = plp_cpgs_r03)
+dfs <- list("plp_all_genes" = plp_all_genes, "plp_cpgs" = plp_cpgs)
 
 for (df in names(dfs)) {
   
@@ -130,7 +137,7 @@ for (df in names(dfs)) {
     title <- "All genes"
   }
   
-  if (df %in% c("plp_cpgs", "plp_cpgs_r03")){
+  if (df == "plp_cpgs"){
     title <- "CPGs"
   }
   
@@ -231,22 +238,4 @@ hist_gene_plp_cpg %>%
   theme_Publication()
 dev.off()
 
-# create same plot, excluding FGFR1 for r03 grant: 
-
-png(file.path(plot_dir, "CPG-PLP-freq-by-histology_r03.png"), height = 5700, width = 5500, res = 300)
-hist_gene_plp_cpg %>%
-  filter(Hugo_Symbol != "FGFR1") %>%
-  mutate(plot_group_n = factor(plot_group_n, unique(hist_gene_plp_cpg$plot_group_n)),
-         Hugo_Symbol = reorder_within(Hugo_Symbol, freq, plot_group_n)) %>%
-  ggplot(aes(x = Hugo_Symbol, y = freq)) +
-  geom_point(size = 3, show.legend = FALSE) + 
-  geom_segment(aes(x=Hugo_Symbol, xend=Hugo_Symbol, y=0, yend=freq),
-               linewidth = 1,
-               show.legend = FALSE) +
-  labs(x = "", y = "Proportion of patients with germline PLP variant") +
-  coord_flip() +
-  scale_x_reordered() +
-  facet_wrap(~plot_group_n, scale = "free") +
-  theme_Publication()
-dev.off()
 
