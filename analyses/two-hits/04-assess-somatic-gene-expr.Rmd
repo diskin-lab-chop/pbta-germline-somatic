@@ -218,7 +218,7 @@ z_scored_expression %>%
   
   ggplot(aes(x = is_plp, y = expr_zscore)) + 
   geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-  geom_boxplot(alpha = 0.05) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("Yes", "No")),
                      method.args = list(alternative = "two.sided")) + 
@@ -255,7 +255,7 @@ z_scored_expression %>%
   
    ggplot(aes(x = is_plp, y = expr_zscore)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-    geom_boxplot(alpha = 0.05) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) + 
@@ -315,7 +315,7 @@ for (cpg in cpgs_test){
       
       ggplot(aes(x = plp_onco, y = expr_zscore)) + 
       geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-      geom_boxplot(alpha = 0.05) +
+      geom_boxplot(alpha = 0.05, outlier.shape = NA) +
       stat_compare_means(method = "wilcox",
                          comparisons = list(c("+\n-", "-\n-"),
                                             c("+\n-", "-\n+"),
@@ -343,7 +343,7 @@ for (cpg in cpgs_test){
           
           ggplot(aes(x = plp_onco, y = expr_zscore)) + 
           geom_jitter(aes(fill = plot_group), shape = 21, width = 0.3, size = 2.5, alpha = 0.85) +
-          geom_boxplot(alpha = 0.05) +
+          geom_boxplot(alpha = 0.05, outlier.shape = NA) +
           stat_compare_means(method = "wilcox", 
                              comparisons = list(c("+\n-", "-\n-"),
                                                 c("+\n-", "-\n+")),
