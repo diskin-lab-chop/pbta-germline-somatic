@@ -49,11 +49,9 @@ all_plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
-km_mmr_output_pdf <- file.path(plots_dir,
-                             glue::glue("MMR_km_survival_hgg.pdf"))
+km_mmr_output_pdf <- file.path(plots_dir, "MMR_km_survival_hgg.pdf")
 
-km_brca_output_pdf <- file.path(plots_dir,
-                             glue::glue("BRCA_km_survival_hgg.pdf"))
+km_brca_output_pdf <- file.path(plots_dir, "BRCA_km_survival_hgg.pdf")
 ```
 
 Import data
@@ -94,9 +92,14 @@ hgg_hist <- hist %>%
                                    c(glue::glue("MMR WT"),
                                      glue::glue("MMR PLP"))))
 ```
+
+Print N per MMR variant status group
+```{r}
+table(hgg_hist$MMR_variant)
+
+```
   
 Run Kaplain meier tests for survival by MMR germline variant status and plot curves
-  
 ```{r}
 kap_os <- survival_analysis(
   metadata  = hgg_hist,
@@ -126,9 +129,88 @@ ggsave(km_mmr_output_pdf, km_plot,
        device = "pdf")
 ```
 
-Run cox proportional hazards models for HGG OS and EFS, including covariates `mol_sub_group`, `age_at_diagnosis_years`, and `MMR_variant`
 
-```{r}  
+Define vector of BRCA/BRCA-interacting genes
+
+```{r}
+brca_bs <- all_plp %>%
+      dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
+      pull(Kids_First_Biospecimen_ID) %>%
+      unique()
+```
+
+
+Create column indicating presence/absence of BRCA variant
+```{r}
+hgg_hist <- hgg_hist %>%
+  mutate(brca_variant = case_when(
+    Kids_First_Biospecimen_ID_normal %in% brca_bs ~ "BRCA PLP",
+    TRUE ~ "BRCA WT"
+  ))  %>%
+  mutate(brca_variant = factor(brca_variant,
+                                   c("BRCA WT",
+                                     "BRCA PLP")))
+```
+
+Print N per BRCA variant status group
+```{r}
+table(hgg_hist$brca_variant)
+
+```
+  
+Run KM survival models by BRCA variant status, and plot results
+  
+```{r}
+kap_os <- survival_analysis(
+  metadata  = hgg_hist,
+  ind_var = "brca_variant",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
+  days_col = "OS_days",
+  status_col = "OS_status"
+  )
+
+kap_efs <- survival_analysis(
+  metadata  = hgg_hist,
+  ind_var = "brca_variant",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
+  days_col = "EFS_days",
+  status_col = "EFS_status"
+  )
+
+km_plot <- plotKM(model = list(kap_os, kap_efs),
+                    variable = "brca_variant",
+                    combined = T, 
+                    title = "HGG")
+
+ggsave(km_brca_output_pdf, km_plot,
+       width = 10, height = 6, units = "in",
+       device = "pdf")
+```
+
+
+Run cox proportional hazards models for HGG OS and EFS, including covariates `mol_sub_group`, `age_at_diagnosis_years`, and `MMR_variant`
+```{r coxph int OS repair plp}  
+
+int_os_model <- fit_save_model(hgg_hist,
+                             "age_at_diagnosis_years+mol_sub_group*MMR_variant+mol_sub_group*brca_variant",
+                                 file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS"),
+                                 "multivariate",
+                                 years_col = "OS_years",
+                                 status_col = "OS_status")
+
+int_os_forest_plot <- plotForest(readRDS(file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS")))
+
+ggsave(file.path(plots_dir, "forest_hgg_int_OS_subtype_age_repairPLP.pdf"), 
+       int_os_forest_plot,
+       width = 12, height = 3, units = "in",
+       device = "pdf")
+
+readRDS(file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS"))
+```
+
+```{r coxph add OS MMR plp}
 add_os_model <- fit_save_model(hgg_hist,
                              "mol_sub_group+age_at_diagnosis_years+MMR_variant",
                                  file.path(results_dir, "coxph_hgg_OS_subtype_age_MMRvariant.RDS"),
@@ -136,15 +218,36 @@ add_os_model <- fit_save_model(hgg_hist,
                                  years_col = "OS_years",
                                  status_col = "OS_status")
 
-os_forest_plot <- plotForest(readRDS(file.path(results_dir, "coxph_hgg_OS_subtype_age_MMRvariant.RDS")))
+add_os_forest_plot <- plotForest(readRDS(file.path(results_dir, "coxph_hgg_OS_subtype_age_MMRvariant.RDS")))
 
 ggsave(file.path(plots_dir, "forest_hgg_OS_subtype_age_mmrPLP.pdf"), 
-       os_forest_plot,
+       add_os_forest_plot,
        width = 8, height = 3, units = "in",
        device = "pdf")
 
+readRDS(file.path(results_dir, "coxph_hgg_OS_subtype_age_MMRvariant.RDS"))
+```
 
 
+```{r coxph int EFS MMR plp}
+int_efs_model <- fit_save_model(hgg_hist,
+                             "age_at_diagnosis_years+mol_sub_group*MMR_variant",
+                             file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_MMRvariant.RDS"),
+                             "multivariate",
+                             years_col = "EFS_years",
+                             status_col = "EFS_status")
+
+int_efs_forest_plot <- plotForest(readRDS(file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_MMRvariant.RDS")))
+
+ggsave(file.path(plots_dir, "forest_hgg_int_EFS_subtype_age_mmrPLP.pdf"), 
+       int_efs_forest_plot,
+       width = 12, height = 3, units = "in",
+       device = "pdf")
+
+readRDS(file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_MMRvariant.RDS"))
+```
+
+```{r}
 add_efs_model <- fit_save_model(hgg_hist,
                              "mol_sub_group+age_at_diagnosis_years+MMR_variant",
                              file.path(results_dir, "coxph_hgg_EFS_subtype_age_MMRvariant.RDS"),
@@ -160,25 +263,13 @@ ggsave(file.path(plots_dir, "forest_hgg_EFS_subtype_age_mmrPLP.pdf"),
        device = "pdf")
 
 ```
-    
-Write HGG sample histologies with MMR germline variants to output
-    
-```{r}
-mmr_hist <- hgg_hist %>%
-    filter(grepl("MMR PLP", MMR_variant)) %>%
-    select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal,
-           plot_group, molecular_subtype, mol_sub_group, OS_days, OS_status, EFS_days, EFS_status,
-           extent_of_tumor_resection) %>%
-    rename("Kids_First_Biospecimen_ID" = Kids_First_Biospecimen_ID_normal) %>%
-    left_join(all_plp[,c("Kids_First_Biospecimen_ID", "Hugo_Symbol", "L-LP_Call_final", "Reasoning_for_call", "HGVS.c", "HGVS.p")]) %>%
-    filter(Hugo_Symbol %in% mmr_genes)
-```
+
 
 Define vector of BRCA/BRCA-interacting genes
 
 ```{r}
 brca_bs <- all_plp %>%
-      filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
+      dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
       pull(Kids_First_Biospecimen_ID) %>%
       unique()
 ```
@@ -194,6 +285,12 @@ hgg_hist <- hgg_hist %>%
   mutate(brca_variant = factor(brca_variant,
                                    c("BRCA WT",
                                      "BRCA PLP")))
+```
+
+Print N per BRCA variant status group
+```{r}
+table(hgg_hist$brca_variant)
+
 ```
   
 Run KM survival models by BRCA variant status, and plot results
@@ -228,10 +325,9 @@ ggsave(km_brca_output_pdf, km_plot,
 ```
 
 Run coxph models with covariates `mol_sub_group`, `age_at_diagnosis_years`, and `brca_variant`
-
 ```{r}  
 add_os_model <- fit_save_model(hgg_hist,
-                             "mol_sub_group+age_at_diagnosis_years+brca_variant",
+                             "mol_sub_group+age_at_diagnosis_years+brca_variant+MMR_variant",
                                  file.path(results_dir, "coxph_hgg_OS_subtype_BRCAvariant.RDS"),
                                  "multivariate",
                                  years_col = "OS_years",
@@ -244,10 +340,8 @@ ggsave(file.path(plots_dir, "forest_hgg_OS_subtype_brcaPLP.pdf"),
        width = 8, height = 3, units = "in",
        device = "pdf")
 
-
-
 add_efs_model <- fit_save_model(hgg_hist,
-                             "mol_sub_group+age_at_diagnosis_years+brca_variant",
+                             "mol_sub_group+age_at_diagnosis_years+brca_variant+MMR_variant",
                              file.path(results_dir, "coxph_hgg_EFS_subtype_BRCAvariant.RDS"),
                              "multivariate",
                              years_col = "EFS_years",
