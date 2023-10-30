@@ -204,7 +204,7 @@ ggsave(file.path(plots_dir, "forest_hgg_int_OS_subtype_age_repairPLP.pdf"),
 readRDS(file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS"))
 ```
 Additive OS model: 
-```{r coxph add OS MMR plp}
+```{r coxph add OS repair plp}
 add_os_model <- fit_save_model(hgg_hist,
                              "mol_sub_group+age_at_diagnosis_years+MMR_variant+brca_variant",
                                  file.path(results_dir, "coxph_add_hgg_OS_subtype_age_repairPLP.RDS"),
@@ -223,7 +223,7 @@ readRDS(file.path(results_dir, "coxph_hgg_OS_subtype_age_MMRvariant.RDS"))
 ```
 
 Interaction EFS model: 
-```{r coxph int EFS MMR plp}
+```{r coxph int EFS repair plp}
 int_efs_model <- fit_save_model(hgg_hist,
                              "age_at_diagnosis_years+mol_sub_group*MMR_variant+mol_sub_group*brca_variant",
                              file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_repairPLP.RDS"),
@@ -243,7 +243,7 @@ readRDS(file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_MMRvariant.RDS"))
 ```
 
 Additive EFS model: 
-```{r}
+```{r coxph add EFS repair plp}
 add_efs_model <- fit_save_model(hgg_hist,
                              "mol_sub_group+age_at_diagnosis_years+MMR_variant+brca_variant",
                              file.path(results_dir, "coxph_add_hgg_EFS_subtype_age_repairPLP.RDS"),
