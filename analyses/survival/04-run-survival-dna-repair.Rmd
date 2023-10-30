@@ -77,15 +77,15 @@ hgg_hist <- hist %>%
   mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
   mutate(MMR_variant = case_when(
-    Kids_First_Biospecimen_ID_normal %in% mmr_bs ~ glue::glue("MMR PLP"),
-    TRUE ~ glue::glue("MMR WT")
+    Kids_First_Biospecimen_ID_normal %in% mmr_bs ~ "MMR PLP",
+    TRUE ~ "MMR WT"
   ))  %>%
   mutate(mol_sub_group = factor(mol_sub_group,
                                 c("HGG, H3 WT", "DHG, H3 G35",
                                   "DMG, H3 K28", "HGG, IDH", "IHG"))) %>%
   mutate(MMR_variant = factor(MMR_variant,
-                                   c(glue::glue("MMR WT"),
-                                     glue::glue("MMR PLP"))))
+                                   c("MMR WT",
+                                     "MMR PLP")))
 ```
 
 Print N per MMR variant status group
