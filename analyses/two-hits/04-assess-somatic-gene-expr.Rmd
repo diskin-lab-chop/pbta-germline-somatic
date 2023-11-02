@@ -14,8 +14,6 @@ This script compares genes expression z-scores in patients with vs. without germ
 suppressPackageStartupMessages({
   library(ggplot2)
   library(tidyverse)
-  library(ComplexHeatmap)
-  library(circlize)
   library(ggpubr)
 })
 
@@ -36,6 +34,9 @@ if (!dir.exists(results_dir)) {
 # source publication theme
 source(file.path(root_dir, "figures", "theme.R"))
 
+# set seed to reproduce plots
+set.seed(2023)
+
 ```
 
 Set input file paths
@@ -44,7 +45,8 @@ plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
 plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
 
 hist_file <- file.path(data_dir, "histologies.tsv")
-plot_mapping_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies/input/plot-mapping.tsv")
+hist_cohort_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies",
+                              "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 expr_file <- file.path(data_dir, "gene-expression-rsem-tpm-collapsed.rds")
 
@@ -60,8 +62,9 @@ plp_full <- read_tsv(plp_full_file)
 
 plot_mapping <- read_tsv(plot_mapping_file)
 
-hist <- read_tsv(hist_file) %>%
-  left_join(plot_mapping[,c("cancer_group", "plot_group")])
+hist <- read_tsv(hist_file)
+
+hist_cohort <- read_tsv(hist_cohort_file)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
@@ -75,18 +78,15 @@ Read in germline plp file, and append coordinate and ref/alt allele info
 germline <- read_tsv(plp_file) %>%
   left_join(plp_full[,c("Kids_First_Biospecimen_ID", "Hugo_Symbol", "HGVS.c", "Chromosome", "Loc", "Reference", "Alternant_alleles")]) %>%
   rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
+  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", "plot_group", "molecular_subtype")]) %>%
   dplyr::filter(!is.na(Chromosome))
 ```
 
-Split hist file into normal and tumor RNA IDs, to be used to append matched tumor RNA samples to normal samples in `germline`
+Extract tumor RNA IDs from hist file, and append to `germline`
 ```{r get matched tumor RNA IDs}
 hist_tumor <- hist %>%
   dplyr::filter(sample_type == "Tumor" & experimental_strategy == "RNA-Seq") %>%
   dplyr::rename("Kids_First_Biospecimen_ID_rna" = Kids_First_Biospecimen_ID)
-
-hist_normal <- hist %>%
-  dplyr::filter(sample_type == "Normal") %>%
-  dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
@@ -95,9 +95,8 @@ germline <- germline %>%
     !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
     TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = "|"))
   )) %>%
-  left_join(hist_normal[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal")]) %>%
-  left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna",
-                    "plot_group", "molecular_subtype")], by = "Kids_First_Participant_ID") %>%
+  left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")], 
+            by = "Kids_First_Participant_ID") %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_rna, 
                 plot_group, molecular_subtype,
@@ -225,8 +224,7 @@ z_scored_expression %>%
   labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
   ylim(c(-5,8)) +
   scale_fill_manual(values = plot_group_palette, 
-                     breaks = sort(names(plot_group_palette)), 
-                     na.translate = F) +
+                     breaks = sort(names(plot_group_palette))) +
   facet_wrap(~Hugo_Symbol, nrow = 3) + 
   theme_Publication()
 
@@ -262,8 +260,7 @@ z_scored_expression %>%
     labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3,4.5)) +
     scale_fill_manual(values = plot_group_palette, 
-                      breaks = sort(names(plot_group_palette)), 
-                      na.translate = F) +
+                      breaks = sort(names(plot_group_palette))) +
     facet_wrap(~group_gene, nrow = 2) + 
     theme_Publication()
 
@@ -323,8 +320,7 @@ for (cpg in cpgs_test){
                          method.args = list(alternative = "two.sided")) + 
       labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
       scale_fill_manual(values = plot_group_palette, 
-                        breaks = sort(names(plot_group_palette)), 
-                        na.translate = F) +
+                        breaks = sort(names(plot_group_palette))) +
       theme_Publication() +
       theme(legend.key.size = unit(0.35, "cm"),
             legend.text=element_text(size=6)) +      
