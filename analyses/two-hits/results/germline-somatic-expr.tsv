@@ -1,220 +1,220 @@
 Kids_First_Biospecimen_ID_normal	Kids_First_Participant_ID	Kids_First_Biospecimen_ID_rna	plot_group	molecular_subtype	Hugo_Symbol	L-LP_Call_final	Reasoning_for_call	Chromosome	Loc	Reference	Alternant_alleles	HGVS.c	HGVS.p	expr_zscore
-BS_F7G8TA7C	PT_5SKQHRC5	BS_M0XGZ53Z	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675139	C	A	c.473G>T	.	0.861502419123544
-BS_RP8JJ88Z	PT_0EBP2PBD	BS_2853394H	DIPG or DMG	DMG, H3 K28	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852210	C	G	c.1543C>G	p.Arg515Gly	-0.4769664799943062
-BS_KN6FCN12	PT_WMWFCG6J	BS_WQ1YRTAT	Other high-grade glioma	HGG, H3 wildtype	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89746848	T	C	c.3391A>G	p.Thr1131Ala	1.7774343275763227
-BS_CFJYJAA3	PT_5R8EWT55	BS_9TXEDSWB	Other high-grade glioma	HGG, H3 wildtype	RAD50	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	132609339	CAAAG	C	c.2983_2986delGAAA	p.Glu995fs	-1.9460661912418804
-BS_ANZ9H60A	PT_6H8X6RZ1	BS_T9A8JJW5	Other high-grade glioma	DHG, H3 G35, TP53	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	0.47985949511607384
-BS_XM3ER1N6	PT_G9A050X1	BS_F9Y4Z92G	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	chr17	7675189	G	C	c.423C>G	.	0.18864677427127743
-BS_0QC2QX0P	PT_A9YAZJNN	BS_RB2S0KDF	Meningioma	NA	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr17	43124027	ACT	A	c.68_69delAG	p.Glu23fs	-0.28291535878791735
-BS_0RVVY4PS	PT_0XN6EYXZ	NA	NA	NA	EXT2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr11	44114237	G	T	c.778G>T	p.Asp260Tyr	NA
-BS_0Y1Y2WA4	PT_R6WWH1QX	BS_W80TJC27	Ependymoma	EPN, ST ZFTA	SDHA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	240396	G	T	c.1471G>T	p.Glu491*	-2.4136916988963546
-BS_0YFQF89N	PT_PJFTMJ6H	BS_WJGFDRWK	Mesenchymal tumor	EWS	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45332446	G	A	c.733C>T	p.Arg245Cys	-0.15008171396685765
-BS_0YJF1F95	PT_0F3RHT8J	BS_6YMJ621P	Meningioma	NA	SMARCE1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	40632281	TCTCA	T	c.624_627delTGAG	p.Ser208fs	-3.4233384329414895
-BS_14EZDZE6	PT_QT3MK7BZ	BS_B6M763JS	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132905999	G	A	c.1579C>T	p.Gln527*	-1.7237356356720017
-BS_14G6WY88	PT_YKVK5HTK	BS_M4TTKPNR	Low-grade glioma	LGG, KIAA1549-BRAF	KIF1B	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	10304507	CAGTT	C	c.3325_3328delTTAG	p.Leu1109fs	0.03765762981138822
-BS_1C3RDKQH	PT_2D1KGV99	BS_60K3EQ9S	Mixed neuronal-glial tumor	NA	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2084567	T	TC	c.4351dupC	p.Arg1451fs	-0.9155098643852494
-BS_1GMX5YEM	PT_GCKT4FJX	BS_775HDFNY	Low-grade glioma	LGG, KIAA1549-BRAF	RAD51D	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	35119613	T	C	c.1A>G	p.Met1?	0.37915251869664884
+BS_F7G8TA7C	PT_5SKQHRC5	BS_M0XGZ53Z	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675139	C	A	c.473G>T	.	0.8238689899053772
+BS_RP8JJ88Z	PT_0EBP2PBD	BS_2853394H	DIPG or DMG	DMG, H3 K28	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852210	C	G	c.1543C>G	p.Arg515Gly	-0.4105650699384141
+BS_KN6FCN12	PT_WMWFCG6J	BS_WQ1YRTAT	Other high-grade glioma	HGG, H3 wildtype	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89746848	T	C	c.3391A>G	p.Thr1131Ala	1.8871941763611921
+BS_CFJYJAA3	PT_5R8EWT55	BS_9TXEDSWB	Other high-grade glioma	HGG, H3 wildtype	RAD50	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	132609339	CAAAG	C	c.2983_2986delGAAA	p.Glu995fs	-1.7367175754866442
+BS_ANZ9H60A	PT_6H8X6RZ1	BS_T9A8JJW5	Other high-grade glioma	DHG, H3 G35, TP53	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	0.5604726964528237
+BS_XM3ER1N6	PT_G9A050X1	BS_F9Y4Z92G	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	chr17	7675189	G	C	c.423C>G	.	0.20173995039500645
+BS_0QC2QX0P	PT_A9YAZJNN	BS_RB2S0KDF	Meningioma	NA	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr17	43124027	ACT	A	c.68_69delAG	p.Glu23fs	-0.22273261646505402
+BS_0RVVY4PS	PT_0XN6EYXZ	NA	Craniopharyngioma	CRANIO, ADAM	EXT2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr11	44114237	G	T	c.778G>T	p.Asp260Tyr	NA
+BS_0Y1Y2WA4	PT_R6WWH1QX	BS_W80TJC27	Ependymoma	EPN, ST ZFTA	SDHA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	240396	G	T	c.1471G>T	p.Glu491*	-2.435619793678216
+BS_0YFQF89N	PT_PJFTMJ6H	BS_WJGFDRWK	Mesenchymal tumor	EWS	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45332446	G	A	c.733C>T	p.Arg245Cys	-0.202225100243237
+BS_0YJF1F95	PT_0F3RHT8J	BS_6YMJ621P	Meningioma	NA	SMARCE1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	40632281	TCTCA	T	c.624_627delTGAG	p.Ser208fs	-3.044974256602673
+BS_14EZDZE6	PT_QT3MK7BZ	BS_B6M763JS	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132905999	G	A	c.1579C>T	p.Gln527*	-1.7071717430156887
+BS_14G6WY88	PT_YKVK5HTK	BS_M4TTKPNR	Low-grade glioma	LGG, KIAA1549-BRAF	KIF1B	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	10304507	CAGTT	C	c.3325_3328delTTAG	p.Leu1109fs	-0.09536750598185263
+BS_1C3RDKQH	PT_2D1KGV99	BS_60K3EQ9S	Non-neoplastic tumor	NA	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2084567	T	TC	c.4351dupC	p.Arg1451fs	-1.119013630347339
+BS_1GMX5YEM	PT_GCKT4FJX	BS_775HDFNY	Low-grade glioma	LGG, KIAA1549-BRAF	RAD51D	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	35119613	T	C	c.1A>G	p.Met1?	0.4008214887806062
 BS_1K0Q5YZY	PT_DV8XECKA	BS_QRJX9QWS	Germ cell tumor	NA	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89745062	GCCA	G	c.3520_3522delTGG	p.Trp1174del	NA
-BS_1Z7Y81NW	PT_5SNX4PMK	BS_Z7G68ZS2	Mixed neuronal-glial tumor	NA	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr7	6005918	C	A	c.137G>T	.	-0.6279126703398794
-BS_26CXGVJ0	PT_MBAXTJET	BS_401R3KV0	Low-grade glioma	LGG, other MAPK	ATM	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr11	108345870	G	T	c.8546G>T	p.Arg2849Leu	-0.2740381658025169
-BS_29YQSB5E	PT_MNSEJCDM	NA	NA	NA	XPC	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	14152376	T	A	c.2074A>T	p.Lys692*	NA
-BS_2EAATK5V	PT_2ECVKTTQ	BS_6P50QTPP	Low-grade glioma	LGG, FGFR, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31182594	CT	C	c.818delT	p.Leu273fs	-1.2585959807735458
-BS_2EAATK5V	PT_2ECVKTTQ	BS_W3R88RFP	Low-grade glioma	LGG, NF1-germline, CDKN2A/B	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31182594	CT	C	c.818delT	p.Leu273fs	-0.13649201374324427
-BS_2G2VJT4R	PT_7KTAH3RD	BS_ZF34SJGN	Craniopharyngioma	CRANIO, ADAM	PRF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	70599064	G	T	c.657C>A	p.Tyr219*	0.37813996258041305
+BS_1Z7Y81NW	PT_5SNX4PMK	BS_Z7G68ZS2	Non-neoplastic tumor	NA	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr7	6005918	C	A	c.137G>T	.	-0.6044218273689747
+BS_26CXGVJ0	PT_MBAXTJET	BS_401R3KV0	Low-grade glioma	LGG, other MAPK	ATM	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr11	108345870	G	T	c.8546G>T	p.Arg2849Leu	-0.1599029366723436
+BS_29YQSB5E	PT_MNSEJCDM	NA	DIPG or DMG	DMG, H3 K28, TP53	XPC	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	14152376	T	A	c.2074A>T	p.Lys692*	NA
+BS_2EAATK5V	PT_2ECVKTTQ	BS_6P50QTPP	Low-grade glioma	LGG, NF1-germline, CDKN2A/B	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31182594	CT	C	c.818delT	p.Leu273fs	-1.4143376863744452
+BS_2EAATK5V	PT_2ECVKTTQ	BS_W3R88RFP	Low-grade glioma	LGG, NF1-germline, CDKN2A/B	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31182594	CT	C	c.818delT	p.Leu273fs	-0.29858813467707945
+BS_2G2VJT4R	PT_7KTAH3RD	BS_ZF34SJGN	Craniopharyngioma	CRANIO, ADAM	PRF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	70599064	G	T	c.657C>A	p.Tyr219*	0.43937766987922344
 BS_2TZNPK1V	PT_WP871F5S	BS_BT31CDNC	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	chr3	10146573	GA	G	c.402delA	p.Glu134fs	NA
-BS_2TZNPK1V	PT_WP871F5S	BS_MD3DT41J	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	chr3	10146573	GA	G	c.402delA	p.Glu134fs	-0.7805042303458859
-BS_2TZNPK1V	PT_WP871F5S	BS_ZA9XT151	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	chr3	10146573	GA	G	c.402delA	p.Glu134fs	-2.017501112625038
-BS_345M1B93	PT_H4H6RD7Y	NA	NA	NA	ABCB11	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr2	168996709	C	T	c.403G>A	p.Glu135Lys	NA
-BS_3CK0QVDX	PT_GNKRMTQY	BS_3NNQ6PSB	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108227860	A	T	c.157A>T	p.Lys53*	0.7906516995035098
-BS_3CK0QVDX	PT_GNKRMTQY	BS_3NNQ6PSB	Other tumor	NA	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189547	C	A	c.35G>T	p.Gly12Val	-0.5848591196770633
-BS_3DHNFFV6	PT_5X061J42	BS_VXHWZJDC	Germ cell tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108284280	AG	A	c.3802delG	p.Val1268fs	-1.2052861938394654
-BS_40QCA1MC	PT_Y7F2JZMQ	BS_P277RYX5	Mixed neuronal-glial tumor	GNG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31357308	C	T	c.7909C>T	p.Arg2637*	-1.3359370766048346
-BS_40QCA1MC	PT_Y7F2JZMQ	BS_P277RYX5	Mixed neuronal-glial tumor	GNG, NF1-germline	FANCD2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	10041646	C	G	c.719C>G	p.Ser240*	-0.5510142622398232
-BS_4AM9C504	PT_8GN3TQRM	BS_P0QF87WC	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	G	c.375G>C	.	-0.6235979929566872
-BS_4AM9C504	PT_8GN3TQRM	BS_WAXJY4XQ	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	G	c.375G>C	.	-0.105609559955247
-BS_4AM9C504	PT_8GN3TQRM	BS_WJ9H4NZZ	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	G	c.375G>C	.	0.35500894301643604
-BS_4EAVBDKR	PT_0WMP712K	BS_J1AB8PMA	Medulloblastoma	MB, SHH	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189563	G	A	c.19C>T	p.Gln7*	-0.5318491036232166
-BS_4EK9WVET	PT_2BJF83GQ	BS_02NZT8CE	Low-grade glioma	LGG, NF1-somatic, NF1-germline	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31260402	A	AAGTGATGC	c.4468_4475dupGATGCAGT	p.Asn1493fs	-0.3287849104086896
-BS_4HD33MVB	PT_QEP13FH4	BS_K3ER45RV	Medulloblastoma	MB, WNT	APC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr5	112838589	C	T	c.2995C>T	p.Gln999*	-1.139150370851135
-BS_4RV40GPD	PT_CK41DW03	BS_1JDG6JV5	Low-grade glioma	LGG, KIAA1549-BRAF	POLH	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr6	43604663	AC	A	c.936delC	p.Arg313fs	-0.129048120649511
-BS_5N2GEGMD	PT_B7QRTN72	BS_TA9WP4TH	Medulloblastoma	MB, Group4	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45352780	A	AC	c.1867dupG	p.Val623fs	-0.5741182356463547
-BS_5YXP6R6Q	PT_DFCZAG9T	BS_DY88N5ZT	Other tumor	NA	CREBBP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	3770639	C	CG	c.2810dupC	p.Ser938fs	-0.26509340887527566
-BS_63JFFF51	PT_RM5S859Q	BS_QXKRN6CR	Ependymoma	EPN, ST ZFTA	SLX4	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr16	3591125	TC	T	c.2512delG	p.Asp838fs	-1.0533376760054576
-BS_6FD0SW6E	PT_0SPKM4S8	BS_FX2P2WEG	Other high-grade glioma	HGG, H3 wildtype, TP53	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr7	6005918	C	A	c.137G>T	.	0.6178370180351244
-BS_6K3Y2WXF	PT_JW6FBEFK	BS_3BVVWHP5	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	2086815	TTTGTGTCCA	T	c.4938_4946delGTCCATTGT	p.Ser1647_Val1649del	-1.2144964786302737
-BS_6VTM903X	PT_KEQ53KRH	BS_K17VQECG	Other high-grade glioma	HGG, H3 wildtype, TP53	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331699	AG	A	c.1147delC	p.Ala385fs	0.018520629060967915
-BS_6VTM903X	PT_KEQ53KRH	BS_MVPJFHPG	Other high-grade glioma	HGG, To be classified	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331699	AG	A	c.1147delC	p.Ala385fs	NA
-BS_751B2CF8	PT_M2J30CF7	BS_9GJ23RHH	Mesenchymal tumor	NA	POLE	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr12	132642548	AG	A	c.4909delC	p.Leu1637fs	1.0356110285540159
-BS_751B2CF8	PT_M2J30CF7	BS_9GJ23RHH	Mesenchymal tumor	NA	BUB1B	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	40210185	ACT	A	c.2363_2364delCT	p.Ser788fs	1.215036742465864
-BS_7CBZW7P6	PT_63HDZHCN	BS_29X4ZX6Q	Other high-grade glioma	HGG, H3 wildtype, TP53	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35657776	T	C	c.-604T>C	.	-0.1254350178078463
-BS_7XEH55CB	PT_YZ8A8A36	BS_GSVCN2XC	Choroid plexus tumor	NA	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675995	G	C	c.374C>G	.	-0.18762692080235546
-BS_85KFJ81X	PT_0WKX8Q5X	BS_KXMYBQ6N	Ependymoma	EPN, To be classified	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr13	20189559	G	A	c.23C>T	p.Thr8Met	0.45319324541239964
-BS_8782G07F	PT_82MX6J77	BS_CHDGRYHJ	Medulloblastoma	MB, Group3	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80173089	C	T	c.782C>T	p.Pro261Leu	-2.2999299441011596
-BS_8782G07F	PT_82MX6J77	BS_JAEM78XS	Meningioma	NA	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80173089	C	T	c.782C>T	p.Pro261Leu	0.13575729167578723
-BS_8782G07F	PT_82MX6J77	BS_V70RWMV1	Mesenchymal tumor	NA	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80173089	C	T	c.782C>T	p.Pro261Leu	NA
-BS_88B4WV6J	PT_YXJQGT69	BS_GPEGRCCT	Low-grade glioma	LGG, BRAF V600E	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189166	C	T	c.416G>A	p.Ser139Asn	-0.5491781587523248
-BS_8Q2EAYJR	PT_D13X3N8F	BS_F5BZSF3Q	Mixed neuronal-glial tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108289006	A	AT	c.4143dupT	p.Pro1382fs	-1.6507986930182676
-BS_8Q2EAYJR	PT_D13X3N8F	BS_F5BZSF3Q	Mixed neuronal-glial tumor	NA	CDKN2A	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	21974861	C	A	c.-34G>T	.	-0.9660048139595744
-BS_92SK6DD8	PT_YZME6QCY	BS_68BW2163	Low-grade glioma	LGG, FGFR	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89745026	T	TC	c.3558dupG	p.Arg1187fs	-0.9510200746419329
-BS_938K7FSV	PT_XP8AM1CH	BS_DY9NTFQR	Mixed neuronal-glial tumor	NA	NTHL1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2046131	TG	T	c.374delC	p.Pro125fs	-1.7934126726071444
-BS_9A5CF1QE	PT_66XN3MT1	BS_8Z3SCKB5	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2060655	G	A	c.976-15G>A	.	-1.8174325738036352
-BS_9F8D3A05	PT_8R00BMHH	BS_EBMCTR80	Low-grade glioma	LGG, RTK	CHEK2	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	chr22	28694066	G	A	c.1556C>T	p.Thr519Met	-0.7207479632306024
-BS_9R1ENMBP	PT_MSQ6GSVP	BS_KP735TJ6	Other high-grade glioma	IHG, NTRK-altered	WRN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	31111747	C	T	c.2221C>T	p.Arg741*	-0.8271852782155172
-BS_AB2C1EF9	PT_Z7YJ7MSM	BS_F6V1Y4QS	Mixed neuronal-glial tumor	GNT, RTK	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	95449239	CG	C	c.3633delC	p.Gly1212fs	-0.9605218569050783
-BS_ACZNJGV3	PT_HBT0C66Y	BS_W18SF91A	Mixed neuronal-glial tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132902640	G	A	c.2356C>T	p.Arg786*	-0.5488432434576125
-BS_B2AFNXS1	PT_CW0BJE0Y	BS_15ETQ0E4	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	PTPN11	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr12	112472961	G	T	c.774G>T	p.Glu258Asp	-1.3469907032836534
-BS_BE3DW3RB	PT_PHKSYE6Q	BS_PKK3BZRG	Choroid plexus tumor	NA	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35658027	A	AGCTTCACAGAGTAGT	n.-10_-9insACTACTCTGTGAAGC	.	0.44220973224065824
-BS_BPDT230W	PT_HXDCHQ9Y	BS_3EVSN5QD	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr16	2062516	TG	T	c.1278delG	p.Ile427fs	-2.8645871914130985
-BS_C8EYP5BV	PT_2FVTD0WR	BS_769BDPDB	Low-grade glioma	LGG, KIAA1549-BRAF	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	-0.9646330932058816
-BS_C8EYP5BV	PT_2FVTD0WR	BS_YG0A13JH	Low-grade glioma	LGG, MAPK	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	-0.2475188498398561
-BS_CJFTT8ZC	PT_CGPJY881	BS_N1E0H8YQ	Low-grade glioma	LGG, KIAA1549-BRAF	FANCD2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	10043079	T	TC	c.919dupC	p.Leu307fs	-1.1554245526796354
-BS_CX6SQF8T	PT_EZS4SRH6	BS_HD4EJYE3	Medulloblastoma	MB, Group4	EZH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	148847273	T	C	c.26A>G	p.Glu9Gly	1.201841787774218
-BS_D48QXYW6	PT_VPEMAQBN	BS_0ZA67BBC	DIPG or DMG	DMG, H3 K28, TP53	PMS2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr7	5986933	A	AT	c.1831dupA	p.Ile611fs	0.8529089638552814
-BS_D7AKEXHJ	PT_GVDMG7KC	BS_WCRKYV0T	Low-grade glioma	LGG, wildtype	EZH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	148814129	G	A	c.1681C>T	p.Arg561Cys	-1.067893054650261
-BS_DCEAZ94R	PT_CYBYN18G	BS_KBT7MQ6H	Ependymoma	EPN, ST ZFTA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31357308	C	T	c.7909C>T	p.Arg2637*	0.39834535457634135
+BS_2TZNPK1V	PT_WP871F5S	BS_MD3DT41J	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	chr3	10146573	GA	G	c.402delA	p.Glu134fs	-0.821665254053619
+BS_2TZNPK1V	PT_WP871F5S	BS_ZA9XT151	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	chr3	10146573	GA	G	c.402delA	p.Glu134fs	-2.0410296793300646
+BS_345M1B93	PT_H4H6RD7Y	NA	Mixed neuronal-glial tumor	GNT, To be classified	ABCB11	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr2	168996709	C	T	c.403G>A	p.Glu135Lys	NA
+BS_3CK0QVDX	PT_GNKRMTQY	BS_3NNQ6PSB	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108227860	A	T	c.157A>T	p.Lys53*	0.7726041432493185
+BS_3CK0QVDX	PT_GNKRMTQY	BS_3NNQ6PSB	Other tumor	NA	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189547	C	A	c.35G>T	p.Gly12Val	-0.5596815852862225
+BS_3DHNFFV6	PT_5X061J42	BS_VXHWZJDC	Germ cell tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108284280	AG	A	c.3802delG	p.Val1268fs	-0.9755351762616026
+BS_40QCA1MC	PT_Y7F2JZMQ	BS_P277RYX5	Mixed neuronal-glial tumor	GNG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31357308	C	T	c.7909C>T	p.Arg2637*	-1.4912408036764209
+BS_40QCA1MC	PT_Y7F2JZMQ	BS_P277RYX5	Mixed neuronal-glial tumor	GNG, NF1-germline	FANCD2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	10041646	C	G	c.719C>G	p.Ser240*	-0.4897383340246287
+BS_4AM9C504	PT_8GN3TQRM	BS_P0QF87WC	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	G	c.375G>C	.	-0.5492696617689927
+BS_4AM9C504	PT_8GN3TQRM	BS_WAXJY4XQ	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	G	c.375G>C	.	-0.07033239080142427
+BS_4AM9C504	PT_8GN3TQRM	BS_WJ9H4NZZ	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	G	c.375G>C	.	0.35556007071964474
+BS_4EAVBDKR	PT_0WMP712K	BS_J1AB8PMA	Medulloblastoma	MB, SHH	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189563	G	A	c.19C>T	p.Gln7*	-0.49866453288761514
+BS_4EK9WVET	PT_2BJF83GQ	BS_02NZT8CE	Low-grade glioma	LGG, NF1-somatic, NF1-germline	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31260402	A	AAGTGATGC	c.4468_4475dupGATGCAGT	p.Asn1493fs	-0.48979208685352227
+BS_4HD33MVB	PT_QEP13FH4	BS_K3ER45RV	Medulloblastoma	MB, WNT	APC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr5	112838589	C	T	c.2995C>T	p.Gln999*	-1.3318045121798696
+BS_4RV40GPD	PT_CK41DW03	BS_1JDG6JV5	Low-grade glioma	LGG, KIAA1549-BRAF	POLH	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr6	43604663	AC	A	c.936delC	p.Arg313fs	-0.11626942280945675
+BS_5N2GEGMD	PT_B7QRTN72	BS_TA9WP4TH	Medulloblastoma	MB, Group4	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45352780	A	AC	c.1867dupG	p.Val623fs	-0.6525755658506391
+BS_5YXP6R6Q	PT_DFCZAG9T	BS_DY88N5ZT	Other tumor	NA	CREBBP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	3770639	C	CG	c.2810dupC	p.Ser938fs	-0.2988987316483986
+BS_63JFFF51	PT_RM5S859Q	BS_QXKRN6CR	Ependymoma	EPN, ST ZFTA	SLX4	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr16	3591125	TC	T	c.2512delG	p.Asp838fs	-1.143768673928313
+BS_6FD0SW6E	PT_0SPKM4S8	BS_FX2P2WEG	Other high-grade glioma	HGG, H3 wildtype, TP53	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr7	6005918	C	A	c.137G>T	.	0.5484617997022945
+BS_6K3Y2WXF	PT_JW6FBEFK	BS_3BVVWHP5	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	2086815	TTTGTGTCCA	T	c.4938_4946delGTCCATTGT	p.Ser1647_Val1649del	-1.4267217315238645
+BS_6VTM903X	PT_KEQ53KRH	BS_K17VQECG	Other high-grade glioma	HGG, H3 wildtype, TP53	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331699	AG	A	c.1147delC	p.Ala385fs	-0.03316383627497149
+BS_6VTM903X	PT_KEQ53KRH	BS_MVPJFHPG	Other high-grade glioma	HGG, H3 wildtype, TP53	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331699	AG	A	c.1147delC	p.Ala385fs	NA
+BS_751B2CF8	PT_M2J30CF7	BS_9GJ23RHH	Mesenchymal tumor	NA	POLE	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr12	132642548	AG	A	c.4909delC	p.Leu1637fs	1.0713943318709656
+BS_751B2CF8	PT_M2J30CF7	BS_9GJ23RHH	Mesenchymal tumor	NA	BUB1B	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	40210185	ACT	A	c.2363_2364delCT	p.Ser788fs	1.33674448802796
+BS_7CBZW7P6	PT_63HDZHCN	BS_29X4ZX6Q	Other high-grade glioma	HGG, H3 wildtype, TP53	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35657776	T	C	c.-604T>C	.	-0.017026619128610764
+BS_7XEH55CB	PT_YZ8A8A36	BS_GSVCN2XC	Choroid plexus tumor	NA	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675995	G	C	c.374C>G	.	-0.14616646058646754
+BS_85KFJ81X	PT_0WKX8Q5X	BS_KXMYBQ6N	Ependymoma	EPN, To be classified	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr13	20189559	G	A	c.23C>T	p.Thr8Met	0.6351661108326301
+BS_8782G07F	PT_82MX6J77	BS_CHDGRYHJ	Medulloblastoma	MB, Group3	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80173089	C	T	c.782C>T	p.Pro261Leu	-2.3244443427643446
+BS_8782G07F	PT_82MX6J77	BS_JAEM78XS	Medulloblastoma	MB, Group3	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80173089	C	T	c.782C>T	p.Pro261Leu	0.17581935163157814
+BS_8782G07F	PT_82MX6J77	BS_V70RWMV1	Medulloblastoma	MB, Group3	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80173089	C	T	c.782C>T	p.Pro261Leu	NA
+BS_88B4WV6J	PT_YXJQGT69	BS_GPEGRCCT	Low-grade glioma	LGG, BRAF V600E	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189166	C	T	c.416G>A	p.Ser139Asn	-0.5186111004147235
+BS_8Q2EAYJR	PT_D13X3N8F	BS_F5BZSF3Q	Non-neoplastic tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108289006	A	AT	c.4143dupT	p.Pro1382fs	-1.3657366548474954
+BS_8Q2EAYJR	PT_D13X3N8F	BS_F5BZSF3Q	Non-neoplastic tumor	NA	CDKN2A	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	21974861	C	A	c.-34G>T	.	-0.9951842737046698
+BS_92SK6DD8	PT_YZME6QCY	BS_68BW2163	Low-grade glioma	LGG, FGFR	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89745026	T	TC	c.3558dupG	p.Arg1187fs	-0.9375911608186296
+BS_938K7FSV	PT_XP8AM1CH	BS_DY9NTFQR	Non-neoplastic tumor	NA	NTHL1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2046131	TG	T	c.374delC	p.Pro125fs	-1.9353051553871774
+BS_9A5CF1QE	PT_66XN3MT1	BS_8Z3SCKB5	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2060655	G	A	c.976-15G>A	.	-2.047245568168071
+BS_9F8D3A05	PT_8R00BMHH	BS_EBMCTR80	Low-grade glioma	LGG, RTK	CHEK2	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	chr22	28694066	G	A	c.1556C>T	p.Thr519Met	-0.5694384524659637
+BS_9R1ENMBP	PT_MSQ6GSVP	BS_KP735TJ6	Other high-grade glioma	IHG, NTRK-altered	WRN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	31111747	C	T	c.2221C>T	p.Arg741*	-0.6839648390725651
+BS_AB2C1EF9	PT_Z7YJ7MSM	BS_F6V1Y4QS	Mixed neuronal-glial tumor	GNT, RTK	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	95449239	CG	C	c.3633delC	p.Gly1212fs	-1.0745781594245145
+BS_ACZNJGV3	PT_HBT0C66Y	BS_W18SF91A	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132902640	G	A	c.2356C>T	p.Arg786*	-0.5935732450544
+BS_B2AFNXS1	PT_CW0BJE0Y	BS_15ETQ0E4	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	PTPN11	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr12	112472961	G	T	c.774G>T	p.Glu258Asp	-1.4270093370643406
+BS_BE3DW3RB	PT_PHKSYE6Q	BS_PKK3BZRG	Choroid plexus tumor	NA	RMRP	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35658027	A	AGCTTCACAGAGTAGT	n.-10_-9insACTACTCTGTGAAGC	.	0.48394771234650386
+BS_BPDT230W	PT_HXDCHQ9Y	BS_3EVSN5QD	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr16	2062516	TG	T	c.1278delG	p.Ile427fs	-3.1249458519633033
+BS_C8EYP5BV	PT_2FVTD0WR	BS_769BDPDB	Low-grade glioma	LGG, MAPK	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	-0.9412832287675327
+BS_C8EYP5BV	PT_2FVTD0WR	BS_YG0A13JH	Low-grade glioma	LGG, MAPK	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	-0.19574076441616137
+BS_CJFTT8ZC	PT_CGPJY881	BS_N1E0H8YQ	Low-grade glioma	LGG, KIAA1549-BRAF	FANCD2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	10043079	T	TC	c.919dupC	p.Leu307fs	-1.0993577046024525
+BS_CX6SQF8T	PT_EZS4SRH6	BS_HD4EJYE3	Medulloblastoma	MB, Group4	EZH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	148847273	T	C	c.26A>G	p.Glu9Gly	1.3655854450227274
+BS_D48QXYW6	PT_VPEMAQBN	BS_0ZA67BBC	DIPG or DMG	DMG, H3 K28, TP53	PMS2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr7	5986933	A	AT	c.1831dupA	p.Ile611fs	0.7660099958197332
+BS_D7AKEXHJ	PT_GVDMG7KC	BS_WCRKYV0T	Low-grade glioma	LGG, wildtype	EZH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	148814129	G	A	c.1681C>T	p.Arg561Cys	-1.0611553394962048
+BS_DCEAZ94R	PT_CYBYN18G	BS_KBT7MQ6H	Ependymoma	EPN, ST ZFTA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31357308	C	T	c.7909C>T	p.Arg2637*	0.2332204779534308
 BS_DCEAZ94R	PT_CYBYN18G	BS_SHKBM12T	Ependymoma	EPN, ST ZFTA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31357308	C	T	c.7909C>T	p.Arg2637*	NA
-BS_DJ7XB1DM	PT_9B6KWJT2	BS_Z7Y2466H	Low-grade glioma	LGG, KIAA1549-BRAF	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331218	TTCC	T	c.1437_1439delGGA	p.Glu480del	-0.6463208814427746
-BS_E1EPMTD5	PT_7YGZ526E	BS_SXRS2P6T	Low-grade glioma	LGG, KIAA1549-BRAF, RTK	FANCI	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr15	89281212	AAAGTTGTTCTTCT	A	c.1427_1439delGTTGTTCTTCTAA	p.Ser476fs	-0.75384787418789
-BS_E1SWA20C	PT_FYECBRPP	BS_B1HVNV0T	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	RAD51D	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	35101206	G	A	c.958C>T	p.Arg320*	0.2819251286396846
-BS_EE7684YB	PT_ZS2YDFBE	BS_B741RZY9	Choroid plexus tumor	NA	SOS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr14	50120301	AC	A	c.3462delG	p.Lys1154fs	-1.1980371373673628
-BS_ESFA9S69	PT_J3B812DT	BS_AMQGM1V9	Mixed neuronal-glial tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132903785	G	A	c.2074C>T	p.Arg692*	-0.33105706976957716
-BS_ETAATG3J	PT_BWFTKJXT	BS_H3Y8FWHV	Schwannoma	NA	LZTR1	Pathogenic	InterVar_Recalculated Pathogenic	chr22	20994614	C	T	c.1672C>T	p.Gln558*	-2.753856836114119
-BS_EVZW31ZP	PT_J06X17XH	BS_49F4RAA4	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108284280	AG	A	c.3802delG	p.Val1268fs	-0.07927202211096489
-BS_EVZW31ZP	PT_J06X17XH	BS_ZHHAM3AN	Mesenchymal tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108284280	AG	A	c.3802delG	p.Val1268fs	0.8465329875084462
-BS_EXKVBK51	PT_1DY2TP9N	BS_E4F1D721	Ependymoma	EPN, MPE	RAD50	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	132589675	TGAGATAA	T	c.1300_1306delGATAAGA	p.Asp434fs	-0.7305486479029536
-BS_FQ7H95MY	PT_E66N7YBN	NA	NA	NA	EGFR	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	55202673	CA	C	c.3271+49delA	.	NA
-BS_G5B1ZN5S	PT_EXJAEW1M	BS_T1QMEH1N	Craniopharyngioma	CRANIO, To be classified	FGFR2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	121526745	A	C	c.8T>G	p.Leu3*	-1.1715097235844885
+BS_DJ7XB1DM	PT_9B6KWJT2	BS_Z7Y2466H	Low-grade glioma	LGG, KIAA1549-BRAF	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331218	TTCC	T	c.1437_1439delGGA	p.Glu480del	-0.6998149876518158
+BS_E1EPMTD5	PT_7YGZ526E	BS_SXRS2P6T	Low-grade glioma	LGG, KIAA1549-BRAF, RTK	FANCI	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr15	89281212	AAAGTTGTTCTTCT	A	c.1427_1439delGTTGTTCTTCTAA	p.Ser476fs	-0.6895217449624796
+BS_E1SWA20C	PT_FYECBRPP	BS_B1HVNV0T	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	RAD51D	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	35101206	G	A	c.958C>T	p.Arg320*	0.30064008290369787
+BS_EE7684YB	PT_ZS2YDFBE	BS_B741RZY9	Choroid plexus tumor	NA	SOS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr14	50120301	AC	A	c.3462delG	p.Lys1154fs	-1.163894517838132
+BS_ESFA9S69	PT_J3B812DT	BS_AMQGM1V9	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132903785	G	A	c.2074C>T	p.Arg692*	-0.38714893121691857
+BS_ETAATG3J	PT_BWFTKJXT	BS_H3Y8FWHV	Schwannoma	NA	LZTR1	Pathogenic	InterVar_Recalculated Pathogenic	chr22	20994614	C	T	c.1672C>T	p.Gln558*	-2.877472395385051
+BS_EVZW31ZP	PT_J06X17XH	BS_49F4RAA4	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108284280	AG	A	c.3802delG	p.Val1268fs	0.010682708819086189
+BS_EVZW31ZP	PT_J06X17XH	BS_ZHHAM3AN	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108284280	AG	A	c.3802delG	p.Val1268fs	0.8215476885931701
+BS_EXKVBK51	PT_1DY2TP9N	BS_E4F1D721	Ependymoma	EPN, MPE	RAD50	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	132589675	TGAGATAA	T	c.1300_1306delGATAAGA	p.Asp434fs	-0.628896666604454
+BS_FQ7H95MY	PT_E66N7YBN	NA	Low-grade glioma	LGG, To be classified	EGFR	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	55202673	CA	C	c.3271+49delA	.	NA
+BS_G5B1ZN5S	PT_EXJAEW1M	BS_T1QMEH1N	Craniopharyngioma	CRANIO, To be classified	FGFR2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	121526745	A	C	c.8T>G	p.Leu3*	-1.272529063733168
 BS_GBQ6A3ST	PT_9BZETM0M	BS_5AK32KGB	Other high-grade glioma	DHG, H3 G35	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	NA
-BS_GBQ6A3ST	PT_9BZETM0M	BS_5P1TN10Z	Other high-grade glioma	DHG, H3 G35	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	0.7241967151555143
-BS_GBQ6A3ST	PT_9BZETM0M	BS_HMJD6DTA	Other high-grade glioma	HGG, To be classified	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	NA
-BS_GBQ6A3ST	PT_9BZETM0M	BS_TV5B86ZD	Other high-grade glioma	DHG, H3 G35	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	1.1478447293240446
-BS_GERET530	PT_JV9G8MFD	BS_9FHSNVS0	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	SMARCB1	Pathogenic	InterVar_Recalculated Pathogenic	chr22	23791803	C	G	c.141C>G	p.Tyr47*	-0.23175775897643505
+BS_GBQ6A3ST	PT_9BZETM0M	BS_5P1TN10Z	Other high-grade glioma	DHG, H3 G35	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	0.8214007456028124
+BS_GBQ6A3ST	PT_9BZETM0M	BS_HMJD6DTA	Other high-grade glioma	DHG, H3 G35	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	NA
+BS_GBQ6A3ST	PT_9BZETM0M	BS_TV5B86ZD	Other high-grade glioma	DHG, H3 G35	XPC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr3	14153984	T	TA	c.2034-1569dupT	.	1.256740110991911
+BS_GERET530	PT_JV9G8MFD	BS_9FHSNVS0	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	SMARCB1	Pathogenic	InterVar_Recalculated Pathogenic	chr22	23791803	C	G	c.141C>G	p.Tyr47*	-0.35535782214050665
 BS_GERET530	PT_JV9G8MFD	BS_VVP8QQX8	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	SMARCB1	Pathogenic	InterVar_Recalculated Pathogenic	chr22	23791803	C	G	c.141C>G	p.Tyr47*	NA
-BS_GEYA8N9C	PT_BF3PGTF7	BS_M026T44Q	Meningioma	NA	BRCA2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	32340592	G	GT	c.6239dupT	p.Leu2080fs	-0.773954222131732
-BS_GJWAV3E5	PT_9PJR0ZK7	BS_6JHXXVR7	NA	NA	PMS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	6002670	G	C	c.11C>G	p.Ser4*	0.5063127324859247
-BS_GJWAV3E5	PT_9PJR0ZK7	BS_KE56MMY0	Neurofibroma plexiform	NA	PMS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	6002670	G	C	c.11C>G	p.Ser4*	-0.41735404118856767
-BS_GKFY1GX4	PT_HM2GMT2H	BS_3F5PR9GS	Medulloblastoma	MB, SHH	EDNRB	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	77901181	C	A	c.1098G>T	p.Trp366Cys	-1.4265497238513025
-BS_GSTHVZFR	PT_0MHKP408	BS_BT9KZP0N	Low-grade glioma	LGG, To be classified	GBA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	155235727	C	G	c.1342G>C	p.Asp448His	NA
-BS_GSTHVZFR	PT_0MHKP408	BS_JH29M4KG	Low-grade glioma	LGG, BRAF V600E	GBA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	155235727	C	G	c.1342G>C	p.Asp448His	0.6617981608668226
-BS_HHJZ05XC	PT_S4YNE17X	BS_28CDASF7	Schwannoma	NA	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	0.3100973592288529
-BS_HHJZ05XC	PT_S4YNE17X	BS_B7QS4DHK	Schwannoma	NA	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	-1.2453250562984646
-BS_HHJZ05XC	PT_S4YNE17X	BS_CS66RYDA	Schwannoma	NA	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	-2.156395878621795
-BS_HHJZ05XC	PT_S4YNE17X	BS_GR46VD0Q	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	0.09059921148798868
-BS_HHJZ05XC	PT_S4YNE17X	BS_R1X4S0HE	Mixed neuronal-glial tumor	NA	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	NA
-BS_HHJZ05XC	PT_S4YNE17X	BS_VXEFKW5P	Neurofibroma plexiform	NA	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	1.0834385052428877
-BS_HHJZ05XC	PT_S4YNE17X	BS_28CDASF7	Schwannoma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-1.9065895506378878
-BS_HHJZ05XC	PT_S4YNE17X	BS_B7QS4DHK	Schwannoma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-1.8338134053401212
-BS_HHJZ05XC	PT_S4YNE17X	BS_CS66RYDA	Schwannoma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.1790109095677974
-BS_HHJZ05XC	PT_S4YNE17X	BS_GR46VD0Q	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.6205146308452516
-BS_HHJZ05XC	PT_S4YNE17X	BS_R1X4S0HE	Mixed neuronal-glial tumor	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	NA
-BS_HHJZ05XC	PT_S4YNE17X	BS_VXEFKW5P	Neurofibroma plexiform	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.481008348343168
-BS_HJ99CJ2R	PT_MT27S7S4	BS_VJ2S5DVS	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	chr17	7674887	C	T	c.644G>A	.	1.5981225128081369
-BS_HNWNZFHA	PT_7TRGHZBK	BS_W36RZSFA	Choroid plexus tumor	NA	TP53	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	7673786	AG	A	c.833delC	p.Pro278fs	-0.7509700259494566
-BS_HNWNZFHA	PT_7TRGHZBK	BS_W36RZSFA	Choroid plexus tumor	NA	COL7A1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	48584763	G	A	c.4018C>T	p.Arg1340*	-0.8889203997947215
-BS_J5596HKA	PT_3P3D97AB	BS_FRM9TG02	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31356506	TA	T	c.7666delA	p.Arg2556fs	-3.026143231876816
-BS_J7WQHJDQ	PT_A594A46X	BS_3PYESPHA	Mixed neuronal-glial tumor	GNG, other MAPK	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	28734444	CA	C	c.277delT	p.Trp93fs	-1.0639036837193157
-BS_J996NDK4	PT_VABP80N2	BS_21RE8W46	Low-grade glioma	LGG, KIAA1549-BRAF	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	44826289	AG	A	c.3074delC	p.Ser1025fs	0.8844521254359864
-BS_J9M165VZ	PT_8RB7TPS2	BS_3F4FQJMR	Ependymoma	EPN, To be classified	ERCC4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	13935697	C	T	c.1765C>T	p.Arg589Trp	1.2562108856375123
-BS_J9M165VZ	PT_8RB7TPS2	BS_HC44ZA0V	Ependymoma	EPN, To be classified	ERCC4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	13935697	C	T	c.1765C>T	p.Arg589Trp	1.9934486235990205
-BS_JJNCV530	PT_NS1F6DT8	BS_YNEQJ6AH	Mixed neuronal-glial tumor	NA	NF1	Pathogenic	ClinVar Pathogenic -- Conflicting but disease C0027831 was found in P-LP and not in B-LP or VUS	chr17	31232852	A	G	c.3467A>G	p.Asn1156Ser	1.0192391033028938
-BS_JNRAKEMV	PT_NTEKMKTX	BS_RD4D5F9F	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	chr9	95480550	A	T	c.785T>A	p.Leu262*	0.9130407978164476
-BS_JTSWHVNR	PT_0RN3VSXZ	BS_DVCQ8XDZ	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29655669	C	T	c.592C>T	p.Arg198*	-0.7557247259251947
-BS_JWETX0BH	PT_KZ04SDDS	BS_JS95PE0J	Other high-grade glioma	HGG, H3 wildtype, TP53	RAD50	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	132594950	C	G	c.1875C>G	p.Tyr625*	0.16264392506644584
-BS_JZAENWRM	PT_7F3ZPZB7	BS_6HTK4YJP	Germ cell tumor	NA	EPCAM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr2	47378939	A	G	n.*1169A>G	.	5.01411665898909
-BS_K1ZCZDGY	PT_3PK66TJY	BS_PRAEF32W	Ependymoma	EPN, PF A	FGFR2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	121526740	TGTTTA	T	c.8_12delTAAAC	p.Leu3fs	1.3923967849427066
-BS_K4XGEGW0	PT_PF9EC93Q	BS_V3Z3DB4N	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	A	c.375G>T	.	-1.4822882967310402
-BS_K65XZGKM	PT_D7KMPYTZ	BS_77317DY4	Medulloblastoma	MB, WNT	COL7A1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	48584366	CA	C	c.4128delT	p.Gly1377fs	1.7946639770339372
-BS_K7A7QW76	PT_F27SA15G	BS_YA8RBGD8	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31261733	C	T	c.4600C>T	p.Arg1534*	-0.6159365691893706
-BS_KF14TKFY	PT_2NQPX1R2	BS_KND4B5CW	Craniopharyngioma	CRANIO, ADAM	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	44827881	AG	A	c.2019delC	p.Tyr674fs	3.223791517463723
-BS_MKYS4YRC	PT_K2YDNZDA	BS_C80S5N37	Ependymoma	EPN, PF A	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45332795	G	A	c.544C>T	p.Arg182Cys	0.4713404068737906
-BS_N0X0S3JD	PT_E79807KT	BS_EYYMKWB7	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132906080	G	A	c.1498C>T	p.Arg500*	-1.9801311639108903
-BS_N2TDDQ9Y	PT_YBJYA2CD	BS_8Q77HZ4R	Choroid plexus tumor	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852169	G	A	c.1502G>A	p.Gly501Glu	-0.8425445955308192
-BS_N56BGDK6	PT_6GDPNFA6	BS_45J79YTF	Other high-grade glioma	HGG, H3 wildtype	FANCG	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35075739	A	AG	c.1158dupC	p.Ser387fs	1.1581342922809597
-BS_NTV9Z7SE	PT_QD6KKKJH	BS_7ZV3DPGT	Other tumor	NA	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	0.17907101538807638
-BS_NTV9Z7SE	PT_QD6KKKJH	BS_M7QJ8VF0	Other tumor	NA	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	1.292870566513596
-BS_P3W89XQY	PT_94EHCMXA	BS_V7BJM89K	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31233085	GAC	G	c.3585_3586delAC	p.Leu1196fs	-0.4362279326324575
-BS_PAYW4RCK	PT_5KP2E0DS	BS_SM8VQFPD	Mixed neuronal-glial tumor	NA	ERCC2	Likely_pathogenic	ClinVar Likely pathogenic -- *Latest reported date call is Likely pathogenic date 20220111	chr19	45364274	C	T	c.776G>A	p.Cys259Tyr	0.8035503761409503
-BS_PF7546KW	PT_J0SZ1SX5	BS_R13X6TMW	Low-grade glioma	LGG, KIAA1549-BRAF	RECQL4	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	144514982	CA	C	c.1573delT	p.Cys525fs	-1.2059127662748652
-BS_PJK0M1X0	PT_06ERX8Z7	BS_29CPJ040	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079615	C	T	c.3343C>T	p.Gln1115*	-2.5652950822071516
-BS_Q1SPJ467	PT_WG2Z95B5	BS_CHBWCERH	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	NBN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	89971213	ATTTGT	A	c.657_661delACAAA	p.Lys219fs	NA
-BS_Q1SPJ467	PT_WG2Z95B5	BS_MMNRZ1EQ	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	NBN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	89971213	ATTTGT	A	c.657_661delACAAA	p.Lys219fs	0.024108288203646834
-BS_Q1SPJ467	PT_WG2Z95B5	BS_Q3KV6NDN	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	NBN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	89971213	ATTTGT	A	c.657_661delACAAA	p.Lys219fs	NA
-BS_Q6K6BVTF	PT_K8ZV7APT	BS_3Y0QXZQB	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-1.953427630371898
-BS_Q6K6BVTF	PT_K8ZV7APT	BS_893A91ZM	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-2.165024613938285
+BS_GEYA8N9C	PT_BF3PGTF7	BS_M026T44Q	Meningioma	NA	BRCA2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	32340592	G	GT	c.6239dupT	p.Leu2080fs	-0.7061014718480563
+BS_GJWAV3E5	PT_9PJR0ZK7	BS_6JHXXVR7	Neurofibroma plexiform	NA	PMS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	6002670	G	C	c.11C>G	p.Ser4*	0.44525123980385284
+BS_GJWAV3E5	PT_9PJR0ZK7	BS_KE56MMY0	Neurofibroma plexiform	NA	PMS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr7	6002670	G	C	c.11C>G	p.Ser4*	-0.4095595702459013
+BS_GKFY1GX4	PT_HM2GMT2H	BS_3F5PR9GS	Medulloblastoma	MB, SHH	EDNRB	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	77901181	C	A	c.1098G>T	p.Trp366Cys	-1.41269602988502
+BS_GSTHVZFR	PT_0MHKP408	BS_BT9KZP0N	Low-grade glioma	LGG, BRAF V600E	GBA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	155235727	C	G	c.1342G>C	p.Asp448His	NA
+BS_GSTHVZFR	PT_0MHKP408	BS_JH29M4KG	Low-grade glioma	LGG, BRAF V600E	GBA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	155235727	C	G	c.1342G>C	p.Asp448His	0.7624845454738557
+BS_HHJZ05XC	PT_S4YNE17X	BS_28CDASF7	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	0.3093318808838288
+BS_HHJZ05XC	PT_S4YNE17X	BS_B7QS4DHK	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	-1.153956558234572
+BS_HHJZ05XC	PT_S4YNE17X	BS_CS66RYDA	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	-2.011060961652764
+BS_HHJZ05XC	PT_S4YNE17X	BS_GR46VD0Q	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	0.10283549842799267
+BS_HHJZ05XC	PT_S4YNE17X	BS_R1X4S0HE	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	NA
+BS_HHJZ05XC	PT_S4YNE17X	BS_VXEFKW5P	Low-grade glioma	LGG, wildtype	SOS1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr2	39051253	A	G	c.755T>C	p.Ile252Thr	1.0368648951700292
+BS_HHJZ05XC	PT_S4YNE17X	BS_28CDASF7	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.157829051810931
+BS_HHJZ05XC	PT_S4YNE17X	BS_B7QS4DHK	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.0816195033323823
+BS_HHJZ05XC	PT_S4YNE17X	BS_CS66RYDA	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.443102594054973
+BS_HHJZ05XC	PT_S4YNE17X	BS_GR46VD0Q	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.905435397097596
+BS_HHJZ05XC	PT_S4YNE17X	BS_R1X4S0HE	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	NA
+BS_HHJZ05XC	PT_S4YNE17X	BS_VXEFKW5P	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29661313	C	T	c.784C>T	p.Arg262*	-2.7593475443279214
+BS_HJ99CJ2R	PT_MT27S7S4	BS_VJ2S5DVS	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	chr17	7674887	C	T	c.644G>A	.	1.5049552747185995
+BS_HNWNZFHA	PT_7TRGHZBK	BS_W36RZSFA	Choroid plexus tumor	NA	TP53	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	7673786	AG	A	c.833delC	p.Pro278fs	-0.6670391137346865
+BS_HNWNZFHA	PT_7TRGHZBK	BS_W36RZSFA	Choroid plexus tumor	NA	COL7A1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	48584763	G	A	c.4018C>T	p.Arg1340*	-0.9117001660085586
+BS_J5596HKA	PT_3P3D97AB	BS_FRM9TG02	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31356506	TA	T	c.7666delA	p.Arg2556fs	-3.1718754110130467
+BS_J7WQHJDQ	PT_A594A46X	BS_3PYESPHA	Mixed neuronal-glial tumor	GNG, other MAPK	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	28734444	CA	C	c.277delT	p.Trp93fs	-0.9253464451794229
+BS_J996NDK4	PT_VABP80N2	BS_21RE8W46	Low-grade glioma	LGG, KIAA1549-BRAF	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	44826289	AG	A	c.3074delC	p.Ser1025fs	1.084078296637837
+BS_J9M165VZ	PT_8RB7TPS2	BS_3F4FQJMR	Ependymoma	EPN, To be classified	ERCC4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	13935697	C	T	c.1765C>T	p.Arg589Trp	1.2762946568751186
+BS_J9M165VZ	PT_8RB7TPS2	BS_HC44ZA0V	Ependymoma	EPN, To be classified	ERCC4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	13935697	C	T	c.1765C>T	p.Arg589Trp	2.02306477990028
+BS_JJNCV530	PT_NS1F6DT8	BS_YNEQJ6AH	Mixed neuronal-glial tumor	NA	NF1	Pathogenic	ClinVar Pathogenic -- Conflicting but disease C0027831 was found in P-LP and not in B-LP or VUS	chr17	31232852	A	G	c.3467A>G	p.Asn1156Ser	0.8505981382666488
+BS_JNRAKEMV	PT_NTEKMKTX	BS_RD4D5F9F	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	chr9	95480550	A	T	c.785T>A	p.Leu262*	0.9576002127187996
+BS_JTSWHVNR	PT_0RN3VSXZ	BS_DVCQ8XDZ	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29655669	C	T	c.592C>T	p.Arg198*	-0.9526691976809589
+BS_JWETX0BH	PT_KZ04SDDS	BS_JS95PE0J	Other high-grade glioma	HGG, H3 wildtype, TP53	RAD50	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	132594950	C	G	c.1875C>G	p.Tyr625*	0.1851577363256049
+BS_JZAENWRM	PT_7F3ZPZB7	BS_6HTK4YJP	Germ cell tumor	NA	EPCAM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr2	47378939	A	G	n.*1169A>G	.	5.583405980649601
+BS_K1ZCZDGY	PT_3PK66TJY	BS_PRAEF32W	Ependymoma	EPN, PF A	FGFR2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	121526740	TGTTTA	T	c.8_12delTAAAC	p.Leu3fs	1.2908899775020406
+BS_K4XGEGW0	PT_PF9EC93Q	BS_V3Z3DB4N	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	7675994	C	A	c.375G>T	.	-1.3432232802175683
+BS_K65XZGKM	PT_D7KMPYTZ	BS_77317DY4	Medulloblastoma	MB, WNT	COL7A1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	48584366	CA	C	c.4128delT	p.Gly1377fs	1.5834301052245903
+BS_K7A7QW76	PT_F27SA15G	BS_YA8RBGD8	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31261733	C	T	c.4600C>T	p.Arg1534*	-0.7753176209995465
+BS_KF14TKFY	PT_2NQPX1R2	BS_KND4B5CW	Craniopharyngioma	CRANIO, ADAM	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	44827881	AG	A	c.2019delC	p.Tyr674fs	3.5812044858733203
+BS_MKYS4YRC	PT_K2YDNZDA	BS_C80S5N37	Ependymoma	EPN, PF A	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45332795	G	A	c.544C>T	p.Arg182Cys	0.4208884776613223
+BS_N0X0S3JD	PT_E79807KT	BS_EYYMKWB7	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132906080	G	A	c.1498C>T	p.Arg500*	-1.9501911693247465
+BS_N2TDDQ9Y	PT_YBJYA2CD	BS_8Q77HZ4R	Choroid plexus tumor	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852169	G	A	c.1502G>A	p.Gly501Glu	-0.7657992735726434
+BS_N56BGDK6	PT_6GDPNFA6	BS_45J79YTF	Other high-grade glioma	HGG, H3 wildtype	FANCG	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	35075739	A	AG	c.1158dupC	p.Ser387fs	1.0673359533947628
+BS_NTV9Z7SE	PT_QD6KKKJH	BS_7ZV3DPGT	Other tumor	NA	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	0.24776020119918676
+BS_NTV9Z7SE	PT_QD6KKKJH	BS_M7QJ8VF0	Other tumor	NA	RECQL4	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr8	144513260	ACGCCCGGCC	A	c.2412_2420delGGCCGGGCG	p.Ala805_Arg807del	1.405713581460985
+BS_P3W89XQY	PT_94EHCMXA	BS_V7BJM89K	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31233085	GAC	G	c.3585_3586delAC	p.Leu1196fs	-0.5966266649331681
+BS_PAYW4RCK	PT_5KP2E0DS	BS_SM8VQFPD	Mixed neuronal-glial tumor	NA	ERCC2	Likely_pathogenic	ClinVar Likely pathogenic -- *Latest reported date call is Likely pathogenic date 20220111	chr19	45364274	C	T	c.776G>A	p.Cys259Tyr	0.6148951860113143
+BS_PF7546KW	PT_J0SZ1SX5	BS_R13X6TMW	Low-grade glioma	LGG, KIAA1549-BRAF	RECQL4	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	144514982	CA	C	c.1573delT	p.Cys525fs	-1.1921278378683
+BS_PJK0M1X0	PT_06ERX8Z7	BS_29CPJ040	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079615	C	T	c.3343C>T	p.Gln1115*	-2.8169233444894197
+BS_Q1SPJ467	PT_WG2Z95B5	BS_CHBWCERH	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	NBN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	89971213	ATTTGT	A	c.657_661delACAAA	p.Lys219fs	NA
+BS_Q1SPJ467	PT_WG2Z95B5	BS_MMNRZ1EQ	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	NBN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	89971213	ATTTGT	A	c.657_661delACAAA	p.Lys219fs	0.011391220130206584
+BS_Q1SPJ467	PT_WG2Z95B5	BS_Q3KV6NDN	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	NBN	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	89971213	ATTTGT	A	c.657_661delACAAA	p.Lys219fs	NA
+BS_Q6K6BVTF	PT_K8ZV7APT	BS_3Y0QXZQB	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-2.1052345411429547
+BS_Q6K6BVTF	PT_K8ZV7APT	BS_893A91ZM	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-2.315633262198662
 BS_Q6K6BVTF	PT_K8ZV7APT	BS_9S792SG4	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	NA
-BS_Q6K6BVTF	PT_K8ZV7APT	BS_FQX1PRAJ	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-1.2585959807735458
-BS_Q6K6BVTF	PT_K8ZV7APT	BS_GDHH6T5A	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-2.576743447626001
-BS_Q80JX5G6	PT_S0PBN4M7	BS_RWJZFTP9	Low-grade glioma	LGG, KIAA1549-BRAF	HMBS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	119091515	C	T	c.601C>T	p.Arg201Trp	0.677728533650452
-BS_QG3PYXB4	PT_A0F23R7E	BS_5K3R0F5D	Mixed neuronal-glial tumor	GNG, BRAF V600E	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr17	43115735	AT	A	c.124delA	p.Ile42fs	-0.947017637703263
-BS_QG3PYXB4	PT_A0F23R7E	BS_5K3R0F5D	Mixed neuronal-glial tumor	GNG, BRAF V600E	PMS2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr7	5987389	G	C	c.1376C>G	p.Ser459*	-0.14749112231293438
-BS_QGEEVNAS	PT_NNZQ09SH	BS_WVS02TZK	Mixed neuronal-glial tumor	GNT, other MAPK, FGFR	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45352235	G	A	c.2164C>T	p.Arg722Trp	0.032265733394234386
-BS_QMBK2FV7	PT_S4A0R1PM	BS_M15PW2N0	Medulloblastoma	MB, SHH	RAD51D	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	35107380	T	TA	c.390dupT	p.Ser131fs	-1.146798455205226
-BS_RG2CTN65	PT_1BV6ND1D	BS_H3FE3TH9	Low-grade glioma	LGG, KIAA1549-BRAF	BRIP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	61716051	G	A	c.2392C>T	p.Arg798*	-0.6670926193703133
-BS_RVFDSK8D	PT_5ABCFCSK	BS_A1VEGWTR	Low-grade glioma	LGG, KIAA1549-BRAF	GBA	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	155236318	G	A	c.1151C>T	p.Ser384Phe	0.11857573552738039
-BS_S2N3XTKS	PT_RX1EWBP9	BS_996ZS2A4	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	FANCI	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr15	89316456	A	ATAAAT	c.3985_*2dupTAAAT	.	0.37042228555408235
-BS_S588W9V2	PT_2ZXR2PDN	BS_DMZP9G1H	Mixed neuronal-glial tumor	GNG, BRAF V600E	RMRP	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr9	35658017	C	CCACGTCCTCAGCTTCA	c.-363_-362insCACGTCCTCAGCTTCA	.	-0.23823167906571927
-BS_S6EXG9N9	PT_QQ9JGEY9	BS_Z9ZS6ZS2	NA	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31155997	AG	A	c.77delG	p.Gly26fs	-0.13190775256727905
-BS_SF02KBCG	PT_EGGY1XC0	BS_R6WNEEE4	Medulloblastoma	MB, SHH	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331699	AG	A	c.1147delC	p.Ala385fs	0.06501719852814021
-BS_SG7EPZ4W	PT_DW6V5V8E	BS_EFEZB0ZH	Low-grade glioma	LGG, KIAA1549-BRAF	CTNNA1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr5	138782024	A	AT	c.100_101insT	p.Thr34fs	0.025846915434255543
-BS_SGS26NXP	PT_JNEV57VK	BS_2A162JH9	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	0.04681004169997691
-BS_SGS26NXP	PT_JNEV57VK	BS_8Q7NWJ22	Other high-grade glioma	HGG, To be classified	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	NA
-BS_SGS26NXP	PT_JNEV57VK	BS_BWBDH9GM	DIPG or DMG	DMG, H3 K28	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	0.12241412267031489
-BS_SGS26NXP	PT_JNEV57VK	BS_D29RPBSZ	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	-0.37989233868042177
-BS_SGS26NXP	PT_JNEV57VK	BS_MJ3ZTWB7	Other high-grade glioma	HGG, To be classified	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	NA
-BS_SGS26NXP	PT_JNEV57VK	BS_VF5XWFXD	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	0.2891513066375423
-BS_SP886CE6	PT_27FDWCVZ	BS_G5QBBHDV	Low-grade glioma	LGG, KIAA1549-BRAF	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	28695219	G	A	c.1412C>T	p.Ser471Phe	-0.16028420847823568
-BS_SZYRB89G	PT_T5KEXCK7	NA	NA	NA	SMARCB1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr22	23825375	CG	C	c.977delG	p.Gly326fs	NA
-BS_T3FD64Z7	PT_S7YHNHSS	NA	NA	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31350248	CT	C	c.7389delT	p.Thr2464fs	NA
-BS_T3VJQSYM	PT_DEDRCQWH	BS_49VCQD19	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31326172	AC	A	c.5190delC	p.Leu1731fs	-1.442538421321112
-BS_TARPGT44	PT_S7WJ99PC	BS_AVYNZHSB	Low-grade glioma	SEGA, wildtype	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132921367	G	A	c.733C>T	p.Arg245*	-2.033520022424272
-BS_TE01WW4M	PT_E4ECAFEN	BS_HZE3KYZ1	Medulloblastoma	MB, Group4	FANCC	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	95117318	G	A	c.1069C>T	p.Gln357*	1.0813716644520623
-BS_THDBV4G0	PT_2JDDX6TJ	BS_XZM79E42	DIPG or DMG	DMG, H3 K28, TP53	BRIP1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	61801348	C	G	c.1045G>C	p.Ala349Pro	-0.24100385962451054
+BS_Q6K6BVTF	PT_K8ZV7APT	BS_FQX1PRAJ	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-1.4143376863744452
+BS_Q6K6BVTF	PT_K8ZV7APT	BS_GDHH6T5A	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31343097	CTAACTT	C	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	-2.725020553937936
+BS_Q80JX5G6	PT_S0PBN4M7	BS_RWJZFTP9	Low-grade glioma	LGG, KIAA1549-BRAF	HMBS	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	119091515	C	T	c.601C>T	p.Arg201Trp	0.7250382186964889
+BS_QG3PYXB4	PT_A0F23R7E	BS_5K3R0F5D	Mixed neuronal-glial tumor	GNG, BRAF V600E	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr17	43115735	AT	A	c.124delA	p.Ile42fs	-0.8445402600758088
+BS_QG3PYXB4	PT_A0F23R7E	BS_5K3R0F5D	Mixed neuronal-glial tumor	GNG, BRAF V600E	PMS2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr7	5987389	G	C	c.1376C>G	p.Ser459*	-0.15981394026206763
+BS_QGEEVNAS	PT_NNZQ09SH	BS_WVS02TZK	Mixed neuronal-glial tumor	GNT, other MAPK, FGFR	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45352235	G	A	c.2164C>T	p.Arg722Trp	-0.09469543518568269
+BS_QMBK2FV7	PT_S4A0R1PM	BS_M15PW2N0	Medulloblastoma	MB, SHH	RAD51D	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	35107380	T	TA	c.390dupT	p.Ser131fs	-1.171491763433215
+BS_RG2CTN65	PT_1BV6ND1D	BS_H3FE3TH9	Low-grade glioma	LGG, KIAA1549-BRAF	BRIP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	61716051	G	A	c.2392C>T	p.Arg798*	-0.6349009190305669
+BS_RVFDSK8D	PT_5ABCFCSK	BS_A1VEGWTR	Low-grade glioma	LGG, KIAA1549-BRAF	GBA	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr1	155236318	G	A	c.1151C>T	p.Ser384Phe	0.20638883948997705
+BS_S2N3XTKS	PT_RX1EWBP9	BS_996ZS2A4	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	FANCI	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr15	89316456	A	ATAAAT	c.3985_*2dupTAAAT	.	0.45626973690845785
+BS_S588W9V2	PT_2ZXR2PDN	BS_DMZP9G1H	Mixed neuronal-glial tumor	GNG, BRAF V600E	RMRP	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr9	35658017	C	CCACGTCCTCAGCTTCA	c.-363_-362insCACGTCCTCAGCTTCA	.	-0.11657520468579122
+BS_S6EXG9N9	PT_QQ9JGEY9	BS_Z9ZS6ZS2	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31155997	AG	A	c.77delG	p.Gly26fs	-0.2940298339293479
+BS_SF02KBCG	PT_EGGY1XC0	BS_R6WNEEE4	Medulloblastoma	MB, SHH	MUTYH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	45331699	AG	A	c.1147delC	p.Ala385fs	0.013459292817671638
+BS_SG7EPZ4W	PT_DW6V5V8E	BS_EFEZB0ZH	Low-grade glioma	LGG, KIAA1549-BRAF	CTNNA1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr5	138782024	A	AT	c.100_101insT	p.Thr34fs	0.04943469878884181
+BS_SGS26NXP	PT_JNEV57VK	BS_2A162JH9	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	0.09774109686560041
+BS_SGS26NXP	PT_JNEV57VK	BS_8Q7NWJ22	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	NA
+BS_SGS26NXP	PT_JNEV57VK	BS_BWBDH9GM	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	0.1767106791230008
+BS_SGS26NXP	PT_JNEV57VK	BS_D29RPBSZ	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	-0.3479558588331102
+BS_SGS26NXP	PT_JNEV57VK	BS_MJ3ZTWB7	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	NA
+BS_SGS26NXP	PT_JNEV57VK	BS_VF5XWFXD	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47475171	G	C	c.1906G>C	p.Ala636Pro	0.35087013712677173
+BS_SP886CE6	PT_27FDWCVZ	BS_G5QBBHDV	Low-grade glioma	LGG, KIAA1549-BRAF	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	28695219	G	A	c.1412C>T	p.Ser471Phe	0.011853124601375636
+BS_SZYRB89G	PT_T5KEXCK7	NA	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	SMARCB1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr22	23825375	CG	C	c.977delG	p.Gly326fs	NA
+BS_T3FD64Z7	PT_S7YHNHSS	NA	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31350248	CT	C	c.7389delT	p.Thr2464fs	NA
+BS_T3VJQSYM	PT_DEDRCQWH	BS_49VCQD19	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31326172	AC	A	c.5190delC	p.Leu1731fs	-1.5972384706237215
+BS_TARPGT44	PT_S7WJ99PC	BS_AVYNZHSB	Low-grade glioma	SEGA, wildtype	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	132921367	G	A	c.733C>T	p.Arg245*	-2.0007947420794507
+BS_TE01WW4M	PT_E4ECAFEN	BS_HZE3KYZ1	Medulloblastoma	MB, Group4	FANCC	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	95117318	G	A	c.1069C>T	p.Gln357*	1.0203117708537404
+BS_THDBV4G0	PT_2JDDX6TJ	BS_XZM79E42	DIPG or DMG	DMG, H3 K28, TP53	BRIP1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	61801348	C	G	c.1045G>C	p.Ala349Pro	-0.1966594703925083
 BS_THDBV4G0	PT_2JDDX6TJ	BS_XZM79E42	DIPG or DMG	DMG, H3 K28, TP53	ELP1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr9	108912363	GAC	G	c.1088_1089delGT	p.Cys363fs	NA
-BS_TP6GSAB6	PT_5SX0GRW1	BS_1RT76ANT	Other tumor	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852222	C	T	c.1555C>T	p.Leu519Phe	-0.3223756931041403
-BS_TQYACCGG	PT_DACV00WF	BS_BVSW4GTG	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr9	95461919	T	TC	c.2639dupG	p.Val881fs	0.6226745606443319
-BS_TV8HD883	PT_4EDBZRM2	BS_RGSMX7QD	Mixed neuronal-glial tumor	GNG, KIAA1549-BRAF	RECQL4	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	144513610	G	A	c.2161C>T	p.Arg721*	-0.8292408117107413
-BS_VN983YRH	PT_41QYPSGV	BS_9BJARSX3	Low-grade glioma	LGG, BRAF V600E, CDKN2A/B	BLM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	90765319	C	T	c.2098C>T	p.Gln700*	0.18900406070919024
-BS_VNBX1SEV	PT_RSDTCFDA	BS_NPA6CZQF	Other high-grade glioma	HGG, H3 wildtype	BRIP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	61716051	G	A	c.2392C>T	p.Arg798*	0.8205671325634121
-BS_VP4S1XTC	PT_J50NZYZF	BS_B9V8RGTA	Mesenchymal tumor	EWS	FH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	241504227	G	C	c.923C>G	.	1.6880518519684875
-BS_VP4S1XTC	PT_J50NZYZF	BS_PSNBFWQV	Mesenchymal tumor	EWS	FH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	241504227	G	C	c.923C>G	.	0.8133446629329163
-BS_W75GCHPW	PT_ESHACWF6	BS_J483EMFP	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675232	G	A	c.380C>T	.	0.13105237097907513
-BS_W75GCHPW	PT_ESHACWF6	BS_MV6ASWV9	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675232	G	A	c.380C>T	.	1.4736659713899305
-BS_W75GCHPW	PT_ESHACWF6	BS_J483EMFP	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TERT	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	1294549	C	CG	c.336dupC	p.Glu113fs	-0.19988466091497656
-BS_W75GCHPW	PT_ESHACWF6	BS_MV6ASWV9	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TERT	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	1294549	C	CG	c.336dupC	p.Glu113fs	-0.2827591869195361
-BS_WCQW99V3	PT_CEWNZVKF	BS_PRR8K9GE	Craniopharyngioma	CRANIO, ADAM	MPL	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	43340042	C	T	c.769C>T	p.Arg257Cys	0.7250112309284256
-BS_WMVYQREN	PT_7WT6P5M8	BS_7327SDAQ	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH3	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	80665358	C	T	c.574C>T	p.Gln192*	-2.444770289973164
-BS_WP9M8J6W	PT_NMZBRFYS	BS_M9C4RY4P	Schwannoma	NA	RAD51D	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	35119114	G	GTT	c.140_141insAA	p.Tyr47fs	0.11087231045777032
-BS_WP9M8J6W	PT_NMZBRFYS	BS_M9C4RY4P	Schwannoma	NA	FGFR1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr8	38414608	T	TCATTAAACAA	c.2091_2092insTTGTTTAATG	p.Met698fs	-0.5573193937806905
-BS_X0XM8PYJ	PT_3D74J8RZ	BS_10APZRVT	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	-2.70380612968498
-BS_X0XM8PYJ	PT_3D74J8RZ	BS_53CTGDQG	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	-2.593553731220924
+BS_TP6GSAB6	PT_5SX0GRW1	BS_1RT76ANT	Other tumor	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102852222	C	T	c.1555C>T	p.Leu519Phe	-0.26034837824853074
+BS_TQYACCGG	PT_DACV00WF	BS_BVSW4GTG	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr9	95461919	T	TC	c.2639dupG	p.Val881fs	0.6426515849295065
+BS_TV8HD883	PT_4EDBZRM2	BS_RGSMX7QD	Mixed neuronal-glial tumor	GNG, KIAA1549-BRAF	RECQL4	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr8	144513610	G	A	c.2161C>T	p.Arg721*	-0.8005236550540875
+BS_VN983YRH	PT_41QYPSGV	BS_9BJARSX3	Low-grade glioma	LGG, BRAF V600E, CDKN2A/B	BLM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	90765319	C	T	c.2098C>T	p.Gln700*	-0.027017484440599048
+BS_VNBX1SEV	PT_RSDTCFDA	BS_NPA6CZQF	Other high-grade glioma	HGG, H3 wildtype	BRIP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	61716051	G	A	c.2392C>T	p.Arg798*	0.8951891146913161
+BS_VP4S1XTC	PT_J50NZYZF	BS_B9V8RGTA	Mesenchymal tumor	EWS	FH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	241504227	G	C	c.923C>G	.	1.722835516836826
+BS_VP4S1XTC	PT_J50NZYZF	BS_PSNBFWQV	Mesenchymal tumor	EWS	FH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	241504227	G	C	c.923C>G	.	0.8496481876692337
+BS_W75GCHPW	PT_ESHACWF6	BS_J483EMFP	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675232	G	A	c.380C>T	.	0.14848759073141485
+BS_W75GCHPW	PT_ESHACWF6	BS_MV6ASWV9	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675232	G	A	c.380C>T	.	1.38988151533847
+BS_W75GCHPW	PT_ESHACWF6	BS_J483EMFP	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TERT	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	1294549	C	CG	c.336dupC	p.Glu113fs	-0.19649563975342277
+BS_W75GCHPW	PT_ESHACWF6	BS_MV6ASWV9	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TERT	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	1294549	C	CG	c.336dupC	p.Glu113fs	-0.29064352356201495
+BS_WCQW99V3	PT_CEWNZVKF	BS_PRR8K9GE	Craniopharyngioma	CRANIO, ADAM	MPL	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr1	43340042	C	T	c.769C>T	p.Arg257Cys	0.4024232791248503
+BS_WMVYQREN	PT_7WT6P5M8	BS_7327SDAQ	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH3	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	80665358	C	T	c.574C>T	p.Gln192*	-2.242361736412133
+BS_WP9M8J6W	PT_NMZBRFYS	BS_M9C4RY4P	Schwannoma	NA	RAD51D	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	35119114	G	GTT	c.140_141insAA	p.Tyr47fs	0.12439024430748119
+BS_WP9M8J6W	PT_NMZBRFYS	BS_M9C4RY4P	Schwannoma	NA	FGFR1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr8	38414608	T	TCATTAAACAA	c.2091_2092insTTGTTTAATG	p.Met698fs	-0.6919076009054205
+BS_X0XM8PYJ	PT_3D74J8RZ	BS_10APZRVT	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	-2.9926563881614365
+BS_X0XM8PYJ	PT_3D74J8RZ	BS_53CTGDQG	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	-2.877202547191371
 BS_X0XM8PYJ	PT_3D74J8RZ	BS_PEGV37JN	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	NA
 BS_X0XM8PYJ	PT_3D74J8RZ	BS_PK5CGTRM	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	NA
-BS_X0XM8PYJ	PT_3D74J8RZ	BS_V7ZQ4AM7	Schwannoma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	NA
-BS_XCA92FF3	PT_X84SD608	BS_9HA238XS	Neurofibroma plexiform	NA	SLX4	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr16	3591038	TC	T	c.2599delG	p.Glu867fs	-1.6808458098496104
-BS_XCA92FF3	PT_X84SD608	BS_9HA238XS	Neurofibroma plexiform	NA	NF1	Pathogenic	InterVar_Recalculated Pathogenic	chr17	31182563	TA	T	c.789delA	p.Ala264fs	-1.1985366468836554
-BS_XCKDRRYT	PT_02MVZZSW	BS_5AF6ZNJF	Meningioma	NA	BAP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	52404529	G	A	c.1174C>T	p.Gln392*	-2.613508086679228
-BS_XHT3F34T	PT_89XRZBSG	BS_3JQDQR52	Other high-grade glioma	HGG, To be classified, TP53	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	NA
-BS_XHT3F34T	PT_89XRZBSG	BS_49FQXT2E	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	-1.7448672247737074
-BS_XHT3F34T	PT_89XRZBSG	BS_WF90N975	Other high-grade glioma	HGG, To be classified, TP53	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	NA
-BS_XHT3F34T	PT_89XRZBSG	BS_ZD5HN296	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	0.11780170338925884
-BS_XKHY9A6D	PT_Y8RNS9JE	BS_X23724NJ	Other high-grade glioma	HGG, H3 wildtype, TP53	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr13	32380043	C	T	c.9154C>T	p.Arg3052Trp	-0.21329215845384825
-BS_XN449RAJ	PT_1TGKS073	BS_X91K8KMG	Low-grade glioma	LGG, BRAF V600E	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108241292	A	G	c.497-2661A>G	.	0.08463062206204397
-BS_XR81Q21W	PT_2E552BAR	BS_2W3NC4K1	Neurofibroma plexiform	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102875313	C	T	c.4333C>T	p.Leu1445Phe	-1.0995351722990498
-BS_XR81Q21W	PT_2E552BAR	BS_RQSKD7PN	Mixed neuronal-glial tumor	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102875313	C	T	c.4333C>T	p.Leu1445Phe	-0.08628588464621349
-BS_XR81Q21W	PT_2E552BAR	BS_2W3NC4K1	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31206257	G	A	c.1278G>A	p.Trp426*	-2.780053549921549
-BS_XR81Q21W	PT_2E552BAR	BS_RQSKD7PN	Mixed neuronal-glial tumor	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31206257	G	A	c.1278G>A	p.Trp426*	-1.772520300294391
-BS_Y2Z06EDG	PT_T93J9EGZ	NA	NA	NA	SUFU	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	102592655	C	CT	c.528_529insT	p.Met177fs	NA
-BS_YCT0FK91	PT_45P9F9MD	BS_GNV89A5P	Medulloblastoma	MB, Group4	FANCA	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	89744977	CCTT	C	c.3605_3607delAAG	p.Glu1202del	0.8546702334025448
-BS_Z6GF2TDX	PT_7YSCM82T	BS_AG3D3435	Low-grade glioma	SEGA, wildtype	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2080179	C	T	c.3412C>T	p.Arg1138*	-2.515610426452132
-BS_ZH666SJW	PT_M0AP3Z15	BS_QEYPFYHD	Medulloblastoma	MB, Group4	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189299	C	T	c.283G>A	p.Val95Met	-0.48991781623016545
-BS_ZH666SJW	PT_M0AP3Z15	BS_Z7PKVY9J	Medulloblastoma	MB, Group4	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189299	C	T	c.283G>A	p.Val95Met	-0.381854745331984
-BS_ZM9EYYDT	PT_QK4XB83F	BS_JG9JZTA9	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2070571	G	A	c.1832G>A	p.Arg611Gln	-0.4409124573597196
-BS_ZMW21B7R	PT_XXZHRPNM	BS_MF9X3PKH	Low-grade glioma	LGG, KIAA1549-BRAF	ERCC2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr19	45357328	TG	T	c.1420delC	p.His474fs	-1.0005033661910694
-BS_ZP36WDVS	PT_B54PH840	BS_WMEHNDSK	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108331884	CTCTAGAATT	C	c.7638_7646delTAGAATTTC	p.Arg2547_Ser2549del	0.24017812126085314
-BS_ZP36WDVS	PT_B54PH840	BS_WMEHNDSK	Other tumor	NA	ERCC3	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr2	127272934	CT	C	c.1757delA	p.Gln586fs	-0.11094081035449108
-BS_ZQY1P7NR	PT_229DRV7B	BS_NDC69214	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31338739	C	A	c.6855C>A	p.Tyr2285*	-1.6664497731186731
-BS_ZVFTWY6Y	PT_NXX0M835	BS_87E0MMHD	Mixed neuronal-glial tumor	NA	NF2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr22	29642254	TG	T	c.417delG	p.Leu140fs	NA
-BS_ZVFTWY6Y	PT_NXX0M835	BS_CQEETJ66	Schwannoma	NA	NF2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr22	29642254	TG	T	c.417delG	p.Leu140fs	-0.9199794267504711
+BS_X0XM8PYJ	PT_3D74J8RZ	BS_V7ZQ4AM7	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	29673477	CAGAG	C	c.1334_1337delAGAG	p.Glu445fs	NA
+BS_XCA92FF3	PT_X84SD608	BS_9HA238XS	Neurofibroma plexiform	NA	SLX4	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr16	3591038	TC	T	c.2599delG	p.Glu867fs	-1.775126288870279
+BS_XCA92FF3	PT_X84SD608	BS_9HA238XS	Neurofibroma plexiform	NA	NF1	Pathogenic	InterVar_Recalculated Pathogenic	chr17	31182563	TA	T	c.789delA	p.Ala264fs	-1.354618465311324
+BS_XCKDRRYT	PT_02MVZZSW	BS_5AF6ZNJF	Meningioma	NA	BAP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr3	52404529	G	A	c.1174C>T	p.Gln392*	-2.733340144846222
+BS_XHT3F34T	PT_89XRZBSG	BS_3JQDQR52	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	NA
+BS_XHT3F34T	PT_89XRZBSG	BS_49FQXT2E	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	-1.5860063757427822
+BS_XHT3F34T	PT_89XRZBSG	BS_WF90N975	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	NA
+BS_XHT3F34T	PT_89XRZBSG	BS_ZD5HN296	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	7675145	CGGGTGCCGGGCGG	C	c.454_466delCCGCCCGGCACCC	p.Pro152fs	0.13623589133111688
+BS_XKHY9A6D	PT_Y8RNS9JE	BS_X23724NJ	Other high-grade glioma	HGG, H3 wildtype, TP53	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr13	32380043	C	T	c.9154C>T	p.Arg3052Trp	-0.1542275454327892
+BS_XN449RAJ	PT_1TGKS073	BS_X91K8KMG	Low-grade glioma	LGG, BRAF V600E	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108241292	A	G	c.497-2661A>G	.	0.15423660285871849
+BS_XR81Q21W	PT_2E552BAR	BS_2W3NC4K1	Neurofibroma plexiform	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102875313	C	T	c.4333C>T	p.Leu1445Phe	-1.015518386944039
+BS_XR81Q21W	PT_2E552BAR	BS_RQSKD7PN	Neurofibroma plexiform	NA	ERCC5	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr13	102875313	C	T	c.4333C>T	p.Leu1445Phe	-0.030938652858847455
+BS_XR81Q21W	PT_2E552BAR	BS_2W3NC4K1	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31206257	G	A	c.1278G>A	p.Trp426*	-2.9271793218925257
+BS_XR81Q21W	PT_2E552BAR	BS_RQSKD7PN	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31206257	G	A	c.1278G>A	p.Trp426*	-1.9253516796939003
+BS_Y2Z06EDG	PT_T93J9EGZ	NA	Medulloblastoma	MB, SHH	SUFU	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr10	102592655	C	CT	c.528_529insT	p.Met177fs	NA
+BS_YCT0FK91	PT_45P9F9MD	BS_GNV89A5P	Medulloblastoma	MB, Group4	FANCA	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr16	89744977	CCTT	C	c.3605_3607delAAG	p.Glu1202del	0.9318509311968558
+BS_Z6GF2TDX	PT_7YSCM82T	BS_AG3D3435	Low-grade glioma	SEGA, wildtype	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2080179	C	T	c.3412C>T	p.Arg1138*	-2.765789379450245
+BS_ZH666SJW	PT_M0AP3Z15	BS_QEYPFYHD	Medulloblastoma	MB, Group4	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189299	C	T	c.283G>A	p.Val95Met	-0.4503996246596311
+BS_ZH666SJW	PT_M0AP3Z15	BS_Z7PKVY9J	Medulloblastoma	MB, Group4	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20189299	C	T	c.283G>A	p.Val95Met	-0.32601388494110306
+BS_ZM9EYYDT	PT_QK4XB83F	BS_JG9JZTA9	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2070571	G	A	c.1832G>A	p.Arg611Gln	-0.6305721417278913
+BS_ZMW21B7R	PT_XXZHRPNM	BS_MF9X3PKH	Low-grade glioma	LGG, KIAA1549-BRAF	ERCC2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr19	45357328	TG	T	c.1420delC	p.His474fs	-1.0448547230952425
+BS_ZP36WDVS	PT_B54PH840	BS_WMEHNDSK	Other tumor	NA	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108331884	CTCTAGAATT	C	c.7638_7646delTAGAATTTC	p.Arg2547_Ser2549del	0.2904726552469008
+BS_ZP36WDVS	PT_B54PH840	BS_WMEHNDSK	Other tumor	NA	ERCC3	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr2	127272934	CT	C	c.1757delA	p.Gln586fs	-0.08825775661711464
+BS_ZQY1P7NR	PT_229DRV7B	BS_NDC69214	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	31338739	C	A	c.6855C>A	p.Tyr2285*	-1.8198818242955417
+BS_ZVFTWY6Y	PT_NXX0M835	BS_87E0MMHD	Schwannoma	NA	NF2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr22	29642254	TG	T	c.417delG	p.Leu140fs	NA
+BS_ZVFTWY6Y	PT_NXX0M835	BS_CQEETJ66	Schwannoma	NA	NF2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr22	29642254	TG	T	c.417delG	p.Leu140fs	-1.124673039518918
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_0Z1XRQ8F	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_8RJSR61H	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_93B03065	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
@@ -222,42 +222,42 @@ BS_ZY319KJ4	PT_Z4BF2NSB	BS_CS091RPM	Other high-grade glioma	HGG, H3 wildtype, TP
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_E7HGJS7W	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_HFZPE6ZA	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_JVZ7AQPV	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
-BS_ZY319KJ4	PT_Z4BF2NSB	BS_SHJA4MR0	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	0.845512326544069
+BS_ZY319KJ4	PT_Z4BF2NSB	BS_SHJA4MR0	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	0.8206537441624998
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_WDD8VE0Z	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	NA
-BS_ZY319KJ4	PT_Z4BF2NSB	BS_X0XXN9BK	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	0.9235875172750745
-BS_0754AZX0	PT_3CHB9PK5	BS_G3RJTBZD	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47804908	A	G	c.3439-2A>G	.	-0.6077543555347872
-BS_0754AZX0	PT_3CHB9PK5	BS_W9N9844Q	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47804908	A	G	c.3439-2A>G	.	-1.1329645040559602
-BS_0P3S5YJQ	PT_XTVQB9S4	BS_6G6C7VPX	Atypical Teratoid Rhabdoid Tumor	ATRT, TYR	MTAP	Pathogenic	InterVar_Recalculated Pathogenic	chr9	21816713	G	C	c.121-1G>C	.	0.6371565873390035
-BS_0P3S5YJQ	PT_XTVQB9S4	BS_74FS6GMW	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	MTAP	Pathogenic	InterVar_Recalculated Pathogenic	chr9	21816713	G	C	c.121-1G>C	.	0.017227350113851934
-BS_0P3S5YJQ	PT_XTVQB9S4	BS_EM8PDG4B	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	MTAP	Pathogenic	InterVar_Recalculated Pathogenic	chr9	21816713	G	C	c.121-1G>C	.	NA
-BS_26CXGVJ0	PT_MBAXTJET	BS_401R3KV0	Low-grade glioma	LGG, other MAPK	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	-0.5579680617903614
-BS_3BC5EX6K	PT_1Z015H6V	BS_MA2T7ET1	Ependymoma	EPN, MPE	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	-0.28527573147490193
-BS_6K3Y2WXF	PT_JW6FBEFK	BS_3BVVWHP5	Low-grade glioma	SEGA, To be classified	ASXL1	Pathogenic	InterVar_Recalculated Pathogenic	chr20	32429336	A	G	c.472-2A>G	.	-2.0375652082479347
-BS_7QH9BCJQ	PT_WWZ2Q14R	BS_RCC8BXVE	Medulloblastoma	MB, SHH	SUFU	Pathogenic	InterVar_Recalculated Pathogenic	chr10	102504332	C	G	c.180C>G	p.Tyr60*	-1.4193066713097084
-BS_8HZ761SQ	PT_NSXP8AWV	NA	NA	NA	SMARCE1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	40631693	G	A	c.715C>T	p.Arg239*	NA
-BS_96TV932S	PT_NA8NZ0BN	BS_YEQVW4ND	Low-grade glioma	LGG, RTK, CDKN2A/B	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80180230	G	A	c.1062+5G>A	.	-0.09992049252753736
-BS_98RN7Y9D	PT_ZVV78QP5	BS_DPF1CX0G	Low-grade glioma	LGG, KIAA1549-BRAF	TERT	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	1278640	C	T	c.2286+1G>A	.	-0.31093199807689703
-BS_EM975DQ6	PT_7JQ24F35	BS_1TPWFSK6	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079197	G	A	c.3131+1G>A	.	-1.287581431563789
-BS_EM975DQ6	PT_7JQ24F35	BS_R634WKN7	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079197	G	A	c.3131+1G>A	.	-0.7613088353771259
-BS_EM975DQ6	PT_7JQ24F35	BS_ZH1FBX50	Mixed neuronal-glial tumor	NA	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079197	G	A	c.3131+1G>A	.	-0.13624622013689447
-BS_ESFA9S69	PT_J3B812DT	BS_AMQGM1V9	Mixed neuronal-glial tumor	NA	MSH3	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	80778719	G	A	c.2319-1G>A	.	-0.46227491441627594
-BS_F0K8DMTS	PT_GCXG7800	BS_AA164D3A	Mixed neuronal-glial tumor	NA	NF1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	31170002	G	A	c.586+5G>A	.	-1.5491876634972044
-BS_FHDR7FJE	PT_SZJ7WZZW	NA	NA	NA	COL7A1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr3	48571242	C	T	c.7104+1G>A	.	NA
-BS_G64B5MDA	PT_SCCDBETQ	NA	NA	NA	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20192782	C	T	c.-23+1G>A	.	NA
-BS_GJWAV3E5	PT_9PJR0ZK7	BS_6JHXXVR7	NA	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31343008	G	C	c.7063-1G>C	.	-0.7026272088129023
-BS_GJWAV3E5	PT_9PJR0ZK7	BS_KE56MMY0	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31343008	G	C	c.7063-1G>C	.	-0.7089872831014266
-BS_JZKV3CQ1	PT_EYWDFKA7	BS_J4GQPZS0	Schwannoma	NA	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80180230	G	A	c.1062+5G>A	.	0.12171445315394987
-BS_JZKV3CQ1	PT_EYWDFKA7	BS_TYKJ8G2G	Schwannoma	NA	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80180230	G	A	c.1062+5G>A	.	-0.8210306939340382
-BS_MDHYHEBH	PT_26V72ZXB	BS_R439VVPK	Medulloblastoma	MB, Group3	RAD50	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	132594868	G	T	c.1794-1G>T	.	-1.0280656073192267
+BS_ZY319KJ4	PT_Z4BF2NSB	BS_X0XXN9BK	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108330308	G	GA	c.7406dupA	p.Asn2469fs	0.8890357871360844
+BS_0754AZX0	PT_3CHB9PK5	BS_G3RJTBZD	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47804908	A	G	c.3439-2A>G	.	-0.5852322641185265
+BS_0754AZX0	PT_3CHB9PK5	BS_W9N9844Q	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr2	47804908	A	G	c.3439-2A>G	.	-1.1388132382470686
+BS_0P3S5YJQ	PT_XTVQB9S4	BS_6G6C7VPX	Atypical Teratoid Rhabdoid Tumor	ATRT, TYR	MTAP	Pathogenic	InterVar_Recalculated Pathogenic	chr9	21816713	G	C	c.121-1G>C	.	0.7068645685978356
+BS_0P3S5YJQ	PT_XTVQB9S4	BS_74FS6GMW	Atypical Teratoid Rhabdoid Tumor	ATRT, TYR	MTAP	Pathogenic	InterVar_Recalculated Pathogenic	chr9	21816713	G	C	c.121-1G>C	.	0.0725647469209662
+BS_0P3S5YJQ	PT_XTVQB9S4	BS_EM8PDG4B	Atypical Teratoid Rhabdoid Tumor	ATRT, TYR	MTAP	Pathogenic	InterVar_Recalculated Pathogenic	chr9	21816713	G	C	c.121-1G>C	.	NA
+BS_26CXGVJ0	PT_MBAXTJET	BS_401R3KV0	Low-grade glioma	LGG, other MAPK	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	-0.5287286973176514
+BS_3BC5EX6K	PT_1Z015H6V	BS_MA2T7ET1	Ependymoma	EPN, MPE	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	-0.21484684165748233
+BS_6K3Y2WXF	PT_JW6FBEFK	BS_3BVVWHP5	Low-grade glioma	SEGA, To be classified	ASXL1	Pathogenic	InterVar_Recalculated Pathogenic	chr20	32429336	A	G	c.472-2A>G	.	-2.025973425029533
+BS_7QH9BCJQ	PT_WWZ2Q14R	BS_RCC8BXVE	Medulloblastoma	MB, SHH	SUFU	Pathogenic	InterVar_Recalculated Pathogenic	chr10	102504332	C	G	c.180C>G	p.Tyr60*	-1.45315629284647
+BS_8HZ761SQ	PT_NSXP8AWV	NA	Meningioma	NA	SMARCE1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr17	40631693	G	A	c.715C>T	p.Arg239*	NA
+BS_96TV932S	PT_NA8NZ0BN	BS_YEQVW4ND	Low-grade glioma	LGG, RTK, CDKN2A/B	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80180230	G	A	c.1062+5G>A	.	-0.06610686892903735
+BS_98RN7Y9D	PT_ZVV78QP5	BS_DPF1CX0G	Low-grade glioma	LGG, KIAA1549-BRAF	TERT	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	1278640	C	T	c.2286+1G>A	.	-0.3226486604753615
+BS_EM975DQ6	PT_7JQ24F35	BS_1TPWFSK6	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079197	G	A	c.3131+1G>A	.	-1.5019385841195387
+BS_EM975DQ6	PT_7JQ24F35	BS_R634WKN7	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079197	G	A	c.3131+1G>A	.	-0.9603145328798156
+BS_EM975DQ6	PT_7JQ24F35	BS_ZH1FBX50	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	2079197	G	A	c.3131+1G>A	.	-0.3170187420709951
+BS_ESFA9S69	PT_J3B812DT	BS_AMQGM1V9	Non-neoplastic tumor	NA	MSH3	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr5	80778719	G	A	c.2319-1G>A	.	-0.4303025506273931
+BS_F0K8DMTS	PT_GCXG7800	BS_AA164D3A	Non-neoplastic tumor	NA	NF1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr17	31170002	G	A	c.586+5G>A	.	-1.7032837637900593
+BS_FHDR7FJE	PT_SZJ7WZZW	NA	Medulloblastoma	MB, Group4	COL7A1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr3	48571242	C	T	c.7104+1G>A	.	NA
+BS_G64B5MDA	PT_SCCDBETQ	NA	Mixed neuronal-glial tumor	GNG, BRAF V600E	GJB2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr13	20192782	C	T	c.-23+1G>A	.	NA
+BS_GJWAV3E5	PT_9PJR0ZK7	BS_6JHXXVR7	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31343008	G	C	c.7063-1G>C	.	-0.8615173361224692
+BS_GJWAV3E5	PT_9PJR0ZK7	BS_KE56MMY0	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr17	31343008	G	C	c.7063-1G>C	.	-0.8678413936471596
+BS_JZKV3CQ1	PT_EYWDFKA7	BS_J4GQPZS0	Schwannoma	NA	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80180230	G	A	c.1062+5G>A	.	0.16140420061929528
+BS_JZKV3CQ1	PT_EYWDFKA7	BS_TYKJ8G2G	Schwannoma	NA	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80180230	G	A	c.1062+5G>A	.	-0.8063355935994638
+BS_MDHYHEBH	PT_26V72ZXB	BS_R439VVPK	Medulloblastoma	MB, Group3	RAD50	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	132594868	G	T	c.1794-1G>T	.	-0.9000531877049471
 BS_MDHYHEBH	PT_26V72ZXB	BS_RMG3XZQQ	Medulloblastoma	MB, Group3	RAD50	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	132594868	G	T	c.1794-1G>T	.	NA
-BS_MN2FX68Z	PT_NCDHZ8H8	BS_7C40TRCY	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	95506600	C	G	c.202-1G>C	.	1.6225378328719464
-BS_PKKNB5PY	PT_RFB07MZS	BS_TZVFR600	Medulloblastoma	MB, Group3	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89761950	G	A	c.2851C>T	p.Arg951Trp	0.6384017321556424
-BS_PSAZZC71	PT_V07ZH5JS	BS_V72GX2AZ	Low-grade glioma	LGG, KIAA1549-BRAF	SDHA	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	240477	G	A	c.1551+1G>A	.	-0.29014414344031264
-BS_Q7NF95N0	PT_JYZA0PNV	BS_94MT16N2	Low-grade glioma	LGG, KIAA1549-BRAF	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108315911	G	A	c.6095G>A	p.Arg2032Lys	1.151439863371207
-BS_SP3ND4W3	PT_QQZXYR4M	BS_8PNA0V6R	Other high-grade glioma	HGG, IDH, TP53	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	-0.5491781587523248
-BS_T5WVTGV8	PT_E78NHRWQ	BS_HSHN8PBB	Low-grade glioma	LGG, KIAA1549-BRAF	MPL	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr1	43346630	G	C	c.1165+1G>C	.	0.8760274106540143
-BS_T77MXWTX	PT_387VK1T9	BS_9XVACXP0	Other high-grade glioma	IHG, ALK-altered	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr13	32362521	A	G	c.7806-2A>G	.	-0.40002018854671306
-BS_V733WCVK	PT_3KWSRWZN	BS_SDCNP7MW	Ependymoma	EPN, PF B	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45364832	CCTCA	C	c.594+2_594+5delTGAG	.	-0.4537249483386095
-BS_X7EQKJZH	PT_QT9T89S5	BS_T1W4JA94	Low-grade glioma	LGG, KIAA1549-BRAF	BUB1B	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr15	40208770	G	GAAAACCCTACTCA	c.2143_2143+1insAAAACCCTACTCA	.	-0.8680975171907314
-BS_XQ0Y2PMV	PT_6SH7PV1N	BS_FEV5A0HN	Other high-grade glioma	HGG, H3 wildtype	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	28709998	ATACT	A	c.975+4_975+7delAGTA	.	0.3959666451862898
-BS_YR1X1SSH	PT_V0X73HEQ	BS_34201DKZ	Ependymoma	EPN, PF A	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80168263	G	T	c.554-1G>T	.	-0.6254629763911835
+BS_MN2FX68Z	PT_NCDHZ8H8	BS_7C40TRCY	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr9	95506600	C	G	c.202-1G>C	.	1.7271632300569597
+BS_PKKNB5PY	PT_RFB07MZS	BS_TZVFR600	Medulloblastoma	MB, Group3	FANCA	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr16	89761950	G	A	c.2851C>T	p.Arg951Trp	0.7079468444291132
+BS_PSAZZC71	PT_V07ZH5JS	BS_V72GX2AZ	Low-grade glioma	LGG, KIAA1549-BRAF	SDHA	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr5	240477	G	A	c.1551+1G>A	.	-0.35383671430256336
+BS_Q7NF95N0	PT_JYZA0PNV	BS_94MT16N2	Low-grade glioma	LGG, KIAA1549-BRAF	ATM	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr11	108315911	G	A	c.6095G>A	p.Arg2032Lys	1.0885999351899711
+BS_SP3ND4W3	PT_QQZXYR4M	BS_8PNA0V6R	Other high-grade glioma	HGG, IDH, TP53	GJB2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	chr13	20189605	T	G	c.-22-2A>C	.	-0.5186111004147235
+BS_T5WVTGV8	PT_E78NHRWQ	BS_HSHN8PBB	Low-grade glioma	LGG, KIAA1549-BRAF	MPL	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	chr1	43346630	G	C	c.1165+1G>C	.	0.497534768725233
+BS_T77MXWTX	PT_387VK1T9	BS_9XVACXP0	Other high-grade glioma	IHG, ALK-altered	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	chr13	32362521	A	G	c.7806-2A>G	.	-0.3380286937807587
+BS_V733WCVK	PT_3KWSRWZN	BS_SDCNP7MW	Ependymoma	EPN, PF B	ERCC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr19	45364832	CCTCA	C	c.594+2_594+5delTGAG	.	-0.5418123757209662
+BS_X7EQKJZH	PT_QT9T89S5	BS_T1W4JA94	Low-grade glioma	LGG, KIAA1549-BRAF	BUB1B	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	chr15	40208770	G	GAAAACCCTACTCA	c.2143_2143+1insAAAACCCTACTCA	.	-0.8576302663211299
+BS_XQ0Y2PMV	PT_6SH7PV1N	BS_FEV5A0HN	Other high-grade glioma	HGG, H3 wildtype	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr22	28709998	ATACT	A	c.975+4_975+7delAGTA	.	0.5887752417409058
+BS_YR1X1SSH	PT_V0X73HEQ	BS_34201DKZ	Ependymoma	EPN, PF A	FAH	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	chr15	80168263	G	T	c.554-1G>T	.	-0.6055828627948038
