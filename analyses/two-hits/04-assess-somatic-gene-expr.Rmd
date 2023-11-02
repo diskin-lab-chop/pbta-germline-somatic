@@ -85,7 +85,7 @@ germline <- read_tsv(plp_file) %>%
 Extract tumor RNA IDs from hist file, and append to `germline`
 ```{r get matched tumor RNA IDs}
 hist_tumor <- hist %>%
-  dplyr::filter(sample_type == "Tumor" & experimental_strategy == "RNA-Seq") %>%
+  dplyr::filter(sample_type == "Tumor" & experimental_strategy == "RNA-Seq" & Kids_First_Participant_ID %in% hist_cohort$Kids_First_Participant_ID) %>%
   dplyr::rename("Kids_First_Biospecimen_ID_rna" = Kids_First_Biospecimen_ID)
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
@@ -110,7 +110,7 @@ Read in gene expression RDS file, and calculate z-scores
 ```{r format expression data}
 expr <- readRDS(expr_file)
 # subset `expr` to only include BS IDs in hist
-subset_expr <- expr[,intersect(germline$Kids_First_Biospecimen_ID_rna, colnames(expr))]
+subset_expr <- expr[,intersect(hist_tumor$Kids_First_Biospecimen_ID_rna, colnames(expr))]
 
 # log2(x + 1) transform the expression matrix
 log_expression <- log2(subset_expr + 1)
@@ -145,9 +145,13 @@ For assessing differences in gene expression between patients with vs. without P
 ```{r get mean expression by P/LP status}
 rna_specimens <- read_tsv(file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv"))
 
+hist_cohort <- hist_cohort %>%
+  left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID")]) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
+
 z_scored_expression <- z_scored_expression %>%
   # Add BS normal ids
-  left_join(germline_somatic_expr[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_rna")]) %>%
+  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_rna")]) %>%
   dplyr::mutate(sample_gene = glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}")) %>%
   # add column indicating if patient has P/LP variant in gene
   dplyr::mutate(is_plp = case_when(
@@ -198,8 +202,7 @@ Plot gene expression z-scores of selected CPGs by P/LP status
 ```{r plot expression by P/LP status}
 z_scored_expression <- z_scored_expression %>%
   # add plot group and plot group color to df
-  left_join(germline[,c("Kids_First_Biospecimen_ID_rna", "plot_group")]) %>%
-  left_join(plot_mapping[,c("plot_group", "plot_group_hex")]) %>%
+  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_rna", "plot_group", "plot_group_hex")]) %>%
   # Only samples with P/LP variants in genes will be colored by plot group
   dplyr::mutate(plp_group = case_when(
     is_plp == "No" ~ NA_character_,
@@ -237,7 +240,7 @@ Plot normalized expression within histologies, for genes that have P/LP variants
 ```{r plot expr by P/LP status within hist}
 # define group_gene column
 z_scored_expression <- z_scored_expression %>%
-  dplyr::mutate(group_gene = glue::glue("{Hugo_Symbol}:{plot_group}"))
+  dplyr::mutate(group_gene = glue::glue("{Hugo_Symbol}: {plot_group}"))
 
 # Identify histology-gene pairs for which there are at least 3 patients with P/LP variants in group
 plot_group_gene <- z_scored_expression %>%
@@ -249,7 +252,7 @@ plot_group_gene <- z_scored_expression %>%
 
 # plot expr z-scores by P/LP status within histologies for selected gene-histology pairs
 z_scored_expression %>%
-  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1:Neurofibroma plexiform") %>%
+  dplyr::filter(group_gene %in% plot_group_gene) %>%
   
    ggplot(aes(x = is_plp, y = expr_zscore)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
@@ -261,11 +264,12 @@ z_scored_expression %>%
     ylim(c(-3,4.5)) +
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
-    facet_wrap(~group_gene, nrow = 2) + 
+    facet_wrap(~group_gene, nrow = 2,
+               labeller = labeller(group_gene = label_wrap_gen(.5))) + 
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 15, height = 5)
+                   width = 10, height = 6)
 
 ```
 
@@ -305,59 +309,64 @@ Loop through selected CPGs and plot expression z-scores by germline P/LP and onc
 ```{r plot expression by germline P/LP and ONCO SNV status}
 for (cpg in cpgs_test){
   
-  if (cpg %in% c("NF1", "TP53")) {
+  # only plot genes with oncogenic mutations in at least one sample
+  if( sum(z_scored_expression$Hugo_Symbol == cpg & z_scored_expression$plp_onco == "-\n+") > 0){
   
-    z_scored_expression %>%
-      filter(Hugo_Symbol == cpg) %>%
+    # NF1 and TP53 also have samples with both germline and somatic mutations, so set comparisons and plot widths accordingly
+    if (cpg %in% c("NF1", "TP53")) {
+    
+      z_scored_expression %>%
+        filter(Hugo_Symbol == cpg) %>%
+        
+        ggplot(aes(x = plp_onco, y = expr_zscore)) + 
+        geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+        geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+        stat_compare_means(method = "wilcox",
+                           comparisons = list(c("+\n-", "-\n-"),
+                                              c("+\n-", "-\n+"),
+                                              c("+\n-", "+\n+")),
+                           method.args = list(alternative = "two.sided")) + 
+        labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
+        scale_fill_manual(values = plot_group_palette, 
+                          breaks = sort(names(plot_group_palette))) +
+        theme_Publication() +
+        theme(legend.key.size = unit(0.3, "cm"),
+              legend.text=element_text(size=5)) +      
+        annotate("text", x=5.5, y=-6.45, size = 4.5, label="Germline P/LP") + 
+        annotate("text", x=5.5, y=-7.45, size = 4.5, label="Somatic SNV") + 
+        coord_cartesian(ylim=c(-5,8), clip="off")
       
-      ggplot(aes(x = plp_onco, y = expr_zscore)) + 
-      geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-      geom_boxplot(alpha = 0.05, outlier.shape = NA) +
-      stat_compare_means(method = "wilcox",
-                         comparisons = list(c("+\n-", "-\n-"),
-                                            c("+\n-", "-\n+"),
-                                            c("+\n-", "+\n+")),
-                         method.args = list(alternative = "two.sided")) + 
-      labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
-      scale_fill_manual(values = plot_group_palette, 
-                        breaks = sort(names(plot_group_palette))) +
-      theme_Publication() +
-      theme(legend.key.size = unit(0.35, "cm"),
-            legend.text=element_text(size=6)) +      
-      annotate("text", x=5.5, y=-6.45, size = 4.5, label="Germline P/LP") + 
-      annotate("text", x=5.5, y=-7.45, size = 4.5, label="Somatic SNV") + 
-      coord_cartesian(ylim=c(-5,8), clip="off")
-    
-    
-      ggsave(file.path(plot_dir, glue::glue("{cpg}-expr-by-plp-onco-snv-status.pdf")),
-                       width = 7, height = 4)
-    
-  } else {
-    
-        z_scored_expression %>%
-          filter(Hugo_Symbol == cpg) %>%
-          
-          ggplot(aes(x = plp_onco, y = expr_zscore)) + 
-          geom_jitter(aes(fill = plot_group), shape = 21, width = 0.3, size = 2.5, alpha = 0.85) +
-          geom_boxplot(alpha = 0.05, outlier.shape = NA) +
-          stat_compare_means(method = "wilcox", 
-                             comparisons = list(c("+\n-", "-\n-"),
-                                                c("+\n-", "-\n+")),
-                             method.args = list(alternative = "two.sided")) + 
-          labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
-          scale_fill_manual(values = plot_group_palette, 
-                             breaks = sort(names(plot_group_palette)), 
-                             na.translate = F) +
-          theme_Publication() +
-          theme(legend.key.size = unit(0.35, "cm"),
-                legend.text=element_text(size=6)) +
-          annotate("text", x=4.5, y=-6.45, size = 4.5, label="Germline P/LP") + 
-          annotate("text", x=4.5, y=-7.45, size = 4.5, label="Somatic SNV") + 
-          coord_cartesian(ylim=c(-5,8), clip="off")
-    
-          ggsave(file.path(plot_dir, glue::glue("{cpg}-expr-by-plp-onco-snv-status.pdf")),
-                             width = 5, height = 4)
-    
+      
+        ggsave(file.path(plot_dir, glue::glue("{cpg}-expr-by-plp-onco-snv-status.pdf")),
+                         width = 7, height = 4)
+      
+    } else {
+      
+          z_scored_expression %>%
+            filter(Hugo_Symbol == cpg) %>%
+            
+            ggplot(aes(x = plp_onco, y = expr_zscore)) + 
+            geom_jitter(aes(fill = plot_group), shape = 21, width = 0.3, size = 2.5, alpha = 0.85) +
+            geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+            stat_compare_means(method = "wilcox", 
+                               comparisons = list(c("+\n-", "-\n-"),
+                                                  c("+\n-", "-\n+")),
+                               method.args = list(alternative = "two.sided")) + 
+            labs(title = cpg, x = NULL, y = "TPM z-score", fill = "Histology") +
+            scale_fill_manual(values = plot_group_palette, 
+                               breaks = sort(names(plot_group_palette)), 
+                               na.translate = F) +
+            theme_Publication() +
+            theme(legend.key.size = unit(0.3, "cm"),
+                  legend.text=element_text(size=5.5)) +
+            annotate("text", x=4.5, y=-6.45, size = 4.5, label="Germline P/LP") + 
+            annotate("text", x=4.5, y=-7.45, size = 4.5, label="Somatic SNV") + 
+            coord_cartesian(ylim=c(-5,8), clip="off")
+      
+            ggsave(file.path(plot_dir, glue::glue("{cpg}-expr-by-plp-onco-snv-status.pdf")),
+                               width = 5, height = 4)
+      
+    }
   }
 }
 
