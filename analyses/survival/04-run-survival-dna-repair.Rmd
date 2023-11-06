@@ -219,7 +219,7 @@ ggsave(file.path(plots_dir, "forest_hgg_add_OS_subtype_age_repairPLP.pdf"),
        width = 8, height = 3, units = "in",
        device = "pdf")
 
-readRDS(file.path(results_dir, "coxph_hgg_OS_subtype_age_MMRvariant.RDS"))
+readRDS(file.path(results_dir, "coxph_add_hgg_OS_subtype_age_repairPLP.RDS"))
 ```
 
 Interaction EFS model: 
@@ -238,7 +238,7 @@ ggsave(file.path(plots_dir, "forest_hgg_int_EFS_subtype_age_repairPLP.pdf"),
        width = 12, height = 3, units = "in",
        device = "pdf")
 
-readRDS(file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_MMRvariant.RDS"))
+readRDS(file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_repairPLP.RDS"))
 
 ```
 
