@@ -52,7 +52,10 @@ Read in metadata
 ```{r}
 hist <- read_tsv(histologies_file) %>%
   dplyr::mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
-  dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25)
+  dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
+  dplyr::mutate(cpgPLP_status = fct_relevel(cpgPLP_status, 
+                                            c("no_cpgPLP",
+                                              "cpgPLP")))
 ```
 
 Define plot groups for which survival analyses should be run
@@ -113,13 +116,40 @@ for (group in groups){
   
   if (group == "DIPG or DMG|Other high-grade glioma"){
     group_hist <- group_hist %>%
-       mutate(mol_sub_group = factor(mol_sub_group,
+       dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
                                       c("HGG, H3 WT",
                                         "DHG, H3 G35",
                                         "DMG, H3 K28",
                                         "HGG, IDH",
                                         "IHG"))) %>%
      arrange(mol_sub_group)
+  }
+  
+    if (group == "Ependymoma") {
+      group_hist <- group_hist %>%
+        dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
+                      c("EPN, ST ZFTA", "EPN, ST YAP1", "EPN, PF A", 
+                        "EPN, PF B", "EPN, MPE", "EPN, SP", "EPN, SP-MYCN",
+                        "EPN, To be classified")))
+        
+    } 
+    
+    if (group == "Low-grade glioma") {
+      group_hist <- group_hist %>%
+        dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
+                                                  c("LGG, WT", "LGG, BRAF fusion",
+                                                    "LGG, Other alteration",
+                                                    "SEGA",
+                                                    "LGG, To be classified")))
+    }
+    
+    if (group == "Mixed neuronal-glial tumor") {
+      group_hist <- group_hist %>%
+        dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
+                                                  c("GNG/GNT, WT", "GNG/GNT, BRAF fusion",
+                                                    "GNG/GNT, Other alteration",
+                                                    "GNG, To be classified",
+                                                    "GNT, To be classified")))
     }
   
    
@@ -149,7 +179,7 @@ for (group in groups){
   # For groups where extent_of_tumor_resection is considered, filter out samples with no data
   if (group %in% c("Low-grade glioma")) {
      group_hist <- group_hist %>%
-      filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
+      filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable", "Not Applicable"))
     
   }
 
@@ -194,7 +224,7 @@ Loop through subtypes with sufficient sample size and build KM and coxph surviva
 # define subtype df with histology, subtype, and file names
 subtypes <- hist %>%
   count(mol_sub_group, plot_group) %>%
-  filter(n >=10 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
+  filter(n >=15 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
   dplyr::mutate(hist = unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[1])),
                 subtype = case_when(
                   grepl(",", mol_sub_group) ~ unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[2])),
@@ -272,7 +302,7 @@ for (j in 1:nrow(subtypes)) {
   # For subtypes where extent_of_tumor_resection is considered, filter out samples with no data
   if (subtypes$plot_group[j] %in% c("Low-grade glioma")){
     subtype_hist <- subtype_hist %>%
-        filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable"))
+        filter(!extent_of_tumor_resection %in% c("Not Reported", "Unavailable", "Not Applicable"))
   }
 
 
@@ -299,3 +329,7 @@ for (j in 1:nrow(subtypes)) {
 }
 ```
 
+```{r}
+sessionInfo()
+
+```

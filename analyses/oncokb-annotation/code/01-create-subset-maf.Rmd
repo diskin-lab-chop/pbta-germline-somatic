@@ -37,24 +37,26 @@ if (!dir.exists(input_dir)) {
 }
 
 # add histologies file so we can subset maf
-histologies_file <- file.path(data_dir,"histologies.tsv")
+histologies_file <- file.path(root_dir, 
+                           "analyses", 
+                           "collapse-tumor-histologies", 
+                           "results",
+                           "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # goi file
-goi_file <- file.path(analysis_dir, "input", "cpg.txt")
+cpg_file <- file.path(analysis_dir, "input", "cpg.txt")
 ```
 
 
 ```{r load files}
-tumor_ids <- read_tsv(file.path(histologies_file), guess_max = 3000) %>%
-  filter(!is.na(pathology_diagnosis),
-                experimental_strategy != "RNA-Seq") %>%
-  pull(Kids_First_Biospecimen_ID)
+tumor_ids <- read_tsv(histologies_file, guess_max = 3000) %>%
+  pull(Kids_First_Biospecimen_ID_tumor)
 
-goi <- read_table(goi_file, col_names = "genes")
+cpgs <- read_lines(cpg_file)
 
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% tumor_ids,
-         Hugo_Symbol %in% goi$genes) %>%
+         Hugo_Symbol %in% cpgs) %>%
   unique() %>%
   write_tsv(file.path(analysis_dir, params$maf_goi))
 ```

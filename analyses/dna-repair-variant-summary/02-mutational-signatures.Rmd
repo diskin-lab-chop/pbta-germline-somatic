@@ -35,9 +35,12 @@ Set paths for:
 - TMB file
 
 ```{r set paths}
-histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies",
+                              "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "sample-distribution", "input", 
+                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
 
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 
@@ -113,26 +116,26 @@ for (j in 1:length(repair_gene_source)){
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, 3) BRCA and BRCA_interacting genes, and 4) Other DNA repair genes, excluding MMR
   allRepair_germline <- dna_repair_plp %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   mmr_germline <- dna_repair_plp %>%
     filter(MMR == "Yes") %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   brca_germline <- dna_repair_plp %>%
-    filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", Hugo_Symbol)) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", gene_symbol_vep)) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
   
   otherRepair_germline <- dna_repair_plp %>%
-    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, brca_germline)) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline <- hist %>%
-    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %>%
+    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal) %>%
     pull(Kids_First_Biospecimen_ID_normal)
     
   # define list of BS_ids in each group, and names for subsequent plots
@@ -256,20 +259,20 @@ for (j in 1:length(repair_gene_source)){
   # Define BS_ids for normal and corresponding tumor IDs for each sample group 
   mmr_germline <- dna_repair_plp %>%
     filter(MMR == "Yes") %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   brca_germline <- dna_repair_plp %>%
-    filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", Hugo_Symbol)) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    filter(grepl("BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A", gene_symbol_vep)) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
   
   otherRepair_germline <- hist %>%
-    filter(Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID & !Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal & !Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
     pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline <- hist %>%
-    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %>%
+    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal) %>%
     pull(Kids_First_Biospecimen_ID_normal)
     
   mmr_ids <- hist %>%
@@ -338,7 +341,6 @@ for (j in 1:length(repair_gene_source)){
       
   # add MMR signature exposure levels to germline plp file and write to output
   plp %>%
-      dplyr::rename('Kids_First_Biospecimen_ID_normal' = 'Kids_First_Biospecimen_ID') %>%
       left_join(hist[,c('Kids_First_Biospecimen_ID_normal', 'Kids_First_Biospecimen_ID_tumor')], by = 'Kids_First_Biospecimen_ID_normal') %>%
       dplyr::rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_tumor') %>%
       left_join(mmr_df[c('Kids_First_Biospecimen_ID', 'sum')], by = 'Kids_First_Biospecimen_ID') %>%
@@ -349,7 +351,6 @@ for (j in 1:length(repair_gene_source)){
   # Create subset of above table including only samples with MMR germline variants and write to output
   dna_repair_plp %>%
       dplyr::filter(MMR == "Yes") %>%
-      dplyr::rename('Kids_First_Biospecimen_ID_normal' = 'Kids_First_Biospecimen_ID') %>%
       left_join(hist[,c('Kids_First_Biospecimen_ID_normal', 'Kids_First_Biospecimen_ID_tumor')], by = 'Kids_First_Biospecimen_ID_normal') %>%
       dplyr::rename('Kids_First_Biospecimen_ID' = 'Kids_First_Biospecimen_ID_tumor') %>%
       left_join(mmr_df[c('Kids_First_Biospecimen_ID', 'sum')], by = 'Kids_First_Biospecimen_ID') %>%
@@ -362,10 +363,9 @@ for (j in 1:length(repair_gene_source)){
 
   # Obtain list of germline variants in MMR and BRCA genes in HGG subjects
   collapsed_germline <- dna_repair_plp %>%
-      dplyr::filter(Hugo_Symbol %in% c(mmr_genes, brca_genes)) %>%
-      group_by(Kids_First_Biospecimen_ID) %>%
-      summarise(Hugo_Symbol_germline = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
-      rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
+      dplyr::filter(gene_symbol_vep %in% c(mmr_genes, brca_genes)) %>%
+      group_by(Kids_First_Biospecimen_ID_normal) %>%
+      summarise(Hugo_Symbol_germline = str_c(sort(unique(gene_symbol_vep)), collapse = "; "))
 
   # Obtain list of oncogenic/likley oncogenic somatic mutataions in MMR and BRCA genes in HGG subjects
   collapsed_onco <- maf %>%
