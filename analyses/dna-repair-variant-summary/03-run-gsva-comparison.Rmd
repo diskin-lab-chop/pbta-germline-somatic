@@ -13,8 +13,8 @@ This script compares GSVA scores for hallmark and KEGG pathways between PBTA sam
 Load packages and set directories
 
 ```{r load libraries, message = FALSE, warning = FALSE}
-library(data.table)
 library(tidyverse)
+#library(data.table)
 library(ggplot2)
 library(ggsci)
 library(ggpubr)
@@ -46,7 +46,7 @@ Read in CBTN and PBTA histologies, gsva results, maf, and cpg files. Filter hist
 
 ```{r}
 hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
-  filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
+  dplyr::filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
 
 hist_pbta <- read_tsv(pbta_histologies_file) 
 
@@ -57,7 +57,7 @@ kegg_scores <- read_tsv(kegg_file)
 kegg_pathways <- unique(kegg_scores$kegg_name)
 
 maf <- data.table::fread(maf_file, data.table = F) %>%
-  filter(Tumor_Sample_Barcode %in% hist_cbtn$Kids_First_Biospecimen_ID_tumor)
+  dplyr::filter(Tumor_Sample_Barcode %in% hist_cbtn$Kids_First_Biospecimen_ID_tumor)
 
 cpgs <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 ```
@@ -66,15 +66,15 @@ Pull BS_ids corresponding to RNA-Seq experiments. Append GSVA scores for samples
 
 ```{r}
 rna_ids <- hist_pbta %>% 
-  filter(experimental_strategy == 'RNA-Seq' & sample_id %in% hist_cbtn$sample_id_tumor) %>%
+  dplyr::filter(experimental_strategy == 'RNA-Seq' & sample_id %in% hist_cbtn$sample_id_tumor) %>%
   pull(Kids_First_Biospecimen_ID)
 
 hallmark_scores <- hallmark_scores %>%
-  filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
   left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID")
 
 kegg_scores <- kegg_scores %>%
-  filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
   left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID")
 ```
 
@@ -102,25 +102,25 @@ for (i in 1:length(repair_gene_source)){
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
   allRepair_germline <- dna_repair_plp %>%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   mmr_germline <- dna_repair_plp %>%
-    filter(MMR == "Yes" & Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == "Yes" & Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
   
   brca_germline <- dna_repair_plp %>%
-    filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", gene_symbol_vep) & !grepl("RAD51C", gene_symbol_vep)) %>%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   otherRepair_germline <- dna_repair_plp %>%
-    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, brca_germline) & Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline) & Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
     
    # define list of BS_ids in each group, and names for subsequent plots
   sample_list <- list(allRepair_germline, mmr_germline, brca_germline, otherRepair_germline)
@@ -133,19 +133,19 @@ for (i in 1:length(repair_gene_source)){
     repair_germline <- sample_list[[j]]
     
     ctrl_germline <- hist_cbtn %>%
-      filter(!Kids_First_Biospecimen_ID_normal %in% repair_germline) %>%
+      dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% repair_germline) %>%
       pull(Kids_First_Biospecimen_ID_normal)
     
     # obtain corresponding RNA-seq tumors BS_IDs for `repair_germline` and `ctrl_germline` samples 
     repair_ids <- hist_pbta %>%
-      filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% repair_germline]) %>%
-      filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
+      dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% repair_germline]) %>%
+      dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
       pull(Kids_First_Participant_ID) %>%
       unique()
 
     ctrl_ids <- hist_pbta %>%
-      filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %>%
-      filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
+      dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %>%
+      dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
       pull(Kids_First_Participant_ID) %>%
       unique()
     
@@ -218,7 +218,7 @@ for (i in 1:length(repair_gene_source)){
 
     # create barplot of score differences between groups
     kegg_res <- kegg_res %>%
-      filter(!is.na(pvalue) & abs(score_diff) > 0.175 & !grepl("GLYCOS", pathway))
+      dplyr::filter(!is.na(pvalue) & abs(score_diff) > 0.175 & !grepl("GLYCOS", pathway))
 
     gsva_barplot(kegg_res, "score_diff", "pathway", plot_names[j])
 
@@ -259,47 +259,47 @@ for (i in 1:length(repair_gene_source)){
 
   # Define BS_ids for normal and corresponding tumor RNA-seq IDs for each sample group 
   mmr_germline <- dna_repair_plp %>%
-    filter(MMR == "Yes") %>%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == "Yes") %>%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   brca_germline <- dna_repair_plp %>%
-    filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol) & !grepl("RAD51C", Hugo_Symbol)) %>%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
-    distinct(Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", gene_symbol_vep) & !grepl("RAD51C", gene_symbol_vep)) %>%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
+    distinct(Kids_First_Biospecimen_ID_normal) %>%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
-  otherRepair_germline <- hist %>%
-    filter(Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID & !Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
-    pull(Kids_First_Biospecimen_ID_normal)
+  otherRepair_germline <- dna_repair_plp %>%
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline <- hist_cbtn %>%
-    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %>%
-    pull(Kids_First_Biospecimen_ID_normal)
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal) %>%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   mmr_ids <- hist_pbta %>%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %>%
-    filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
-    pull(Kids_First_Participant_ID) %>%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %>%
+    dplyr::filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+    dplyr::pull(Kids_First_Participant_ID) %>%
     unique()
   
   brca_ids <- hist_pbta %>%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% brca_germline]) %>%
-    filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
-    pull(Kids_First_Participant_ID) %>%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% brca_germline]) %>%
+    dplyr::filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+    dplyr::pull(Kids_First_Participant_ID) %>%
     unique()
   
   otherRepair_ids <- hist_pbta %>%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% otherRepair_germline]) %>%
-    filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
-    pull(Kids_First_Participant_ID) %>%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% otherRepair_germline]) %>%
+    dplyr::filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+    dplyr::pull(Kids_First_Participant_ID) %>%
     unique()
 
   ctrl_ids <- hist_pbta %>%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %>%
-    filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
-    pull(Kids_First_Participant_ID) %>%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %>%
+    dplyr::filter(sample_type == 'Tumor' & experimental_strategy == 'RNA-Seq') %>%
+    dplyr::pull(Kids_First_Participant_ID) %>%
     unique()
     
   # Loop through hallmark pathways of interest to generate violin plots by group
@@ -307,15 +307,15 @@ for (i in 1:length(repair_gene_source)){
     
     # Create data frame for plotting
     score_df <- hallmark_scores %>%
-      filter(hallmark_name == hallmark_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
-      mutate(germline_variant = case_when(
+      dplyr::filter(hallmark_name == hallmark_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
+      dplyr::mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ "MMR",
         Kids_First_Participant_ID %in% brca_ids ~ "BRCA/BRCA-interacting",
         Kids_First_Participant_ID %in% otherRepair_ids ~ "Other repair",
         TRUE ~ "Non-repair"
       )) %>%
-      mutate(germline_variant = factor(germline_variant)) %>% 
-      mutate(germline_variant = fct_relevel(germline_variant,
+      dplyr::mutate(germline_variant = factor(germline_variant)) %>% 
+      dplyr::mutate(germline_variant = fct_relevel(germline_variant,
                                             c("MMR", "BRCA/BRCA-interacting", "Other repair", "Non-repair"))
              )
     
@@ -329,28 +329,27 @@ for (i in 1:length(repair_gene_source)){
   
   # Create summary table of samples with high (>3rd quartile) DNA repair GSVA scores
   collapsed_germline <- dna_repair_plp %>%
-    filter(MMR == "Yes" & Hugo_Symbol %in% cpgs) %>%
-    group_by(Kids_First_Biospecimen_ID) %>%
-    summarise(Hugo_Symbol_germline = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
-    rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == "Yes" & gene_symbol_vep %in% cpgs) %>%
+    group_by(Kids_First_Biospecimen_ID_normal) %>%
+    summarise(Hugo_Symbol_germline = str_c(sort(unique(gene_symbol_vep)), collapse = "; "))
 
   collapsed_onco <- maf %>%
-    filter(Hugo_Symbol %in% cpgs) %>%
+    dplyr::filter(Hugo_Symbol %in% cpgs) %>%
     dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
                   Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
                   Hugo_Symbol_somatic = Hugo_Symbol) %>%
     group_by(Kids_First_Biospecimen_ID_normal) %>%
     summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = "; "))
-  
+
   hallmark_scores %>%
-    filter(hallmark_name == "HALLMARK_DNA_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
-    filter(gsea_score > 0.4) %>%
-    left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal", 
+    dplyr::filter(hallmark_name == "HALLMARK_DNA_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
+    dplyr::filter(gsea_score > 0.4) %>%
+    left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal",
                           "Kids_First_Biospecimen_ID_tumor", "plot_group", "molecular_subtype")]) %>%
         left_join(collapsed_germline) %>%
         left_join(collapsed_onco) %>%
         dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-               plot_group, molecular_subtype, gsea_score, 
+               plot_group, molecular_subtype, gsea_score,
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, "PBTA_hgg_samples_with_DNArepair_gsva.tsv"))
   
@@ -358,7 +357,7 @@ for (i in 1:length(repair_gene_source)){
     
     # Create data frame for plotting
     score_df <- kegg_scores %>%
-      filter(kegg_name == kegg_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
+      dplyr::filter(kegg_name == kegg_to_plot[j] & Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %>%
       dplyr::mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ "MMR",
         Kids_First_Participant_ID %in% brca_ids ~ "BRCA/BRCA-interacting",
@@ -376,30 +375,29 @@ for (i in 1:length(repair_gene_source)){
                
   }
   
-  # Create summary table of samples with high (>3rd quartile) mismatch repair GSVA scores
+#  Create summary table of samples with high (>3rd quartile) mismatch repair GSVA scores
   collapsed_germline <- dna_repair_plp %>%
-    filter(MMR == "Yes" & Hugo_Symbol %in% cpgs) %>%
-    group_by(Kids_First_Biospecimen_ID) %>%
-    summarise(Hugo_Symbol_germline = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
-    rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == "Yes" & gene_symbol_vep %in% cpgs) %>%
+    group_by(Kids_First_Biospecimen_ID_normal) %>%
+    summarise(Hugo_Symbol_germline = str_c(sort(unique(gene_symbol_vep)), collapse = "; "))
 
   collapsed_onco <- maf %>%
-    filter(Hugo_Symbol %in% cpgs) %>%
+    dplyr::filter(Hugo_Symbol %in% cpgs) %>%
     dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
                   Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
                   Hugo_Symbol_somatic = Hugo_Symbol) %>%
     group_by(Kids_First_Biospecimen_ID_normal) %>%
     summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = "; "))
-  
+
   kegg_scores %>%
-    filter(kegg_name == "KEGG_MISMATCH_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
-    filter(gsea_score > .4) %>%
-    left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal", 
+    dplyr::filter(kegg_name == "KEGG_MISMATCH_REPAIR" & Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %>%
+    dplyr::filter(gsea_score > .4) %>%
+    left_join(hist_cbtn[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal",
                           "Kids_First_Biospecimen_ID_tumor", "plot_group", "molecular_subtype")]) %>%
         left_join(collapsed_germline) %>%
         left_join(collapsed_onco) %>%
         dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-               plot_group, molecular_subtype, gsea_score, 
+               plot_group, molecular_subtype, gsea_score,
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %>%
         write_tsv(file.path(results_dir, paste0("PBTA_hgg_samples_with_MMR_gsva.tsv")))
       
