@@ -436,7 +436,6 @@ predisposition-syndrome-associated genes</h1>
 })
 
 root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
-setwd(root_dir)
 
 data_dir &lt;- file.path(root_dir, &quot;data&quot;)
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;predisposition-variants&quot;)
@@ -444,9 +443,15 @@ input_dir &lt;- file.path(analysis_dir, &quot;input&quot;)
 results_dir &lt;- file.path(analysis_dir, &quot;results&quot;)</code></pre>
 <p>Set paths for: - histologies file, - germline plp variant file -
 predisposition syndromes files</p>
-<pre class="r"><code>histologies_file &lt;- file.path(root_dir, &#39;analyses&#39;, &#39;collapse-tumor-histologies&#39;, &#39;results&#39;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
+<pre class="r"><code>histologies_file &lt;- file.path(root_dir, 
+                           &quot;analyses&quot;, 
+                           &quot;collapse-tumor-histologies&quot;, 
+                           &quot;results&quot;,
+                           &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(data_dir, &quot;pbta_germline_plp_calls.tsv&quot;)
+plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                      &quot;sample-distribution&quot;, &quot;input&quot;, 
+                      &quot;merged_plp_res_popAF_filtered_plus_manual_11062023.tsv&quot;)
 
 predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)</code></pre>
 <p>Read in histologies, germline PLP, and predispositions file</p>
@@ -454,11 +459,12 @@ predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.t
 
 plp &lt;- read_tsv(plp_file,show_col_types = FALSE)
 
-predispositions &lt;- read_tsv(predispositions_file)</code></pre>
-<pre><code>## Rows: 22 Columns: 2
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+predispositions &lt;- read_tsv(predispositions_file) %&gt;%
+  dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
+<pre><code>## Rows: 28 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
-## chr (2): Hugo_Symbol, predisposition
+## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
@@ -466,53 +472,45 @@ predispositions &lt;- read_tsv(predispositions_file)</code></pre>
 histologies file:</p>
 <pre class="r"><code>table(hist$cancer_predispositions)</code></pre>
 <pre><code>## 
-##                           Li-Fraumeni syndrome 
-##                                              7 
-##                                           NF-1 
-##                                             26 
-##            NF-1,Other inherited conditions NOS 
-##                                              2 
-##                                           NF-2 
-##                                              4 
-##                           NF-2,Schwannomatosis 
-##                                              4 
-##                                None documented 
-##                                            753 
-##                 Other inherited conditions NOS 
-##                                             26 
-## Other inherited conditions NOS,Schwannomatosis 
-##                                              1 
-##                                Schwannomatosis 
-##                                              4 
-##                             Tuberous Sclerosis 
-##                                             11</code></pre>
+##    Gorlin Syndrome (PTCH1, SUFU)      Li-Fraumeni syndrome (TP53) 
+##                                1                                7 
+## Neurofibromatosis, Type 1 (NF-1) Neurofibromatosis, Type 2 (NF-2) 
+##                               26                                7 
+##                  None documented                     Not Reported 
+##                              762                                8 
+##   Other inherited conditions NOS          Schwannomatosis (LZTR1) 
+##                               16                                1 
+##  Tuberous Sclerosis (TSC1, TSC2) 
+##                               10</code></pre>
 <p>Subset PLP file to include only variants in CPGs associated with
 syndromes in <code>predispositions</code>, and include
 <code>cancer_predispositions</code> column to indicate whether syndrome
 is currently reported.</p>
 <pre class="r"><code>predisposition_plp_bs &lt;- plp %&gt;%
-  filter(Hugo_Symbol %in% predispositions$Hugo_Symbol) %&gt;%
-  pull(Kids_First_Biospecimen_ID)
+  filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
+  pull(Kids_First_Biospecimen_ID_normal)
 
-plp_no_predisposition &lt;- hist %&gt;%
+plp_predisposition_syndromes &lt;- hist %&gt;%
   filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_bs) %&gt;%
-  dplyr::rename(&quot;Kids_First_Biospecimen_ID&quot; = Kids_First_Biospecimen_ID_normal) %&gt;%
-  left_join(plp[,c(&quot;Kids_First_Biospecimen_ID&quot;, &quot;Hugo_Symbol&quot;, &quot;L-LP_Call_final&quot;, &quot;Reasoning_for_call&quot;, &quot;HGVS.c&quot;, &quot;HGVS.p&quot;)]) %&gt;%
+  left_join(plp[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;gene_symbol_vep&quot;, &quot;autogvp_call&quot;, &quot;autogvp_call_reason&quot;, &quot;HGVSc&quot;, &quot;HGVSp&quot;)]) %&gt;%
   left_join(predispositions) %&gt;%
-  filter(Hugo_Symbol %in% predispositions$Hugo_Symbol) %&gt;%
-  filter(!str_detect(cancer_predispositions, predisposition)) %&gt;%
-  dplyr::rename(&quot;associated_syndrome&quot; = predisposition,
-                &quot;clinical_definition&quot; = cancer_predispositions) %&gt;%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID, plot_group, molecular_subtype, 
-         Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call, HGVS.c, HGVS.p,
-         associated_syndrome, clinical_definition)</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID)`</code></pre>
-<pre><code>## Warning in left_join(., plp[, c(&quot;Kids_First_Biospecimen_ID&quot;, &quot;Hugo_Symbol&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
+  filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
+  dplyr::rename(&quot;associated_syndrome&quot; = `Associated Syndrome`,
+                &quot;clinically_reported_syndrome&quot; = cancer_predispositions) %&gt;%
+  dplyr::mutate(incidental_finding = case_when(
+    !str_detect(clinically_reported_syndrome, associated_syndrome) ~ &quot;Yes&quot;,
+    TRUE ~ &quot;No&quot;
+  )) %&gt;%
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, plot_group, molecular_subtype, 
+         gene_symbol_vep, autogvp_call, autogvp_call_reason, HGVSc, HGVSp,
+         associated_syndrome, clinically_reported_syndrome, incidental_finding)</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<pre><code>## Warning in left_join(., plp[, c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;gene_symbol_vep&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
 ## ℹ Row 1 of `x` matches multiple rows.
 ## ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
-<pre><code>## Joining with `by = join_by(Hugo_Symbol)`</code></pre>
+<pre><code>## Joining with `by = join_by(gene_symbol_vep)`</code></pre>
 <p>Save output</p>
-<pre class="r"><code>write_tsv(plp_no_predisposition,
+<pre class="r"><code>write_tsv(plp_predisposition_syndromes,
           file.path(results_dir, &quot;incidental-findings-predisposition-variants.tsv&quot;))</code></pre>
 
 
