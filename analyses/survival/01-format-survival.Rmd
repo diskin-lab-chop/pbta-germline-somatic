@@ -45,7 +45,7 @@ histologies_file <- file.path(root_dir, "analyses",
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-base_histologies_file <- file.path(input_dir, "survival-histologies-base-2023-09-20.tsv")
+base_histologies_file <- file.path(input_dir, "survival-histologies-base-2023-10-31.tsv")
 
 all_plp_file <- file.path(root_dir, "analyses", 
                       "sample-distribution", "input", 
