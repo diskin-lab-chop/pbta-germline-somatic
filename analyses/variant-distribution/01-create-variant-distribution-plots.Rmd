@@ -1,7 +1,7 @@
 ---
 title: "Explore germline variant distributions"
 output: html_notebook
-author: Jo Lynne Rokita
+author: Jo Lynne Rokita & Ryan Corbett
 date: 2023
 editor_options: 
   chunk_output_type: inline
@@ -41,6 +41,7 @@ source(file.path(root_dir, "figures", "theme.R"))
 # read in cpg and driver lists
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 
+# somatic drivers by cancer group
 embryonal_genes <- read_lines(file.path(input_dir, "embryonal-tumor_goi_list.tsv"))
 hgg_genes <- read_lines(file.path(input_dir, "hgat_goi_list.tsv"))
 lgg_genes <- read_lines(file.path(input_dir, "lgat_goi_list.tsv"))
@@ -48,7 +49,6 @@ other_genes <- read_lines(file.path(input_dir, "other_goi_list.tsv"))
 
 # cat somatic lists
 somatic_drivers <- unique(c(embryonal_genes, hgg_genes, lgg_genes, other_genes))
-#somatic_not_cpg <- setdiff(somatic_drivers, cpg)
 
 # read in histology file
 hist <- read_tsv(file.path(root_dir, 
@@ -60,14 +60,23 @@ hist <- read_tsv(file.path(root_dir,
 
 
 # Merge clin with germline plp file
-
 ```{r data wrangling}
 plp <- read_tsv(file.path(root_dir, "analyses", "sample-distribution", "input", "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv"), 
                 show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
-  select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep) %>%
-  unique()
+  select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, variant_classification_vep) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, .keep_all = T) %>%
+  # Consolidate variant classifications, and pick most severe when multiple reported (missense > stop > frameshift > splice)
+  dplyr::mutate(variant_classification_vep = case_when(
+    grepl("missense_variant", variant_classification_vep) ~ "missense_variant",
+    grepl("stop_gained", variant_classification_vep) ~ "stop_gained",
+    grepl("frameshift_variant", variant_classification_vep) ~ "frameshift_variant",
+    grepl("splice_donor", variant_classification_vep) ~ "splice_donor_variant",
+    grepl("splice_acceptor", variant_classification_vep) ~ "splice_acceptor_variant",
+    grepl("splice", variant_classification_vep) ~ "splice_region_variant",
+    TRUE ~ variant_classification_vep
+  ))
 
 # how many CPG have P/LP?
 plp_cpg <- plp %>%
@@ -92,10 +101,9 @@ sort(unique(plp_som_not_cpg$gene_symbol_vep))
 
 ```
 
-# Create plots
-
+Create barplots of patient P/LP carrier count by CPG and histology
 ```{r}
-plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not_cpg" = plp_som_not_cpg)
+plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not_cpg" = plp_som_not_cpg)               
 
 for (each in names(plplists)){
   
@@ -159,6 +167,75 @@ dev.off()
 }
 
 ```
+
+Create barplots of patient P/LP carrier count by CPG and variant classification
+```{r}
+plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not_cpg" = plp_som_not_cpg)
+
+
+vc_colors <- tibble(variant_classification_vep = unique(plp_cpg$variant_classification_vep),
+                    vc_hex = RColorBrewer::brewer.pal(n = 12, name = 'Paired'))
+
+for (each in names(plplists)){
+  
+  # add titles to print
+  if (each == "cpg"){
+    x_axis_title <- "Cancer predisposition gene (CPG)"
+    fig_width <- 4200
+  }
+  if (each == "somatic_drivers"){
+    x_axis_title <- "CPG or somatic driver gene"
+    fig_width <- 4000
+  }  
+  if (each == "somatic_not_cpg"){
+    x_axis_title <- "Somatic driver gene"
+    fig_width <- 2000
+  }
+  
+  plot_df <- plplists[[each]] %>%
+    left_join(hist) 
+
+  # get N per variant classification per gene
+  n_per_vc <- plot_df %>%
+    count(variant_classification_vep, gene_symbol_vep) %>%
+    dplyr::rename(vc_n = n)
+
+  # create N per gene desc order for plot
+  n_per_gene <- plot_df %>%
+    count(gene_symbol_vep) %>%
+    dplyr::rename(gene_n = n) %>%
+    arrange(desc(gene_n)) %>%
+    # create plot order desc by gene
+    mutate(plot_order = row_number()) %>%
+    # add back variant classification info
+    left_join(n_per_vc) %>%
+    left_join(vc_colors) %>%
+    distinct()
+
+  vc_palette <- n_per_gene$vc_hex
+  names(vc_palette) <- n_per_gene$variant_classification_vep
+
+  dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = vc_n, fill = variant_classification_vep)) +
+    geom_col(col = "black", size = 0.4) +
+    scale_fill_manual(values = vc_palette, breaks = sort(names(vc_palette))) + 
+    ylab("Number of patients with P/LP variants") +
+    xlab(x_axis_title) +
+    theme_Publication() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+    ylim(0,20) +
+    labs(fill = "Variant Classification")
+
+  print(dist_plot)
+  
+  dev.set(dev.next())
+  tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-variant-classification.tiff")), height = 1800, width = fig_width, res = 300)
+  print(dist_plot)
+  dev.off()
+
+}
+
+```
+
 
 # print session info
 ```{r session info}
