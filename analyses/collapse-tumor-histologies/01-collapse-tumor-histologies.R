@@ -15,7 +15,7 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
-# load v11_plus OpenPedCan histologies file + additional samples
+# load v12 OpenPedCan histologies file + additional samples
 v12_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000) %>%
   filter(cohort == "PBTA") %>%
   # update choroid plexus from benign to tumor category
@@ -62,8 +62,6 @@ v12_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000)
          
   )
 
-
-
 # pull cell line info for PT_C2D4JXS1, which has no tumor WGS
 BS_AFBPM6CN <- v12_hist %>%
   filter(Kids_First_Biospecimen_ID == "BS_AFBPM6CN") %>%
@@ -100,6 +98,36 @@ combined <- germline_ids_meta %>%
   left_join(tumor_ids) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies.tsv"))
 
+# Read in HOPE project histologies file for updated histology/subtyping info for select patients
+hope_hist <- read_tsv(file.path(input_dir, "Hope-GBM-histologies.tsv")) %>%
+  dplyr::filter(sample_type == "Tumor") %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID)
+
+# add in hope broad_histology, cancer_group, and molecular subtype for HOPE pts
+combined <- combined %>%
+  left_join(hope_hist[,c("Kids_First_Biospecimen_ID_tumor", "broad_histology",
+                         "cancer_group", "molecular_subtype")],
+            by = "Kids_First_Biospecimen_ID_tumor",
+            suffix = c("_opc", "_hope")) %>%
+  # Take HOPE calls when available, OPC otherwise
+  dplyr::mutate(broad_histology = case_when(
+    !is.na(broad_histology_hope) ~ broad_histology_hope,
+    TRUE ~ broad_histology_opc
+    ),
+    cancer_group = case_when(
+      !is.na(cancer_group_hope) ~ cancer_group_hope,
+      TRUE ~ cancer_group_opc
+    ),
+    molecular_subtype = case_when(
+      !is.na(molecular_subtype_hope) ~ molecular_subtype_hope,
+      TRUE ~ molecular_subtype_opc
+    )) %>%
+  # change broad histology to DAOT for HGG pts, NMNGT for GNT pt
+  dplyr::mutate(broad_histology = case_when(
+    Kids_First_Participant_ID %in% c("PT_T8V9ES93", "PT_P5HHJJPH", "PT_3AWKWXEV") ~ "Diffuse astrocytic and oligodendroglial tumor",
+    Kids_First_Participant_ID == "PT_SYHB12RN" ~ "Neuronal and mixed neuronal-glial tumor",
+    TRUE ~ broad_histology
+  ))
 
 # add cancer/plot group mapping file 
 map_file <- read_tsv(file.path(input_dir, "plot-mapping.tsv")) %>%
@@ -146,10 +174,20 @@ ancestry <- read_tsv(file.path(input_dir, "DEI_CBTN-PNOC_rerun.somalier-ancestry
 final_hist <- combined_map %>%
   left_join(tumor_clin_meta) %>%
   left_join(hist_base[,c("Kids_First_Participant_ID", "EFS_days", "EFS_event_type")]) %>%
-  left_join(ancestry[,c("Kids_First_Biospecimen_ID_normal", "predicted_ancestry", "PC1", "PC2", "PC3", "PC4", "PC5")]) %>%
+  left_join(ancestry[,c("Kids_First_Biospecimen_ID_normal", "predicted_ancestry", "PC1", "PC2", "PC3", "PC4", "PC5")])
+
+predispositions <- read_tsv(file.path(input_dir, "2023-10-31-histologies-base-predispositions.tsv")) %>%
+  filter(sample_type == "Tumor") %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID)
+
+final_hist <- final_hist %>%
+  left_join(predispositions[,c("Kids_First_Biospecimen_ID_tumor", "cancer_predispositions")],
+            by = "Kids_First_Biospecimen_ID_tumor",
+            suffix = c("_old", "_new")) %>%
+  dplyr::mutate(cancer_predispositions = coalesce(cancer_predispositions_new,
+                                                  cancer_predispositions_old)) %>%
+  dplyr::select(-cancer_predispositions_new, -cancer_predispositions_old) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
-
-
 
 
 
