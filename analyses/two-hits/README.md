@@ -14,21 +14,28 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 
 3. `03-somatic-alteration-enrichment.Rmd` tests for enrichment of somatic alterations (SNV, CNV, LOH, gene expression gain/loss) in patients with vs. without germline P/LP variants in select CPGs. 
 
-4. `input/` directory contains the following files: 
+4.`04-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
+
+5. `input/` directory contains the following files: 
   - `PBTA-838-germline_plp-2023-02-05.tsv`; full germline P/LP results in PBTA cohort
 
-5. `results/` directory contains the following files: 
+6. `results/` directory contains the following files: 
   - `pbta-oncokb-oncogenic-maf.tsv`; subset of oncoKB results containing only oncogenic/likely oncogenic SNVs. 
   - `germline-somatic-two-gene-hits.tsv`; table of patients possessing germline P/LP variant and oncogenic/likely oncogenic SNV in same CPG. 
   - `germline-somatic-collapsed-by-gene.tsv`; summary of oncogenic/likely oncogenic SNVs in CPGs by patient and matched tumor sample. 
   - `germline-somatic-cnv-loh.tsv`; summary of CNV and LOH status by patients and CPG with germline P/LP variant. 
   - `somatic-alteration-enrichment.tsv`; summary of somatic alteration enrichment scores (Fisher's exact tests) by gene and alteration type. 
+  - `germline-somatic-expr.tsv`; summary of expression z-scores for patient and CPG harboring a germline P/LP variant. 
+  - `gene-expr-diff-plp-vs-no-plp.tsv`; mean expression z-scores by gene and germline P/LP status with wilcoxon rank p-values assessing significance of difference.  
   
-6. `plots/` directory contains the following files: 
+7. `plots/` directory contains the following files: 
   - `cpg-LOH-plp-vs-noplp.pdf`; box plots of LOH scores by P/LP status for select CPGs.
   - `hist-gene-LOH-plp-vs-noplp.pdf`; box plots of LOH scores by P/LP status for select CPGs within histologies.
   - `cpg-LOH-plp-vs-noplp.pdf`; box plots of LOH score by germline P/LP status for select CPGs.
   - `hist-gene-LOH-plp-vs-noplp.pdf` box plots of LOH score by germline P/LP status for select CPGs within histologies. 
+  - `cpg-sig-expr-diff-plp-vs-noplp.pdf`; box plots of expression z-scores by germline P/LP status for select CPGs. 
+  - `hist-gene-expr-plp-vs-noplp.pdf`; box plots of expression z-scores by germline P/LP status for select CPGs within histologies.
+  - `*-expr-by-plp-onco-snv-status.pdf`; gene-specific box plots of expression z-scores by germline P/LP status and somatic oncogenic/likely oncogenic SNV status. 
 
 
 ##Analysis module directory structure
@@ -41,17 +48,41 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 ├── 02-cnv-loh-second-hits.nb.html
 ├── 03-somatic-alteration-enrichment.Rmd
 ├── 03-somatic-alteration-enrichment.nb.html
+├── 04-assess-somatic-gene-expr.Rmd
+├── 04-assess-somatic-gene-expr.nb.html
 ├── README.md
 ├── input
 │   └── PBTA-838-germline_plp-2023-02-05.tsv
 ├── plots
+│   ├── ATM-expr-by-plp-onco-snv-status.pdf
+│   ├── CHEK2-expr-by-plp-onco-snv-status.pdf
+│   ├── ERCC2-expr-by-plp-onco-snv-status.pdf
+│   ├── ERCC5-expr-by-plp-onco-snv-status.pdf
+│   ├── FAH-expr-by-plp-onco-snv-status.pdf
+│   ├── FANCA-expr-by-plp-onco-snv-status.pdf
+│   ├── GJB2-expr-by-plp-onco-snv-status.pdf
+│   ├── MUTYH-expr-by-plp-onco-snv-status.pdf
+│   ├── NF1-expr-by-plp-onco-snv-status.pdf
+│   ├── NF2-expr-by-plp-onco-snv-status.pdf
+│   ├── PMS2-expr-by-plp-onco-snv-status.pdf
+│   ├── PTCH1-expr-by-plp-onco-snv-status.pdf
+│   ├── RAD50-expr-by-plp-onco-snv-status.pdf
+│   ├── RAD51D-expr-by-plp-onco-snv-status.pdf
+│   ├── RECQL4-expr-by-plp-onco-snv-status.pdf
+│   ├── TP53-expr-by-plp-onco-snv-status.pdf
+│   ├── TSC1-expr-by-plp-onco-snv-status.pdf
+│   ├── TSC2-expr-by-plp-onco-snv-status.pdf
 │   ├── cpg-LOH-plp-vs-noplp.pdf
+│   ├── cpg-sig-expr-diff-plp-vs-noplp.pdf
 │   ├── hist-gene-LOH-plp-vs-noplp.pdf
+│   ├── hist-gene-expr-plp-vs-noplp.pdf
 │   ├── sig-somatic-alteration-enr.pdf
 │   └── somatic-alteration-enr-heatmap.pdf
 └── results
+    ├── gene-expr-diff-plp-vs-no-plp.tsv
     ├── germline-somatic-cnv-loh.tsv
     ├── germline-somatic-collapsed-by-gene.tsv
+    ├── germline-somatic-expr.tsv
     ├── germline-somatic-two-gene-hits.tsv
     ├── pbta-oncokb-oncogenic-maf.tsv
     └── somatic-alteration-enrichment.tsv
