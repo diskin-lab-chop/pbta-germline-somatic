@@ -60,8 +60,6 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 # Full P-LP results
 plp_full <- read_tsv(plp_full_file)
 
-plot_mapping <- read_tsv(plot_mapping_file)
-
 hist <- read_tsv(hist_file)
 
 hist_cohort <- read_tsv(hist_cohort_file)
@@ -265,7 +263,7 @@ z_scored_expression %>%
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
     facet_wrap(~group_gene, nrow = 2,
-               labeller = labeller(group_gene = label_wrap_gen(.5))) + 
+               labeller = labeller(group_gene = label_wrap_gen(18))) + 
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
