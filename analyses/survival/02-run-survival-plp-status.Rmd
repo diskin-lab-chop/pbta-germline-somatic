@@ -121,7 +121,7 @@ for (group in groups){
                                         "DHG, H3 G35",
                                         "DMG, H3 K28",
                                         "HGG, IDH",
-                                        "IHG"))) %>%
+                                        "IHG", "PXA"))) %>%
      arrange(mol_sub_group)
   }
   
@@ -310,7 +310,9 @@ for (j in 1:nrow(subtypes)) {
     add_model_os <- fit_save_model(subtype_hist,
                                   terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
                                                  "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
-                                                 "age_at_diagnosis_years+cpgPLP_status"),
+                                                 ifelse(subtypes$plot_group[j] %in% c("DIPG or DMG", "Other high-grade glioma"),
+                                                        "molecular_subtype+age_at_diagnosis_years+cpgPLP_status",
+                                                        "age_at_diagnosis_years+cpgPLP_status")),
                                    coxph_os_model_file,
                                    "multivariate",
                                    years_col = "OS_years",
@@ -319,7 +321,9 @@ for (j in 1:nrow(subtypes)) {
     add_model_efs <- fit_save_model(subtype_hist,
                                   terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
                                                  "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
-                                                 "age_at_diagnosis_years+cpgPLP_status"),
+                                                 ifelse(subtypes$plot_group[j] %in% c("DIPG or DMG", "Other high-grade glioma"),
+                                                        "molecular_subtype+age_at_diagnosis_years+cpgPLP_status",
+                                                        "age_at_diagnosis_years+cpgPLP_status")),
                                      coxph_efs_model_file,
                                      "multivariate",
                                      years_col = "EFS_years",

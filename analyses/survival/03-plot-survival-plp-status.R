@@ -19,6 +19,8 @@ input_dir <- file.path(root_dir, "analyses", "survival", "results")
 plots_dir <- file.path(root_dir, "analyses", "survival", "plots")
 results_dir <- file.path(root_dir, "analyses", "survival", "results")
 
+if(!interactive()) pdf(NULL)
+
 subtype_file <- file.path(results_dir, "subtypes-for-survival.tsv")
 
 # Define cancer groups and subtypes for plotting
@@ -218,5 +220,5 @@ for (i in 1:nrow(subtype_df)){
   
   ggsave(forest_pdf, forest_plot, width = 8, height = 3)
   
-  
+  dev.off()
 }
