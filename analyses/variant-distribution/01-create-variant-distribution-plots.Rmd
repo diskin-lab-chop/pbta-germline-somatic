@@ -181,7 +181,7 @@ for (each in names(plplists)){
   # add titles to print
   if (each == "cpg"){
     x_axis_title <- "Cancer predisposition gene (CPG)"
-    fig_width <- 4200
+    fig_width <- 4300
   }
   if (each == "somatic_drivers"){
     x_axis_title <- "CPG or somatic driver gene"
