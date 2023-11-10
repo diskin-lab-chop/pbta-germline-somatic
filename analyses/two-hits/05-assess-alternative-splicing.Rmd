@@ -40,8 +40,10 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 Set input file paths
 ```{r}
-plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
-plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "sample-distribution", "input", 
+                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+#plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
 
 hist_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
                                   "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -58,14 +60,13 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 # Load files
 ```{r load files}
 # Full P-LP results
-plp <- read_tsv(plp_file)
+plp <- read_tsv(plp_file) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
-multi_cpg <- c(glue::glue("{cpgs};"),
-               glue::glue(";{cpgs}"))
 
-plp_full <- read_tsv(plp_full_file)
+#plp_full <- read_tsv(plp_full_file)
 hist <- read_tsv(hist_file)
 
 rna_specimens <- read_tsv(rna_specimens_file)
@@ -85,12 +86,8 @@ hist <- hist %>%
 Define CPGs with P/LP variants in cohort, and splicing cases to query
 ```{r}
 cpgs_test <- plp %>%
-  dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal) %>%
-    filter(Hugo_Symbol %in% cpgs | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
-  dplyr::mutate(Hugo_Symbol = case_when(
-    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
-    TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = "|"))
-  )) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+    filter(Hugo_Symbol %in% cpgs) %>%
   pull(Hugo_Symbol) %>%
   unique()
 
@@ -125,7 +122,7 @@ for (cpg in cpgs_test){
   # extract normal bs ids with P/LP variant in cpg
   plp_bs_ids <- plp %>%
     dplyr::filter(Hugo_Symbol == cpg) %>%
-    pull(Kids_First_Biospecimen_ID) 
+    pull(Kids_First_Biospecimen_ID_normal) 
   
   # extract corresponding RNA bs ids for pts with plp variant in cpg
   plp_rna_ids <- hist %>%
@@ -213,13 +210,11 @@ Add normal BS ID and variant distance to splice region start/end, and plot PSI d
 splice_psi_df <- splice_psi_df %>%
   rename(Kids_First_Biospecimen_ID_rna = sample_id) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_rna", "Kids_First_Biospecimen_ID_normal")]) %>%
-  rename(Kids_First_Biospecimen_ID = Kids_First_Biospecimen_ID_normal) %>%
-  left_join(plp_full[,c("Kids_First_Biospecimen_ID", "Hugo_Symbol", "Loc")]) %>%
-  
+  left_join(plp[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "start")]) %>%
   dplyr::mutate(region_start = as.numeric(unlist(lapply(strsplit(exon_region, ":"), function(x) x[[1]]))),
                 region_end = as.numeric(unlist(lapply(strsplit(exon_region, ":"), function(x) x[[2]])))) %>%
-  dplyr::mutate(start_dist = Loc - region_start,
-                end_dist = Loc - region_end)
+  dplyr::mutate(start_dist = start - region_start,
+                end_dist = start - region_end)
 
 # plot PSI diff against variant distance
 splice_psi_df %>%
@@ -246,8 +241,8 @@ ggsave(file.path(plot_dir, "PSI-diff-by-variant-dist.pdf"),
 Format data frame and write to output
 ```{r}
 splice_psi_df <- splice_psi_df %>%
-  dplyr::rename(plp_variant_position = Loc) %>%
-  dplyr::select(Kids_First_Biospecimen_ID, Kids_First_Biospecimen_ID_rna, 
+  dplyr::rename(plp_variant_position = start) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, 
                 plot_group, Hugo_Symbol, splicing_case, exon_region, 
                 PSI_sample, PSI_other, PSI_diff, sample_PSI_zscore,
                 plp_variant_position, region_start, region_end,
@@ -256,6 +251,21 @@ splice_psi_df <- splice_psi_df %>%
 write_tsv(splice_psi_df, 
           file.path(results_dir, "splicing_events_plp_variants.tsv"))
 
+```
+
+Identify candidate variants associated with differential splicing. These are defined as P/LP variants within 250bp of splice region, where associated splice region has |sample PSI z-score| > 2 
+```{r}
+plp_splice_candidates <- splice_psi_df %>%
+  dplyr::filter(abs(sample_PSI_zscore) > 2 & (abs(start_dist) < 250 | abs(end_dist) < 250)) %>%
+  # order by z-score 
+  dplyr::arrange(-abs(sample_PSI_zscore)) %>%
+  # retain only one splice event per splice region
+  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, region_start, .keep_all = T) %>%
+  dplyr::arrange(Hugo_Symbol) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "molecular_subtype")])
+
+write_tsv(plp_splice_candidates,
+          file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
 ```
 
 ```{r}
