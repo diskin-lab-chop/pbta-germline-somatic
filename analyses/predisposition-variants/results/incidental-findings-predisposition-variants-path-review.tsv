@@ -1,77 +1,87 @@
-Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	plot_group	molecular_subtype	Hugo_Symbol	L-LP_Call_final	Reasoning_for_call	HGVS.c	HGVS.p	associated_syndrome	clinically_reported_syndrome	incidental_finding	path_report_findings
-PT_3CHB9PK5	BS_0754AZX0	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.3439-2A>G	.	Lynch syndrome	Neurofibromatosis, Type 1 (NF-1)	No	CMMRD confirmed
-PT_A9YAZJNN	BS_0QC2QX0P	Meningioma	NA	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.68_69delAG	p.Glu23fs	BRCA1/2	None documented	Yes	
-PT_QT3MK7BZ	BS_14EZDZE6	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1579C>T	p.Gln527*	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_2D1KGV99	BS_1C3RDKQH	Non-neoplastic tumor	NA	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.4351dupC	p.Arg1451fs	Tuberous Sclerosis	None documented	No	Tuberous Sclerosis confirmed
-PT_5SNX4PMK	BS_1Z7Y81NW	Non-neoplastic tumor	NA	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.137G>T	.	Lynch syndrome	Other inherited conditions NOS	Yes	
-PT_2ECVKTTQ	BS_2EAATK5V	Low-grade glioma	LGG, NF1-germline, CDKN2A/B	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.818delT	p.Leu273fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_WP871F5S	BS_2TZNPK1V	Mesenchymal tumor	NA	VHL	Pathogenic	InterVar_Recalculated Pathogenic	c.402delA	p.Glu134fs	Von Hippel-Lindau	Other inherited conditions NOS	No	Von Hippel-Lindau confirmed
-PT_Y7F2JZMQ	BS_40QCA1MC	Mixed neuronal-glial tumor	GNG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.7909C>T	p.Arg2637*	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_8GN3TQRM	BS_4AM9C504	Other high-grade glioma	HGG, H3 wildtype	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.375G>C	.	Li-Fraumeni syndrome	None documented	Yes	
-PT_2BJF83GQ	BS_4EK9WVET	Low-grade glioma	LGG, NF1-somatic, NF1-germline	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.4468_4475dupGATGCAGT	p.Asn1493fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_QEP13FH4	BS_4HD33MVB	Medulloblastoma	MB, WNT	APC	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2995C>T	p.Gln999*	Familial Adenomatous Polyposis	Other inherited conditions NOS	No	Familial Adenomatous Polyposis confirmed
-PT_0SPKM4S8	BS_6FD0SW6E	Other high-grade glioma	HGG, H3 wildtype, TP53	PMS2	Likely_pathogenic	ClinVar Likely pathogenic -- ReviewPanel_lab_P/LP	c.137G>T	.	Lynch syndrome	None documented	Yes	
-PT_JW6FBEFK	BS_6K3Y2WXF	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.4938_4946delGTCCATTGT	p.Ser1647_Val1649del	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_WWZ2Q14R	BS_7QH9BCJQ	Medulloblastoma	MB, SHH	SUFU	Pathogenic	InterVar_Recalculated Pathogenic	c.180C>G	p.Tyr60*	Gorlin syndrome	None documented	No	Gorlin syndrome confirmed
-PT_YZ8A8A36	BS_7XEH55CB	Choroid plexus tumor	NA	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.374C>G	.	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
-PT_D13X3N8F	BS_8Q2EAYJR	Non-neoplastic tumor	NA	CDKN2A	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.-34G>T	.	Melanoma Astrocytoma Syndrome	None documented	Yes	
-PT_XP8AM1CH	BS_938K7FSV	Non-neoplastic tumor	NA	NTHL1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.374delC	p.Pro125fs	Familial Adenomatous Polyposis	None documented	Yes	
-PT_66XN3MT1	BS_9A5CF1QE	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.976-15G>A	.	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_8R00BMHH	BS_9F8D3A05	Low-grade glioma	LGG, RTK	CHEK2	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C1458155 was found in P-LP and not in B-LP or VUS	c.1556C>T	p.Thr519Met	CHEK2	None documented	Yes	
-PT_Z7YJ7MSM	BS_AB2C1EF9	Mixed neuronal-glial tumor	GNT, RTK	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3633delC	p.Gly1212fs	Gorlin syndrome	None documented	Yes	
-PT_HBT0C66Y	BS_ACZNJGV3	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2356C>T	p.Arg786*	Tuberous Sclerosis	None documented	No	Tuberous Sclerosis confirmed
-PT_HXDCHQ9Y	BS_BPDT230W	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.1278delG	p.Ile427fs	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_VPEMAQBN	BS_D48QXYW6	DIPG or DMG	DMG, H3 K28, TP53	PMS2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.1831dupA	p.Ile611fs	Lynch syndrome	None documented	Yes	
-PT_CYBYN18G	BS_DCEAZ94R	Ependymoma	EPN, ST ZFTA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.7909C>T	p.Arg2637*	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_7JQ24F35	BS_EM975DQ6	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3131+1G>A	.	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_J3B812DT	BS_ESFA9S69	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.2074C>T	p.Arg692*	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_BWFTKJXT	BS_ETAATG3J	Schwannoma	NA	LZTR1	Pathogenic	InterVar_Recalculated Pathogenic	c.1672C>T	p.Gln558*	Schwannomatosis	None documented	Yes	
-PT_GCXG7800	BS_F0K8DMTS	Non-neoplastic tumor	NA	NF1	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.586+5G>A	.	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_5SKQHRC5	BS_F7G8TA7C	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.473G>T	.	Li-Fraumeni syndrome	None documented	No	Li-Fraumeni syndrome confirmed
-PT_JV9G8MFD	BS_GERET530	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	SMARCB1	Pathogenic	InterVar_Recalculated Pathogenic	c.141C>G	p.Tyr47*	Rhabdoid Tumor Predisposition syndrome	None documented	No	Rhabdoid Tumor Predisposition Syndrome confirmed
-PT_BF3PGTF7	BS_GEYA8N9C	Meningioma	NA	BRCA2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.6239dupT	p.Leu2080fs	BRCA1/2	None documented	Yes	
-PT_9PJR0ZK7	BS_GJWAV3E5	Neurofibroma plexiform	NA	PMS2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.11C>G	p.Ser4*	Lynch syndrome	Neurofibromatosis, Type 1 (NF-1)	Yes	
-PT_9PJR0ZK7	BS_GJWAV3E5	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.7063-1G>C	.	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_S4YNE17X	BS_HHJZ05XC	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.784C>T	p.Arg262*	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
-PT_MT27S7S4	BS_HJ99CJ2R	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	c.644G>A	.	Li-Fraumeni syndrome	None documented	Yes	
-PT_7TRGHZBK	BS_HNWNZFHA	Choroid plexus tumor	NA	TP53	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.833delC	p.Pro278fs	Li-Fraumeni syndrome	None documented	No	Li-Fraumeni syndrome confirmed
-PT_3P3D97AB	BS_J5596HKA	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.7666delA	p.Arg2556fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_A594A46X	BS_J7WQHJDQ	Mixed neuronal-glial tumor	GNG, other MAPK	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.277delT	p.Trp93fs	CHEK2	None documented	Yes	
-PT_VABP80N2	BS_J996NDK4	Low-grade glioma	LGG, KIAA1549-BRAF	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.3074delC	p.Ser1025fs	Gorlin syndrome	None documented	Yes	
-PT_NS1F6DT8	BS_JJNCV530	Mixed neuronal-glial tumor	NA	NF1	Pathogenic	ClinVar Pathogenic -- Conflicting but disease C0027831 was found in P-LP and not in B-LP or VUS	c.3467A>G	p.Asn1156Ser	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_NTEKMKTX	BS_JNRAKEMV	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar_Recalculated Pathogenic	c.785T>A	p.Leu262*	Gorlin syndrome	Other inherited conditions NOS	Yes	
-PT_0RN3VSXZ	BS_JTSWHVNR	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.592C>T	p.Arg198*	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
-PT_PF9EC93Q	BS_K4XGEGW0	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Badge-lab consensus is P/LP	c.375G>T	.	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
-PT_F27SA15G	BS_K7A7QW76	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.4600C>T	p.Arg1534*	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_2NQPX1R2	BS_KF14TKFY	Craniopharyngioma	CRANIO, ADAM	PTCH2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2019delC	p.Tyr674fs	Gorlin syndrome	None documented	Yes	
-PT_NCDHZ8H8	BS_MN2FX68Z	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.202-1G>C	.	Gorlin syndrome	None documented	Yes	
-PT_E79807KT	BS_N0X0S3JD	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1498C>T	p.Arg500*	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_94EHCMXA	BS_P3W89XQY	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3585_3586delAC	p.Leu1196fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_06ERX8Z7	BS_PJK0M1X0	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3343C>T	p.Gln1115*	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_K8ZV7APT	BS_Q6K6BVTF	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.7159_7164delAACTTT	p.Asn2387_Phe2388del	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_A0F23R7E	BS_QG3PYXB4	Mixed neuronal-glial tumor	GNG, BRAF V600E	BRCA1	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.124delA	p.Ile42fs	BRCA1/2	None documented	Yes	
-PT_A0F23R7E	BS_QG3PYXB4	Mixed neuronal-glial tumor	GNG, BRAF V600E	PMS2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1376C>G	p.Ser459*	Lynch syndrome	None documented	Yes	
-PT_QQ9JGEY9	BS_S6EXG9N9	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.77delG	p.Gly26fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_JNEV57VK	BS_SGS26NXP	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.1906G>C	p.Ala636Pro	Lynch syndrome	Other inherited conditions NOS	No	Lynch syndrome confirmed
-PT_27FDWCVZ	BS_SP886CE6	Low-grade glioma	LGG, KIAA1549-BRAF	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1412C>T	p.Ser471Phe	CHEK2	None documented	Yes	
-PT_T5KEXCK7	BS_SZYRB89G	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	SMARCB1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.977delG	p.Gly326fs	Rhabdoid Tumor Predisposition syndrome	None documented	Yes	
-PT_S7YHNHSS	BS_T3FD64Z7	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.7389delT	p.Thr2464fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_DEDRCQWH	BS_T3VJQSYM	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.5190delC	p.Leu1731fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_387VK1T9	BS_T77MXWTX	Other high-grade glioma	IHG, ALK-altered	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.7806-2A>G	.	BRCA1/2	None documented	Yes	
-PT_S7WJ99PC	BS_TARPGT44	Low-grade glioma	SEGA, wildtype	TSC1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.733C>T	p.Arg245*	Tuberous Sclerosis	None documented	Yes	
-PT_2JDDX6TJ	BS_THDBV4G0	DIPG or DMG	DMG, H3 K28, TP53	ELP1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.1088_1089delGT	p.Cys363fs	ELP1 Medulloblastoma Syndrome	None documented	Yes	
-PT_DACV00WF	BS_TQYACCGG	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.2639dupG	p.Val881fs	Gorlin syndrome	Other inherited conditions NOS	No	Gorlin syndrome confirmed
-PT_ESHACWF6	BS_W75GCHPW	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.380C>T	.	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
-PT_3D74J8RZ	BS_X0XM8PYJ	Meningioma	NA	NF2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1334_1337delAGAG	p.Glu445fs	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
-PT_X84SD608	BS_XCA92FF3	Neurofibroma plexiform	NA	NF1	Pathogenic	InterVar_Recalculated Pathogenic	c.789delA	p.Ala264fs	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_02MVZZSW	BS_XCKDRRYT	Meningioma	NA	BAP1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1174C>T	p.Gln392*	BAP1 Tumor Predisposition Syndrome	None documented	Yes	
-PT_89XRZBSG	BS_XHT3F34T	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.454_466delCCGCCCGGCACCC	p.Pro152fs	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
-PT_Y8RNS9JE	BS_XKHY9A6D	Other high-grade glioma	HGG, H3 wildtype, TP53	BRCA2	Pathogenic	ClinVar Pathogenic -- ReviewPanel_lab_P/LP	c.9154C>T	p.Arg3052Trp	BRCA1/2	None documented	Yes	
-PT_G9A050X1	BS_XM3ER1N6	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar Likely pathogenic -- Conflicting but disease C0027672 was found in P-LP and not in B-LP or VUS	c.423C>G	.	Li-Fraumeni syndrome	None documented	No	Li-Fraumeni syndrome confirmed
-PT_6SH7PV1N	BS_XQ0Y2PMV	Other high-grade glioma	HGG, H3 wildtype	CHEK2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.975+4_975+7delAGTA	.	CHEK2	None documented	Yes	
-PT_2E552BAR	BS_XR81Q21W	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1278G>A	p.Trp426*	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_T93J9EGZ	BS_Y2Z06EDG	Medulloblastoma	MB, SHH	SUFU	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.528_529insT	p.Met177fs	Gorlin syndrome	None documented	Yes	
-PT_7YSCM82T	BS_Z6GF2TDX	Low-grade glioma	SEGA, wildtype	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.3412C>T	p.Arg1138*	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_QK4XB83F	BS_ZM9EYYDT	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.1832G>A	p.Arg611Gln	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
-PT_229DRV7B	BS_ZQY1P7NR	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar Pathogenic -- Badge-lab consenses P/LP	c.6855C>A	p.Tyr2285*	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_NXX0M835	BS_ZVFTWY6Y	Schwannoma	NA	NF2	Likely_pathogenic	InterVar_Recalculated Likely_pathogenic	c.417delG	p.Leu140fs	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
+Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	plot_group	molecular_subtype	gene_symbol_vep	autogvp_call	autogvp_call_reason	HGVSc	HGVSp	associated_syndrome	clinically_reported_syndrome	incidental_finding	path_report_findings
+PT_3CHB9PK5	BS_0754AZX0	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Likely_pathogenic	ClinVar	c.3439-2A>G	NA	LS or CMMRD	Neurofibromatosis, Type 1 (NF-1)	No	CMMRD confirmed
+PT_1H2REHT2	BS_0KKH9VKP	Other high-grade glioma	HGG, H3 wildtype, TP53	NF1	Pathogenic	ClinVar	c.1748A>G	p.Lys583Arg	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_A9YAZJNN	BS_0QC2QX0P	Meningioma	NA	BRCA1	Pathogenic	ClinVar	c.68_69del	p.Glu23ValfsTer17	BRCA1/2	None documented	Yes	
+PT_QT3MK7BZ	BS_14EZDZE6	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar	c.1579C>T	p.Gln527Ter	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_2D1KGV99	BS_1C3RDKQH	Non-neoplastic tumor	NA	TSC2	Pathogenic	ClinVar	c.4351dup	p.Arg1451ProfsTer73	Tuberous Sclerosis	None documented	No	Tuberous Sclerosis confirmed
+PT_5SNX4PMK	BS_1Z7Y81NW	Non-neoplastic tumor	NA	PMS2	Likely_pathogenic	ClinVar	c.137G>T	p.Ser46Ile	LS or CMMRD	Other inherited conditions NOS	Yes	
+PT_2ECVKTTQ	BS_2EAATK5V	Low-grade glioma	LGG, NF1-germline, CDKN2A/B	NF1	Pathogenic	ClinVar	c.818del	p.Leu273ProfsTer8	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_WP871F5S	BS_2TZNPK1V	Mesenchymal tumor	NA	VHL	Likely_pathogenic	InterVar	c.402del	p.Glu134AspfsTer25	Von Hippel-Lindau	Other inherited conditions NOS	No	Von Hippel-Lindau confirmed
+PT_GYJ97915	BS_358WF90F	Mixed neuronal-glial tumor	NA	CHEK2	Uncertain_significance	ClinVar	c.190G>A	p.Glu64Lys	CHEK2	None documented	Yes	
+PT_Y7F2JZMQ	BS_40QCA1MC	Mixed neuronal-glial tumor	GNG, NF1-germline	NF1	Pathogenic	ClinVar	c.7909C>T	p.Arg2637Ter	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_8GN3TQRM	BS_4AM9C504	Other high-grade glioma	HGG, H3 wildtype	TP53	Pathogenic	ClinVar	c.375G>C	p.Thr125=	Li-Fraumeni syndrome	None documented	Yes	
+PT_2BJF83GQ	BS_4EK9WVET	Low-grade glioma	LGG, NF1-somatic, NF1-germline	NF1	Likely_pathogenic	InterVar	c.4468_4475dup	p.Asn1493MetfsTer3	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_QEP13FH4	BS_4HD33MVB	Medulloblastoma	MB, WNT	APC	Likely_pathogenic	InterVar	c.2995C>T	p.Gln999Ter	Familial Adenomatous Polyposis	Other inherited conditions NOS	No	Familial Adenomatous Polyposis confirmed
+PT_0SPKM4S8	BS_6FD0SW6E	Other high-grade glioma	HGG, H3 wildtype, TP53	PMS2	Likely_pathogenic	ClinVar	c.137G>T	p.Ser46Ile	LS or CMMRD	None documented	Yes	
+PT_JW6FBEFK	BS_6K3Y2WXF	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	ClinVar	c.4938_4946del	p.Ser1647_Val1649del	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_WWZ2Q14R	BS_7QH9BCJQ	Medulloblastoma	MB, SHH	SUFU	Pathogenic	InterVar	c.180C>G	p.Tyr60Ter	Gorlin syndrome	Gorlin Syndrome (PTCH1, SUFU)	No	Gorlin syndrome confirmed
+PT_YZ8A8A36	BS_7XEH55CB	Choroid plexus tumor	NA	TP53	Pathogenic	ClinVar	c.374C>G	p.Thr125Arg	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
+PT_NSXP8AWV	BS_8HZ761SQ	Meningioma	NA	CHEK2	Uncertain_significance	ClinVar	c.190G>A	p.Glu64Lys	CHEK2	None documented	Yes	
+PT_D13X3N8F	BS_8Q2EAYJR	Non-neoplastic tumor	NA	CDKN2A	Pathogenic	ClinVar	NA	NA	Melanoma Astrocytoma Syndrome	None documented	Yes	
+PT_XP8AM1CH	BS_938K7FSV	Non-neoplastic tumor	NA	NTHL1	Pathogenic	ClinVar	c.350del	p.Pro117GlnfsTer12	Familial Adenomatous Polyposis	None documented	Yes	
+PT_CYVVA9AB	BS_95P46VE0	Ependymoma	EPN, ST ZFTA	LZTR1	Pathogenic	ClinVar	c.27dup	p.Gln10AlafsTer24	Schwannomatosis	None documented	Yes	
+PT_66XN3MT1	BS_9A5CF1QE	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar	c.976-15G>A	NA	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_D5KHK0SS	BS_9HYDMBBW	Low-grade glioma	LGG, wildtype	BRCA1	Likely_pathogenic	ClinVar	c.5288G>T	p.Gly1763Val	BRCA1/2	None documented	Yes	
+PT_HBT0C66Y	BS_ACZNJGV3	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar	c.2356C>T	p.Arg786Ter	Tuberous Sclerosis	None documented	No	Tuberous Sclerosis confirmed
+PT_HXDCHQ9Y	BS_BPDT230W	Low-grade glioma	SEGA, To be classified	TSC2	Likely_pathogenic	InterVar	c.1278del	p.Ile427SerfsTer22	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_2FVTD0WR	BS_C8EYP5BV	Low-grade glioma	LGG, MAPK	CHEK2	Pathogenic	ClinVar	c.58C>T	p.Gln20Ter	CHEK2	None documented	Yes	
+PT_VPEMAQBN	BS_D48QXYW6	DIPG or DMG	DMG, H3 K28, TP53	PMS2	Pathogenic	ClinVar	c.1831dup	p.Ile611AsnfsTer2	LS or CMMRD	None documented	Yes	
+PT_CYBYN18G	BS_DCEAZ94R	Ependymoma	EPN, ST ZFTA	NF1	Pathogenic	ClinVar	c.7909C>T	p.Arg2637Ter	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_7JQ24F35	BS_EM975DQ6	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar	c.3131+1G>A	NA	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_J3B812DT	BS_ESFA9S69	Non-neoplastic tumor	NA	TSC1	Pathogenic	ClinVar	c.2074C>T	p.Arg692Ter	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_BWFTKJXT	BS_ETAATG3J	Schwannoma	NA	LZTR1	Pathogenic	ClinVar	c.1672C>T	p.Gln558Ter	Schwannomatosis	None documented	Yes	
+PT_GCXG7800	BS_F0K8DMTS	Non-neoplastic tumor	NA	NF1	Likely_pathogenic	ClinVar	c.586+5G>A	NA	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_5SKQHRC5	BS_F7G8TA7C	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar	c.473G>T	p.Arg158Leu	Li-Fraumeni syndrome	None documented	No	Li-Fraumeni syndrome confirmed
+PT_E6FTW238	BS_FPB0JGKX	Atypical Teratoid Rhabdoid Tumor	ATRT, MYC	LZTR1	Pathogenic	ClinVar	c.372C>T	p.Val124=	Schwannomatosis	None documented	Yes	
+PT_E66N7YBN	BS_FQ7H95MY	Low-grade glioma	LGG, To be classified	NF1	Pathogenic	ClinVar	c.730+2T>G	NA	NF-1	None documented	Yes	
+PT_JCECCFPB	BS_G113MX63	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	MSH6	Likely_pathogenic	ClinVar	c.2926C>T	p.Arg976Cys	LS or CMMRD	None documented	Yes	
+PT_CTSQ5FHH	BS_GCNH4CC0	Medulloblastoma	MB, Group3	PTEN	Pathogenic	ClinVar	c.383A>G	p.Lys128Arg	Cowden Syndrome	None documented	Yes	
+PT_JV9G8MFD	BS_GERET530	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	SMARCB1	Pathogenic	InterVar	c.141C>G	p.Tyr47Ter	Rhabdoid Tumor Predisposition syndrome	None documented	No	Rhabdoid Tumor Predisposition Syndrome confirmed
+PT_BF3PGTF7	BS_GEYA8N9C	Meningioma	NA	BRCA2	Pathogenic	ClinVar	c.6239dup	p.Leu2080PhefsTer5	BRCA1/2	None documented	Yes	
+PT_9PJR0ZK7	BS_GJWAV3E5	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar	c.7063-1G>C	NA	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_S4YNE17X	BS_HHJZ05XC	Low-grade glioma	LGG, wildtype	NF2	Pathogenic	ClinVar	c.784C>T	p.Arg262Ter	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
+PT_MT27S7S4	BS_HJ99CJ2R	Ependymoma	EPN, To be classified	TP53	Uncertain_significance	ClinVar	c.644G>A	p.Ser215Asn	Li-Fraumeni syndrome	None documented	Yes	
+PT_7TRGHZBK	BS_HNWNZFHA	Choroid plexus tumor	NA	TP53	Pathogenic	ClinVar	c.833del	p.Pro278LeufsTer67	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	Li-Fraumeni syndrome confirmed
+PT_3P3D97AB	BS_J5596HKA	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar	c.7666del	p.Arg2556GlyfsTer14	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_A594A46X	BS_J7WQHJDQ	Mixed neuronal-glial tumor	GNG, other MAPK	CHEK2	Pathogenic	ClinVar	c.277del	p.Trp93GlyfsTer17	CHEK2	None documented	Yes	
+PT_VABP80N2	BS_J996NDK4	Low-grade glioma	LGG, KIAA1549-BRAF	PTCH2	Likely_pathogenic	InterVar	c.3074del	p.Ser1025LeufsTer2	Gorlin syndrome	None documented	Yes	
+PT_NS1F6DT8	BS_JJNCV530	Mixed neuronal-glial tumor	NA	NF1	Pathogenic	ClinVar	c.3467A>G	p.Asn1156Ser	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_NTEKMKTX	BS_JNRAKEMV	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	InterVar	c.785T>A	p.Leu262Ter	Gorlin syndrome	Other inherited conditions NOS	Yes	
+PT_0RN3VSXZ	BS_JTSWHVNR	Meningioma	NA	NF2	Pathogenic	ClinVar	c.592C>T	p.Arg198Ter	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
+PT_PF9EC93Q	BS_K4XGEGW0	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar	c.375G>T	p.Thr125=	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
+PT_F27SA15G	BS_K7A7QW76	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar	c.4600C>T	p.Arg1534Ter	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_NCDHZ8H8	BS_MN2FX68Z	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar	c.202-1G>C	NA	Gorlin syndrome	None documented	Yes	
+PT_E79807KT	BS_N0X0S3JD	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar	c.1498C>T	p.Arg500Ter	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_94EHCMXA	BS_P3W89XQY	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar	c.3585_3586del	p.Leu1196CysfsTer7	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_2FK75B27	BS_PF6TP3FX	Medulloblastoma	MB, Group4	PMS2	Pathogenic	ClinVar	c.741_742insGTGTGTGAAG	p.Ser248ValfsTer5	LS or CMMRD	None documented	Yes	
+PT_06ERX8Z7	BS_PJK0M1X0	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar	c.3343C>T	p.Gln1115Ter	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_K8ZV7APT	BS_Q6K6BVTF	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar	c.7159_7164del	p.Asn2387_Phe2388del	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_A0F23R7E	BS_QG3PYXB4	Mixed neuronal-glial tumor	GNG, BRAF V600E	BRCA1	Pathogenic	ClinVar	c.124del	p.Ile42TyrfsTer8	BRCA1/2	None documented	Yes	
+PT_A0F23R7E	BS_QG3PYXB4	Mixed neuronal-glial tumor	GNG, BRAF V600E	PMS2	Pathogenic	ClinVar	c.1376C>G	p.Ser459Ter	LS or CMMRD	None documented	Yes	
+PT_ZRQQC2S9	BS_QX8PTX5X	Low-grade glioma	LGG, NF1-germline, CDKN2A/B	NF1	Pathogenic	InterVar	c.4110+2T>A	NA	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_P5HHJJPH	BS_R7TZRSZT	Other high-grade glioma	PXA	CDKN2A	Uncertain_significance	ClinVar	c.146T>C	p.Ile49Thr	Melanoma Astrocytoma Syndrome	None documented	Yes	
+PT_QQ9JGEY9	BS_S6EXG9N9	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar	c.77del	p.Gly26AspfsTer18	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_JNEV57VK	BS_SGS26NXP	DIPG or DMG	DMG, H3 K28, TP53	MSH2	Pathogenic	ClinVar	c.1906G>C	p.Ala636Pro	LS or CMMRD	Other inherited conditions NOS	No	Lynch syndrome confirmed
+PT_27FDWCVZ	BS_SP886CE6	Low-grade glioma	LGG, KIAA1549-BRAF	CHEK2	Pathogenic	ClinVar	c.1283C>T	p.Ser428Phe	CHEK2	None documented	Yes	
+PT_T5KEXCK7	BS_SZYRB89G	Atypical Teratoid Rhabdoid Tumor	ATRT, To be classified	SMARCB1	Likely_pathogenic	InterVar	c.950del	p.Gly317AspfsTer3	Rhabdoid Tumor Predisposition syndrome	None documented	Yes	
+PT_S7YHNHSS	BS_T3FD64Z7	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar	c.7389del	p.Thr2464LeufsTer25	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_DEDRCQWH	BS_T3VJQSYM	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar	c.5190del	p.Leu1731TrpfsTer3	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_387VK1T9	BS_T77MXWTX	Other high-grade glioma	IHG, ALK-altered	BRCA2	Pathogenic	ClinVar	c.7806-2A>G	NA	BRCA1/2	None documented	Yes	
+PT_S7WJ99PC	BS_TARPGT44	Low-grade glioma	SEGA, wildtype	TSC1	Pathogenic	ClinVar	c.733C>T	p.Arg245Ter	Tuberous Sclerosis	None documented	Yes	
+PT_2JDDX6TJ	BS_THDBV4G0	DIPG or DMG	DMG, H3 K28, TP53	ELP1	Likely_pathogenic	InterVar	c.1088_1089del	p.Cys363SerfsTer9	ELP1 Medulloblastoma Syndrome	None documented	Yes	
+PT_DACV00WF	BS_TQYACCGG	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar	c.2639dup	p.Val881SerfsTer15	Gorlin syndrome	Other inherited conditions NOS	No	Gorlin syndrome confirmed
+PT_ESHACWF6	BS_W75GCHPW	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Likely_pathogenic	ClinVar	c.380C>T	p.Ser127Phe	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
+PT_NMZBRFYS	BS_WP9M8J6W	Schwannoma	NA	APC	Likely_pathogenic	InterVar	c.7049_7052del	p.Ser2350LeufsTer23	Familial Adenomatous Polyposis	None documented	Yes	
+PT_3D74J8RZ	BS_X0XM8PYJ	Meningioma	NA	NF2	Pathogenic	ClinVar	c.1334_1337del	p.Glu445GlyfsTer9	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	
+PT_X84SD608	BS_XCA92FF3	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar	c.789del	p.Ala264GlnfsTer17	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_02MVZZSW	BS_XCKDRRYT	Meningioma	NA	BAP1	Pathogenic	ClinVar	c.1174C>T	p.Gln392Ter	BAP1 Tumor Predisposition Syndrome	None documented	Yes	
+PT_89XRZBSG	BS_XHT3F34T	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Pathogenic	ClinVar	c.454_466del	p.Pro152AlafsTer14	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
+PT_Y8RNS9JE	BS_XKHY9A6D	Other high-grade glioma	HGG, H3 wildtype, TP53	BRCA2	Pathogenic	ClinVar	c.9154C>T	p.Arg3052Trp	BRCA1/2	None documented	Yes	
+PT_G9A050X1	BS_XM3ER1N6	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Uncertain_significance	ClinVar	c.423C>G	p.Cys141Trp	Li-Fraumeni syndrome	None documented	No	Li-Fraumeni syndrome confirmed
+PT_6SH7PV1N	BS_XQ0Y2PMV	Other high-grade glioma	HGG, H3 wildtype	CHEK2	Pathogenic	ClinVar	c.846+4_846+7del	NA	CHEK2	None documented	Yes	
+PT_2E552BAR	BS_XR81Q21W	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar	c.1278G>A	p.Trp426Ter	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_T93J9EGZ	BS_Y2Z06EDG	Medulloblastoma	MB, SHH	SUFU	Likely_pathogenic	InterVar	c.528_529insT	p.Met177TyrfsTer30	Gorlin syndrome	None documented	Yes	
+PT_7YSCM82T	BS_Z6GF2TDX	Low-grade glioma	SEGA, wildtype	TSC2	Pathogenic	ClinVar	c.3412C>T	p.Arg1138Ter	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_QK4XB83F	BS_ZM9EYYDT	Low-grade glioma	SEGA, To be classified	TSC2	Pathogenic	ClinVar	c.1832G>A	p.Arg611Gln	Tuberous Sclerosis	Tuberous Sclerosis (TSC1, TSC2)	No	
+PT_229DRV7B	BS_ZQY1P7NR	Neurofibroma plexiform	NA	NF1	Pathogenic	ClinVar	c.6855C>A	p.Tyr2285Ter	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
+PT_NXX0M835	BS_ZVFTWY6Y	Schwannoma	NA	NF2	Likely_pathogenic	InterVar	c.417del	p.Leu140SerfsTer34	NF-2	Neurofibromatosis, Type 2 (NF-2)	No	

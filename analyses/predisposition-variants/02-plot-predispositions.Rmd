@@ -1,0 +1,227 @@
+---
+title: 'Plot predisposition syndrome-associated gene P/LP prevalence across germline cohort'
+output: 
+  html_document:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+date: "2023"
+---
+
+Load packages and set directories
+```{r load libraries}
+suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+  library(ggplot2)
+  library(ggsci)
+})
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "predisposition-variants")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results") 
+plots_dir <- file.path(analysis_dir, "plots")
+
+source(file.path(root_dir, "figures", "theme.R"))
+```
+
+Set paths for: 
+- histologies file, 
+- germline plp variant file
+```{r set paths}
+histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+plp_file <- file.path(root_dir, "analyses", 
+                      "sample-distribution", "input", 
+                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+
+predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
+
+predispositions_path_review_file <- file.path(input_dir, "predispositions-path-review.tsv")
+```
+
+Load files
+```{r read files}
+hist <- read_tsv(histologies_file, guess_max = 10000, 
+                 show_col_types = FALSE) 
+
+plp <- read_tsv(plp_file, show_col_types = FALSE)
+
+syndromes <- read_tsv(predispositions_file) %>%
+  # Abbreviate syndromes for plotting
+  dplyr::mutate(`Associated Syndrome` = case_when(
+    `Associated Syndrome` == "Familial Adenomatous Polyposis" ~ "FAP",
+    `Associated Syndrome` == "Rhabdoid Tumor Predisposition syndrome" ~ "RTPS",
+    `Associated Syndrome` == "ELP1 Medulloblastoma Syndrome" ~ "ELP1 MB syndrome",
+    `Associated Syndrome` == "Melanoma Astrocytoma Syndrome" ~ "MAS",
+    `Associated Syndrome` == "BAP1 Tumor Predisposition Syndrome" ~ "BAP1-TPS",
+    TRUE ~ `Associated Syndrome`
+  )) %>%
+  dplyr::rename(gene_symbol_vep = Hugo_Symbol)
+
+syndrome_genes <- syndromes$gene_symbol_vep
+
+predispositions_path_review <- read_tsv(predispositions_path_review_file) %>%
+  dplyr::rename(gene_symbol_vep = Hugo_Symbol)
+```
+
+## Assess frequency of associated P/LP variants in patients with reported cancer predisposition syndromes
+
+Define cancer predispositions and associated genes
+```{r}
+predisposition_genes <- c("Gorlin syndrome" = "PTCH1|SUFU", "Li-Fraumeni syndrome" = "TP53", "NF-1" = "NF1", "NF-2" = "NF2", "Schwannomatosis" = "LZTR1", "Tuberous Sclerosis" = "TSC1|TSC2")
+predispositions <- names(predisposition_genes)
+
+```
+
+Loop through cancer predispositions and create a data frame indicating presence/absence of associated gene germline P/LP variant
+```{r}
+predisposition_list <- list()
+
+suppressWarnings(
+  for (predisposition in predispositions) {
+    
+  genes <- unlist(strsplit(predisposition_genes[predisposition], "[|]"))
+  
+  # get pts confirmed to have syndrome through path report review 
+  predisposition_review_ids <- predispositions_path_review %>%
+    dplyr::filter(cancer_predispositions_path == predisposition) %>%
+    pull(Kids_First_Biospecimen_ID_normal)
+  
+  predisposition_list[[predisposition]] <- hist %>%
+    # filter for patients with predisposition, either reported in hist OR confirmed through path report review
+    filter(grepl(predisposition, cancer_predispositions) | Kids_First_Biospecimen_ID_normal %in% predisposition_review_ids) %>%
+    dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, sample_id_tumor, plot_group, molecular_subtype) %>%
+    dplyr::mutate(predisposition = predisposition) %>%
+    dplyr::mutate(plp_variant = case_when(
+      Kids_First_Biospecimen_ID_normal %in% plp$Kids_First_Biospecimen_ID_normal[plp$gene_symbol_vep %in% genes] ~ "Yes",
+      TRUE ~ "No"
+    ))
+  }
+)
+
+# cat results
+predisposition_df <- Reduce(rbind, predisposition_list)
+
+```
+
+Filter for patients that do not show P-LP variant associated with predisposition syndrome, and write to output
+```{r}
+predisposition_df %>%
+  dplyr::filter(plp_variant == "No") %>%
+  write_tsv(file.path(results_dir, "predisposition-patients-no-plp-variants.tsv"))
+  
+```
+
+Create bar plot of patients with/without P/LP germline variants in gene associated with each cancer predisposition syndrome
+```{r}
+labels <- c("Schwannomatosis (LZTR1)",
+            "Gorlin Syndrome (PTCH1,SUFU)",
+            "NF-2 (NF2)",
+            "Li-Fraumeni Syndrome (TP53)",
+            "Tuberous Sclerosis (TSC1/2)",
+            "NF-1 (NF1)")
+
+predisposition_df %>%
+  count(predisposition, plp_variant) %>%
+  dplyr::mutate(predisposition = fct_relevel(predisposition,
+                                      c("Schwannomatosis", "Gorlin syndrome", 
+                                        "NF-2", "Li-Fraumeni syndrome",
+                                        "Tuberous Sclerosis", "NF-1"))) %>%
+  dplyr::mutate(plp_variant = fct_relevel(plp_variant,
+                                      c("Yes", "No"))) %>%
+  ggplot(aes(x = n, y = predisposition, fill = plp_variant)) + 
+  geom_bar(stat = "identity", 
+           colour = "black") +
+  labs(x = "No. patients",
+       y = "",
+       fill = "P/LP variant") +
+  scale_y_discrete(labels=labels) +
+  scale_fill_npg() +
+  theme_Publication() +
+  theme(legend.position = "top") +
+  guides(fill=guide_legend(ncol=2)) +
+  xlim(c(0,30))
+
+ggsave(file.path(plots_dir, "gene-plp-prevalence-by-syndrome.pdf"),
+       width = 5, height = 4)
+```
+
+## Plot frequency of incidental findings in cohort
+
+Load incidental findings summary, and change incidental findings to "No" when predisposition is recorded in path review 
+```{r}
+incidental_df <- read_tsv(file.path(results_dir, "incidental-findings-predisposition-variants.tsv"))
+
+incidental_df <- incidental_df %>%
+  left_join(predispositions_path_review[,c("Kids_First_Biospecimen_ID_normal", "gene_symbol_vep", "cancer_predispositions_path")]) %>%
+  dplyr::rename("path_report_findings" = cancer_predispositions_path) %>%
+  dplyr::mutate(path_report_findings = case_when(
+    !is.na(path_report_findings) ~ glue::glue("{path_report_findings} confirmed"),
+    is.na(path_report_findings) ~ ""
+  ),
+  incidental_finding = case_when(
+    incidental_finding == "No" | path_report_findings != "" ~ "No",
+    TRUE ~ "Yes"
+  )) %>%
+    # retain only unique pt-gene pairs (remove cases of multi-hits to gene in same pt)
+  distinct(Kids_First_Participant_ID, gene_symbol_vep, .keep_all = T)
+
+# Save update incidental findings
+write_tsv(incidental_df,
+          file.path(results_dir, "incidental-findings-predisposition-variants-path-review.tsv"))
+
+```
+
+How many of these findings are incidental? 
+```{r}
+table(incidental_df$incidental_finding)
+
+```
+
+Plot predisposition gene variant count, and distinguish between patients who have predisposition reported vs. those who do not
+```{r}
+# Calculate predisposition gene counts for ordering plot
+total_cts <- incidental_df %>%
+  count(gene_symbol_vep) %>%
+  arrange(n)
+
+# Define plot labels
+labels <- glue::glue("{syndrome_genes} ({syndromes$`Associated Syndrome`})")
+names(labels) <- syndrome_genes
+
+incidental_df %>%
+  dplyr::mutate(predisposition = case_when(
+    incidental_finding == "Yes" ~ "No",
+    incidental_finding == "No" ~ "Yes"
+  )) %>%
+  count(gene_symbol_vep, predisposition) %>%
+  dplyr::mutate(gene_symbol_vep = fct_relevel(gene_symbol_vep,
+                                      total_cts$gene_symbol_vep)) %>%
+  dplyr::mutate(predisposition = fct_relevel(predisposition,
+                                      c("Yes", "No"))) %>%
+  ggplot(aes(x = n, y = gene_symbol_vep, fill = predisposition)) + 
+  geom_bar(stat = "identity", 
+           colour = "black") +
+  labs(x = "No. patients",
+       y = "",
+       fill = "Predisposition clinically-reported") +
+  xlim(c(0,20)) +
+  scale_y_discrete(labels=labels) +
+  scale_fill_npg() +
+  theme_Publication() +
+  theme(legend.position = "top") +
+  guides(fill=guide_legend(ncol=3))
+
+ggsave(file.path(plots_dir, "syndrome-prevalence-by-gene.pdf"),
+       width = 7, height = 6)
+```
+
+```{r}
+sessionInfo()
+
+```
+
