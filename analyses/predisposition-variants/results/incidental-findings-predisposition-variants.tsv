@@ -74,8 +74,6 @@ PT_S7WJ99PC	BS_TARPGT44	Low-grade glioma	SEGA, wildtype	TSC1	Pathogenic	ClinVar	
 PT_2JDDX6TJ	BS_THDBV4G0	DIPG or DMG	DMG, H3 K28, TP53	ELP1	Likely_pathogenic	InterVar	c.1088_1089del	p.Cys363SerfsTer9	ELP1 Medulloblastoma Syndrome	None documented	Yes
 PT_DACV00WF	BS_TQYACCGG	Medulloblastoma	MB, SHH	PTCH1	Likely_pathogenic	InterVar	c.2639dup	p.Val881SerfsTer15	Gorlin syndrome	Other inherited conditions NOS	Yes
 PT_ESHACWF6	BS_W75GCHPW	Atypical Teratoid Rhabdoid Tumor	ATRT, SHH	TP53	Likely_pathogenic	ClinVar	c.380C>T	p.Ser127Phe	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No
-PT_NMZBRFYS	BS_WP9M8J6W	Schwannoma	NA	APC	Likely_pathogenic	InterVar	c.7049_7052del	p.Ser2350LeufsTer23	Familial Adenomatous Polyposis	None documented	Yes
-PT_NMZBRFYS	BS_WP9M8J6W	Schwannoma	NA	APC	Likely_pathogenic	InterVar	c.7054_7055del	p.Ser2352TyrfsTer5	Familial Adenomatous Polyposis	None documented	Yes
 PT_3D74J8RZ	BS_X0XM8PYJ	Meningioma	NA	NF2	Pathogenic	ClinVar	c.1334_1337del	p.Glu445GlyfsTer9	NF-2	Neurofibromatosis, Type 2 (NF-2)	No
 PT_X84SD608	BS_XCA92FF3	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar	c.789del	p.Ala264GlnfsTer17	NF-1	Neurofibromatosis, Type 1 (NF-1)	No
 PT_02MVZZSW	BS_XCKDRRYT	Meningioma	NA	BAP1	Pathogenic	ClinVar	c.1174C>T	p.Gln392Ter	BAP1 Tumor Predisposition Syndrome	None documented	Yes
