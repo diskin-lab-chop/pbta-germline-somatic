@@ -43,7 +43,6 @@ Set input file paths
 plp_file <- file.path(root_dir, "analyses", 
                       "sample-distribution", "input", 
                       "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
-#plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
 
 hist_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
                                   "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -208,7 +207,7 @@ for (cpg in cpgs_test){
 Add normal BS ID and variant distance to splice region start/end, and plot PSI difference against variant distaince
 ```{r}
 splice_psi_df <- splice_psi_df %>%
-  rename(Kids_First_Biospecimen_ID_rna = sample_id) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_rna = sample_id) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_rna", "Kids_First_Biospecimen_ID_normal")]) %>%
   left_join(plp[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "start")]) %>%
   dplyr::mutate(region_start = as.numeric(unlist(lapply(strsplit(exon_region, ":"), function(x) x[[1]]))),
