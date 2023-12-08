@@ -142,9 +142,9 @@ Read in LOH results, and append LOH scores to rows of `germline_somatic_cnvs`
 ```{r get variant loh data}
 loh <- read_tsv(loh_variant_file) %>%
   dplyr::filter(start %in% germline$start) %>%
-  rename(Kids_First_Biospecimen_ID_normal = BS_ID,
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = BS_ID,
          Kids_First_Biospecimen_ID_tumor = BS_ID_tumor) %>%
-  filter(!is.na(proband_tumor_alt_depth))
+  dplyr::filter(!is.na(proband_tumor_alt_depth))
 
 
 germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
@@ -253,7 +253,7 @@ plot_group_gene <- loh_gene %>%
 
 # plot LOH scores by P/LP status within histologies for selected gene-histology pairs
 loh_gene %>%
-  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Neurofibroma plexiform") %>%
+  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Mixed neuronal-glial tumor") %>%
   
    ggplot(aes(x = is_plp, y = gene_LOH)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, 

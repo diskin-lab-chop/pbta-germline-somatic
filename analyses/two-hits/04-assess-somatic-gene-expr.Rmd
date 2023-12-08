@@ -265,7 +265,7 @@ z_scored_expression %>%
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 10, height = 6)
+                   width = 14, height = 7)
 
 ```
 
