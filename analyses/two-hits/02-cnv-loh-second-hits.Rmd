@@ -253,7 +253,7 @@ plot_group_gene <- loh_gene %>%
 
 # plot LOH scores by P/LP status within histologies for selected gene-histology pairs
 loh_gene %>%
-  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Mixed neuronal-glial tumor") %>%
+  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Neurofibroma plexiform") %>%
   
    ggplot(aes(x = is_plp, y = gene_LOH)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, 
