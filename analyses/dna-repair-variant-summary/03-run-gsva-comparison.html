@@ -459,7 +459,7 @@ Filter histologies file for high-grade glioma only</p>
 <pre class="r"><code>hist_cbtn &lt;- read_tsv(cbtn_histologies_file) %&gt;%
   dplyr::filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))</code></pre>
 <pre><code>## Rows: 838 Columns: 36
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -471,7 +471,7 @@ Filter histologies file for high-grade glioma only</p>
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre><code>## Rows: 43729 Columns: 55
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (38): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
 ## dbl (17): age_at_diagnosis_days, OS_days, EFS_days, age_last_update_days, no...
@@ -480,7 +480,7 @@ Filter histologies file for high-grade glioma only</p>
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -491,7 +491,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score
@@ -668,8 +668,8 @@ for (i in 1:length(repair_gene_source)){
 
     }
 }</code></pre>
-<pre><code>## Rows: 191 Columns: 24
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<pre><code>## Rows: 189 Columns: 24
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
@@ -680,8 +680,8 @@ for (i in 1:length(repair_gene_source)){
 <pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
-<pre><code>## Rows: 257 Columns: 24
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<pre><code>## Rows: 240 Columns: 24
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
@@ -690,6 +690,8 @@ for (i in 1:length(repair_gene_source)){
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (`position_stack()`).</code></pre>
 <pre><code>## Warning: Removed 3 rows containing missing values (`geom_text()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
 <p>Plot scores of Hallmark pathways of interest by group (MMR germline
@@ -863,8 +865,8 @@ for (i in 1:length(repair_gene_source)){
         write_tsv(file.path(results_dir, paste0(&quot;PBTA_hgg_samples_with_MMR_gsva.tsv&quot;)))
       
 }</code></pre>
-<pre><code>## Rows: 191 Columns: 24
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<pre><code>## Rows: 189 Columns: 24
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
@@ -882,13 +884,13 @@ for (i in 1:length(repair_gene_source)){
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Rows: 257 Columns: 24
+## Rows: 240 Columns: 24
 ## ── Column specification
-## ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Delimiter: &quot;\t&quot; chr
+## ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Delimiter: &quot;\t&quot; chr
 ## (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo... dbl (4): start, clinvar_stars, clinvar_variant_id,
 ## gnomad_3_1_1_AF_non_cancer
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types or set `show_col_types = FALSE` to quiet this
-## message.</code></pre>
+## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types or set `show_col_types = FALSE` to quiet
+## this message.</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
