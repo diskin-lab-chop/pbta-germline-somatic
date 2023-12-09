@@ -56,6 +56,11 @@ loh_gene_file <- file.path(data_dir, "pbta-all-gene-loh.tsv.gz")
 
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+hgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "hgat_goi_list.tsv")
+lgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "lgat_goi_list.tsv")
+embryonal_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "embryonal-tumor_goi_list.tsv")
+other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "other_goi_list.tsv")
+
 ```
 
 Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add histology
@@ -83,10 +88,15 @@ hist_normal <- hist %>%
 
 # CPGs
 cpgs <- read_lines(cpg_file)
+hgat_drivers <- read_lines(hgat_file)
+lgat_drivers <- read_lines(lgat_file)
+embryonal_drivers <- read_lines(embryonal_file)
+other_drivers <- read_lines(other_file)
+somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_drivers)
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
-  filter(Hugo_Symbol %in% cpgs) %>%
+  filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   # left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor",
   #                              "plot_group", "molecular_subtype")]) %>%
   left_join(hist_normal[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal")]) %>%
@@ -105,7 +115,7 @@ Load CNV files, and identify patients with germline PLP variant and somatic CNV 
 ```{r get cnv data}
 # filter cnv to patients in cohort and CPG calls only
 cnv_auto <- read_tsv(cnv_auto_file) %>%
-  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
+  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% c(cpgs, somatic_drivers)) %>%
   dplyr::rename("Hugo_Symbol" = gene_symbol,
          "Kids_First_Biospecimen_ID_tumor" = biospecimen_id,
          "CNV_status_somatic" = status,
@@ -115,7 +125,7 @@ cnv_auto <- read_tsv(cnv_auto_file) %>%
          CNV_status_somatic)
 
 cnv_xy <- read_tsv(cnv_xy_file) %>%
-  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% cpgs) %>%
+  dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% c(cpgs, somatic_drivers)) %>%
   dplyr::rename("Hugo_Symbol" = gene_symbol,
          "Kids_First_Biospecimen_ID_tumor" = biospecimen_id,
          "CNV_status_somatic" = status,
@@ -159,7 +169,7 @@ germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
 Load gene LOH data and append to `germline_somatic_cnvs_loh`
 ```{r get gene loh data}
 loh_gene <- read_tsv(loh_gene_file) %>%
-  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  dplyr::filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   dplyr::rename(gene_LOH = LOH_score) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
          gene_LOH)
@@ -171,8 +181,13 @@ germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
 
 Save CNV and LOH scores for all samples to output
 ```{r save results}
-write_tsv(germline_somatic_cnvs_loh_gene,
-          file.path(results_dir, "germline-somatic-cnv-loh.tsv"))
+germline_somatic_cnvs_loh_gene %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv"))
+
+germline_somatic_cnvs_loh_gene %>%
+  dplyr::filter(!Hugo_Symbol %in% cpgs) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-cnv-loh-somatic-non-cpgs.tsv"))
 ```
 
 ## Plotting LOH by gene and P-LP status
@@ -202,6 +217,7 @@ For genes with P/LP variants in >= 4 patients, plot LOH scores by P/LP status
 ```{r plot LOH by P/LP status}
 # Get list of genes with P/LP variants in at least 4 patients
 cpgs_test <- germline %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = T) %>%
   count(Hugo_Symbol) %>%
   filter(n >= 4) %>%
