@@ -55,6 +55,10 @@ expr_file <- file.path(data_dir, "gene-expression-rsem-tpm-collapsed.rds")
 
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+hgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "hgat_goi_list.tsv")
+lgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "lgat_goi_list.tsv")
+embryonal_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "embryonal-tumor_goi_list.tsv")
+other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "other_goi_list.tsv")
 
 ```
 
@@ -69,6 +73,11 @@ hist_cohort <- read_tsv(hist_cohort_file)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
+hgat_drivers <- read_lines(hgat_file)
+lgat_drivers <- read_lines(lgat_file)
+embryonal_drivers <- read_lines(embryonal_file)
+other_drivers <- read_lines(other_file)
+somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_drivers)
 
 ```
 
@@ -90,7 +99,7 @@ hist_tumor <- hist %>%
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
-  filter(Hugo_Symbol %in% cpgs) %>%
+  filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")], 
             by = "Kids_First_Participant_ID") %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
@@ -132,8 +141,13 @@ Append expression z-scores to genes with P/LP variants across cohort, and write 
 germline_somatic_expr <- germline %>%
   left_join(z_scored_expression)
 
-write_tsv(germline_somatic_expr,
-          file.path(results_dir, "germline-somatic-expr.tsv"))
+germline_somatic_expr %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-expr-cpgs.tsv"))
+
+germline_somatic_expr %>%
+  dplyr::filter(!Hugo_Symbol %in% cpgs) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-expr-somatic-non-cpgs.tsv"))
 
 ```
 
@@ -169,6 +183,7 @@ mean_expr <- z_scored_expression %>%
 
 # filter cpg list for those with P/LP variant in 4 or more patients
 cpgs_test <- germline %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = T) %>%
   count(Hugo_Symbol) %>%
   filter(n >= 4) %>%
@@ -265,7 +280,7 @@ z_scored_expression %>%
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 14, height = 7)
+                   width = 10, height = 5)
 
 ```
 
