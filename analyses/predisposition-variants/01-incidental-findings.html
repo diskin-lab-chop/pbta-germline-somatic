@@ -449,9 +449,8 @@ predisposition syndromes files</p>
                            &quot;results&quot;,
                            &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;sample-distribution&quot;, &quot;input&quot;, 
-                      &quot;merged_plp_res_popAF_filtered_plus_manual_11062023.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)
 
 predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)</code></pre>
 <p>Read in histologies, germline PLP, and predispositions file</p>
@@ -462,7 +461,7 @@ plp &lt;- read_tsv(plp_file,show_col_types = FALSE)
 predispositions &lt;- read_tsv(predispositions_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 28 Columns: 2
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -492,7 +491,10 @@ is currently reported.</p>
 
 plp_predisposition_syndromes &lt;- hist %&gt;%
   filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_bs) %&gt;%
-  left_join(plp[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;gene_symbol_vep&quot;, &quot;autogvp_call&quot;, &quot;autogvp_call_reason&quot;, &quot;HGVSc&quot;, &quot;HGVSp&quot;)]) %&gt;%
+  left_join(plp[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;chr&quot;, &quot;start&quot;,
+                   &quot;ref&quot;, &quot;alt&quot;, &quot;gene_symbol_vep&quot;, &quot;autogvp_call&quot;, 
+                   &quot;autogvp_call_reason&quot;, &quot;HGVSc&quot;, &quot;HGVSp&quot;,
+                   &quot;clinvar_variant_id&quot;)]) %&gt;%
   left_join(predispositions) %&gt;%
   filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
   dplyr::rename(&quot;associated_syndrome&quot; = `Associated Syndrome`,
@@ -501,11 +503,16 @@ plp_predisposition_syndromes &lt;- hist %&gt;%
     !str_detect(clinically_reported_syndrome, associated_syndrome) ~ &quot;Yes&quot;,
     TRUE ~ &quot;No&quot;
   )) %&gt;%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, plot_group, molecular_subtype, 
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+         sample_id_normal, sample_id_tumor,
+         plot_group, molecular_subtype, 
+         chr, start, alt, ref,
          gene_symbol_vep, autogvp_call, autogvp_call_reason, HGVSc, HGVSp,
-         associated_syndrome, clinically_reported_syndrome, incidental_finding)</code></pre>
+         clinvar_variant_id,
+         associated_syndrome, clinically_reported_syndrome, incidental_finding) %&gt;%
+  dplyr::mutate(clinvar_variant_link = glue::glue(&quot;https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/&quot;))</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<pre><code>## Warning in left_join(., plp[, c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;gene_symbol_vep&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
+<pre><code>## Warning in left_join(., plp[, c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;chr&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
 ## ℹ Row 1 of `x` matches multiple rows.
 ## ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
 <pre><code>## Joining with `by = join_by(gene_symbol_vep)`</code></pre>
