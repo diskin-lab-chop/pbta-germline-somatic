@@ -28,6 +28,7 @@ root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 analysis_dir <- file.path(root_dir, "analyses", "two-hits")
 results_dir <- file.path(analysis_dir, "results")
 data_dir <- file.path(root_dir, "data")
+plot_dir <- file.path(analysis_dir, "plots")
 
 # If the input and results directories do not exist, create it
 if (!dir.exists(results_dir)) {
@@ -144,6 +145,190 @@ collapsed_germ_som <- collapsed %>%
   write_tsv(file.path(results_dir, "germline-somatic-collapsed-by-gene.tsv"))
 
 ```
+
+
+```{r}
+germline_maf <- germline %>%
+  dplyr::rename(Chromosome = chr,
+                Start_Position = start,
+                Reference_Allele = ref,
+                Tumor_Seq_Allele1 = alt,
+                HGVSc = HGVSc_germ,
+                HGVSp_Short = HGVSp_germ,
+                Variant_Classification = variant_classification_vep) %>%
+  dplyr::select(Hugo_Symbol, Matched_Norm_Sample_Barcode, Chromosome, Start_Position, Reference_Allele,
+                Tumor_Seq_Allele1, HGVSc, HGVSp_Short, Variant_Classification)
+
+maf_nf1_BS_0KKH9VKP <- maf %>%
+  dplyr::filter(Hugo_Symbol == "NF1" & Matched_Norm_Sample_Barcode == "BS_0KKH9VKP") %>%
+  bind_rows(germline_maf[germline_maf$Matched_Norm_Sample_Barcode == "BS_0KKH9VKP" & germline_maf$Hugo_Symbol == "NF1",]) %>%
+  dplyr::mutate(Tumor_Sample_Barcode = "BS_96S0VQBN",
+                Entrez_Gene_Id = 4763,
+                Center = ".",
+                NCBI_Build = "GRCh38",
+                Variant_Type = "SNP",
+                End_Position = Start_Position,
+                Variant_Classification = case_when(
+                  Variant_Classification == "missense_variant" ~ "Missense_Mutation",
+                  TRUE ~ Variant_Classification
+                ),
+                HGVSp_Short = case_when(
+                  HGVSp_Short == "p.Lys583Arg" ~ "p.K583R",
+                  TRUE ~ HGVSp_Short
+                )) %>%
+  write_tsv(file.path(results_dir, "BS_0KKH9VKP_NF1_maf.tsv"))
+
+maf_nf1_BS_4EK9WVET <- maf %>%
+  dplyr::filter(Hugo_Symbol == "NF1" & Matched_Norm_Sample_Barcode == "BS_4EK9WVET") %>%
+  bind_rows(germline_maf[germline_maf$Matched_Norm_Sample_Barcode == "BS_4EK9WVET" & germline_maf$Hugo_Symbol == "NF1",]) %>%
+  dplyr::mutate(Tumor_Sample_Barcode = "BS_J5J0EA7Y",
+                Entrez_Gene_Id = 4763,
+                Center = ".",
+                NCBI_Build = "GRCh38",
+                Variant_Type = "SNP",
+               # End_Position = Start_Position,
+                Variant_Classification = case_when(
+                  Variant_Classification == "frameshift_variant" ~ "Frame_Shift_Ins",
+                  TRUE ~ Variant_Classification
+                ),
+                HGVSp_Short = case_when(
+                  HGVSp_Short == "p.Asn1493MetfsTer3" ~ "p.N1493Mfs*8",
+                  TRUE ~ HGVSp_Short
+                )) %>%
+  write_tsv(file.path(results_dir, "BS_4EK9WVET_NF1_maf.tsv"))
+
+maf_apc_BS_4HD33MVB <- maf %>%
+  dplyr::filter(Hugo_Symbol == "APC" & Matched_Norm_Sample_Barcode == "BS_4HD33MVB") %>%
+  bind_rows(germline_maf[germline_maf$Matched_Norm_Sample_Barcode == "BS_4HD33MVB" & germline_maf$Hugo_Symbol == "APC",]) %>%
+  dplyr::mutate(Tumor_Sample_Barcode = "BS_Y5DA59M3",
+                Entrez_Gene_Id = 324,
+                Center = ".",
+                NCBI_Build = "GRCh38",
+                Variant_Type = "SNP",
+                End_Position = Start_Position,
+                Variant_Classification = case_when(
+                  Variant_Classification == "stop_gained" ~ "Nonsense_Mutation",
+                  TRUE ~ Variant_Classification
+                ),
+                HGVSp_Short = case_when(
+                  HGVSp_Short == "p.Gln999Ter" ~ "p.G999*",
+                  TRUE ~ HGVSp_Short
+                )) %>%
+  write_tsv(file.path(results_dir, "BS_4HD33MVB_APC_maf.tsv"))
+
+maf_sufu_BS_7QH9BCJQ <- maf %>%
+  dplyr::filter(Hugo_Symbol == "SUFU" & Matched_Norm_Sample_Barcode == "BS_7QH9BCJQ") %>%
+  bind_rows(germline_maf[germline_maf$Matched_Norm_Sample_Barcode == "BS_7QH9BCJQ" & germline_maf$Hugo_Symbol == "SUFU",]) %>%
+  dplyr::mutate(Tumor_Sample_Barcode = "BS_DVQYQSVW",
+                Entrez_Gene_Id = 51684,
+                Center = ".",
+                NCBI_Build = "GRCh38",
+                Variant_Type = "SNP",
+                End_Position = Start_Position,
+                Variant_Classification = case_when(
+                  Variant_Classification == "stop_gained&splice_region_variant" ~ "Nonsense_Mutation",
+                  TRUE ~ Variant_Classification
+                ),
+                HGVSp_Short = case_when(
+                  HGVSp_Short == "p.Tyr60Ter" ~ "p.Y60*",
+                  TRUE ~ HGVSp_Short
+                )) %>%
+  write_tsv(file.path(results_dir, "BS_7QH9BCJQ_SUFU_maf.tsv"))
+
+
+maf_nf1_BS_Q6K6BVTF <- maf %>%
+  dplyr::filter(Hugo_Symbol == "NF1" & Matched_Norm_Sample_Barcode == "BS_Q6K6BVTF") %>%
+  bind_rows(germline_maf[germline_maf$Matched_Norm_Sample_Barcode == "BS_Q6K6BVTF" & germline_maf$Hugo_Symbol == "NF1",]) %>%
+  dplyr::mutate(Tumor_Sample_Barcode = "BS_EXTEGB51",
+                Entrez_Gene_Id = 4763,
+                Center = ".",
+                NCBI_Build = "GRCh38",
+                Variant_Type = "SNP",
+               # End_Position = Start_Position,
+                Variant_Classification = case_when(
+                  Variant_Classification == "inframe_deletion" ~ "In_Frame_Del",
+                  TRUE ~ Variant_Classification
+                ),
+                HGVSp_Short = case_when(
+                  HGVSp_Short == "p.Asn2387_Phe2388del" ~ "p.N2837_F2388del",
+                  TRUE ~ HGVSp_Short
+                )) %>%
+  write_tsv(file.path(results_dir, "BS_Q6K6BVTF_NF1_maf.tsv"))
+
+
+
+maf_msh6_BS_0754AZX0 <- maf %>%
+  dplyr::filter(Matched_Norm_Sample_Barcode == "BS_0754AZX0" & ONCOGENIC %in% c("Oncogenic", "Likely oncogenic")) %>%
+  bind_rows(germline_maf[germline_maf$Matched_Norm_Sample_Barcode == "BS_0754AZX0" & germline_maf$Hugo_Symbol == "MSH6",]) %>%
+  dplyr::mutate(Tumor_Sample_Barcode = "BS_20TBZG09",
+                Entrez_Gene_Id = 4763,
+                Center = ".",
+                NCBI_Build = "GRCh38",
+                Variant_Type = "SNP",
+               # End_Position = Start_Position,
+                Variant_Classification = case_when(
+                  Variant_Classification == "missense_variant" ~ "Missense_Mutation",
+                  Variant_Classification == "splice_acceptor_variant" ~ "Splice_Site",
+                  TRUE ~ Variant_Classification
+                ),
+                HGVSp_Short = case_when(
+                  HGVSp_Short == "p.Leu1201Val" ~ "p.L201V",
+                  HGVSp_Short == "p.Arg1242Ser" ~ "p.R1242S",
+                  Start_Position == 47804908 ~ "p.X1261_splice",
+                  TRUE ~ HGVSp_Short
+                )) %>%
+  write_tsv(file.path(results_dir, "BS_0754AZX0_MSH6_maf.tsv"))
+
+
+```
+
+
+```{r}
+
+oncokb_maf_obj <- maftools::read.maf(file.path(results_dir, "BS_0KKH9VKP_NF1_maf.tsv"))
+
+lollipopPlot(oncokb_maf_obj, gene = "NF1", AACol = "HGVSp_Short", showDomainLabel = FALSE, repel = TRUE, labPosAngle = 90, labelPos = "all", legendTxtSize = 1.2, showMutationRate = FALSE, defaultYaxis = FALSE,
+             axisTextSize = c(1.5,1.5), domainLabelSize = 1.5, titleSize = c(1.5,1.5), labPosSize = 1.5)
+
+ggsave(file.path(plot_dir, "NF1_BS_0KKH9VKP_lollipop.pdf"),
+       width = 6, height = 3)
+
+
+oncokb_maf_obj <- maftools::read.maf(file.path(results_dir, "BS_4EK9WVET_NF1_maf.tsv"))
+
+lollipopPlot(oncokb_maf_obj, gene = "NF1", AACol = "HGVSp_Short", showDomainLabel = FALSE, repel = TRUE, labPosAngle = 90, labelPos = "all", legendTxtSize = 1.2, showMutationRate = FALSE, defaultYaxis = FALSE,
+             axisTextSize = c(1.5,1.5), domainLabelSize = 1.5, titleSize = c(1.5,1.5), labPosSize = 1.5)
+
+ggsave(file.path(plot_dir, "NF1_BS_0KKH9VKP_lollipop.pdf"),
+       width = 6, height = 3)
+
+
+oncokb_maf_obj <- maftools::read.maf(file.path(results_dir, "BS_4HD33MVB_APC_maf.tsv"))
+
+lollipopPlot(oncokb_maf_obj, gene = "APC", AACol = "HGVSp_Short", showDomainLabel = FALSE, repel = TRUE, labPosAngle = 90, labelPos = "all", legendTxtSize = 1.2, showMutationRate = FALSE, defaultYaxis = FALSE,
+             axisTextSize = c(1.5,1.5), domainLabelSize = 1.5, titleSize = c(1.5,1.5), labPosSize = 1.5)
+
+
+oncokb_maf_obj <- maftools::read.maf(file.path(results_dir, "BS_7QH9BCJQ_SUFU_maf.tsv"))
+
+lollipopPlot(oncokb_maf_obj, gene = "SUFU", AACol = "HGVSp_Short", showDomainLabel = FALSE, repel = TRUE, labPosAngle = 90, labelPos = "all", legendTxtSize = 1.2, showMutationRate = FALSE, defaultYaxis = FALSE,
+             axisTextSize = c(1.5,1.5), domainLabelSize = 1.5, titleSize = c(1.5,1.5), labPosSize = 1.5)
+
+
+oncokb_maf_obj <- maftools::read.maf(file.path(results_dir, "BS_Q6K6BVTF_NF1_maf.tsv"))
+
+lollipopPlot(oncokb_maf_obj, gene = "NF1", AACol = "HGVSp_Short", showDomainLabel = FALSE, repel = TRUE, labPosAngle = 90, labelPos = "all", legendTxtSize = 1.2, showMutationRate = FALSE, defaultYaxis = FALSE,
+             axisTextSize = c(1.5,1.5), domainLabelSize = 1.5, titleSize = c(1.5,1.5), labPosSize = 1.5)
+
+
+oncokb_maf_obj <- maftools::read.maf(file.path(results_dir, "BS_0754AZX0_MSH6_maf.tsv"))
+
+lollipopPlot(oncokb_maf_obj, gene = "MSH6", AACol = "HGVSp_Short", showDomainLabel = FALSE, repel = TRUE, labPosAngle = 90, labelPos = "all", legendTxtSize = 1.2, showMutationRate = FALSE, defaultYaxis = FALSE,
+             axisTextSize = c(1.5,1.5), domainLabelSize = 1.5, titleSize = c(1.5,1.5), labPosSize = 1.5)
+
+```
+
+
 
 ```{r}
 sessionInfo()
