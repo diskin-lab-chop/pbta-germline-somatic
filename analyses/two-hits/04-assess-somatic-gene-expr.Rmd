@@ -41,10 +41,9 @@ set.seed(2023)
 
 Set input file paths
 ```{r}
-plp_file <- file.path(root_dir, "analyses", 
-                      "sample-distribution", "input", 
-                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
-#plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+
 
 hist_file <- file.path(data_dir, "histologies.tsv")
 hist_cohort_file <- file.path(root_dir, "analyses", 
@@ -64,8 +63,6 @@ other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "
 
 # Load files
 ```{r load files}
-# Full P-LP results
-#plp_full <- read_tsv(plp_full_file)
 
 hist <- read_tsv(hist_cohort_file)
 
