@@ -40,9 +40,8 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 Set input file paths
 ```{r}
-plp_file <- file.path(root_dir, "analyses", 
-                      "sample-distribution", "input", 
-                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
 
 hist_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
                                   "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -147,7 +146,7 @@ for (cpg in cpgs_test){
       
       # define splice case-dependent exon/intron coordinates
         dplyr::mutate(region = case_when(
-          case %in% c("A3SS", "A5SS") ~ glue::glue("{longExonStart_0base}:{longExonEnd}"),
+          case %in% c("A3SS", "A5SS") ~ glue::glue("{longExonStart_0base}:{longExonEnd}:{shortES}:{shortEE}:{flankingES}:{flankingEE}"),
           case == "MXE" ~ glue::glue("{`1stExonStart_0base`}:{`1stExonEnd`}:{`2ndExonStart_0base`}:{`2ndExonEnd`}"),
           case == "RI" ~ glue::glue("{riExonStart_0base}:{riExonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}"),
           case == "SE" ~ glue::glue("{exonStart_0base}:{exonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}")
