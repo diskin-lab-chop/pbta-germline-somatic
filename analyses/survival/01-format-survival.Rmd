@@ -26,7 +26,6 @@ library(ggpubr)
 library(ggplot2)
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "survival")
@@ -47,9 +46,8 @@ histologies_file <- file.path(root_dir, "analyses",
 
 base_histologies_file <- file.path(input_dir, "survival-histologies-base-2023-10-31.tsv")
 
-all_plp_file <- file.path(root_dir, "analyses", 
-                      "sample-distribution", "input", 
-                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+all_plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 

@@ -449,9 +449,8 @@ COSMICv3 mutational signature weights file, - TMB file</p>
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;sample-distribution&quot;, &quot;input&quot;, 
-                      &quot;merged_plp_res_popAF_filtered_plus_manual_11062023.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)
 
 tmb_file &lt;- file.path(data_dir, &quot;snv-mutation-tmb-coding.tsv&quot;)
 
@@ -495,7 +494,7 @@ mutate(exposure = case_when(
   TRUE ~ exposure
 ))</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
