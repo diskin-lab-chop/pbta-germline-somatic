@@ -13,7 +13,6 @@ library(ggpubr)
 ## Set directory paths
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "demo-clin-stats")

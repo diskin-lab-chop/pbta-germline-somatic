@@ -35,9 +35,8 @@ histologies_file <- file.path(root_dir,
                            "results",
                            "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "sample-distribution", "input", 
-                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
 
 predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
 ```
@@ -66,7 +65,10 @@ predisposition_plp_bs <- plp %>%
 
 plp_predisposition_syndromes <- hist %>%
   filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_bs) %>%
-  left_join(plp[,c("Kids_First_Biospecimen_ID_normal", "gene_symbol_vep", "autogvp_call", "autogvp_call_reason", "HGVSc", "HGVSp")]) %>%
+  left_join(plp[,c("Kids_First_Biospecimen_ID_normal", "chr", "start",
+                   "ref", "alt", "gene_symbol_vep", "autogvp_call", 
+                   "autogvp_call_reason", "HGVSc", "HGVSp",
+                   "clinvar_variant_id")]) %>%
   left_join(predispositions) %>%
   filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %>%
   dplyr::rename("associated_syndrome" = `Associated Syndrome`,
@@ -75,9 +77,14 @@ plp_predisposition_syndromes <- hist %>%
     !str_detect(clinically_reported_syndrome, associated_syndrome) ~ "Yes",
     TRUE ~ "No"
   )) %>%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, plot_group, molecular_subtype, 
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+         sample_id_normal, sample_id_tumor,
+         plot_group, molecular_subtype, 
+         chr, start, alt, ref,
          gene_symbol_vep, autogvp_call, autogvp_call_reason, HGVSc, HGVSp,
-         associated_syndrome, clinically_reported_syndrome, incidental_finding)
+         clinvar_variant_id,
+         associated_syndrome, clinically_reported_syndrome, incidental_finding) %>%
+  dplyr::mutate(clinvar_variant_link = glue::glue("https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/"))
 ```
 
 Save output
