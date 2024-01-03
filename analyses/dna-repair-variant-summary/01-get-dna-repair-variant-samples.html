@@ -449,9 +449,8 @@ source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pr
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;sample-distribution&quot;, &quot;input&quot;, 
-                      &quot;merged_plp_res_popAF_filtered_plus_manual_11062023.tsv&quot;)</code></pre>
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)</code></pre>
 <p>Read plp variant file and filter for 838 samples in histology:</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE)
 

@@ -34,9 +34,9 @@ Set histology, PLP variant, and gene lists
 histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies",
                               "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "sample-distribution", "input", 
-                      "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+
 ```
 
 Read plp variant file and filter for 838 samples in histology: 

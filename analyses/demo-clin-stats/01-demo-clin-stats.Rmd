@@ -43,7 +43,8 @@ Set file paths
 ```{r set paths}
 cbtn_histologies_file <- file.path(root_dir, "analyses", "survival", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-all_plp_file <- file.path(root_dir, "analyses", "sample-distribution", "input", "merged_plp_res_popAF_filtered_plus_manual_11062023.tsv")
+all_plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
