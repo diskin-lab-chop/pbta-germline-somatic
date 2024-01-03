@@ -448,9 +448,8 @@ source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pr
 <p>Set paths for: - histologies file, - germline plp variant file</p>
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;, &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;sample-distribution&quot;, &quot;input&quot;, 
-                      &quot;merged_plp_res_popAF_filtered_plus_manual_11062023.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)
 
 predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)
 
@@ -473,7 +472,7 @@ syndromes &lt;- read_tsv(predispositions_file) %&gt;%
   )) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 28 Columns: 2
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -484,7 +483,7 @@ syndromes &lt;- read_tsv(predispositions_file) %&gt;%
 predispositions_path_review &lt;- read_tsv(predispositions_path_review_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 12 Columns: 9
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (9): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_F...
 ## 
@@ -567,10 +566,11 @@ predisposition_df %&gt;%
 <p>Load incidental findings summary, and change incidental findings to
 “No” when predisposition is recorded in path review</p>
 <pre class="r"><code>incidental_df &lt;- read_tsv(file.path(results_dir, &quot;incidental-findings-predisposition-variants.tsv&quot;))</code></pre>
-<pre><code>## Rows: 88 Columns: 12
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<pre><code>## Rows: 88 Columns: 20
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, plot_...
+## chr (18): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
+## dbl  (2): start, clinvar_variant_id
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
