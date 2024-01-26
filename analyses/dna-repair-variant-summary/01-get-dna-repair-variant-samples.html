@@ -11,6 +11,7 @@
 
 <meta name="author" content="Ryan Corbett, Jo Lynne Rokita" />
 
+<meta name="date" content="2023-01-01" />
 
 <title>Query germline samples for DNA repair variants</title>
 
@@ -422,60 +423,39 @@ font-size: 0.95em;
 <h1 class="title toc-ignore">Query germline samples for DNA repair
 variants</h1>
 <h4 class="author">Ryan Corbett, Jo Lynne Rokita</h4>
-<h4 class="date">2022-2023</h4>
+<h4 class="date">2023</h4>
 
 </div>
 
 
-<pre class="r"><code>library(data.table)
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::between()   masks data.table::between()
-## ✖ dplyr::filter()    masks stats::filter()
-## ✖ dplyr::first()     masks data.table::first()
-## ✖ dplyr::lag()       masks stats::lag()
-## ✖ dplyr::last()      masks data.table::last()
-## ✖ purrr::transpose() masks data.table::transpose()</code></pre>
-<pre class="r"><code>root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
-setwd(root_dir)
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+  library(ComplexHeatmap)
+  library(circlize)
+})
+
+root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
 
 data_dir &lt;- file.path(root_dir, &quot;data&quot;)
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;dna-repair-variant-summary&quot;)
 results_dir &lt;- file.path(analysis_dir, &quot;results&quot;)
 input_dir &lt;- file.path(analysis_dir, &quot;input&quot;)
-plot_dir &lt;- file.path(analysis_dir, &#39;plots&#39;)
+plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;)
 
 # source figure theme
 source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pre>
 <p>Set histology, PLP variant, and gene lists</p>
-<pre class="r"><code>histologies_file &lt;- file.path(root_dir, &#39;analyses&#39;, &#39;collapse-tumor-histologies&#39;,
-                              &#39;results&#39;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
+<pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
+                              &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(data_dir, &quot;pbta_germline_plp_calls.tsv&quot;)</code></pre>
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)</code></pre>
 <p>Read plp variant file and filter for 838 samples in histology:</p>
-<pre class="r"><code>hist &lt;- read_tsv(histologies_file)</code></pre>
-<pre><code>## Rows: 838 Columns: 29
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
-## dbl  (3): broad_histology_order, age_last_update_days, OS_days
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>germline &lt;- read_tsv(plp_file) %&gt;%
-  filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_normal)</code></pre>
-<pre><code>## Rows: 5658 Columns: 7
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (7): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE)
+
+germline &lt;- read_tsv(plp_file, show_col_types = FALSE) %&gt;%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)</code></pre>
 <p>Using DNA repair gene lists obtained from Knijnenburg et al. and
 Broad GSEA, identify patients with germline PLP variants in DNA repair
 genes and save results to separate outputs</p>
@@ -491,39 +471,38 @@ for (i in 1:length(repair_gene_source)){
   plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, output_names[i])
   
   # read in full DNA repair gene list and specific pathway gene lists
-  repair_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &#39;dna_repair_all.txt&#39;))
-  ber_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &#39;base_excision_repair.txt&#39;))
-  hr_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &#39;homologous_recombination.txt&#39;))
-  mmr_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &#39;mismatch_repair.txt&#39;))
-  ner_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &#39;nucleotide_excision_repair.txt&#39;))
-  nhej_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &#39;nonhomologous_end_joining.txt&#39;))
+  repair_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &quot;dna_repair_all.txt&quot;))
+  ber_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &quot;base_excision_repair.txt&quot;))
+  hr_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &quot;homologous_recombination.txt&quot;))
+  mmr_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &quot;mismatch_repair.txt&quot;))
+  ner_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &quot;nucleotide_excision_repair.txt&quot;))
+  nhej_genes &lt;- read_lines(file.path(input_dir, repair_gene_source[i], &quot;nonhomologous_end_joining.txt&quot;))
 
   # filter germline PLP variants for DNA repair genes 
   repair_germline &lt;- germline %&gt;%
-    filter(Hugo_Symbol %in% repair_genes) %&gt;%
+    filter(gene_symbol_vep %in% repair_genes) %&gt;%
   
-  #add columns indicating if gene is involved in specific DNA repair pathways
+  # add columns indicating if gene is involved in specific DNA repair pathways
     mutate(BER = case_when(
-      Hugo_Symbol %in% ber_genes ~ &#39;Yes&#39;,
-      TRUE ~ &#39;No&#39;)) %&gt;%
+      gene_symbol_vep %in% ber_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
     mutate(HR = case_when(
-      Hugo_Symbol %in% hr_genes ~ &#39;Yes&#39;,
-      TRUE ~ &#39;No&#39;)) %&gt;%
+      gene_symbol_vep %in% hr_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
     mutate(MMR = case_when(
-      Hugo_Symbol %in% mmr_genes ~ &#39;Yes&#39;,
-      TRUE ~ &#39;No&#39;)) %&gt;%
+      gene_symbol_vep %in% mmr_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
     mutate(NER = case_when(
-      Hugo_Symbol %in% ner_genes ~ &#39;Yes&#39;,
-      TRUE ~ &#39;No&#39;)) %&gt;%
+      gene_symbol_vep %in% ner_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
     mutate(NHEJ = case_when(
-      Hugo_Symbol %in% nhej_genes ~ &#39;Yes&#39;,
-      TRUE ~ &#39;No&#39;)) %&gt;%
+      gene_symbol_vep %in% nhej_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
     
     # write output to file
-    readr::write_tsv(file.path(results_dir, paste0(&#39;dna_repair_germline_variant_plp_&#39;, repair_gene_source[i], &#39;.tsv&#39;)))
+    readr::write_tsv(file.path(results_dir, glue::glue(&quot;dna_repair_germline_variant_plp_{repair_gene_source[i]}.tsv&quot;)))
 
   # define `plot_df` for plotting DNA repair pathway PLP variants by plot group 
-  
   plot_df &lt;- repair_germline %&gt;%
     filter(BER == &quot;Yes&quot;) %&gt;%
     bind_rows(repair_germline[repair_germline$HR == &quot;Yes&quot;,]) %&gt;%
@@ -533,24 +512,32 @@ for (i in 1:length(repair_gene_source)){
   
   
   plot_df &lt;- plot_df %&gt;%
-    bind_rows(repair_germline[!repair_germline$Kids_First_Biospecimen_ID %in% plot_df$Kids_First_Biospecimen_ID,]) %&gt;%
-    mutate(class = c(rep(&#39;BER&#39;, nrow(repair_germline[repair_germline$BER == &quot;Yes&quot;,])),
-                     rep(&#39;HR&#39;, nrow(repair_germline[repair_germline$HR == &quot;Yes&quot;,])),
-                     rep(&#39;MMR&#39;, nrow(repair_germline[repair_germline$MMR == &quot;Yes&quot;,])),
-                     rep(&#39;NER&#39;, nrow(repair_germline[repair_germline$NER == &quot;Yes&quot;,])),
-                     rep(&#39;NHEJ&#39;, nrow(repair_germline[repair_germline$NHEJ == &quot;Yes&quot;,])),
-                     rep(&#39;Other&#39;, nrow(repair_germline[!repair_germline$Kids_First_Biospecimen_ID %in% plot_df$Kids_First_Biospecimen_ID,]))
+    bind_rows(repair_germline[!repair_germline$Kids_First_Biospecimen_ID_normal %in% plot_df$Kids_First_Biospecimen_ID_normal,]) %&gt;%
+    mutate(class = c(rep(&quot;BER&quot;, nrow(repair_germline[repair_germline$BER == &quot;Yes&quot;,])),
+                     rep(&quot;HR&quot;, nrow(repair_germline[repair_germline$HR == &quot;Yes&quot;,])),
+                     rep(&quot;MMR&quot;, nrow(repair_germline[repair_germline$MMR == &quot;Yes&quot;,])),
+                     rep(&quot;NER&quot;, nrow(repair_germline[repair_germline$NER == &quot;Yes&quot;,])),
+                     rep(&quot;NHEJ&quot;, nrow(repair_germline[repair_germline$NHEJ == &quot;Yes&quot;,])),
+                     rep(&quot;Other&quot;, nrow(repair_germline[!repair_germline$Kids_First_Biospecimen_ID_normal %in% plot_df$Kids_First_Biospecimen_ID_normal,]))
                      )
            ) %&gt;%
-    rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %&gt;%
-    
+
     # add plot group 
-    left_join(hist[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;plot_group&quot;, &quot;plot_group_hex&quot;)], by = &#39;Kids_First_Biospecimen_ID_normal&#39;) %&gt;%
-    count(class, plot_group, plot_group_hex) %&gt;%
+    left_join(hist[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;plot_group&quot;, &quot;plot_group_hex&quot;)], by = &quot;Kids_First_Biospecimen_ID_normal&quot;) %&gt;%
+    # retain only one instace of pathway P/LP variant per pt
+    distinct(Kids_First_Biospecimen_ID_normal, class, .keep_all = T) %&gt;%
+    count(class, plot_group, plot_group_hex)
   
-    mutate(class = factor(class)) %&gt;% 
-    mutate(class = fct_relevel(class, c(&quot;BER&quot;, &quot;HR&quot;, &quot;MMR&quot;,
-                                       &quot;NER&quot;, &quot;NHEJ&quot;, &quot;Other&quot;)))
+    # define x axis order  
+    level_order &lt;- plot_df %&gt;%
+      group_by(class) %&gt;%
+      summarise(total_n = sum(n)) %&gt;%
+      arrange(total_n) %&gt;%
+      pull(class)
+    
+    plot_df &lt;- plot_df %&gt;%
+      dplyr::mutate(class = factor(class)) %&gt;%
+      dplyr::mutate(class = fct_relevel(class, level_order))
     
     # define plot group pallete 
     plot_group_palette &lt;- plot_df$plot_group_hex
@@ -559,18 +546,124 @@ for (i in 1:length(repair_gene_source)){
     # Create barplot of DNA repair pathway germline variant prevalence by plot group
     ggplot(plot_df, aes(x = class, y = n, fill = plot_group)) +
     geom_col(col = &quot;black&quot;, size = 0.4) +
-    labs(y = &#39;Number of patients with P/LP variant&#39;, x = &#39;Germline variant DNA repair class&#39;, fill = &#39;Tumor diagnosis&#39;) +
-    #geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;, color = &quot;black&quot;) +
-    #labs(y = &#39;count&#39;, x = &#39;germline variant class&#39;, fill = &#39;plot group&#39;) + 
+    labs(y = &quot;Number of patients with P/LP variant&quot;, x = &quot;Germline variant DNA repair class&quot;, fill = &quot;Tumor diagnosis&quot;) +
     scale_fill_manual(values = plot_group_palette) + 
     theme_Publication()
     
     ggsave(
     file.path(plot_dir, paste0(&quot;dna_repair_samples_by_plot_group_&quot;, repair_gene_source[i], &quot;.pdf&quot;)), 
     width = 24, height = 16, units = &quot;cm&quot;)
+    
+    # Add columns indicate presence/absence of DNA repair P-LP variants to histologies file
+    hist_repair &lt;- hist %&gt;%
+      dplyr::mutate(`All Repair` = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(BER = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$BER == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(HR = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$HR == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(MMR = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$MMR == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(NER = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$NER == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(NHEJ = case_when(
+        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$NHEJ == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(Other = case_when(
+        `All Repair` == &quot;Yes&quot; &amp; BER == &quot;No&quot; &amp; HR == &quot;No&quot; &amp; NER == &quot;No&quot; &amp; MMR == &quot;No&quot; &amp; NHEJ == &quot;No&quot; ~ &quot;Yes&quot;,
+        TRUE ~ &quot;No&quot;
+      )) %&gt;%
+      dplyr::mutate(plot_group = case_when(
+        plot_group %in% c(&quot;DIPG or DMG&quot;, &quot;Other high-grade glioma&quot;) ~ &quot;High-grade glioma&quot;,
+        TRUE ~ plot_group
+      ))
+
+    # Run DNA repair gene P-LP enrichment by histology group and repair pathway
+    
+    groups &lt;- unique(hist_repair$plot_group)
+    groups &lt;- groups[order(groups)]
+    paths &lt;- c(&quot;All Repair&quot;, &quot;BER&quot;, &quot;HR&quot;, &quot;MMR&quot;, &quot;NER&quot;, &quot;NHEJ&quot;, &quot;Other&quot;)
+    
+    # Define odds Ratios and p-value matrices
+    
+    enr_mat &lt;- matrix(0, length(groups), length(paths),
+                      dimnames = list(groups, paths))
+    pval_mat &lt;- enr_mat
+    
+    # Run Fisher&#39;s exact tests by histology and repair pathway
+    for (group in groups) {
+      
+      for (path in paths){
+        
+        in_hist_path &lt;- hist_repair %&gt;%
+          dplyr::filter(plot_group == group &amp; hist_repair[,path] == &quot;Yes&quot;) %&gt;%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        in_hist_no_path &lt;- hist_repair %&gt;%
+          dplyr::filter(plot_group == group &amp; hist_repair[,path] == &quot;No&quot;) %&gt;%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        no_hist_in_path &lt;- hist_repair %&gt;%
+          dplyr::filter(plot_group != group &amp; hist_repair[,path] == &quot;Yes&quot;) %&gt;%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        no_hist_no_path &lt;- hist_repair %&gt;%
+          dplyr::filter(plot_group != group &amp; hist_repair[,path] == &quot;No&quot;) %&gt;%
+          pull(Kids_First_Biospecimen_ID_normal)
+        
+        mat &lt;- matrix(c(length(in_hist_path), length(in_hist_no_path),
+                        length(no_hist_in_path), length(no_hist_no_path)),
+                      2, 2)
+        enr_mat[group, path] &lt;- fisher.test(mat)$estimate
+        pval_mat[group, path] &lt;- fisher.test(mat)$p.value
+      }
+    }
+  
+  # create text matrix of odds ratios and asterisk in cases of statistical significance
+  sig_mat &lt;- ifelse(pval_mat &lt; 0.05 &amp; enr_mat &gt; 1, &quot;*&quot;, &quot;&quot;)
+  
+  fill_mat &lt;- matrix(glue::glue(&quot;{round(enr_mat, 1)} {sig_mat}&quot;), 
+                     length(groups), length(paths))
+  
+  # Plot enrichment heatmap
+  
+  col_fun = colorRamp2(c(0, 6), c(&quot;white&quot;, &quot;orangered&quot;))
+  
+  pdf(file.path(plot_dir, paste0(&quot;dna_repair_enr_by_plot_group_&quot;, repair_gene_source[i], &quot;.pdf&quot;)),
+        width = 6, height = 6)
+  
+  enr_heatmap &lt;- Heatmap(enr_mat,
+                         name = &quot;Odds ratio&quot;,
+                         cluster_rows = F,
+                         cluster_columns = F,
+                         rect_gp = gpar(col = &quot;black&quot;, lwd = 2),
+                         col = col_fun,
+                         cell_fun = function(j, i, x, y, width, height, fill) {
+                         grid.text(sprintf(&quot;%s&quot;, fill_mat[i, j]), x, y, gp = gpar(fontsize = 10))
+                 })
+  
+  print(enr_heatmap)
+
+  dev.off()
+
 }</code></pre>
 <pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ## ℹ Please use `linewidth` instead.</code></pre>
+<pre><code>## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
+## ℹ Please use one dimensional logical vectors instead.
+## ℹ The deprecated feature was likely used in the dplyr package.
+##   Please report the issue at &lt;https://github.com/tidyverse/dplyr/issues&gt;.</code></pre>
 
 
 

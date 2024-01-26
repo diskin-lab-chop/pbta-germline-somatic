@@ -12,7 +12,7 @@ params:
     input: file
   germ_in:
     label: "germline file"
-    value: data/pbta_germline_plp_calls.tsv
+    value: data/pbta_germline_plp_calls_autogvp_abridged_11062023.tsv
     input: file
 editor_options: 
   chunk_output_type: inline
@@ -28,6 +28,7 @@ root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 analysis_dir <- file.path(root_dir, "analyses", "two-hits")
 results_dir <- file.path(analysis_dir, "results")
 data_dir <- file.path(root_dir, "data")
+plot_dir <- file.path(analysis_dir, "plots")
 
 # If the input and results directories do not exist, create it
 if (!dir.exists(results_dir)) {
@@ -35,7 +36,9 @@ if (!dir.exists(results_dir)) {
 }
 
 # add histologies file so we can subset maf
-histologies_file <- file.path(root_dir,"analyses", "collapse-tumor-histologies", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+histologies_file <- file.path(root_dir,"analyses", 
+                              "collapse-tumor-histologies", "results", 
+                              "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # remove cell lines from histologies file
 v12_hist_file <- file.path(data_dir,"histologies.tsv")
@@ -48,9 +51,10 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 
 ```{r load files}
 germline <- read_tsv(file.path(root_dir, params$germ_in)) %>%
-  dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID,
-                HGVSc_germ = HGVS.c,
-                HGVSp_germ = HGVS.p) 
+  dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
+                Hugo_Symbol = gene_symbol_vep,
+                HGVSc_germ = HGVSc,
+                HGVSp_germ = HGVSp) 
 
 integrated_hist <- read_tsv(histologies_file)
 v12_hist <- read_tsv(v12_hist_file, guess_max = 3000) %>%
@@ -60,8 +64,6 @@ v12_hist <- read_tsv(v12_hist_file, guess_max = 3000) %>%
 
 # CPGs
 cpg <- read_lines(cpg_file)
-multi_cpg <- c(glue::glue("{cpg};"),
-                glue::glue(";{cpg}"))
 
 # load maf
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
@@ -120,13 +122,12 @@ germline_somatic_gene_matches <- germline %>%
 
 ```{r gene hits by patient}
 collapsed <- germline %>%
-  filter(Hugo_Symbol %in% cpg | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
+  filter(Hugo_Symbol %in% cpg) %>%
    dplyr::mutate(Hugo_Symbol = case_when(
      !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
      TRUE ~ str_extract(Hugo_Symbol, paste(cpg, collapse = "|"))
    )) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
-  #mutate(path_call = paste(`L-LP_Call_final`, Reasoning_for_call, sep = ",")) %>%
   group_by(Kids_First_Biospecimen_ID_normal) %>%
   summarise(Hugo_Symbol = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
   left_join(integrated_hist)
@@ -142,5 +143,11 @@ collapsed_onco <- onco_hits_subset %>%
 collapsed_germ_som <- collapsed %>%
   left_join(collapsed_onco, by = "Kids_First_Biospecimen_ID_normal") %>%
   write_tsv(file.path(results_dir, "germline-somatic-collapsed-by-gene.tsv"))
+
+```
+
+Print session info
+```{r}
+sessionInfo()
 
 ```

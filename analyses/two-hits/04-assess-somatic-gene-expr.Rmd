@@ -41,74 +41,75 @@ set.seed(2023)
 
 Set input file paths
 ```{r}
-plp_file <- file.path(data_dir, "pbta_germline_plp_calls.tsv")
-plp_full_file <- file.path(input_dir, "PBTA-838-germline_plp-2023-02-05.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+
 
 hist_file <- file.path(data_dir, "histologies.tsv")
-hist_cohort_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies",
-                              "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+hist_cohort_file <- file.path(root_dir, "analyses", 
+                              "collapse-tumor-histologies", "results", 
+                              "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 expr_file <- file.path(data_dir, "gene-expression-rsem-tpm-collapsed.rds")
 
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+hgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "hgat_goi_list.tsv")
+lgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "lgat_goi_list.tsv")
+embryonal_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "embryonal-tumor_goi_list.tsv")
+other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "other_goi_list.tsv")
 
 ```
 
 # Load files
 ```{r load files}
-# Full P-LP results
-plp_full <- read_tsv(plp_full_file)
 
-hist <- read_tsv(hist_file)
-
-hist_cohort <- read_tsv(hist_cohort_file)
+hist <- read_tsv(hist_cohort_file)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
-multi_cpg <- c(glue::glue("{cpgs};"),
-               glue::glue(";{cpgs}"))
+hgat_drivers <- read_lines(hgat_file)
+lgat_drivers <- read_lines(lgat_file)
+embryonal_drivers <- read_lines(embryonal_file)
+other_drivers <- read_lines(other_file)
+somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_drivers)
+
 ```
 
 Read in germline plp file, and append coordinate and ref/alt allele info
 ```{r format germline data}
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
-  left_join(plp_full[,c("Kids_First_Biospecimen_ID", "Hugo_Symbol", "HGVS.c", "Chromosome", "Loc", "Reference", "Alternant_alleles")]) %>%
-  rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID) %>%
-  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", "plot_group", "molecular_subtype")]) %>%
-  dplyr::filter(!is.na(Chromosome))
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) 
 ```
 
 Extract tumor RNA IDs from hist file, and append to `germline`
 ```{r get matched tumor RNA IDs}
-hist_tumor <- hist %>%
-  dplyr::filter(sample_type == "Tumor" & experimental_strategy == "RNA-Seq" & Kids_First_Participant_ID %in% hist_cohort$Kids_First_Participant_ID) %>%
-  dplyr::rename("Kids_First_Biospecimen_ID_rna" = Kids_First_Biospecimen_ID)
+rna_specimens <- read_tsv(file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
+
+hist <- hist %>%
+  left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")])
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
-  filter(Hugo_Symbol %in% cpgs | grepl(paste0(multi_cpg, collapse = "|"), Hugo_Symbol)) %>%
-  dplyr::mutate(Hugo_Symbol = case_when(
-    !grepl(";", Hugo_Symbol) ~ Hugo_Symbol,
-    TRUE ~ str_extract(Hugo_Symbol, paste(cpgs, collapse = "|"))
-  )) %>%
-  left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")], 
-            by = "Kids_First_Participant_ID") %>%
+  filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
+                    "Kids_First_Biospecimen_ID_rna", "plot_group", "molecular_subtype")]) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_rna, 
                 plot_group, molecular_subtype,
-                Hugo_Symbol, `L-LP_Call_final`, Reasoning_for_call,
-                Chromosome, Loc, Reference, Alternant_alleles,
-                HGVS.c, HGVS.p) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, Hugo_Symbol, Loc, .keep_all = T)
+                Hugo_Symbol, autogvp_call, autogvp_call_reason,
+                chr, start, ref, alt,
+                HGVSc, HGVSp) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, Hugo_Symbol, start, .keep_all = T)
 ```
 
 Read in gene expression RDS file, and calculate z-scores
 ```{r format expression data}
 expr <- readRDS(expr_file)
 # subset `expr` to only include BS IDs in hist
-subset_expr <- expr[,intersect(hist_tumor$Kids_First_Biospecimen_ID_rna, colnames(expr))]
+subset_expr <- expr[,intersect(hist$Kids_First_Biospecimen_ID_rna, colnames(expr))]
 
 # log2(x + 1) transform the expression matrix
 log_expression <- log2(subset_expr + 1)
@@ -127,6 +128,9 @@ z_scored_expression <- z_scored_expression %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
   dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol)
 
+write_tsv(z_scored_expression,
+          file.path(results_dir, "pbta-germline-838-gene-expr-zscores.tsv"))
+
 ```
 
 Append expression z-scores to genes with P/LP variants across cohort, and write to output
@@ -134,22 +138,23 @@ Append expression z-scores to genes with P/LP variants across cohort, and write 
 germline_somatic_expr <- germline %>%
   left_join(z_scored_expression)
 
-write_tsv(germline_somatic_expr,
-          file.path(results_dir, "germline-somatic-expr.tsv"))
+germline_somatic_expr %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-expr-cpgs.tsv"))
+
+germline_somatic_expr %>%
+  dplyr::filter(!Hugo_Symbol %in% cpgs) %>%
+  write_tsv(file.path(results_dir, "germline-somatic-expr-somatic-non-cpgs.tsv"))
 
 ```
 
 For assessing differences in gene expression between patients with vs. without P/LP variants, we will take a single matched tumor RNA-seq sample for each patient from independent specimens file
 ```{r get mean expression by P/LP status}
-rna_specimens <- read_tsv(file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv"))
-
-hist_cohort <- hist_cohort %>%
-  left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID")]) %>%
-  dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
-
 z_scored_expression <- z_scored_expression %>%
   # Add BS normal ids
-  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_rna")]) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_rna", 
+                    "plot_group", "plot_group_hex")],
+            by = "Kids_First_Biospecimen_ID_rna") %>%
   dplyr::mutate(sample_gene = glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}")) %>%
   # add column indicating if patient has P/LP variant in gene
   dplyr::mutate(is_plp = case_when(
@@ -157,9 +162,7 @@ z_scored_expression <- z_scored_expression %>%
     TRUE ~ "No"
   )) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, Hugo_Symbol,
-           .keep_all = TRUE) %>%
-  # filter for samples in rna specimens
-  dplyr::filter(Kids_First_Biospecimen_ID_rna %in% rna_specimens$Kids_First_Biospecimen_ID)
+           .keep_all = TRUE)
 ```
 
 Calculate mean expression z-scores by gene and P/LP status, and identify genes with significant differences in expression between groups
@@ -171,6 +174,7 @@ mean_expr <- z_scored_expression %>%
 
 # filter cpg list for those with P/LP variant in 4 or more patients
 cpgs_test <- germline %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = T) %>%
   count(Hugo_Symbol) %>%
   filter(n >= 4) %>%
@@ -199,8 +203,6 @@ write_tsv(expr_diff_df,
 Plot gene expression z-scores of selected CPGs by P/LP status
 ```{r plot expression by P/LP status}
 z_scored_expression <- z_scored_expression %>%
-  # add plot group and plot group color to df
-  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_rna", "plot_group", "plot_group_hex")]) %>%
   # Only samples with P/LP variants in genes will be colored by plot group
   dplyr::mutate(plp_group = case_when(
     is_plp == "No" ~ NA_character_,
@@ -259,7 +261,7 @@ z_scored_expression %>%
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) + 
     labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
-    ylim(c(-3,4.5)) +
+    ylim(c(-3,5.75)) +
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
     facet_wrap(~group_gene, nrow = 2,
@@ -267,22 +269,19 @@ z_scored_expression %>%
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 10, height = 6)
+                   width = 10, height = 5)
 
 ```
 
 We can further separate samples based on whether matched tumors have detected oncogenic/likely oncogenic SNV, which may influence gene expression
 ```{r get ONCO SNV status}
-# read in cohort hist file with matched tumor genomic BS IDs
-hist_cohort <- read_tsv(file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
-                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
 # read in MAF file with oncokb annotation
 maf <- read_tsv(file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")) %>%
   filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic"))
 
 # append matched tumor genomic ID to z_scored_expression
 z_scored_expression <- z_scored_expression %>%
-  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor")])
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor")])
 
 z_scored_expression <- z_scored_expression %>%
   # add column indicating whether patient has detected oncogenic mutation in gene 
