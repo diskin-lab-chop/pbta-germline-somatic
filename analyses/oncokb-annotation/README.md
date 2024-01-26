@@ -4,7 +4,7 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 
 ## Usage
 
-`bash ONCOKB=<ONCOKB-key> run-oncokb-annotation.sh` 
+`ONCOKB=<ONCOKB-key> bash run-oncokb-annotation.sh` 
 
 NOTE: an ONCOKB access token is required when running this bash script 
 
