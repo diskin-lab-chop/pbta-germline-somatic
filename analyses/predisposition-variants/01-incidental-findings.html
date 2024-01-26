@@ -11,9 +11,9 @@
 
 <meta name="author" content="Ryan Corbett" />
 
-<meta name="date" content="2022-12-05" />
+<meta name="date" content="2023-01-01" />
 
-<title>Query causal variants in LFS and NF1 patients</title>
+<title>Prevalence of germline P-LP variants in predisposition-syndrome-associated genes</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -420,179 +420,105 @@ font-size: 0.95em;
 
 
 
-<h1 class="title toc-ignore">Query causal variants in LFS and NF1
-patients</h1>
+<h1 class="title toc-ignore">Prevalence of germline P-LP variants in
+predisposition-syndrome-associated genes</h1>
 <h4 class="author">Ryan Corbett</h4>
-<h4 class="date">2022-12-05</h4>
+<h4 class="date">2023</h4>
 
 </div>
 
 
-<p>Load libraries and set directory paths</p>
-<pre class="r"><code>library(data.table)
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ───────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::between()   masks data.table::between()
-## ✖ dplyr::filter()    masks stats::filter()
-## ✖ dplyr::first()     masks data.table::first()
-## ✖ dplyr::lag()       masks stats::lag()
-## ✖ dplyr::last()      masks data.table::last()
-## ✖ purrr::transpose() masks data.table::transpose()</code></pre>
-<pre class="r"><code>root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
-setwd(root_dir)
+<p>Load packages and set directories</p>
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(data.table)
+  library(tidyverse)
+  library(stringr)
+})
+
+root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
 
 data_dir &lt;- file.path(root_dir, &quot;data&quot;)
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;predisposition-variants&quot;)
-results_dir &lt;- file.path(analysis_dir, &quot;results&quot;)
 input_dir &lt;- file.path(analysis_dir, &quot;input&quot;)
+results_dir &lt;- file.path(analysis_dir, &quot;results&quot;)</code></pre>
+<p>Set paths for: - histologies file, - germline plp variant file -
+predisposition syndromes files</p>
+<pre class="r"><code>histologies_file &lt;- file.path(root_dir, 
+                           &quot;analyses&quot;, 
+                           &quot;collapse-tumor-histologies&quot;, 
+                           &quot;results&quot;,
+                           &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-histologies_file &lt;- file.path(data_dir,&quot;histologies.tsv&quot;)
-plp_file &lt;- file.path(data_dir, &quot;pbta_germline_plp_calls.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)
 
-tp53_plp_unfiltered_file &lt;- file.path(input_dir, &#39;tp53_all_plp_unfiltered.tsv&#39;)
-tp53_vus_filtered_file &lt;- file.path(input_dir, &#39;tp53_vus_filtered.tsv&#39;)</code></pre>
-<p>Read in histology and germline PLP files</p>
-<pre class="r"><code>hist &lt;- read_tsv(histologies_file, guess_max = 100000) %&gt;%
-  dplyr::select(Kids_First_Biospecimen_ID, Kids_First_Participant_ID, cancer_predispositions)</code></pre>
-<pre><code>## Rows: 39892 Columns: 46
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
+predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)</code></pre>
+<p>Read in histologies, germline PLP, and predispositions file</p>
+<pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) 
+
+plp &lt;- read_tsv(plp_file,show_col_types = FALSE)
+
+predispositions &lt;- read_tsv(predispositions_file) %&gt;%
+  dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
+<pre><code>## Rows: 28 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
-## chr (36): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
-## dbl (10): OS_days, age_last_update_days, cns_methylation_class_score, cns_me...
+## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>germline &lt;- read_tsv(plp_file) %&gt;%
-  left_join(hist, by = &#39;Kids_First_Biospecimen_ID&#39;)</code></pre>
-<pre><code>## Rows: 5658 Columns: 7
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (7): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final, ...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<p>Determine presence/absence of <em>TP53</em> germline PLP variant
-among LFS patients</p>
-<pre class="r"><code>lfs_tp53 &lt;- germline %&gt;%
-  mutate(LFS = ifelse(grepl(&#39;Li-Fraumeni&#39;, cancer_predispositions), &#39;Yes&#39;, &#39;No&#39;),
-         tp53_plp = ifelse(Hugo_Symbol == &quot;TP53&quot;, &#39;Yes&#39;, &#39;No&#39;)) %&gt;%
-  select(Kids_First_Participant_ID, LFS, tp53_plp) %&gt;%
-  distinct() %&gt;%
-  # Some patients have multiple TP53 variants, some PLP, some not - collapse these
-  group_by(Kids_First_Participant_ID, LFS) %&gt;%
-  summarise(tp53_plp = str_c(unique(tp53_plp), collapse = &quot;, &quot;)) %&gt;%
-  mutate(tp53_plp = ifelse(grepl(&#39;Yes&#39;, tp53_plp), &#39;Yes&#39;, &#39;No&#39;)) %&gt;%
-  distinct()</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;Kids_First_Participant_ID&#39;. You can override using the `.groups`
-## argument.</code></pre>
-<pre class="r"><code>table(lfs_tp53$LFS, lfs_tp53$tp53_plp)</code></pre>
-<pre><code>##      
-##        No Yes
-##   No  841   5
-##   Yes   3   4</code></pre>
-<p>Determine if LFS patients possess VUS or unfiltered TP53 germline
-variants</p>
-<pre class="r"><code>lfs_pts &lt;- unique(germline[germline$cancer_predispositions == &#39;Li-Fraumeni syndrome&#39; &amp; !is.na(germline$cancer_predispositions),]$Kids_First_Participant_ID)
-lfs_bs &lt;- unique(germline[germline$cancer_predispositions == &#39;Li-Fraumeni syndrome&#39; &amp; !is.na(germline$cancer_predispositions),]$Kids_First_Biospecimen_ID)
+<p>See which cancer predispositions are currently reported in
+histologies file:</p>
+<pre class="r"><code>table(hist$cancer_predispositions)</code></pre>
+<pre><code>## 
+##    Gorlin Syndrome (PTCH1, SUFU)      Li-Fraumeni syndrome (TP53) 
+##                                1                                7 
+## Neurofibromatosis, Type 1 (NF-1) Neurofibromatosis, Type 2 (NF-2) 
+##                               26                                7 
+##                  None documented                     Not Reported 
+##                              762                                8 
+##   Other inherited conditions NOS          Schwannomatosis (LZTR1) 
+##                               16                                1 
+##  Tuberous Sclerosis (TSC1, TSC2) 
+##                               10</code></pre>
+<p>Subset PLP file to include only variants in CPGs associated with
+syndromes in <code>predispositions</code>, and include
+<code>cancer_predispositions</code> column to indicate whether syndrome
+is currently reported.</p>
+<pre class="r"><code>predisposition_plp_bs &lt;- plp %&gt;%
+  filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
+  pull(Kids_First_Biospecimen_ID_normal)
 
-tp53_plp_unfiltered &lt;- read_tsv(tp53_plp_unfiltered_file) %&gt;%
-  dplyr::select(Kids_First_Biospecimen_ID, &#39;L-LP_Call_final&#39;,
-                Hugo_symbol, HGVS.c, HGVS.p) %&gt;%
-  left_join(hist, by = &#39;Kids_First_Biospecimen_ID&#39;) %&gt;%
-  filter(Kids_First_Participant_ID %in% lfs_pts)</code></pre>
-<pre><code>## Rows: 10 Columns: 10
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (9): Kids_First_Biospecimen_ID, L-LP_Call_final, Reasoning_for_call, Hug...
-## dbl (1): Loc
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>tp53_plp_unfiltered</code></pre>
-<pre><code>## # A tibble: 4 × 7
-##   Kids_First_Biospecimen_ID L-LP_Call_fi…¹ Hugo_…² HGVS.c HGVS.p Kids_…³ cance…⁴
-##   &lt;chr&gt;                     &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;  
-## 1 BS_7XEH55CB               Pathogenic     TP53    c.374… .      PT_YZ8… Li-Fra…
-## 2 BS_K4XGEGW0               Likely_pathog… TP53    c.375… .      PT_PF9… Li-Fra…
-## 3 BS_W75GCHPW               Pathogenic     TP53    c.380… .      PT_ESH… Li-Fra…
-## 4 BS_XHT3F34T               Pathogenic     TP53    c.454… p.Pro… PT_89X… Li-Fra…
-## # … with abbreviated variable names ¹​`L-LP_Call_final`, ²​Hugo_symbol,
-## #   ³​Kids_First_Participant_ID, ⁴​cancer_predispositions</code></pre>
-<pre class="r"><code>tp53_vus_filtered &lt;- read_tsv(tp53_vus_filtered_file) %&gt;%
-  dplyr::select(Kids_First_Biospecimen_ID, &#39;L-LP_Call_final&#39;,
-                Hugo_symbol, HGVS.c, HGVS.p) %&gt;%
-  left_join(hist, by = &#39;Kids_First_Biospecimen_ID&#39;) %&gt;%
-  filter(Kids_First_Participant_ID %in% lfs_pts)</code></pre>
-<pre><code>## Rows: 1698 Columns: 10
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (9): Kids_First_Biospecimen_ID, L-LP_Call_final, Reasoning_for_call, Hug...
-## dbl (1): Loc
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>tp53_vus_filtered</code></pre>
-<pre><code>## # A tibble: 11 × 7
-##    Kids_First_Biospecimen_ID L-LP_Call_f…¹ Hugo_…² HGVS.c HGVS.p Kids_…³ cance…⁴
-##    &lt;chr&gt;                     &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;  
-##  1 BS_5FP2H6VW               Uncertain_si… ATP1B2… c.*48… .      PT_PFP… Li-Fra…
-##  2 BS_5FP2H6VW               Uncertain_si… TP53    c.541… p.Arg… PT_PFP… Li-Fra…
-##  3 BS_5FP2H6VW               Uncertain_si… ATP1B2… c.*49… .      PT_PFP… Li-Fra…
-##  4 BS_7XEH55CB               Uncertain_si… TP53    c.-28… .      PT_YZ8… Li-Fra…
-##  5 BS_7XEH55CB               Uncertain_si… TP53    c.-59… .      PT_YZ8… Li-Fra…
-##  6 BS_7XEH55CB               Uncertain_si… ATP1B2… c.*39… .      PT_YZ8… Li-Fra…
-##  7 BS_APFT88Y3               Uncertain_si… TP53    c.993… .      PT_VZT… Li-Fra…
-##  8 BS_APFT88Y3               Uncertain_si… TP53    c.673… .      PT_VZT… Li-Fra…
-##  9 BS_W75GCHPW               Uncertain_si… ATP1B2… c.*31… .      PT_ESH… Li-Fra…
-## 10 BS_W75GCHPW               Uncertain_si… TP53    c.-44… .      PT_ESH… Li-Fra…
-## 11 BS_XHT3F34T               Uncertain_si… TP53    c.-41… .      PT_89X… Li-Fra…
-## # … with abbreviated variable names ¹​`L-LP_Call_final`, ²​Hugo_symbol,
-## #   ³​Kids_First_Participant_ID, ⁴​cancer_predispositions</code></pre>
-<pre class="r"><code>lfs_pts[!lfs_pts %in% c(tp53_vus_filtered$Kids_First_Participant_ID, tp53_plp_unfiltered$Kids_First_Participant_ID)]</code></pre>
-<pre><code>## [1] &quot;PT_DPVW4M1W&quot;</code></pre>
-<pre class="r"><code>lfs_bs[!lfs_bs %in% c(tp53_vus_filtered$Kids_First_Biospecimen_ID, tp53_plp_unfiltered$Kids_First_Biospecimen_ID)]</code></pre>
-<pre><code>## [1] &quot;BS_GTY5J0S4&quot;</code></pre>
-<pre class="r"><code>lfs_tp53 &lt;- tp53_plp_unfiltered %&gt;%
-  bind_rows(tp53_vus_filtered)
-
-write_tsv(lfs_tp53, file.path(results_dir, &#39;tp53_plp_vus_variants_lfs.tsv&#39;))</code></pre>
-<pre class="r"><code>nf1_nf1 &lt;- germline %&gt;%
-  mutate(NF1 = ifelse(grepl(&#39;NF-1&#39;, cancer_predispositions), &#39;Yes&#39;, &#39;No&#39;),
-         nf1_plp = ifelse(Hugo_Symbol == &quot;NF1&quot;, &#39;Yes&#39;, &#39;No&#39;)) %&gt;%
-  select(Kids_First_Participant_ID, NF1, nf1_plp) %&gt;%
-  distinct() %&gt;%
-  # Some patients have multiple TP53 variants, some PLP, some not - collapse these
-  group_by(Kids_First_Participant_ID, NF1) %&gt;%
-  summarise(nf1_plp = str_c(unique(nf1_plp), collapse = &quot;, &quot;)) %&gt;%
-  mutate(nf1_plp = ifelse(grepl(&#39;Yes&#39;, nf1_plp), &#39;Yes&#39;, &#39;No&#39;)) %&gt;%
-  distinct()</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;Kids_First_Participant_ID&#39;. You can override using the `.groups`
-## argument.</code></pre>
-<pre class="r"><code>table(nf1_nf1$NF1, nf1_nf1$nf1_plp)</code></pre>
-<pre><code>##      
-##        No Yes
-##   No  825   0
-##   Yes  11  17</code></pre>
-<pre class="r"><code>nf1_pts &lt;- unique(germline[grepl(&#39;NF-1&#39;, germline$cancer_predispositions),]$Kids_First_Participant_ID)
-nf1_bs &lt;- unique(germline[grepl(&#39;NF-1&#39;, germline$cancer_predispositions),]$Kids_First_Biospecimen_ID)
-
-nf1 &lt;- germline %&gt;%
-  filter(Kids_First_Participant_ID %in% nf1_pts &amp; Hugo_Symbol == &#39;NF1&#39;)
-
-nf1_pts[!nf1_pts %in% nf1$Kids_First_Participant_ID]</code></pre>
-<pre><code>##  [1] &quot;PT_BNARR0N6&quot; &quot;PT_3CHB9PK5&quot; &quot;PT_1H2REHT2&quot; &quot;PT_KCTZZA3G&quot; &quot;PT_X1PRY0FC&quot;
-##  [6] &quot;PT_MXASQ2GW&quot; &quot;PT_XA8ASFJK&quot; &quot;PT_9ZY739FB&quot; &quot;PT_4ZSR5DY8&quot; &quot;PT_ZRQQC2S9&quot;
-## [11] &quot;PT_0FKQ3XGV&quot;</code></pre>
-<pre class="r"><code>nf1_bs[!nf1_bs %in% nf1$Kids_First_Biospecimen_ID]</code></pre>
-<pre><code>##  [1] &quot;BS_05H4Y3ZF&quot; &quot;BS_0754AZX0&quot; &quot;BS_0KKH9VKP&quot; &quot;BS_0YV62XEX&quot; &quot;BS_2QRTD3RQ&quot;
-##  [6] &quot;BS_30WN9M3C&quot; &quot;BS_CZGNQ9KQ&quot; &quot;BS_E45WEXMB&quot; &quot;BS_PFE6M2EW&quot; &quot;BS_QX8PTX5X&quot;
-## [11] &quot;BS_X9DDS508&quot;</code></pre>
-<pre class="r"><code>write_tsv(nf1, file.path(results_dir, &#39;nf1_plp_nf1_patients.tsv&#39;))</code></pre>
+plp_predisposition_syndromes &lt;- hist %&gt;%
+  filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_bs) %&gt;%
+  left_join(plp[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;chr&quot;, &quot;start&quot;,
+                   &quot;ref&quot;, &quot;alt&quot;, &quot;gene_symbol_vep&quot;, &quot;autogvp_call&quot;, 
+                   &quot;autogvp_call_reason&quot;, &quot;HGVSc&quot;, &quot;HGVSp&quot;,
+                   &quot;clinvar_variant_id&quot;)]) %&gt;%
+  left_join(predispositions) %&gt;%
+  filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
+  dplyr::rename(&quot;associated_syndrome&quot; = `Associated Syndrome`,
+                &quot;clinically_reported_syndrome&quot; = cancer_predispositions) %&gt;%
+  dplyr::mutate(incidental_finding = case_when(
+    !str_detect(clinically_reported_syndrome, associated_syndrome) ~ &quot;Yes&quot;,
+    TRUE ~ &quot;No&quot;
+  )) %&gt;%
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+         sample_id_normal, sample_id_tumor,
+         plot_group, molecular_subtype, 
+         chr, start, alt, ref,
+         gene_symbol_vep, autogvp_call, autogvp_call_reason, HGVSc, HGVSp,
+         clinvar_variant_id,
+         associated_syndrome, clinically_reported_syndrome, incidental_finding) %&gt;%
+  dplyr::mutate(clinvar_variant_link = glue::glue(&quot;https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/&quot;))</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<pre><code>## Warning in left_join(., plp[, c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;chr&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
+## ℹ Row 1 of `x` matches multiple rows.
+## ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
+<pre><code>## Joining with `by = join_by(gene_symbol_vep)`</code></pre>
+<p>Save output</p>
+<pre class="r"><code>write_tsv(plp_predisposition_syndromes,
+          file.path(results_dir, &quot;incidental-findings-predisposition-variants.tsv&quot;))</code></pre>
 
 
 
