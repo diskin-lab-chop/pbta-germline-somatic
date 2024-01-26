@@ -4,7 +4,7 @@ This module creates distribution plots of P-LP variants across 196 cancer predis
 
 ## Usage
 
-`Rscript -e "rmarkdown::render('01-create-variant-distribution-plots.Rmd')` 
+`Rscript -e "rmarkdown::render('01-create-variant-distribution-plots.Rmd')"` 
 
 ## Folder content 
 
