@@ -20,14 +20,14 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 
 6. `06-proteomics.Rmd`; pulls proteomics and phospoproteomics data from CPTAC and HOPE data sets, and identifies differential protein and phosphoprotein expression associated with germline CPG P/LP variants. 
 
-6. `input/` directory contains the following files: 
+7. `input/` directory contains the following files: 
   - `splice_events_germline_pbta_cpgs_only.tsv.gz`; splice events and PSI values for CPGs in PBTA germline samples
   - `HOPE_Harmonized_G_H_P_Proteome_UMich_RefSeq_Sinai_imputed_02-22-2022_V2.tsv`; HOPE proteomics total protein abundances
   - `PBT_Harmonized_G_H_P_Proteome_UMich_RefSeq_Sinai_imputed_06302022_exclude_bridging_V2.tsv`; CPTAC proteomics total protein abundances
   - `hope-protein-imputed-phospho-expression.tsv`; HOPE total phosphoprotein abundances 
   - `histologies-base.tsv`; v13 histologies base file (will be removed here following v7 data release)
 
-7. `results/` directory contains the following files: 
+8. `results/` directory contains the following files: 
   - `pbta-oncokb-oncogenic-maf.tsv`; subset of oncoKB results containing only oncogenic/likely oncogenic SNVs
   - `germline-somatic-two-gene-hits.tsv`; table of patients possessing germline P/LP variant and oncogenic/likely oncogenic SNV in same CPG
   - `germline-somatic-collapsed-by-gene.tsv`; summary of oncogenic/likely oncogenic SNVs in CPGs by patient and matched tumor sample
@@ -43,7 +43,7 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
   - `germline-somatic-proteomics-phosphoproteomics-cpgs.tsv`; protein and phosphoprotein abundance z-scores in patietns with germline P/LP variant in same CPG. 
   
   
-8. `plots/` directory contains the following files: 
+9. `plots/` directory contains the following files: 
   - `cpg-LOH-plp-vs-noplp.pdf`; box plots of LOH scores by P/LP status for select CPGs.
   - `hist-gene-LOH-plp-vs-noplp.pdf`; box plots of LOH scores by P/LP status for select CPGs within histologies.
   - `cpg-LOH-plp-vs-noplp.pdf`; box plots of LOH score by germline P/LP status for select CPGs.
@@ -72,11 +72,10 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 ├── 06-proteomics.nb.html
 ├── README.md
 ├── input
-│   ├── HOPE_Harmonized_G_H_P_Proteome_UMich_RefSeq_Sinai_imputed_02-22-2022_V2.tsv
-│   ├── PBTA-838-germline_plp-2023-02-05.tsv
-│   ├── PBT_Harmonized_G_H_P_Proteome_UMich_RefSeq_Sinai_imputed_06302022_exclude_bridging_V2.tsv
+│   ├── cptac-protein-imputed-prot-expression-abundance.tsv.gz
 │   ├── histologies-base.tsv
-│   ├── hope-protein-imputed-phospho-expression.tsv
+│   ├── hope-protein-imputed-phospho-expression-abundance.tsv.gz
+│   ├── hope-protein-imputed-prot-expression-abundance.tsv.gz
 │   └── splice_events_germline_pbta_cpgs_only.tsv.gz
 ├── plots
 │   ├── ATM-expr-by-plp-onco-snv-status.pdf
