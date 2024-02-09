@@ -237,8 +237,8 @@ for (each in names(plplists)){
 ```
 Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
-plp_full <- read_tsv(file.path(data_dir,
-                               "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")) %>%
+plp_full <- read_tsv(file.path(input_dir,
+                               "pbta_germline_plp_calls_autogvp_full_gnomad_popmax.tsv")) %>%
   dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref)) %>%
   dplyr::filter(gene_symbol_vep %in% cpg)
 
