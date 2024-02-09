@@ -26,7 +26,7 @@ PT_Z9QE51C3	BS_0TX5YDGH	7316-373	Male	BS_FNF1TCSW	7316-373	Initial CNS Tumor	Gan
 PT_DFQAH7RS	BS_0V76MCTW	7316-51	Male	BS_ZKFEMJZ8	7316-2760	Recurrence	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
 PT_1DSX4VJM	BS_0WDJRMAB	7316-2031	Male	BS_KYPMZZSY	7316-1708	Deceased	Brainstem glioma- Diffuse intrinsic pontine glioma	anaplastic astrocytoma, who grade iii, egfr positive; consistent with diffuse intrinsic pontine glioma (dipg)	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_4Z34K4XB	BS_0X88TX85	7316-1991	Female	BS_P36C0ABE	7316-733	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma (who grade i)	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_R6WWH1QX	BS_0Y1Y2WA4	7316-1999	Female	BS_1AZ8YJSH	7316-423	Initial CNS Tumor	Ependymoma	ependymoma who gr 2	Ependymoma	Ependymal tumor	EPN, ST ZFTA
+PT_R6WWH1QX	BS_0Y1Y2WA4	7316-1999	Female	BS_1AZ8YJSH	7316-423	Initial CNS Tumor	Ependymoma	anaplastic ependymoma, who gr 2	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_PJFTMJ6H	BS_0YFQF89N	7316-2150	Female	BS_SSYNTXDC	7316-2150	Initial CNS Tumor	Ewings Sarcoma	ewing's sarcoma	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
 PT_0F3RHT8J	BS_0YJF1F95	7316-3194	Female	BS_354DTKHE	7316-2673	Initial CNS Tumor	Meningioma	clear cell meningioma, who grade ii	Meningioma	Meningioma	NA
 PT_KCTZZA3G	BS_0YV62XEX	7316-216	Male	BS_EDCQ4M0R	7316-216	Initial CNS Tumor	Neurofibroma/Plexiform	plexiform neurofibroma	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
@@ -45,11 +45,11 @@ PT_GCKT4FJX	BS_1GMX5YEM	7316-3919	Female	BS_2HNHCSNB	7316-3919	Initial CNS Tumor
 PT_S21ZTKPS	BS_1HQWNZCB	7316-362	Female	BS_P3EVK3C2	7316-362	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, other MAPK
 PT_DV8XECKA	BS_1K0Q5YZY	7316-2779	Male	BS_10HD18B8	7316-2779	Initial CNS Tumor	Teratoma	immature teratoma	Teratoma	Germ cell tumor	NA
 PT_ZR8MQRVG	BS_1KT7DF0G	7316-346	Female	BS_MT5ZSRG4	7316-346	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_JN3S17B3	BS_1MMZN94J	7316-1692	Female	BS_1EYKDS0Z	7316-1693	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_JN3S17B3	BS_1MMZN94J	7316-1692	Female	BS_1EYKDS0Z	7316-1693	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_44HPG5YT	BS_1NPNHFPC	7316-3067	Female	BS_BZWM455T	7316-3067	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
-PT_99S5BPE3	BS_1NWVFBTQ	7316-144	Male	BS_83MSWR59	7316-292	Initial CNS Tumor	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_99S5BPE3	BS_1NWVFBTQ	7316-144	Male	BS_83MSWR59	7316-292	Initial CNS Tumor	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_1DRAVX4S	BS_1Q9PXTH7	7316-1968	Female	BS_GWPJKM7G	7316-1968	Initial CNS Tumor	Rhabdomyosarcoma	alveolar rhabdomyosarcoma	Rhabdomyosarcoma	Mesenchymal non-meningothelial tumor	NA
-PT_BDM0M83S	BS_1RA2RC8A	7316-3072	Male	BS_M16CDR44	7316-3072	Initial CNS Tumor	Pineoblastoma	pineoblastoma, who grade iv	Pineoblastoma	Tumor of pineal region	NA
+PT_BDM0M83S	BS_1RA2RC8A	7316-3072	Male	BS_M16CDR44	7316-3072	Initial CNS Tumor	Pineoblastoma	pineoblastoma, who grade iv	Pineoblastoma	Tumor of pineal region	PB, To be classified
 PT_AXMVG8QE	BS_1VKV3MYJ	7316-2732	Female	BS_Q88059DJ	7316-2732	Initial CNS Tumor	Meningioma	meningioma	Meningioma	Meningioma	NA
 PT_17W3GJPT	BS_1XMBRB6K	7316-2738	Male	BS_ETTZM63Y	7316-2306	Initial CNS Tumor	Ganglioglioma	ganglioglioma (who grade i)	Ganglioglioma	Low-grade astrocytic tumor	GNG, FGFR
 PT_PKP1250P	BS_1YCS44MN	7316-3807	Female	BS_ZBWQG7VR	7316-2556	Recurrence	Ependymoma	ependymoma with clear cell features, who grade ii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
@@ -73,7 +73,7 @@ PT_5GQ76YZJ	BS_2K76WTCZ	7316-168	Male	BS_WXKCR17Q	7316-168	Initial CNS Tumor	Low
 PT_DMMKT7X1	BS_2PBM9RA8	7316-1635	Female	BS_QMG7XNEW	7316-1635	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pleomorphic xantoastrocytoma (who ii)	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E
 PT_83ECX0KT	BS_2Q12G53Y	7316-8816	Female	BS_R7H6ZV8M	7316-8816	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_0PT33SCF	BS_2QF33SK7	7316-1100	Female	BS_KBPBCWA0	7316-1100	Recurrence	Supratentorial or Spinal Cord PNET	pnet, maturing treatment induced	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
-PT_X1PRY0FC	BS_2QRTD3RQ	7316-1779	Male	BS_E2RXQ3JW	7316-1779	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, NF1-germline
+PT_X1PRY0FC	BS_2QRTD3RQ	7316-1779	Male	BS_E2RXQ3JW	7316-1779	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_WP871F5S	BS_2TZNPK1V	7316-1766	Male	BS_XWQTX5HH	7316-3336	Initial CNS Tumor	Hemangioblastoma	hemangioblastoma, who grade ii	Hemangioblastoma	Mesenchymal non-meningothelial tumor	NA
 PT_KQK98ZVP	BS_2V4BP5Q9	7316-1803	Male	BS_YMDPFK0V	7316-1803	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_R4T1V1K4	BS_2ZKBYF95	7316-2784	Male	BS_23ZE42Q3	7316-3206	Deceased	Brainstem glioma- Diffuse intrinsic pontine glioma	diffuse midline glioma, h3k27m mutant who grade iv	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
@@ -81,25 +81,25 @@ PT_MXASQ2GW	BS_30WN9M3C	7316-3558	Female	BS_922YMFYK	7316-3558	Progressive	Neuro
 PT_NV584F7Q	BS_318P54W7	7316-3192	Female	BS_X7QJCVJB	7316-3192	Initial CNS Tumor	Medulloblastoma	classic medulloblastoma, non-wnt/non-shh, who grade iv	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_BTTM2HS5	BS_319879RE	7316-2783	Female	BS_PFXDWV9R	7316-2287	Initial CNS Tumor	Medulloblastoma	medulloblastoma, anaplastic/large  cell type.	Medulloblastoma	Embryonal tumor	MB, Group3
 PT_3T3VGWC6	BS_31E3HZPZ	7316-372	Female	BS_10AD3EFX	7316-375	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
-PT_H4H6RD7Y	BS_345M1B93	7316-1072	Male	BS_MS87PMR7	7316-1072	Initial CNS Tumor	Glial-neuronal tumor NOS	rathke cleft cyst	Glial-neuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, To be classified
+PT_H4H6RD7Y	BS_345M1B93	7316-1072	Male	BS_MS87PMR7	7316-1072	Initial CNS Tumor	Glial-neuronal tumor NOS	rathke cleft cyst	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, To be classified
 PT_GYJ97915	BS_358WF90F	7316-1093	Male	BS_HM5N78GV	7316-1093	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dysembryoplastic neuroepithelial tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
-PT_QDGVJKE0	BS_35M8GBJ4	7316-2140	Male	BS_EP25TTAG	7316-2140	Progressive	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, IDH, TP53
+PT_QDGVJKE0	BS_35M8GBJ4	7316-2140	Male	BS_EP25TTAG	7316-2140	Recurrence	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, IDH, TP53
 PT_YVG4H0F1	BS_36PAKW92	7316-3070	Female	BS_XCNGQ25H	7316-3070	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_WGVEF96B	BS_36YFSGDX	7316-3219	Female	BS_TQ0J7WJQ	7316-3219	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Diffuse Astrocytoma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_3VCS1PPF	BS_370TKZ48	7316-198	Male	BS_B4P1NP87	7316-198	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, SP-MYCN
-PT_98QMQZY7	BS_382HZBG4	7316-464	Female	BS_JC8YV5V9	7316-464	Initial CNS Tumor	Supratentorial or Spinal Cord PNET	pnet - pineoblastoma with calcification	Pineoblastoma	Tumor of pineal region	CNS Embryonal, NOS
+PT_98QMQZY7	BS_382HZBG4	7316-464	Female	BS_JC8YV5V9	7316-464	Initial CNS Tumor	Supratentorial or Spinal Cord PNET	pnet - pineoblastoma with calcification	Pineoblastoma	Tumor of pineal region	PB, Group 1
 PT_7F485CXV	BS_38D5GXR1	7316-1114	Female	BS_1RF75MK2	7316-1114	Initial CNS Tumor	Ganglioglioma	ganglioglioma grade i	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
 PT_EZW3S4F1	BS_39FV4VJR	7316-1961	Male	BS_QBZDQX7A	7316-1961	Initial CNS Tumor	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, PF A
 PT_CB1XPA3W	BS_3A55810M	7316-1767	Female	BS_KCN7NG92	7316-1767	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, NF1-somatic
 PT_1Z015H6V	BS_3BC5EX6K	7316-3516	Male	BS_A3EV6FXK	7316-3516	Initial CNS Tumor	Ependymoma	myxopapillary ependymoma	Ependymoma	Ependymal tumor	EPN, MPE
 PT_GQZ84ACS	BS_3C702XH4	7316-487	Male	BS_3ZMH8578	7316-487	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_GNKRMTQY	BS_3CK0QVDX	7316-3861	Female	BS_H1MNXNHB	7316-3856	Initial CNS Tumor	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	NA
+PT_GNKRMTQY	BS_3CK0QVDX	7316-3861	Female	BS_H1MNXNHB	7316-3856	Initial CNS Tumor	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	PB, To be classified
 PT_5X061J42	BS_3DHNFFV6	7316-2149	Male	BS_Z5VJCFNP	7316-2149	Initial CNS Tumor	Germinoma	germinoma	Germinoma	Germ cell tumor	NA
 PT_V9WP047R	BS_3DNSBVGH	7316-221	Male	BS_V6HKXX1Z	7316-221	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_BDNE55YT	BS_3E3VYSXT	7316-1710	Male	BS_Y43VC4VG	7316-1710	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_RRT2E7HK	BS_3J179Q27	7316-136	Male	BS_JHGFJR3D	7316-136	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pleomorphic xanthoastrocytoma (pxa)	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E
 PT_KZ56XHJT	BS_3PNWA7WT	7316-3217	Female	BS_H8NWA41N	7316-3217	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Anaplastic Astrocytoma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
-PT_20ZM6THA	BS_3X8GAQ2M	7316-3629	Female	BS_9X9E86DY	7316-3629	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioneuronal tumor	Glial-neuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, other MAPK
+PT_20ZM6THA	BS_3X8GAQ2M	7316-3629	Female	BS_9X9E86DY	7316-3629	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioneuronal tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, other MAPK
 PT_CQS4V67V	BS_3XYM6DSZ	7316-9212	Unknown	BS_1SDWBXX8	7316-9212	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma	Diffuse hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	DHG, H3 G35, TP53
 PT_R1N5M7NH	BS_3YXGSTJ7	7316-3557	Male	BS_886M7JMG	7316-3557	Recurrence	Other	arteriovenous malformation	NA	Non-tumor	NA
 PT_MA0J8DSN	BS_408757Q1	7316-39	Male	BS_T99M7842	7316-39	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dysembryoplastic neuroepithelial tumor i	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
@@ -108,11 +108,11 @@ PT_C86SGM7B	BS_40RVSGZF	7316-8336	Female	BS_G5VS97AD	7316-8336	Initial CNS Tumor
 PT_06H29FCG	BS_43F0DV8Y	7316-1944	Female	BS_0W8AWY10	7316-1944	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, To be classified
 PT_J4MWGQFQ	BS_44WJZ1HP	7316-2071	Female	BS_E8SJ36A6	7316-2071	Initial CNS Tumor	Meningioma	meningioma, meningothelial type, who grade i	Meningioma	Meningioma	NA
 PT_AP9P5D7N	BS_44WMSY17	7316-1117	Male	BS_V79WFJ6N	7316-1117	Recurrence	Dysembryoplastic neuroepithelial tumor (DNET)	recurrent dnt	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
-PT_3NM45TQ8	BS_45N760PZ	7316-1077	Male	BS_N2JD3VX6	7316-1077	Initial CNS Tumor	Ganglioglioma	ganglioglioma who grade i	Ganglioglioma	Low-grade astrocytic tumor	GNG, FGFR
+PT_3NM45TQ8	BS_45N760PZ	7316-1077	Male	BS_N2JD3VX6	7316-1077	Initial CNS Tumor	Ganglioglioma	ganglioglioma who grade i	Ganglioglioma	Low-grade astrocytic tumor	GNG, RTK, FGFR
 PT_TB8HPJBN	BS_45VHDFRD	7316-2663	Male	BS_G2016BE5	7316-2663	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_8ATS9ATC	BS_46MV2DSY	7316-8754	Female	BS_X1TRW9RH	7316-8754	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	HGG	Diffuse hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	DHG, H3 G35, TP53
 PT_12JTZFC2	BS_49Z8WJP2	7316-3504	Female	BS_P0KQFXNC	7316-3504	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_8GN3TQRM	BS_4AM9C504	7316-2091	Male	BS_QQP17PDQ	7316-2069	Recurrence	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma, who grade iv	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_8GN3TQRM	BS_4AM9C504	7316-2091	Male	BS_QQP17PDQ	7316-2069	Recurrence	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma, who grade iv	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
 PT_4RJ2EATN	BS_4CVBQP6X	7316-1653	Female	BS_F7KYPE79	7316-1653	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
 PT_0WMP712K	BS_4EAVBDKR	7316-922	Female	BS_KAZENYZE	7316-922	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_2BJF83GQ	BS_4EK9WVET	7316-1745	Female	BS_J5J0EA7Y	7316-1745	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	recurrent low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, NF1-somatic, NF1-germline
@@ -123,9 +123,9 @@ PT_2PRV78FX	BS_4KXBM5J8	7316-176	Male	BS_17AXPP1Y	7316-176	Initial CNS Tumor	Low
 PT_SMDEQVHJ	BS_4RT8H37A	7316-119	Male	BS_XSWF2MR1	7316-119	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	grade ii astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_CK41DW03	BS_4RV40GPD	7316-66	Male	BS_3AERRZQT	7316-329	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma (who grade i)	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_6BX46NVR	BS_4RVAJBCR	7316-3893	Male	BS_CFPWSZB5	7316-3893	Progressive	Ependymoma	anaplastic ependymoma, rela fusion positive, who grade iii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
-PT_S2SQJVGK	BS_4T3BZ2F6	7316-344	Female	BS_YGQS4660	7316-442	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
+PT_S2SQJVGK	BS_4T3BZ2F6	7316-344	Female	BS_YGQS4660	7316-442	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	recurrent pilocytic astrocytoma with myxoid features	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
 PT_E8XM8JFZ	BS_4T617TSG	7316-67	Male	BS_B558FJXC	7316-324	Initial CNS Tumor	Ganglioglioma	ganglioglioma (who grade ii)	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
-PT_D9NTSYSC	BS_4TEXRBCG	7316-3064	Male	BS_9BGCH82S	7316-3064	Initial CNS Tumor	Glial-neuronal tumor NOS	glial tumor	Glial-neuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, other MAPK, CDKN2A/B
+PT_D9NTSYSC	BS_4TEXRBCG	7316-3064	Male	BS_9BGCH82S	7316-3064	Initial CNS Tumor	Glial-neuronal tumor NOS	glial tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, other MAPK, CDKN2A/B
 PT_N9SG16EC	BS_4XTPR2VM	7316-1958	Female	BS_FHFVCQ41	7316-1958	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_N9KYV4WB	BS_4Z2E5K9N	7316-1796	Female	BS_9PQPZPGM	7316-749	Initial CNS Tumor	Ependymoma	ependymoma, who grade ii	Ependymoma	Ependymal tumor	EPN, PF A
 PT_XY404K0D	BS_4ZRXYY4Z	7316-1782	Male	BS_6SA5B35V	7316-1782	Initial CNS Tumor	Neurocytoma	neurocytoma	Extraventricular neurocytoma	Neuronal and mixed neuronal-glial tumor	EVN
@@ -139,7 +139,7 @@ PT_C71G98K3	BS_5AJNFDME	7316-8658	Female	BS_WPV7N6NQ	7316-8658	Initial CNS Tumor
 PT_H6E09982	BS_5AXMM8V5	7316-5	Male	BS_9D39MFHT	7316-5	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, WNT
 PT_EF398HVC	BS_5B7YXYEH	7316-1975	Male	BS_1B4Q7CNG	7316-1975	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_EC8R84NM	BS_5BCMBVDR	7316-341	Female	BS_CXDKK6KS	7316-341	Initial CNS Tumor	Craniopharyngioma	craniopharygioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
-PT_7E3V3JFX	BS_5BZXVKWT	7316-2067	Female	BS_G16NM5WJ	7316-506	Initial CNS Tumor	Ependymoma	ependymoma who gr 2	Ependymoma	Ependymal tumor	EPN, PF A
+PT_7E3V3JFX	BS_5BZXVKWT	7316-2067	Female	BS_G16NM5WJ	7316-506	Initial CNS Tumor	Ependymoma	ependymoma who gr 2	Ependymoma	Ependymal tumor	EPN, To be classified
 PT_NBY8PZR9	BS_5C23V7CC	7316-871	Male	BS_Z9NCH2XA	7316-871	Initial CNS Tumor	Supratentorial or Spinal Cord PNET	supratentorial pnet	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
 PT_7VPSS2SN	BS_5ECS2BQT	7316-3621	Female	BS_ZH6PC8KM	7316-3621	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dnet	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
 PT_6TZR2DH1	BS_5ESEHG0A	7316-100	Female	BS_SFZ3A07S	7316-100	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma, adamantinomatus type	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
@@ -156,18 +156,18 @@ PT_V0TQ0P66	BS_5VSK2DHE	7316-129	Male	BS_2AWCKNB3	7316-129	Initial CNS Tumor	Men
 PT_25Z2NX27	BS_5W0BW97W	7316-355	Female	BS_W50WEJE7	7316-1462	Initial CNS Tumor	Other	ossifying fibroma	NA	Benign tumor	NA
 PT_ZD9AYB6F	BS_5WZE7TYQ	7316-3323	Female	BS_245CTSH9	7316-3323	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_9YMRNZHH	BS_5YCVM9WF	7316-2178	Male	BS_F8KR1QWE	7316-2178	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
-PT_DFCZAG9T	BS_5YXP6R6Q	7316-224	Male	BS_4NPEMNAD	7316-224	Initial CNS Tumor	Neuroblastoma	neuroblastoma, metastatic	Neuroblastoma	Embryonal tumor	NA
+PT_DFCZAG9T	BS_5YXP6R6Q	7316-224	Male	BS_4NPEMNAD	7316-224	Initial CNS Tumor	Neuroblastoma	neuroblastoma, metastatic	Neuroblastoma	Embryonal tumor	NBL, MYCN amplified
 PT_2BTC5TEN	BS_601994WV	7316-2183	Female	BS_AQQY8HMR	7316-2183	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_V8714N9H	BS_617JM3FD	7316-2322	Male	BS_H1K33JVK	7316-2322	Initial CNS Tumor	Medulloblastoma	medulloblastoma, who grade iv	Medulloblastoma	Embryonal tumor	MB, Group3
 PT_R10BSB9F	BS_618WFRXY	7316-1965	Male	BS_C5RDMCCS	7316-1965	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, wildtype
-PT_GY99ZJHV	BS_61AK2H2N	7316-1654	Male	BS_17FVWMNV	7316-1654	Initial CNS Tumor	Choroid plexus papilloma	atypical choroid plexus papilloma	Atypical choroid plexus papilloma	Choroid plexus tumor	NA
+PT_GY99ZJHV	BS_61AK2H2N	7316-1654	Male	BS_17FVWMNV	7316-1654	Initial CNS Tumor	Choroid plexus papilloma	atypical choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_9HMVHQEH	BS_61C97RSA	7316-22	Male	BS_H2K7XX4X	7316-22	Initial CNS Tumor	Medulloblastoma	medulloblastoma who grade iv	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_QTDY0Y9A	BS_61KN2D29	7316-3771	Male	BS_1S5V7WWC	7316-3771	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	diffuse midline glioma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
 PT_3V5GTCJR	BS_63AK4SCF	7316-1646	Female	BS_QZTPJ8YW	7316-1646	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_RM5S859Q	BS_63JFFF51	7316-111	Female	BS_R7YMKNJN	7316-111	Initial CNS Tumor	Ependymoma	ependymoma, anaplastic who iii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_YCMH9SQP	BS_63QHP547	7316-225	Male	BS_A70G7S2W	7316-225	Initial CNS Tumor	Metastatic secondary tumors	metastatic neuroblastoma	Metastatic secondary tumors	Metastatic tumors	NA
 PT_MV5WXTQV	BS_63WRZJ06	7316-8036	Unknown	BS_DD2N8CEX	7316-8036	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	High Grade Glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
-PT_41WETNRC	BS_644F21BX	7316-3065	Female	BS_GFS9JEE6	7316-3065	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma w/ anaplasia	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
+PT_41WETNRC	BS_644F21BX	7316-3065	Female	BS_GFS9JEE6	7316-3065	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma with novel fusion kank1-ntrk2 and cdkn2a deletion in the  higher grade area	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
 PT_PNED3GG3	BS_6458RHRT	7316-3590	Female	BS_WMEYJGDC	7316-387	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma, adamantinomatous type	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_VBNP6JFB	BS_656G546M	7316-1095	Male	BS_YZ2YNEJJ	7316-1095	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma/astrocytoma (who grade i/ii)	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
 PT_E3Y5BBSF	BS_65WGB39R	7316-1662	Female	BS_W8DA9AXT	7316-3071	Recurrence	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
@@ -184,7 +184,7 @@ PT_JW6FBEFK	BS_6K3Y2WXF	7316-3019	Male	BS_3P96RT4E	7316-3019	Progressive	Subepen
 PT_8XZY6MM1	BS_6M3B3TKJ	7316-957	Female	BS_WB8P21ED	7316-957	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, other MAPK
 PT_RXJZ3C5G	BS_6N7KRTKM	7316-2815	Female	BS_R726FKHP	7316-2632	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, FGFR
 PT_6MB6RED3	BS_6PFQJMM3	7316-226	Male	BS_K14VJ1E3	7316-226	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
-PT_CMB6TASJ	BS_6PQN5AMH	7316-505	Female	BS_B73JK7T1	7316-505	Progressive	Ependymoma	residual primitive neuroectodermal tumor (pnet), who grade iv	Ependymoma	Ependymal tumor	EPN, ST ZFTA
+PT_CMB6TASJ	BS_6PQN5AMH	7316-505	Female	BS_B73JK7T1	7316-505	Progressive	Supratentorial or Spinal Cord PNET	residual primitive neuroectodermal tumor (pnet), who grade iv	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
 PT_WYF217NZ	BS_6QF29TRA	7316-345	Male	BS_RZNNEX1Y	7316-345	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_92YX7KK9	BS_6S0YKNJD	7316-1785	Male	BS_F5KRHGKC	7316-1785	Initial CNS Tumor	Germinoma	germinoma	Germinoma	Germ cell tumor	NA
 PT_8RB3EKNP	BS_6S7T92KS	7316-4030	Male	BS_5KFAEMQJ	7316-4028	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
@@ -206,7 +206,7 @@ PT_WWZ2Q14R	BS_7QH9BCJQ	7316-3138	Male	BS_DVQYQSVW	7316-3138	Initial CNS Tumor	M
 PT_FN4GEEFR	BS_7QSPXKMP	7316-2000	Female	BS_BX8AR74E	7316-729	Initial CNS Tumor	Medulloblastoma	medulloblastoma (who grade iv)	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_7RMS6K08	BS_7V4S5B83	7316-1748	Female	BS_ACE6QKVF	7316-1748	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_PY4QFHHV	BS_7WQ4F99X	7316-3768	Male	BS_EKR4NSNW	7316-3768	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dnet	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
-PT_YZ8A8A36	BS_7XEH55CB	7316-723	Female	BS_59FR1NC2	7316-723	Initial CNS Tumor	Choroid plexus carcinoma	choroid plexus carcinoma (who grade iii)	Choroid plexus carcinoma	Choroid plexus tumor	NA
+PT_YZ8A8A36	BS_7XEH55CB	7316-723	Female	BS_59FR1NC2	7316-723	Initial CNS Tumor	Choroid plexus carcinoma	choroid plexus carcinoma (who grade iii)	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_XX2VW3D9	BS_7XX4Q2RJ	7316-96	Female	BS_0J5GC803	7316-96	Initial CNS Tumor	Medulloblastoma	pnet with neuronal and glial differentiation, who grade 4	Medulloblastoma	Embryonal tumor	MB, Group3
 PT_16EJ7BZ9	BS_81PR0E1C	7316-1938	Male	BS_5KK9P7XD	7316-1938	Initial CNS Tumor	Other	meningioangiomatosis	Meningioma	Meningioma	NA
 PT_Z4GS3ZQQ	BS_82HQ2RBJ	7316-2163	Female	BS_6ZP2KRPW	7316-740	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, To be classified
@@ -232,7 +232,7 @@ PT_G395P98S	BS_8JEJCH4Z	7316-8826	Unknown	BS_13DJ6WHW	7316-8826	Initial CNS Tumo
 PT_1KEER2Q1	BS_8PRJTBE1	7316-460	Male	BS_F1B71HTZ	7316-460	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_D13X3N8F	BS_8Q2EAYJR	7316-2743	Female	BS_V2MDX7HG	7316-2743	Progressive	Other	inclusion cyst	NA	Benign tumor	NA
 PT_AQWDQW27	BS_8R1DYXMB	7316-1705	Female	BS_EDZCAHR2	7316-523	Initial CNS Tumor	Meningioma	atypical cystic meningioma who gr 2	Meningioma	Meningioma	NA
-PT_VQDNSYXM	BS_8SMZ11ER	7316-1637	Female	BS_JBY9S5D4	7316-1637	Initial CNS Tumor	Glial-neuronal tumor NOS	rosette-forming glioneuronal tumor	Glial-neuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, KIAA1549-BRAF
+PT_VQDNSYXM	BS_8SMZ11ER	7316-1637	Female	BS_JBY9S5D4	7316-1637	Initial CNS Tumor	Glial-neuronal tumor NOS	rosette-forming glioneuronal tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, KIAA1549-BRAF
 PT_EB89G70N	BS_8WTBCJT5	7316-2858	Male	BS_KB9GJDCS	7316-2858	Initial CNS Tumor	Ependymoma	ependymoma who grade ii	Ependymoma	Ependymal tumor	EPN, PF A
 PT_WVC247PK	BS_8YD46AZB	7316-1090	Male	BS_QK61ST4T	7316-1090	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_M1RYN7B0	BS_8ZTNXCZJ	7316-1781	Male	BS_0EN5R1AP	7316-1781	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atypical teratoid rhabdoid tumor (atrt)	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, To be classified
@@ -247,7 +247,7 @@ PT_NA8NZ0BN	BS_96TV932S	7316-2232	Female	BS_B6K0N6HS	7316-2135	Initial CNS Tumor
 PT_KMHGNCNR	BS_9704T3DW	7316-944	Male	BS_E7HEQZ1K	7316-350	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK, BRAF V600E
 PT_XNMKQ4MR	BS_97241EMC	7316-2006	Male	BS_8EB1S8MK	7316-2006	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, other MAPK
 PT_ZVV78QP5	BS_98RN7Y9D	7316-117	Male	BS_2RJN5Z4W	7316-117	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocystic astrocytoma i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_W7FK539G	BS_99HARYGS	7316-76	Male	BS_25VZM81R	7316-76	Progressive	Neuroblastoma	Metastatic secondary tumors;Neuroblastoma	Neuroblastoma	Embryonal tumor	NA
+PT_W7FK539G	BS_99HARYGS	7316-76	Male	BS_25VZM81R	7316-76	Progressive	Neuroblastoma	Metastatic secondary tumors;Neuroblastoma	Neuroblastoma	Embryonal tumor	NBL, MYCN amplified
 PT_82A9SDRN	BS_99MW9ECE	7316-2313	Female	BS_NWYBD9CA	7316-2313	Initial CNS Tumor	Ependymoma	ependymoma who grade 3	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_66XN3MT1	BS_9A5CF1QE	7316-936	Female	BS_DC7XYYG8	7316-936	Initial CNS Tumor	Subependymal Giant Cell Astrocytoma (SEGA)	sega	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, To be classified
 PT_PR4YBBH3	BS_9BBWSCD6	7316-116	Female	BS_PPY0EWPG	7316-116	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	malignant astrocytoma iv	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
@@ -264,17 +264,17 @@ PT_MSQ6GSVP	BS_9R1ENMBP	7316-2274	Female	BS_HJ95JNFN	7316-2274	Initial CNS Tumor
 PT_N9CGVG02	BS_9S3N3Y5W	7316-2229	Male	BS_ABENB1H2	7316-2197	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, RTK
 PT_6DB7B9WV	BS_9TKZ0YP0	7316-3317	Male	BS_CWQ35N2K	7316-3317	Initial CNS Tumor	Dysplasia/Gliosis	cortical dysplasia	NA	Pre-cancerous lesion	NA
 PT_M9XXJ4GR	BS_9TSKXKGH	7316-3222	Unknown	BS_682Z7WH6	7316-3222	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	High Grade Glial Neoplasma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
-PT_T8V9ES93	BS_9XHV04WE	7316-1106	Male	BS_J4E9SW51	7316-1106	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	malignant pxa	Pleomorphic xanthoastrocytoma	Low-grade astrocytic tumor	LGG, BRAF V600E
+PT_T8V9ES93	BS_9XHV04WE	7316-1106	Male	BS_J4E9SW51	7316-1106	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	malignant pxa	Pleomorphic xanthoastrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, PXA
 PT_9M4CQX3M	BS_9XMMXFXW	7316-1972	Female	BS_ZAH4FHV2	7316-1972	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, NF1-somatic, FGFR
 PT_2YT37G8P	BS_9YHX7QFW	7316-399	Female	BS_ZJZFT0AJ	7316-2962	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	fibrillary astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_VJZN69T9	BS_A1A5ZH77	7316-3510	Male	BS_7M6F9GQD	7316-3510	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group3
 PT_DEKWG1QG	BS_A4JP70KJ	7316-2139	Female	BS_CXN0498B	7316-2139	Initial CNS Tumor	Other	osteoblastoma	Other tumor	Other tumor	NA
 PT_GHHY5AAE	BS_A75SK7WA	7316-2162	Male	BS_VA07453Z	7316-741	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, FGFR
 PT_YY7CRV21	BS_AA6DZJ9Z	7316-215	Male	BS_FG649AWK	7316-215	Initial CNS Tumor	Dysplasia/Gliosis	dysplasia/gliosis	NA	Pre-cancerous lesion	NA
-PT_Z7YJ7MSM	BS_AB2C1EF9	7316-2864	Male	BS_MGY2V5N4	7316-2864	Recurrence	Glial-neuronal tumor NOS	neuroepithelial neoplasm	Glial-neuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, RTK
+PT_Z7YJ7MSM	BS_AB2C1EF9	7316-2864	Male	BS_MGY2V5N4	7316-2864	Recurrence	Glial-neuronal tumor NOS	neuroepithelial neoplasm	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, RTK
 PT_32J909WM	BS_ABDWNW1A	7316-2688	Male	BS_JDMM2XG4	7316-2688	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atypical teratoid/rhabdoid tumor, who grade iv	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, To be classified
 PT_HBT0C66Y	BS_ACZNJGV3	7316-3149	Male	BS_M1YHV93N	7316-3149	Initial CNS Tumor	Dysplasia/Gliosis	cortical dysplasia of tuberous sclerosis	NA	Pre-cancerous lesion	NA
-PT_EYZ25B99	BS_AEJZG4A3	7316-470	Male	BS_9E6Q11G2	7316-470	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, FGFR
+PT_EYZ25B99	BS_AEJZG4A3	7316-470	Male	BS_9E6Q11G2	7316-470	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF/MAPK
 PT_CWA1405H	BS_AF6A572P	7316-2252	Female	BS_9YPJANGX	7316-2252	Initial CNS Tumor	Medulloblastoma	medulloblastoma, who grade 4	Medulloblastoma	Embryonal tumor	MB, WNT
 PT_EG7PH32E	BS_AGNSAKZG	7316-2144	Male	BS_2P7MJGM7	7316-2144	Initial CNS Tumor	Ependymoma	ependymoma who grade ii	Ependymoma	Ependymal tumor	EPN, SP
 PT_BWGZBVD1	BS_AJZ5H79X	7316-1678	Female	BS_NZRJE7QA	7316-1678	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilomyxoid astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E
@@ -286,7 +286,6 @@ PT_X8SK8120	BS_ARW4NM3Z	7316-340	Female	BS_SNC5WMVN	7316-340	Progressive	Neurocy
 PT_H024RK87	BS_AS05QBHE	7316-104	Male	BS_MRX1SPFB	7316-104	Recurrence	Non-germinomatous germ cell tumor;Teratoma	non-germinomatous germ cell tumor and teratoma	NA	Germ cell tumor	NA
 PT_858H7ABM	BS_AS4CJ75A	7316-903	Female	BS_872Q3FK2	7316-903	Recurrence	High-grade glioma/astrocytoma (WHO grade III/IV)	anaplastic  astrocytoma who iii	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
 PT_JXGMAHHN	BS_ASJMZMN6	7316-874	Female	BS_MWKJF6XH	7316-874	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_GGCQAGPS	BS_ATYBFKWJ	7316-3912	Female	BS_0J5MCBZV	7316-304	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group3
 PT_WE1CHTWK	BS_AWRNMZAY	7316-87	Male	BS_4DY83R02	7316-87	Initial CNS Tumor	Supratentorial or Spinal Cord PNET	supratentorial pnet	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
 PT_VTM2STE3	BS_AYFJ1B57	7316-2189	Female	BS_02YBZSBY	7316-2189	Progressive	High-grade glioma/astrocytoma (WHO grade III/IV)	recurrent/residual glioblastoma multiforme who iv	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
 PT_3RN24N9X	BS_AZG06JFG	7316-20	Male	BS_VW96PFKQ	7316-20	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma (who i)	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
@@ -296,7 +295,7 @@ PT_6Q0NPVP3	BS_B3WREYSV	7316-2255	Female	BS_E5H6CFYT	7316-2255	Initial CNS Tumor
 PT_39HBKSGG	BS_B6H61NPY	7316-908	Male	BS_Z5D6G1S6	7316-908	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_Q38AT6JY	BS_B7SMC7HM	7316-3773	Male	BS_RR3DKGKY	7316-3773	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_AKQZZPH8	BS_B900YTMN	7316-2782	Male	BS_XPSD2NRJ	7316-2782	Initial CNS Tumor	Meningioma	atypical meningioma, who grade ii	Meningioma	Meningioma	NA
-PT_PHKSYE6Q	BS_BE3DW3RB	7316-220	Female	BS_Y9GHDZKS	7316-220	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_PHKSYE6Q	BS_BE3DW3RB	7316-220	Female	BS_Y9GHDZKS	7316-220	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_TRXF649Z	BS_BFK70293	7316-915	Female	BS_11322HD1	7316-915	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dysembryoplastic neuroepithelial tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
 PT_GY0QSY4H	BS_BG996C4D	7316-1075	Male	BS_FWCKP4X1	7316-1075	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_ZN1F7RMP	BS_BGW6PHHK	7316-1080	Female	BS_BR1X3R68	7316-1080	Initial CNS Tumor	Adenoma	pituitary macroadenoma	Other tumor	Other tumor	NA
@@ -311,7 +310,7 @@ PT_E4TXAYR6	BS_C0EVYPCQ	7316-9077	Female	BS_02QV7ZWP	7316-9077	Initial CNS Tumor
 PT_E3S6H59E	BS_C2AV5D4A	7316-133	Male	BS_T54TAE3R	7316-133	Initial CNS Tumor	Oligodendroglioma	oligodendroglioma who ii	Oligodendroglioma	Low-grade astrocytic tumor	NA
 PT_CWD717Q0	BS_C4BTBM7G	7316-101	Male	BS_4RS1SC48	7316-101	Initial CNS Tumor	Ganglioglioma	ganglioglioma (who grade i)	Ganglioglioma	Low-grade astrocytic tumor	GNG, other MAPK
 PT_8CZ6ANE0	BS_C524TC33	7316-1970	Male	BS_4G9Y2VC6	7316-1970	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dnet	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
-PT_CBAYDRF9	BS_C75Y7S77	7316-1675	Female	BS_7BNQBB26	7316-1675	Unavailable	Dysplasia/Gliosis	focal cortical dysplasia iib (ilae ) (not a brain tumor)	NA	Pre-cancerous lesion	NA
+PT_CBAYDRF9	BS_C75Y7S77	7316-1675	Female	BS_7BNQBB26	7316-1675	Unknown	Dysplasia/Gliosis	focal cortical dysplasia iib (ilae ) (not a brain tumor)	NA	Pre-cancerous lesion	NA
 PT_BZKJR4GK	BS_C7M1W9D1	7316-561	Female	BS_NTXHP7QR	7316-561	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
 PT_2FVTD0WR	BS_C8EYP5BV	7316-917	Male	BS_8TFBNHT0	7316-2897	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, MAPK
 PT_3A0B29QT	BS_C8FMN2ZR	7316-80	Male	BS_E5B2YZJH	7316-80	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dysembroyoplastic neuroepithelial tumor	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
@@ -332,12 +331,12 @@ PT_EZS4SRH6	BS_CX6SQF8T	7316-1932	Male	BS_X1R0N8QS	7316-676	Initial CNS Tumor	Me
 PT_NPPBNRVV	BS_CYKA9DP6	7316-1943	Male	BS_QA0W86WP	7316-1943	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
 PT_WKNKNYHH	BS_CYM7BP13	7316-1107	Male	BS_5ZRZC3ZM	7316-1107	Initial CNS Tumor	Ependymoma	anaplastic ependymoma grade iii who	Ependymoma	Ependymal tumor	EPN, PF A
 PT_XA8ASFJK	BS_CZGNQ9KQ	7316-3559	Male	BS_Z7R92XX6	7316-3762	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, NF1-somatic, NF1-germline, FGFR
-PT_ZZ8SBJJ5	BS_D3VQDD5A	7316-725	Male	BS_CPZZR2R7	7316-725	Progressive	Choroid plexus papilloma	residual atypical choroid plexus papilloma	Atypical choroid plexus papilloma	Choroid plexus tumor	NA
+PT_ZZ8SBJJ5	BS_D3VQDD5A	7316-725	Male	BS_CPZZR2R7	7316-725	Progressive	Choroid plexus papilloma	residual atypical choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_VPEMAQBN	BS_D48QXYW6	7316-3225	Female	BS_Q6GVRAWK	7316-3225	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Anaplastic Astrocytoma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_ZG4J0EK0	BS_D4K3JN7S	7316-3774	Female	BS_T5HPW4Z0	7316-3774	Initial CNS Tumor	Medulloblastoma	medulloblastoma non-wnt/non-shh, who grade iv	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_6PFFSB6D	BS_D4X1QMG0	7316-2569	Male	BS_4Z6F1HJZ	7316-2569	Initial CNS Tumor	Other	myxoid spindle cell tumor	Other tumor	Other tumor	NA
 PT_2WA5PM32	BS_D4YJXS6R	7316-949	Male	BS_AJFG2QDD	7316-949	Recurrence	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
-PT_GKSABESN	BS_D64Q07W9	7316-3485	Male	BS_GRECE8Q9	7316-3485	Initial CNS Tumor	Choroid plexus papilloma	chroid plexus papillomia, who grade 1	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_GKSABESN	BS_D64Q07W9	7316-3485	Male	BS_GRECE8Q9	7316-3485	Initial CNS Tumor	Choroid plexus papilloma	chroid plexus papillomia, who grade 1	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_RQ21EBK9	BS_D70Z2E3A	7316-367	Male	BS_39Q80NT3	7316-367	Initial CNS Tumor	Medulloblastoma	medulloblastoma who grade iv, favor nodular desmoplastic	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_GVDMG7KC	BS_D7AKEXHJ	7316-152	Male	BS_KM878Y43	7316-152	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	oligodendroglioma who ii	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
 PT_6MWPJ96F	BS_D9FXAR11	7316-1711	Female	BS_M8EBKZDG	7316-1928	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	residual pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
@@ -351,7 +350,7 @@ PT_NFDHYPGT	BS_DHHCTYYW	7316-3152	Female	BS_6KEYD1S4	7316-3152	Initial CNS Tumor
 PT_VE0Q731Y	BS_DHRJC5NK	7316-1641	Male	BS_BBHFKBE7	7316-1641	Initial CNS Tumor	Ependymoma	anaplastic ependymoma (who iii)	Ependymoma	Ependymal tumor	EPN, To be classified
 PT_9B6KWJT2	BS_DJ7XB1DM	7316-2023	Female	BS_VQC2PE2B	7316-1226	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma gr1	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_TKWTTRQ7	BS_DKKJWR3M	7316-407	Male	BS_06GEF6DB	7316-2971	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
-PT_WTMSD2WB	BS_DKTB5YDM	7316-3632	Male	BS_JTBM5TSE	7316-3632	Initial CNS Tumor	Chordoma	chordoma	Chordoma	Chordoma	NA
+PT_WTMSD2WB	BS_DKTB5YDM	7316-3632	Male	BS_JTBM5TSE	7316-3632	Initial CNS Tumor	Chordoma	chordoma	Chordoma	Chordoma	CHDM, conventional
 PT_0EWY6S6S	BS_DMD12ZRF	7316-3491	Male	BS_GAA327FP	7316-3491	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade 1	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_BQ8BQ01J	BS_DMP1BV1H	7316-183	Male	BS_0DKPGQWD	7316-183	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	gliomatosis cerebri, type 1, ia	Low-grade glioma	Low-grade astrocytic tumor	LGG, IDH
 PT_HMF8J4EG	BS_DNRQ0EN0	7316-2065	Male	BS_GKPVZXYP	7316-644	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma multiforme (who grade iv)	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
@@ -359,18 +358,18 @@ PT_A325EYR2	BS_DP925FZV	7316-2785	Female	BS_YB99Q6TN	7316-2557	Initial CNS Tumor
 PT_596H0BQF	BS_DRNNKZYE	7316-498	Male	BS_8Q8CAY84	7316-498	Progressive	Other	hamartoma	NA	Benign tumor	NA
 PT_D3AN5M5W	BS_DSPH005J	7316-47	Male	BS_XBE002WV	7316-47	Initial CNS Tumor	Ependymoma	anaplastic ependymoma grade 3	Ependymoma	Ependymal tumor	EPN, PF A
 PT_WGWMA5AZ	BS_DTYN7DX6	7316-148	Male	BS_NEX92KQH	7316-148	Recurrence	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_MV7Y44QQ	BS_DW6P4EXB	7316-157	Female	BS_E0AAK0V0	7316-157	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET);Dysplasia/Gliosis;Ganglioglioma	atypical dnet/ganglioglioma,ia who i	NA	Neuronal and mixed neuronal-glial tumor	NA
+PT_MV7Y44QQ	BS_DW6P4EXB	7316-157	Female	BS_E0AAK0V0	7316-157	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, To be classified
 PT_GH6HM5QF	BS_E0H9DHVX	7316-3202	Male	BS_70FKSKM9	7316-3202	Initial CNS Tumor	Medulloblastoma	classic  medulloblastoma, who grade iv	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_7YGZ526E	BS_E1EPMTD5	7316-1978	Female	BS_4ZKN0WGS	7316-1978	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma (who ii)	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, RTK
 PT_FYECBRPP	BS_E1SWA20C	7316-1778	Male	BS_WCNPE0AC	7316-1778	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atrt	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, SHH
 PT_9ZY739FB	BS_E45WEXMB	7316-170	Female	BS_Z14Z2JMW	7316-170	Recurrence	Neurofibroma/Plexiform	neurofibroma	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
-PT_2YCHME6S	BS_E4SBS246	7316-2622	Female	BS_MZB884N9	7316-2622	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, FGFR
+PT_2YCHME6S	BS_E4SBS246	7316-2622	Female	BS_MZB884N9	7316-2622	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF/MAPK
 PT_V1HNAC2Q	BS_E5RKHG41	7316-3215	Female	BS_NNFDFAFM	7316-3215	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Infiltrating Dipg	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_4159VCJY	BS_E7JTAP8Y	7316-389	Female	BS_HTGDSPQA	7316-389	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E, CDKN2A/B
 PT_WE7HQN0C	BS_E951SZ7T	7316-1795	Male	BS_T8C13KNH	7316-1795	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma, adamantinomatous type, who grade i	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_KFYJBQB8	BS_EBBQ7GD2	7316-3075	Male	BS_NJFK43N3	7316-3075	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma/gbm	Infant-type hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	IHG, ROS1-altered
 PT_MTE126WM	BS_ECMB9SWH	7316-376	Female	BS_74A1TB03	7316-376	Progressive	Atypical Teratoid Rhabdoid Tumor (ATRT)	atrt	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, MYC
-PT_ZS2YDFBE	BS_EE7684YB	7316-2860	Female	BS_P6NWC51S	7316-2860	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_ZS2YDFBE	BS_EE7684YB	7316-2860	Female	BS_P6NWC51S	7316-2860	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_17NG0KW3	BS_EFTRE3J4	7316-1945	Male	BS_JDS0SYST	7316-1945	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, WNT
 PT_0FGS6YME	BS_EGVRA5XW	7316-8811	Unknown	BS_HGKDT5AJ	7316-8811	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	High grade glioma, WHO Grade III-IV	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
 PT_6N825561	BS_EH43PB49	7316-3920	Female	BS_E0S2Y0TS	7316-3920	Progressive	Atypical Teratoid Rhabdoid Tumor (ATRT)	atrt	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, SHH
@@ -383,7 +382,7 @@ PT_DJ106XYS	BS_EQG6D837	7316-3935	Male	BS_WJF6ZXWN	7316-3935	Initial CNS Tumor	H
 PT_YMN5GV47	BS_ER05WTNS	7316-658	Female	BS_Y3ETG5AE	7316-658	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade 1	Low-grade glioma	Low-grade astrocytic tumor	LGG, NF1-somatic
 PT_3KK1F95W	BS_ER2MEZMV	7316-1744	Female	BS_03SSN1N2	7316-1744	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, other MAPK
 PT_J3B812DT	BS_ESFA9S69	7316-123	Female	BS_PZDTK87A	7316-123	Initial CNS Tumor	Dysplasia/Gliosis	dysplasia/gliosis	NA	Pre-cancerous lesion	NA
-PT_JWW33RTB	BS_ET04R6F9	7316-1793	Female	BS_JBHQ6G3J	7316-1793	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
+PT_JWW33RTB	BS_ET04R6F9	7316-1793	Female	BS_JBHQ6G3J	7316-1793	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, RTK, BRAF V600E
 PT_BWFTKJXT	BS_ETAATG3J	7316-1094	Male	BS_K3PPH522	7316-1094	Initial CNS Tumor	Schwannoma	schwannoma	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_J06X17XH	BS_EVZW31ZP	7316-1649	Male	BS_02W5H7K5	7316-1649	Initial CNS Tumor	Other	rosai-dorfman disease	Rosai-Dorfman disease	Histiocytic tumor	NA
 PT_5D3AVPCW	BS_EW74HRQW	7316-187	Male	BS_XCFNEZ8E	7316-187	Initial CNS Tumor	Dysplasia/Gliosis	dysplasia/gliosis	NA	Pre-cancerous lesion	NA
@@ -396,7 +395,7 @@ PT_5FR2YA6E	BS_F42WG7E7	7316-109	Male	BS_VTTTQYQA	7316-109	Initial CNS Tumor	Med
 PT_RM9AZ7A8	BS_F46C86A9	7316-2084	Male	BS_SYWRCE3Z	7316-2084	Initial CNS Tumor	Schwannoma	schwannoma, who grade i	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_T9F17G9F	BS_F4Q2B3XZ	7316-8814	Female	BS_HF1TR0QN	7316-8814	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_W6CW60K9	BS_F4V6RWJ9	7316-380	Male	BS_ZX1YPQ88	7316-380	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
-PT_EB0D3BXG	BS_F5EX3ZY5	7316-3311	Female	BS_F0GNWEJJ	7316-3311	Progressive	Neuroblastoma	Metastatic secondary tumors;Neuroblastoma	Neuroblastoma	Embryonal tumor	NA
+PT_EB0D3BXG	BS_F5EX3ZY5	7316-3311	Female	BS_F0GNWEJJ	7316-3311	Progressive	Neuroblastoma	Metastatic secondary tumors;Neuroblastoma	Neuroblastoma	Embryonal tumor	NBL, MYCN amplified
 PT_HMY997GX	BS_F69GWP99	7316-3554	Female	BS_2JDVY4F7	7316-3554	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	sega	Low-grade glioma	Low-grade astrocytic tumor	SEGA, RTK
 PT_5SKQHRC5	BS_F7G8TA7C	7316-9013	Male	BS_PCVV9GJG	7316-9013	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	High grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
 PT_6R7AE0P3	BS_F8WRX1VY	7316-2653	Male	BS_42A66SH4	7316-2653	Initial CNS Tumor	Langerhans Cell histiocytosis	langerhans cell histiocytosis	Langerhans Cell histiocytosis	Histiocytic tumor	NA
@@ -419,12 +418,12 @@ PT_F9F3E8YR	BS_FTRXA2R5	7316-3519	Female	BS_R922P3XJ	7316-3519	Initial CNS Tumor
 PT_2Z7GVDTM	BS_FVGXRPNG	7316-3515	Female	BS_QYWGB52C	7316-3515	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_BBHAD51D	BS_FW28DA07	7316-1089	Female	BS_WYF8NGSD	7316-1089	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dnet	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
 PT_JCECCFPB	BS_G113MX63	7316-479	Male	BS_YZ0P5E8H	7316-479	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atrt	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, To be classified
-PT_XNTFM9XY	BS_G473TPVG	7316-92	Male	BS_WD37M8SD	7316-92	Initial CNS Tumor	Cavernoma	cavernoma	Cavernoma	Benign tumor	NA
+PT_XNTFM9XY	BS_G473TPVG	7316-92	Male	BS_WD37M8SD	7316-92	Initial CNS Tumor	Cavernoma	cavernoma	NA	Benign tumor	NA
 PT_976P4557	BS_G4NEC9N5	7316-214	Male	BS_6HE8H9HY	7316-214	Initial CNS Tumor	Meningioma	meningioangiomatosis with associated meningioma (grade i who)	Meningioma	Meningioma	NA
 PT_EXJAEW1M	BS_G5B1ZN5S	7316-188	Male	BS_4XPPZTGG	7316-188	Initial CNS Tumor	Craniopharyngioma	xanthogranuloma	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
 PT_SCCDBETQ	BS_G64B5MDA	7316-2628	Female	BS_XM302FF4	7316-2628	Initial CNS Tumor	Ganglioglioma	ganglioglioma (who grade i)	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
 PT_WY8REZ3P	BS_GABF65KC	7316-1783	Female	BS_G61CN2V0	7316-1783	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
-PT_90W4HCNR	BS_GAFJBRM5	7316-2672	Male	BS_M1TDS9CT	7316-2672	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma, who grade i	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_90W4HCNR	BS_GAFJBRM5	7316-2672	Male	BS_M1TDS9CT	7316-2672	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma, who grade i	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_CX58G6P6	BS_GAPT45QB	7316-2191	Male	BS_X6361T19	7316-2191	Initial CNS Tumor	Meningioma	meningioma	Meningioma	Meningioma	NA
 PT_9BZETM0M	BS_GBQ6A3ST	7316-158	Male	BS_STNH7YSX	7316-158	Initial CNS Tumor	Supratentorial or Spinal Cord PNET	pnet with glial and neuronal differentiation and subarachnoid growth	Diffuse hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	DHG, H3 G35
 PT_CTSQ5FHH	BS_GCNH4CC0	7316-2013	Male	BS_HPMX6CT4	7316-438	Initial CNS Tumor	Medulloblastoma	medulloblastoma, who grade iv	Medulloblastoma	Embryonal tumor	MB, Group3
@@ -436,7 +435,7 @@ PT_EZEMVRVT	BS_GGNKMKW9	7316-3154	Male	BS_32HAVF6S	7316-3154	Initial CNS Tumor	L
 PT_9PJR0ZK7	BS_GJWAV3E5	7316-935	Male	BS_A1DV9T7G	7316-935	Second Malignancy	Neurofibroma/Plexiform	neurofibroma/plexiform	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
 PT_HM2GMT2H	BS_GKFY1GX4	7316-6	Male	BS_8YQGSMDK	7316-6	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_VAJN5QP8	BS_GKJZGTFS	7316-2176	Female	BS_KSHETTQC	7316-2176	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
-PT_4347ZBEX	BS_GKRMQS5W	7316-913	Female	BS_742CDKAS	7316-913	Second Malignancy	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma (hgg)	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_4347ZBEX	BS_GKRMQS5W	7316-913	Female	BS_742CDKAS	7316-913	Progressive	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma (hgg)	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_9C2G356W	BS_GMJP7PN2	7316-3555	Male	BS_1VMBA3BN	7316-3555	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_BK92NM09	BS_GNH80DDG	7316-2669	Female	BS_XVYRXN8J	7316-2669	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_NH8CJ84W	BS_GP9W8WG8	7316-164	Female	BS_AM2TZPNS	7316-164	Progressive	Craniopharyngioma	craniopharyngioma	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
@@ -447,10 +446,10 @@ PT_DPVW4M1W	BS_GTY5J0S4	7316-2271	Female	BS_SQSH5G7A	7316-2271	Recurrence	Sarcom
 PT_4XVA57J7	BS_GVA39GGG	7316-1760	Female	BS_9NF39QAW	7316-1760	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
 PT_X71D7G5S	BS_GWFF9E3C	7316-1105	Male	BS_P8WN8XEQ	7316-1105	Recurrence	Supratentorial or Spinal Cord PNET	recurrent/residual pnet	Diffuse hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	DHG, H3 G35
 PT_VVCN8DXT	BS_H17P6WH8	7316-71	Male	BS_MSB1RDAJ	7316-71	Initial CNS Tumor	Gliomatosis Cerebri	anaplastic gliomatosis cerebri (who grade 4)	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
-PT_RXT6KRR6	BS_H281CW3G	7316-3147	Female	BS_CK7CPM73	7316-3147	Recurrence	Ganglioneuroblastoma	ganglioneuroblastoma	Ganglioneuroblastoma	Embryonal tumor	NA
+PT_RXT6KRR6	BS_H281CW3G	7316-3147	Female	BS_CK7CPM73	7316-3147	Recurrence	Ganglioneuroblastoma	ganglioneuroblastoma	Ganglioneuroblastoma	Embryonal tumor	NBL, MYCN amplified
 PT_JSFBMK5V	BS_H4KBJDGN	7316-392	Male	BS_H0638GZT	7316-392	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma multiforme who iv	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
 PT_PABK01H0	BS_H5KWGC03	7316-1669	Female	BS_185Q218S	7316-1669	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, SHH
-PT_VBVZ2NAR	BS_H9813KRS	7316-2156	Male	BS_9ZFXXJPK	7316-2156	Initial CNS Tumor	Ependymoma	anaplastic ependymoma who grade iii	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_VBVZ2NAR	BS_H9813KRS	7316-2156	Male	BS_9ZFXXJPK	7316-2156	Initial CNS Tumor	Ependymoma	anaplastic ependymoma who grade iii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_ZTWCA9HX	BS_HA8VYBMA	7316-8040	Female	BS_9W04ZPRR	7316-8040	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	Glioblastoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_XSS1ANXD	BS_HGPJ76NM	7316-495	Male	BS_FQ2ZBMPA	7316-495	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma (who grade i)	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_S4YNE17X	BS_HHJZ05XC	7316-377	Female	BS_3MYQP7P5	7316-2899	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
@@ -458,7 +457,7 @@ PT_MT27S7S4	BS_HJ99CJ2R	7316-1969	Male	BS_9GJHMA3J	7316-1969	Initial CNS Tumor	E
 PT_PFA762TK	BS_HM2ZG2J7	7316-368	Male	BS_XHAQXDR0	7316-368	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	posterior fossa mass; pilocytic astrocytoma who 1	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_4TASAQKA	BS_HMWZ2893	7316-3563	Male	BS_AEMRNSQX	7316-3566	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma with kiaa1549- braf fusion and whole chromosome 7 gain	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_XHYBZKCX	BS_HN0SA3ZK	7316-108	Male	BS_0XR7GYAV	7316-2972	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, To be classified
-PT_7TRGHZBK	BS_HNWNZFHA	7316-431	Female	BS_XEVMEYFS	7316-431	Initial CNS Tumor	Choroid plexus carcinoma	choroid plexus carcinoma	Choroid plexus carcinoma	Choroid plexus tumor	NA
+PT_7TRGHZBK	BS_HNWNZFHA	7316-431	Female	BS_XEVMEYFS	7316-431	Initial CNS Tumor	Choroid plexus carcinoma	choroid plexus carcinoma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_CQ7EGCMB	BS_HQEFFVM1	7316-3816	Female	BS_PJ08ZW9A	7316-3809	Initial CNS Tumor	Medulloblastoma	nodular and desmoplastic medulloblastoma who grade iv	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_MNR94DEV	BS_HS2BZ6T2	7316-370	Male	BS_ZP89F1JY	7316-370	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	astrocytoma, pilocytic	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_RDJ40M73	BS_HT2S4SW0	7316-2559	Female	BS_928HWFFM	7316-2561	Recurrence	High-grade glioma/astrocytoma (WHO grade III/IV)	gbm (glioblastoma multiforme)	Diffuse hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	DHG, H3 G35
@@ -510,7 +509,7 @@ PT_HYXSSCJ5	BS_KC7HM9HA	7316-1088	Female	BS_45913DTA	7316-1088	Initial CNS Tumor
 PT_0CRPE7YP	BS_KD07YRG3	7316-2158	Male	BS_YPCTK927	7316-2158	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma who i	Craniopharyngioma	Tumors of sellar region	CRANIO, To be classified
 PT_2NQPX1R2	BS_KF14TKFY	7316-1116	Male	BS_YBCQBCQC	7316-1116	Recurrence	Craniopharyngioma	craniopharyngioma	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
 PT_H8Z52K09	BS_KFTEJV19	7316-2224	Male	BS_SCQNN2A2	7316-2224	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atypical teratoid rhabdoid tumor (at/rt), who grade iv	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, SHH
-PT_QJ3144WH	BS_KGG1WDT8	7316-3204	Female	BS_8BS10XE2	7316-3204	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma, who grade i	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_QJ3144WH	BS_KGG1WDT8	7316-3204	Female	BS_8BS10XE2	7316-3204	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma, who grade i	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_SGJK5KSB	BS_KKBNERGA	7316-9140	Female	BS_35DRDAFV	7316-9140	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	midline high grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
 PT_K6G6BE6G	BS_KKV7WAG3	7316-1113	Female	BS_3108RS7G	7316-1113	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, FGFR
 PT_203ZY782	BS_KN5FPSJE	7316-2668	Male	BS_BVD7PWP5	7316-2668	Initial CNS Tumor	Other	choroid plexus cyst	Choroid plexus tumor	Choroid plexus tumor	NA
@@ -537,17 +536,17 @@ PT_Q3EP24V1	BS_MKSMSB6J	7316-154	Male	BS_235QEYMQ	7316-154	Progressive	Low-grade
 PT_K2YDNZDA	BS_MKYS4YRC	7316-429	Female	BS_62XRDTM6	7316-429	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, PF A
 PT_76Q72M5T	BS_MN13H3T4	7316-106	Female	BS_DT92H1MJ	7316-397	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
 PT_NCDHZ8H8	BS_MN2FX68Z	7316-2780	Male	BS_DGG7YE8R	7316-2780	Initial CNS Tumor	Medulloblastoma	medulloblastoma, shh activated, tp53 wild-type	Medulloblastoma	Embryonal tumor	MB, SHH
-PT_R1DHB0ZT	BS_MS9061DG	7316-2642	Male	BS_E9ATGWME	7316-2642	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, FGFR
+PT_R1DHB0ZT	BS_MS9061DG	7316-2642	Male	BS_E9ATGWME	7316-2642	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF/MAPK
 PT_ATS9XDJ5	BS_MTA50F0G	7316-2159	Female	BS_R1ZBTEAG	7316-2159	Recurrence	Schwannoma	schwannoma	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_YJBPEF4V	BS_MTDQBCQK	7316-938	Male	BS_PC2YQ4F6	7316-938	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_ECMZCNTF	BS_MVK4CG1G	7316-2298	Male	BS_MGBEMNYR	7316-736	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_9GKVQ9QS	BS_MVYA262V	7316-3213	Female	BS_JRFVST47	7316-3213	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Anaplastic Astrocytoma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
-PT_WWME595X	BS_MWV7PRDK	7316-3788	Female	BS_VVD8TJNE	7316-245	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_WWME595X	BS_MWV7PRDK	7316-3788	Female	BS_VVD8TJNE	7316-245	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_RKECV80K	BS_N05BJ03T	7316-9	Male	BS_PEDGRK8S	7316-9	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E
 PT_E79807KT	BS_N0X0S3JD	7316-1087	Male	BS_3A0CJMRH	7316-1087	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	subependymal giant cell astrocytoma	Subependymal Giant Cell Astrocytoma	Low-grade astrocytic tumor	SEGA, To be classified
 PT_RA6AGBA7	BS_N1WCEX2B	7316-461	Female	BS_P4K6WK9Y	7316-461	Progressive	High-grade glioma/astrocytoma (WHO grade III/IV)	high-grade glioma3, who grade iii	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_X5TQR8V2	BS_N2A2JA32	7316-343	Female	BS_C19DFVR5	7316-343	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	gbm	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
-PT_YBJYA2CD	BS_N2TDDQ9Y	7316-2244	Female	BS_KFRBXXV7	7316-2244	Initial CNS Tumor	Choroid plexus papilloma	fourth ventricular mass, resection-	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_YBJYA2CD	BS_N2TDDQ9Y	7316-2244	Female	BS_KFRBXXV7	7316-2244	Initial CNS Tumor	Choroid plexus papilloma	fourth ventricular mass, resection-	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_TGTJECMR	BS_N4D5BPQP	7316-2647	Male	BS_ZJSMC22A	7316-2647	Progressive	Teratoma	teratoma	Teratoma	Germ cell tumor	NA
 PT_HT4HJXY6	BS_N559C2Y0	7316-901	Female	BS_AG0BZN6F	7316-2961	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, To be classified
 PT_6GDPNFA6	BS_N56BGDK6	7316-2607	Female	BS_XGVSX8BX	7316-2610	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma, who grade iv	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
@@ -557,10 +556,10 @@ PT_3R0P995B	BS_NCF4MJ9S	7316-873	Male	BS_75VHXMZN	7316-873	Initial CNS Tumor	Epe
 PT_SCBMTG0S	BS_NF8F99FQ	7316-2175	Male	BS_BM95DGCQ	7316-2175	Initial CNS Tumor	Adenoma	prolactinoma	Other tumor	Other tumor	NA
 PT_G1QNGVCZ	BS_NFTVRVAF	7316-1118	Female	BS_JK5GTHVG	7316-1118	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_YRNATR8Q	BS_NGHQ8CNA	7316-8039	Female	BS_JD5FE0V5	7316-8039	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	Anaplastic Astrocytoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
-PT_GWX2XSM0	BS_NHEDGJ66	7316-2752	Male	BS_41SWNWAG	7316-2752	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	diffuse astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, To be classified
+PT_GWX2XSM0	BS_NHEDGJ66	7316-2752	Male	BS_41SWNWAG	7316-2752	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	diffuse astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
 PT_GH27VJBD	BS_NHFB2YJR	7316-2266	Female	BS_H8MAKDRB	7316-2266	Progressive	Ependymoma	anaplastic ependymoma grade iii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_RRG1V7EP	BS_NKNDVFFR	7316-2039	Female	BS_P7CY04E7	7316-820	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atypical teratoid rhabdoid tumor	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, MYC
-PT_QD6KKKJH	BS_NTV9Z7SE	7316-1765	Male	BS_B91XGSA5	7316-1765	Initial CNS Tumor	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	NA
+PT_QD6KKKJH	BS_NTV9Z7SE	7316-1765	Male	BS_B91XGSA5	7316-1765	Initial CNS Tumor	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	PB, Group 1
 PT_Y5KY6KN9	BS_NWXG4ZNS	7316-195	Male	BS_AYPBAHJ6	7316-195	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma multiforme	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_JMW6Q6NH	BS_NY51QX79	7316-1648	Male	BS_5BNV7MCF	7316-1648	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	piloxymoid astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_0MXPTTM3	BS_NY9MPC8F	7316-3220	Male	BS_8SYN7GXG	7316-3220	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Anaplastic Astrocytoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, IDH, TP53
@@ -591,7 +590,7 @@ PT_N673SYWW	BS_PTYP388A	7316-1751	Male	BS_PMFR8NPN	7316-1751	Progressive	Craniop
 PT_46F28BFH	BS_PVJXA07K	7316-1804	Female	BS_H8E4K1DT	7316-1799	Initial CNS Tumor	Ependymoma	ependymoma with clear cell features, who grade ii	Ependymoma	Ependymal tumor	EPN, ST YAP1
 PT_2C63FJAM	BS_PXD19CBF	7316-3123	Female	BS_F48RA7QF	7316-3040	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	angiocentric glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, MYB/MYBL1
 PT_3A87PCQK	BS_PY472W3B	7316-480	Male	BS_AQECMDPP	7316-480	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dysembryoplastic neuroepithelial tumor who 1	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
-PT_SSE4AH59	BS_PY51XH82	7316-1776	Male	BS_EHBH0NYX	7316-1776	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dnet	Dysembryoplastic neuroepithelial tumor	Neuronal and mixed neuronal-glial tumor	NA
+PT_SSE4AH59	BS_PY51XH82	7316-1776	Male	BS_EHBH0NYX	7316-1776	Initial CNS Tumor	Dysembryoplastic neuroepithelial tumor (DNET)	dnet	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_KVFS3Z2Q	BS_PZ35809R	7316-1955	Male	BS_9JVGXA2W	7316-1955	Initial CNS Tumor	Ependymoma	mixopapillary ependymoma	Ependymoma	Ependymal tumor	EPN, MPE
 PT_ZD45GXZ0	BS_PZE7R1WM	7316-2109	Male	BS_J33YVP27	7316-2109	Progressive	Ependymoma	recurrent / residual ependymoma	Ependymoma	Ependymal tumor	EPN, PF A
 PT_S7JCQ3TH	BS_Q07P48SY	7316-8828	Female	BS_1B00Q25Y	7316-8828	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	GBM	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
@@ -602,7 +601,7 @@ PT_YRMG61G8	BS_Q2TEFDZ7	7316-2630	Male	BS_PV130A29	7316-2305	Initial CNS Tumor	L
 PT_N4PR21ME	BS_Q4NCA4E4	7316-68	Male	BS_Y3472DYJ	7316-330	Initial CNS Tumor	Ependymoma	anaplastic ependymoma (who grade iii)	Ependymoma	Ependymal tumor	EPN, To be classified
 PT_NPETR8RY	BS_Q5ABAC4M	7316-160	Male	BS_W5P7SPDH	7316-160	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, PF A
 PT_YT70KJ5P	BS_Q5AH9TH0	7316-4	Female	BS_9R82A3VT	7316-4	Initial CNS Tumor	Other	dermoid cyst	NA	Benign tumor	NA
-PT_7DP91QDJ	BS_Q69BHVQX	7316-3017	Male	BS_V3SC6NWH	7316-3017	Initial CNS Tumor	Cavernoma	cavernous angioma	Cavernoma	Benign tumor	NA
+PT_7DP91QDJ	BS_Q69BHVQX	7316-3017	Male	BS_V3SC6NWH	7316-3017	Initial CNS Tumor	Cavernoma	cavernous angioma	NA	Benign tumor	NA
 PT_K8ZV7APT	BS_Q6K6BVTF	7316-10	Female	BS_EXTEGB51	7316-2665	Initial CNS Tumor	Neurofibroma/Plexiform	neurofibroma	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
 PT_JYZA0PNV	BS_Q7NF95N0	7316-2038	Male	BS_8W0FNBWF	7316-437	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	juvenile pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_S0PBN4M7	BS_Q80JX5G6	7316-2616	Male	BS_Q50P97Y0	7316-1805	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma with pilomyxoid features who grade i-ii/iv	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
@@ -627,7 +626,7 @@ PT_NESAQHB1	BS_R2Z4MK3F	7316-3844	Male	BS_6TMPZKSZ	7316-3689	Initial CNS Tumor	S
 PT_JP1FDKN9	BS_R333SVK1	7316-929	Female	BS_W74D279Q	7316-2959	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_5CNZ47XV	BS_R483NVWW	7316-1926	Male	BS_QM1Z8R38	7316-1926	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma grade i who	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_TWAHK62W	BS_R63R4S9H	7316-9055	Female	BS_W60PB1DS	7316-9055	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	High grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
-PT_P5HHJJPH	BS_R7TZRSZT	7316-870	Female	BS_KXGJ1HMG	7316-870	Progressive	High-grade glioma/astrocytoma (WHO grade III/IV)	high-grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_P5HHJJPH	BS_R7TZRSZT	7316-870	Female	BS_KXGJ1HMG	7316-870	Progressive	High-grade glioma/astrocytoma (WHO grade III/IV)	high-grade glioma	Pleomorphic xanthoastrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, PXA
 PT_9AW9EWHA	BS_RAFVMB92	7316-454	Male	BS_EFBBP9H3	7316-454	Recurrence	Ependymoma	anaplastic ependymoma who grade iii	Ependymoma	Ependymal tumor	EPN, To be classified
 PT_MDWPRDBT	BS_RB3PE7G3	7316-895	Female	BS_1M63B97V	7316-2751	Deceased	High-grade glioma/astrocytoma (WHO grade III/IV)	high-grade glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_1BV6ND1D	BS_RG2CTN65	7316-3203	Female	BS_MZJJRDZF	7316-3203	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
@@ -645,7 +644,7 @@ PT_MNHMAH0S	BS_RZHVM2QD	7316-880	Female	BS_MJJZJMTK	7316-880	Initial CNS Tumor	L
 PT_FAPEH6R1	BS_S0NVKYR6	7316-1660	Male	BS_ARE4EM81	7316-1660	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
 PT_RGX23JFP	BS_S0WS43HJ	7316-156	Female	BS_XW26N96W	7316-2901	Progressive	Ganglioglioma	desmoplastic ganglioglioma and anaplastic astrocytoma	Ganglioglioma	Low-grade astrocytic tumor	GNG, RTK
 PT_RX1EWBP9	BS_S2N3XTKS	7316-2276	Female	BS_0FQKT8EY	7316-2276	Progressive	Atypical Teratoid Rhabdoid Tumor (ATRT)	atrt	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, MYC
-PT_8GW4J4TD	BS_S3VV60EP	7316-3630	Male	BS_V8G6BZRR	7316-3630	Initial CNS Tumor	Glial-neuronal tumor NOS	rosette-forming glioneuronal tumor	Glial-neuronal tumor	Neuronal and mixed neuronal-glial tumor	GNT, FGFR
+PT_8GW4J4TD	BS_S3VV60EP	7316-3630	Male	BS_V8G6BZRR	7316-3630	Initial CNS Tumor	Glial-neuronal tumor NOS	rosette-forming glioneuronal tumor	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, FGFR
 PT_S3FJSBJT	BS_S573YGV3	7316-2124	Male	BS_X9PJ715R	7316-1794	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_2ZXR2PDN	BS_S588W9V2	7316-1636	Male	BS_93B38HPS	7316-1636	Initial CNS Tumor	Ganglioglioma	ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, BRAF V600E
 PT_FHDZNN40	BS_S5EPM2VY	7316-405	Female	BS_R82MYPKB	7316-405	Initial CNS Tumor	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, PF A
@@ -657,8 +656,8 @@ PT_4B34NTJB	BS_S8A23A9V	7316-8042	Female	BS_KT3GAAQV	7316-8042	Initial CNS Tumor
 PT_5M8A47WW	BS_S8CT9Z7J	7316-436	Female	BS_50XV7CTQ	7316-436	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma with focal pilomyxoid features who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_ZWY04DCR	BS_S9CT40AZ	7316-2666	Male	BS_6T87HSPX	7316-2666	Initial CNS Tumor	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_K30AWQ8A	BS_SCCY3YMQ	7316-393	Female	BS_9GSWPZ44	7316-393	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma kiaa1549-braf fusion.	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_HFQNKP5X	BS_SDDK3Q44	7316-921	Female	BS_FBJ516WW	7316-921	Progressive	Chordoma	chordoma	Chordoma	Chordoma	NA
-PT_FZHGKJ0H	BS_SEERSEV2	7316-4047	Female	BS_NHMPQ8Q1	7316-4033	Initial CNS Tumor	Ganglioneuroblastoma	ganglioneuroblastoma, stage ii favorable histology non n-myc amplified	Ganglioneuroblastoma	Embryonal tumor	NA
+PT_HFQNKP5X	BS_SDDK3Q44	7316-921	Female	BS_FBJ516WW	7316-921	Progressive	Chordoma	chordoma	Chordoma	Chordoma	CHDM, conventional
+PT_FZHGKJ0H	BS_SEERSEV2	7316-4047	Female	BS_NHMPQ8Q1	7316-4033	Initial CNS Tumor	Ganglioneuroblastoma	ganglioneuroblastoma, stage ii favorable histology non n-myc amplified	Ganglioneuroblastoma	Embryonal tumor	NBL, MYCN non-amplified
 PT_EGGY1XC0	BS_SF02KBCG	7316-2865	Female	BS_CSY11X7E	7316-2865	Initial CNS Tumor	Medulloblastoma	medulloblastoma, classic type	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_DW6V5V8E	BS_SG7EPZ4W	7316-924	Female	BS_F4D169Q7	7316-924	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilomyxoid astrocytoma who grade ii	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_JNEV57VK	BS_SGS26NXP	7316-2594	Male	BS_85Q5P8GF	7316-2594	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	anaplastic astrocytoma who grade iii	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
@@ -669,9 +668,9 @@ PT_P4ZEFY19	BS_SN2CD2FC	7316-937	Male	BS_QGX93WPF	7316-937	Initial CNS Tumor	Med
 PT_KTRJ8TFY	BS_SNRF1RKC	7316-3223	Male	BS_3VKW5988	7316-3223	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	Infiltrating Diffuse Astrocytoma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_QQZXYR4M	BS_SP3ND4W3	7316-1946	Male	BS_58X7SKJS	7316-1946	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	anaplastic astrocytoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, IDH, TP53
 PT_27FDWCVZ	BS_SP886CE6	7316-184	Male	BS_D09VWF8H	7316-184	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	fibrillary astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_NTK39NNV	BS_SQT11CPC	7316-3076	Male	BS_Y2C78JC4	7316-3076	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
+PT_NTK39NNV	BS_SQT11CPC	7316-3076	Male	BS_Y2C78JC4	7316-3076	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, RTK
 PT_WG5PHHSQ	BS_SS95SWY2	7316-1962	Female	BS_N5VYY66W	7316-1962	Initial CNS Tumor	Other	meningioangiomatosis	Meningioma	Meningioma	NA
-PT_HN0AXSZ0	BS_SSVBWYPN	7316-1103	Female	BS_Z34PQDYT	7316-1103	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_HN0AXSZ0	BS_SSVBWYPN	7316-1103	Female	BS_Z34PQDYT	7316-1103	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_ECBD1D5J	BS_ST9MMP22	7316-2177	Male	BS_84AQCZE4	7316-2177	Initial CNS Tumor	Meningioma	meningioma	Meningioma	Meningioma	NA
 PT_YDWBWTVN	BS_SW8JSYQ7	7316-147	Male	BS_YVFFHJ1Q	7316-147	Initial CNS Tumor	Schwannoma	schwannoma	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_6VJ5PNKS	BS_SWHT4TC3	7316-2174	Female	BS_JJWC13GG	7316-2174	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
@@ -679,13 +678,13 @@ PT_C4F1HPH5	BS_SY0S6QFV	7316-493	Male	BS_RH9PMH3G	7316-493	Initial CNS Tumor	Lan
 PT_D7FS86D8	BS_SYGXZY9V	7316-3909	Female	BS_3ZASRA3A	7316-1862	Initial CNS Tumor	Other	epidermoid cyst	NA	Benign tumor	NA
 PT_T5KEXCK7	BS_SZYRB89G	7316-2104	Female	BS_19EJ85F8	7316-2090	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atypical teratoid rhabdoid tumor (who grade iv)	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, To be classified
 PT_7BJBEBZT	BS_T2025VEQ	7316-1670	Male	BS_164KRQJ0	7316-1670	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
-PT_AYZA2WCW	BS_T20VY3XN	7316-197	Female	BS_0Q8G4N8H	7316-197	Initial CNS Tumor	Choroid plexus papilloma	choroidplexus papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_AYZA2WCW	BS_T20VY3XN	7316-197	Female	BS_0Q8G4N8H	7316-197	Initial CNS Tumor	Choroid plexus papilloma	choroidplexus papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_S7YHNHSS	BS_T3FD64Z7	7316-2754	Female	BS_KSRYKCDE	7316-2754	Initial CNS Tumor	Neurofibroma/Plexiform	neurofibroma	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
 PT_DEDRCQWH	BS_T3VJQSYM	7316-398	Female	BS_ZHJFX6C9	7316-398	Initial CNS Tumor	Neurofibroma/Plexiform	neurofibroma/plexiform	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
 PT_W3FSA7NH	BS_T5772838	7316-1663	Female	BS_1GK2EMFY	7316-3522	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_RFF7MKTC	BS_T5TB5NM7	7316-954	Female	BS_PP4WJBNR	7316-954	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_E78NHRWQ	BS_T5WVTGV8	7316-1081	Male	BS_3DYRAZE7	7316-1081	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_387VK1T9	BS_T77MXWTX	7316-3625	Female	BS_F064HMTP	7316-3625	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma	Infant-type hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	IHG, ALK-altered
+PT_387VK1T9	BS_T77MXWTX	7316-3625	Female	BS_F064HMTP	7316-3625	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma	Infant-type hemispheric glioma	Diffuse astrocytic and oligodendroglial tumor	IHG, NTRK-altered
 PT_7TEHW6VQ	BS_TA48KCWF	7316-2755	Male	BS_KYPZRS4S	7316-2755	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low-grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_S7WJ99PC	BS_TARPGT44	7316-2636	Male	BS_W9P0PFDH	7316-677	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	subependymal giant cell astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	SEGA, wildtype
 PT_0H65S44B	BS_TBYS2Z4H	7316-3567	Male	BS_Q807ENGY	7316-3567	Initial CNS Tumor	Other	perineuroma	Other tumor	Other tumor	NA
@@ -697,7 +696,7 @@ PT_5VAKED5F	BS_TGEBNSS2	7316-2689	Male	BS_7M5272WN	7316-2689	Initial CNS Tumor	L
 PT_164RNWTT	BS_TH4A63J7	7316-1078	Male	BS_5D24XV4T	7316-1078	Initial CNS Tumor	Ependymoma	ependymoma grade iii anaplastic	Ependymoma	Ependymal tumor	EPN, PF A
 PT_2JDDX6TJ	BS_THDBV4G0	7316-409	Female	BS_B9QP40ER	7316-409	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	gbm	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_XWVQW6JX	BS_TKRHXGZQ	7316-3556	Male	BS_XBBBE8V2	7316-3556	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_5SX0GRW1	BS_TP6GSAB6	7316-31	Male	BS_KP0YNTAK	7316-1927	Deceased	Neuroblastoma	Metastatic secondary tumors;Neuroblastoma	Neuroblastoma	Embryonal tumor	NA
+PT_5SX0GRW1	BS_TP6GSAB6	7316-31	Male	BS_KP0YNTAK	7316-1927	Deceased	Neuroblastoma	Metastatic secondary tumors;Neuroblastoma	Neuroblastoma	Embryonal tumor	NBL, MYCN non-amplified
 PT_DACV00WF	BS_TQYACCGG	7316-489	Female	BS_PVZJCXS1	7316-489	Initial CNS Tumor	Medulloblastoma	medulloblastoma who grade 4	Medulloblastoma	Embryonal tumor	MB, SHH
 PT_HQ89KPKT	BS_TTRNJ8DJ	7316-202	Female	BS_R1RMKH1B	7316-202	Initial CNS Tumor	Other	ganglioneuroma	Ganglioneuroma	Embryonal tumor	NA
 PT_TD6ST5MG	BS_TTVB22NF	7316-56	Female	BS_SE82EQF8	7316-235	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	astrocytoma with features of anaplastic tumor	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E
@@ -718,7 +717,7 @@ PT_279D9QZ8	BS_VBB1XSPW	7316-69	Female	BS_1YTHM07J	7316-325	Recurrence	Gangliogl
 PT_8V3360DR	BS_VCCX0CTG	7316-641	Female	BS_JVTQD8HH	7316-641	Initial CNS Tumor	Schwannoma	schwannoma (who grade 1)	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_SW4Q1HZP	BS_VF1R7VC2	7316-8716	Female	BS_K24D4BGK	7316-8716	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	Glioblastoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
 PT_8SDJXNFR	BS_VHG85P93	7316-3755	Female	BS_6Z4WHYDG	7316-3755	Recurrence	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, ST ZFTA
-PT_3WA7SBQ6	BS_VJ7200DX	7316-2248	Female	BS_HN8DE43A	7316-2248	Initial CNS Tumor	Choroid plexus carcinoma	choroid plexus carcinoma, who grade 3	Choroid plexus carcinoma	Choroid plexus tumor	NA
+PT_3WA7SBQ6	BS_VJ7200DX	7316-2248	Female	BS_HN8DE43A	7316-2248	Initial CNS Tumor	Choroid plexus carcinoma	choroid plexus carcinoma, who grade 3	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_XDV8W16W	BS_VM2GYF7B	7316-3751	Male	BS_AGGH3QGS	7316-3751	Progressive	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_41QYPSGV	BS_VN983YRH	7316-884	Female	BS_CPYV7AHD	7316-884	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pxa	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E, CDKN2A/B
 PT_RSDTCFDA	BS_VNBX1SEV	7316-204	Female	BS_SK4H5MJQ	7316-204	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	anaplastic astrocytoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
@@ -729,7 +728,7 @@ PT_GERCQ0JG	BS_W1T5T8WS	7316-3520	Female	BS_HZV4WDTB	7316-3520	Initial CNS Tumor
 PT_FMK5VFYW	BS_W489E0R2	7316-950	Female	BS_80X7AVCP	7316-950	Progressive	Supratentorial or Spinal Cord PNET	spnet	CNS Embryonal tumor	Embryonal tumor	CNS Embryonal, NOS
 PT_ZZWYKZZ8	BS_W4ZEEWZA	7316-904	Male	BS_2E81A3FT	7316-2758	Deceased	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, To be classified
 PT_ESHACWF6	BS_W75GCHPW	7316-1790	Female	BS_SWHQ8FDW	7316-878	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atrt	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, SHH
-PT_FCM7XPVR	BS_W7P0FTAQ	7316-2611	Female	BS_4GKH983E	7316-2285	Recurrence	Ependymoma	low-grade glioneuronal tumor with increased proliferation index	Ependymoma	Ependymal tumor	EPN, To be classified
+PT_FCM7XPVR	BS_W7P0FTAQ	7316-2611	Female	BS_4GKH983E	7316-2285	Recurrence	Glial-neuronal tumor NOS	low-grade glioneuronal tumor with increased proliferation index	Glial-neuronal tumor NOS	Neuronal and mixed neuronal-glial tumor	GNT, wildtype
 PT_X8S0H6TG	BS_W82P51ED	7316-876	Female	BS_ZECKZTFC	7316-876	Initial CNS Tumor	Ewings Sarcoma	ewing's sarcoma	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
 PT_PSX2CSYX	BS_W9MBVTYX	7316-46	Female	BS_AFAHY6HP	7316-46	Initial CNS Tumor	Brainstem glioma- Diffuse intrinsic pontine glioma	brainstem glioma- diffuse intrinsic pontine glioma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28, TP53
 PT_M0FVZ88D	BS_WA65EGJJ	7316-1986	Male	BS_JNS7Q60A	7316-1986	Initial CNS Tumor	Meningioma	atypical meningioma (who ii)	Meningioma	Meningioma	NA
@@ -745,7 +744,7 @@ PT_1NN9AW39	BS_WNKT1PAM	7316-3148	Male	BS_8D52JK1Q	7316-3148	Initial CNS Tumor	O
 PT_6TMT65YA	BS_WP2FY512	7316-1642	Male	BS_BSM3ZHW4	7316-1642	Initial CNS Tumor	Ependymoma	anaplastic ependymoma (who iii)	Ependymoma	Ependymal tumor	EPN, PF A
 PT_NMZBRFYS	BS_WP9M8J6W	7316-1987	Male	BS_BD4RQ1G0	7316-1987	Initial CNS Tumor	Schwannoma	schwannoma	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_N56EYD4Z	BS_WQFHXEKC	7316-3857	Male	BS_NFT9VHMJ	7316-3857	Initial CNS Tumor	Medulloblastoma	medulloblastoma with prominent neuronal differentiation grade iv	Medulloblastoma	Embryonal tumor	MB, Group3
-PT_CAYBADQC	BS_WRRTNKYE	7316-2641	Male	BS_2Z9JQDPV	7316-2641	Initial CNS Tumor	Other	juvenile xanthogranuloma of the cns	Histiocytic tumor	Histiocytic tumor	NA
+PT_CAYBADQC	BS_WRRTNKYE	7316-2641	Male	BS_2Z9JQDPV	7316-2641	Initial CNS Tumor	Other	juvenile xanthogranuloma of the cns	Juvenile xanthogranuloma	Histiocytic tumor	NA
 PT_NPHZQW6A	BS_WVRCPEH1	7316-1985	Male	BS_B6KCJF2B	7316-1985	Initial CNS Tumor	Ganglioglioma	low grade glial-glioneuronal lesion. ganglioglioma	Ganglioglioma	Low-grade astrocytic tumor	GNG, KIAA1549-BRAF
 PT_NDVJE438	BS_WWHGAHR5	7316-3331	Male	BS_FT95T4YP	7316-2811	Initial CNS Tumor	Medulloblastoma	medulloblastoma (who grade iv)	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_1J2DT6MM	BS_WYX72YAC	7316-2184	Female	BS_THH0CE5A	7316-2184	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
@@ -763,7 +762,7 @@ PT_02MVZZSW	BS_XCKDRRYT	7316-1702	Female	BS_MW74GF38	7316-1702	Initial CNS Tumor
 PT_JXSDFPNM	BS_XCW7C66J	7316-2142	Female	BS_F5641KTR	7316-2142	Second Malignancy	Meningioma	meningioma	Meningioma	Meningioma	NA
 PT_VGXHFMND	BS_XDE7MG7P	7316-1643	Female	BS_6X3Z0AVR	7316-1643	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_9DMMZ08D	BS_XEY2VWR9	7316-1666	Female	BS_H174820R	7316-1666	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, SHH
-PT_F1086Z0A	BS_XFT4ENH2	7316-1101	Male	BS_BWZTMWTM	7316-1101	Initial CNS Tumor	Chordoma	not reported	Chordoma	Chordoma	NA
+PT_F1086Z0A	BS_XFT4ENH2	7316-1101	Male	BS_BWZTMWTM	7316-1101	Initial CNS Tumor	Chordoma	not reported	Chordoma	Chordoma	CHDM, poorly differentiated
 PT_89XRZBSG	BS_XHT3F34T	7316-445	Male	BS_G9MQM1KK	7316-445	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	anaplastic astrocytoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_67R1AF5R	BS_XJWNW9E8	7316-889	Male	BS_4PAE19ZC	7316-889	Initial CNS Tumor	Ependymoma	anaplastic ependymoma (who grade iii)	Ependymoma	Ependymal tumor	EPN, PF A
 PT_Y8RNS9JE	BS_XKHY9A6D	7316-1656	Male	BS_3BMGF6GN	7316-1656	Recurrence	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype, TP53
@@ -782,7 +781,7 @@ PT_B38P3Y5T	BS_Y63AQ2ZX	7316-2781	Female	BS_DH86PF5A	7316-3208	Deceased	Brainste
 PT_P2NGYMG5	BS_Y6D4JQS8	7316-1956	Female	BS_230S192D	7316-1956	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	high grade glioma (who iv)	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
 PT_3SW2VHD5	BS_Y6FTH24P	7316-64	Male	BS_JJNSP29S	7316-2984	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
 PT_TH18S0JQ	BS_Y6ZSGEPG	7316-3068	Female	BS_KH0NFCWF	7316-3068	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_01MZ62KG	BS_Y7A7J675	7316-447	Male	BS_TE8QFF7T	7316-447	Progressive	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	NA
+PT_01MZ62KG	BS_Y7A7J675	7316-447	Male	BS_TE8QFF7T	7316-447	Progressive	Pineoblastoma	pineoblastoma	Embryonal tumor with multilayer rosettes	Embryonal tumor	ETMR, C19MC-altered
 PT_BWN251DF	BS_Y8FH8822	7316-659	Female	BS_MVC1NCZX	7316-659	Initial CNS Tumor	Ependymoma	anaplastic ependymoma	Ependymoma	Ependymal tumor	EPN, ST ZFTA
 PT_G5RA8E3N	BS_YB4SNTJY	7316-1996	Male	BS_BAVWP5JG	7316-727	Initial CNS Tumor	Meningioma	atypical meningiona (who gr ii)	Meningioma	Meningioma	NA
 PT_45P9F9MD	BS_YCT0FK91	7316-140	Female	BS_0RF0G9SQ	7316-314	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
@@ -793,7 +792,7 @@ PT_B0JFCN5W	BS_YHZ69SDZ	7316-1773	Male	BS_BZ4GKDP4	7316-1773	Initial CNS Tumor	C
 PT_50ZFWMZE	BS_YJ0QJJZB	7316-1942	Male	BS_4P25NNZD	7316-1942	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_3WA1XB8G	BS_YJCZY95C	7316-70	Male	BS_K049HVGR	7316-70	Initial CNS Tumor	Ganglioglioma;Low-grade glioma/astrocytoma (WHO grade I/II)	low grade glioma and ganglioglioma	Low-grade glioma	Low-grade astrocytic tumor	LGG, wildtype
 PT_XA98HG1C	BS_YKD3WYFB	7316-931	Male	BS_2J4FG4HV	7316-931	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, SHH
-PT_3AWKWXEV	BS_YKT1NAJQ	7316-85	Male	BS_E42SSQGJ	7316-85	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma multiforme	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
+PT_3AWKWXEV	BS_YKT1NAJQ	7316-85	Male	BS_E42SSQGJ	7316-85	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	glioblastoma multiforme	Pleomorphic xanthoastrocytoma	Diffuse astrocytic and oligodendroglial tumor	HGG, PXA
 PT_1EB5KHZX	BS_YNN71TNT	7316-1076	Female	BS_C0YDDQKB	7316-1076	Initial CNS Tumor	Dysplasia/Gliosis	cortical dysplasia	NA	Pre-cancerous lesion	NA
 PT_V0X73HEQ	BS_YR1X1SSH	7316-2182	Male	BS_GMQZNQH8	7316-2182	Initial CNS Tumor	Ependymoma	ependymoma	Ependymoma	Ependymal tumor	EPN, PF A
 PT_S4H6KA09	BS_YR9C74CN	7316-2282	Female	BS_K6A9Z04J	7316-2134	Initial CNS Tumor	Ependymoma	anaplastic ependymoma who grade iii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
@@ -802,7 +801,7 @@ PT_9S6WMQ92	BS_YVRSCEC6	7316-333	Female	BS_WY5KYSHJ	7316-278	Initial CNS Tumor	M
 PT_Q25V9Y6M	BS_YVWRMH36	7316-1668	Male	BS_9HDPJT21	7316-1668	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF, FGFR
 PT_DEYCW197	BS_YWHDJ7FE	7316-175	Male	BS_6XP91JM2	7316-175	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma who i	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_3CVMBGD7	BS_YWM1RMFT	7316-1963	Male	BS_49JD1V3S	7316-1963	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
-PT_13MKXR8G	BS_YXPWKF92	7316-2251	Male	BS_CXCKHP3Z	7316-2251	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus neoplasm	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_13MKXR8G	BS_YXPWKF92	7316-2251	Male	BS_CXCKHP3Z	7316-2251	Initial CNS Tumor	Choroid plexus papilloma	choroid plexus neoplasm	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_N3HVMV06	BS_YXW56D0Z	7316-2102	Female	BS_SD28E0SC	7316-2075	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pleomorphic xanthoastrocytoma, who grade ii	Low-grade glioma	Low-grade astrocytic tumor	LGG, BRAF V600E
 PT_ZCXS29JJ	BS_YXWZB6S7	7316-2153	Male	BS_VF099E8S	7316-2153	Initial CNS Tumor	Sarcoma	soft tissue sarcoma	Sarcoma	Mesenchymal non-meningothelial tumor	NA
 PT_5F4N0CAP	BS_YZ3MRCXX	7316-219	Female	BS_G12HNXYX	7316-219	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, WNT
@@ -826,9 +825,9 @@ PT_GR8P8NY5	BS_ZMPNTK3D	7316-178	Female	BS_P99S85CY	7316-178	Initial CNS Tumor	M
 PT_XXZHRPNM	BS_ZMW21B7R	7316-2572	Male	BS_SMCPASF0	7316-2572	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma (grade i)	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_VHS5RM2K	BS_ZMZFKVWZ	7316-364	Male	BS_FNM4BB83	7316-364	Initial CNS Tumor	Ewings Sarcoma	ewing's sarcoma	Ewing sarcoma	Mesenchymal non-meningothelial tumor	EWS
 PT_RMK36R2E	BS_ZNB7T5SZ	7316-2275	Female	BS_RGSJMSRE	7316-2275	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma, who grade i	Low-grade glioma	Low-grade astrocytic tumor	LGG, other MAPK
-PT_B54PH840	BS_ZP36WDVS	7316-907	Male	BS_XJZQA3AP	7316-2707	Initial CNS Tumor	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	NA
+PT_B54PH840	BS_ZP36WDVS	7316-907	Male	BS_XJZQA3AP	7316-2707	Initial CNS Tumor	Pineoblastoma	pineoblastoma	Pineoblastoma	Tumor of pineal region	PB, MYC/FOXR2
 PT_229DRV7B	BS_ZQY1P7NR	7316-3591	Male	BS_CDKC1E2B	7316-1757	Recurrence	Neurofibroma/Plexiform	residual/recurrent plexiform neurofibroma	Neurofibroma/Plexiform	Tumor of cranial and paraspinal nerves	NA
-PT_WYVMWYVA	BS_ZRVFD8TY	7316-3794	Male	BS_HC4T1EEP	7316-257	Initial CNS Tumor	Choroid plexus papilloma	choroid plexis papilloma	Choroid plexus papilloma	Choroid plexus tumor	NA
+PT_WYVMWYVA	BS_ZRVFD8TY	7316-3794	Male	BS_HC4T1EEP	7316-257	Initial CNS Tumor	Choroid plexus papilloma	choroid plexis papilloma	Choroid plexus tumor	Choroid plexus tumor	NA
 PT_TEBD1SES	BS_ZSAHMF4V	7316-3054	Male	BS_K3YT05M7	7316-3054	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_NXX0M835	BS_ZVFTWY6Y	7316-948	Male	BS_NS8G0465	7316-948	Initial CNS Tumor	Schwannoma	schwannoma	Schwannoma	Tumor of cranial and paraspinal nerves	NA
 PT_37WTWPZY	BS_ZVXHWM3N	7316-73	Female	BS_MHT5C2AP	7316-73	Initial CNS Tumor	Langerhans Cell histiocytosis	langerhans cell histiocytosis (lch)	Langerhans Cell histiocytosis	Histiocytic tumor	NA
