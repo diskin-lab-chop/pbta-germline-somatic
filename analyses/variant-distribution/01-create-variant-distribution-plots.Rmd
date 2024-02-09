@@ -61,11 +61,11 @@ hist <- read_tsv(file.path(root_dir,
 
 # Merge clin with germline plp file
 ```{r data wrangling}
-plp <- read_tsv(file.path(data_dir, "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv"), 
+plp <- read_tsv(file.path(input_dir, "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv"), 
                 show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
-  select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, variant_classification_vep) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, variant_classification_vep) %>%
   distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, .keep_all = T) %>%
   # Consolidate variant classifications, and pick most severe when multiple reported (missense > stop > frameshift > splice)
   dplyr::mutate(variant_classification_vep = case_when(
@@ -238,7 +238,7 @@ for (each in names(plplists)){
 Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
 plp_full <- read_tsv(file.path(data_dir,
-                               "pbta_germline_plp_calls_autogvp_full_11062023.tsv")) %>%
+                               "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")) %>%
   dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref)) %>%
   dplyr::filter(gene_symbol_vep %in% cpg)
 
@@ -251,9 +251,6 @@ plp_full %>%
 
 ggsave(file.path(plot_dir, "cpg-variant-allele-freq-hist.tiff"),
        width = 4, height = 6)
-
-ggsave("/Users/corbettr/Documents/pbta-germline/manuscript/cpg-variant-allele-freq-hist.tiff",
-       width = 4, height = 4.5)
 
 ```
 
