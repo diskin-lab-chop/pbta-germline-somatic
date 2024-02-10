@@ -35,8 +35,13 @@ histologies_file <- file.path(root_dir,
                            "results",
                            "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
 
 predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
 ```
@@ -46,7 +51,9 @@ Read in histologies, germline PLP, and predispositions file
 ```{r read files}
 hist <- read_tsv(histologies_file,show_col_types = FALSE) 
 
-plp <- read_tsv(plp_file,show_col_types = FALSE)
+plp <- read_tsv(plp_file, show_col_types = FALSE)
+
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 predispositions <- read_tsv(predispositions_file) %>%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)
@@ -58,7 +65,9 @@ table(hist$cancer_predispositions)
 ```
 
 Subset PLP file to include only variants in CPGs associated with syndromes in `predispositions`, and include `cancer_predispositions` column to indicate whether syndrome is currently reported.
+
 ```{r }
+
 predisposition_plp_bs <- plp %>%
   filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %>%
   pull(Kids_First_Biospecimen_ID_normal)
@@ -85,6 +94,7 @@ plp_predisposition_syndromes <- hist %>%
          clinvar_variant_id,
          associated_syndrome, clinically_reported_syndrome, incidental_finding) %>%
   dplyr::mutate(clinvar_variant_link = glue::glue("https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/"))
+
 ```
 
 Save output
@@ -92,4 +102,43 @@ Save output
 ```{r}
 write_tsv(plp_predisposition_syndromes,
           file.path(results_dir, "incidental-findings-predisposition-variants.tsv"))
+```
+
+
+Generate same file for germline P/LP SVs: 
+
+```{r}
+
+predisposition_plp_sv_bs <- plp_sv %>%
+  filter(Hugo_Symbol_cpg %in% predispositions$gene_symbol_vep) %>%
+  pull(Kids_First_Biospecimen_ID_normal)
+
+plp_sv_predisposition_syndromes <- hist %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_sv_bs) %>%
+  left_join(plp_sv) %>%
+  dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg) %>%
+  left_join(predispositions) %>%
+  filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %>%
+  dplyr::rename("associated_syndrome" = `Associated Syndrome`,
+                "clinically_reported_syndrome" = cancer_predispositions) %>%
+  dplyr::mutate(incidental_finding = case_when(
+    !str_detect(clinically_reported_syndrome, associated_syndrome) ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+         Kids_First_Biospecimen_ID_tumor,
+         sample_id_normal, sample_id_tumor,
+         plot_group, molecular_subtype, 
+         Chromosome, Start, End, Length,
+         Type, Classification, 
+         gene_symbol_vep, 
+         associated_syndrome, clinically_reported_syndrome, incidental_finding)
+
+```
+
+Save output
+
+```{r}
+write_tsv(plp_sv_predisposition_syndromes,
+          file.path(results_dir, "incidental-findings-predisposition-structural-variants.tsv"))
 ```
