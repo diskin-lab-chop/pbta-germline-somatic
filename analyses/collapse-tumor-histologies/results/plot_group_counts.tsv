@@ -1,18 +1,18 @@
 plot_group	n
-Other CNS embryonal tumor	10
+Other CNS embryonal tumor	12
 Germ cell tumor	13
 Schwannoma	13
 Neurofibroma plexiform	14
 Choroid plexus tumor	18
 Mesenchymal tumor	20
 Meningioma	25
-Non-neoplastic tumor	25
 Atypical Teratoid Rhabdoid Tumor	27
-Other tumor	34
+Non-neoplastic tumor	27
+Other tumor	31
 Craniopharyngioma	39
 DIPG or DMG	53
-Ependymoma	73
-Other high-grade glioma	74
-Mixed neuronal-glial tumor	81
-Medulloblastoma	97
-Low-grade glioma	222
+Ependymoma	71
+Other high-grade glioma	76
+Mixed neuronal-glial tumor	79
+Medulloblastoma	96
+Low-grade glioma	223
