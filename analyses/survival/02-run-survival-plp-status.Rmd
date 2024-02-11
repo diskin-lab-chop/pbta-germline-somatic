@@ -59,6 +59,7 @@ hist <- read_tsv(histologies_file) %>%
 
 Define plot groups for which survival analyses should be run
 ```{r}
+
 groups <- c("Atypical Teratoid Rhabdoid Tumor",
             "Choroid plexus tumor",
             "Craniopharyngioma",
@@ -75,6 +76,7 @@ groups <- c("Atypical Teratoid Rhabdoid Tumor",
 # create names vector for output files
 plot_names <- c("ATRT", "CPT", "CRANIO", "HGG", "EPN", "LGG", "MB", "MNG", "MES", "GNG-GNT", "NFP")
 names(plot_names) <- groups
+
 ```
 
 Loop through groups and create Kaplan Meier survival and Cox Proportional Hazard models for overall and event-free survival
@@ -136,7 +138,9 @@ for (group in groups){
     if (group == "Low-grade glioma") {
       group_hist <- group_hist %>%
         dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
-                                                  c("LGG, WT", "LGG, BRAF fusion",
+                                                  c("LGG, WT", 
+                                                    "LGG, BRAF V600E",
+                                                    "LGG, BRAF fusion",
                                                     "LGG, Other alteration",
                                                     "SEGA",
                                                     "LGG, To be classified")))
@@ -145,7 +149,9 @@ for (group in groups){
     if (group == "Mixed neuronal-glial tumor") {
       group_hist <- group_hist %>%
         dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
-                                                  c("GNG/GNT, WT", "GNG/GNT, BRAF fusion",
+                                                  c("GNG/GNT, WT", 
+                                                    "GNG/GNT, BRAFV600E",
+                                                    "GNG/GNT, BRAF fusion",
                                                     "GNG/GNT, Other alteration",
                                                     "GNG, To be classified",
                                                     "GNT, To be classified")))

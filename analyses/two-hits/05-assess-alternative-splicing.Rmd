@@ -40,8 +40,10 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 Set input file paths
 ```{r}
-plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
 
 hist_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
                                   "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -75,6 +77,7 @@ splice_events <- vroom(splice_events_file)
 
 Add RNA Biospecimen ID to hist file
 ```{r}
+
 hist <- hist %>%
   left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID")]) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
@@ -83,8 +86,8 @@ hist <- hist %>%
 
 Define CPGs with P/LP variants in cohort, and splicing cases to query
 ```{r}
+
 cpgs_test <- plp %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
     filter(Hugo_Symbol %in% cpgs) %>%
   pull(Hugo_Symbol) %>%
   unique()
@@ -102,6 +105,7 @@ Identify splicing event PSI z-scores as follows:
 5) Extract sample PSI and z-score, and calculate mean PSI for rest of histology group and PSI difference (sample - other)
 6) Append statistics to data frame 
 ```{r}
+
 splice_psi_df <- tibble(
   Hugo_Symbol = character(),
   sample_id = character(),

@@ -449,13 +449,19 @@ source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pr
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(data_dir, 
-                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)</code></pre>
-<p>Read plp variant file and filter for 838 samples in histology:</p>
+plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                      &quot;variant-distribution&quot;, &quot;input&quot;, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv&quot;)
+
+plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                         &quot;germline-sv&quot;, &quot;input&quot;, 
+                         &quot;pbta_germline_svs.tsv&quot;)</code></pre>
+<p>wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE)
 
-germline &lt;- read_tsv(plp_file, show_col_types = FALSE) %&gt;%
-  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)</code></pre>
+germline &lt;- read_tsv(plp_file, show_col_types = FALSE) 
+
+germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)</code></pre>
 <p>Using DNA repair gene lists obtained from Knijnenburg et al. and
 Broad GSEA, identify patients with germline PLP variants in DNA repair
 genes and save results to separate outputs</p>
@@ -501,6 +507,30 @@ for (i in 1:length(repair_gene_source)){
     
     # write output to file
     readr::write_tsv(file.path(results_dir, glue::glue(&quot;dna_repair_germline_variant_plp_{repair_gene_source[i]}.tsv&quot;)))
+  
+  repair_germline_sv &lt;- germline_sv %&gt;%
+    dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg) %&gt;%
+    filter(gene_symbol_vep %in% repair_genes) %&gt;%
+  
+  # add columns indicating if gene is involved in specific DNA repair pathways
+    mutate(BER = case_when(
+      gene_symbol_vep %in% ber_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
+    mutate(HR = case_when(
+      gene_symbol_vep %in% hr_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
+    mutate(MMR = case_when(
+      gene_symbol_vep %in% mmr_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
+    mutate(NER = case_when(
+      gene_symbol_vep %in% ner_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
+    mutate(NHEJ = case_when(
+      gene_symbol_vep %in% nhej_genes ~ &quot;Yes&quot;,
+      TRUE ~ &quot;No&quot;)) %&gt;%
+    
+    # write output to file
+    readr::write_tsv(file.path(results_dir, glue::glue(&quot;dna_repair_germline_sv_plp_{repair_gene_source[i]}.tsv&quot;)))
 
   # define `plot_df` for plotting DNA repair pathway PLP variants by plot group 
   plot_df &lt;- repair_germline %&gt;%
@@ -509,7 +539,6 @@ for (i in 1:length(repair_gene_source)){
     bind_rows(repair_germline[repair_germline$MMR == &quot;Yes&quot;,]) %&gt;%
     bind_rows(repair_germline[repair_germline$NER == &quot;Yes&quot;,]) %&gt;%
     bind_rows(repair_germline[repair_germline$NHEJ == &quot;Yes&quot;,])
-  
   
   plot_df &lt;- plot_df %&gt;%
     bind_rows(repair_germline[!repair_germline$Kids_First_Biospecimen_ID_normal %in% plot_df$Kids_First_Biospecimen_ID_normal,]) %&gt;%
@@ -520,8 +549,31 @@ for (i in 1:length(repair_gene_source)){
                      rep(&quot;NHEJ&quot;, nrow(repair_germline[repair_germline$NHEJ == &quot;Yes&quot;,])),
                      rep(&quot;Other&quot;, nrow(repair_germline[!repair_germline$Kids_First_Biospecimen_ID_normal %in% plot_df$Kids_First_Biospecimen_ID_normal,]))
                      )
-           ) %&gt;%
-
+           )
+  
+  plot_sv_df &lt;- repair_germline_sv %&gt;%
+    filter(BER == &quot;Yes&quot;) %&gt;%
+    bind_rows(repair_germline_sv[repair_germline_sv$HR == &quot;Yes&quot;,]) %&gt;%
+    bind_rows(repair_germline_sv[repair_germline_sv$MMR == &quot;Yes&quot;,]) %&gt;%
+    bind_rows(repair_germline_sv[repair_germline_sv$NER == &quot;Yes&quot;,]) %&gt;%
+    bind_rows(repair_germline_sv[repair_germline_sv$NHEJ == &quot;Yes&quot;,])
+  
+  plot_sv_df &lt;- plot_sv_df %&gt;%
+    bind_rows(repair_germline_sv[!repair_germline_sv$Kids_First_Biospecimen_ID_normal %in% plot_sv_df$Kids_First_Biospecimen_ID_normal,]) %&gt;%
+    mutate(class = c(rep(&quot;BER&quot;, nrow(repair_germline_sv[repair_germline_sv$BER == &quot;Yes&quot;,])),
+                     rep(&quot;HR&quot;, nrow(repair_germline_sv[repair_germline_sv$HR == &quot;Yes&quot;,])),
+                     rep(&quot;MMR&quot;, nrow(repair_germline_sv[repair_germline_sv$MMR == &quot;Yes&quot;,])),
+                     rep(&quot;NER&quot;, nrow(repair_germline_sv[repair_germline_sv$NER == &quot;Yes&quot;,])),
+                     rep(&quot;NHEJ&quot;, nrow(repair_germline_sv[repair_germline_sv$NHEJ == &quot;Yes&quot;,])),
+                     rep(&quot;Other&quot;, nrow(repair_germline_sv[!repair_germline_sv$Kids_First_Biospecimen_ID_normal %in% plot_sv_df$Kids_First_Biospecimen_ID_normal,]))
+                     )
+           )
+  
+  
+  plot_df &lt;- plot_df %&gt;%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, class) %&gt;%
+    bind_rows(plot_sv_df %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, class)) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, class) %&gt;%
     # add plot group 
     left_join(hist[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;plot_group&quot;, &quot;plot_group_hex&quot;)], by = &quot;Kids_First_Biospecimen_ID_normal&quot;) %&gt;%
     # retain only one instace of pathway P/LP variant per pt
@@ -557,36 +609,38 @@ for (i in 1:length(repair_gene_source)){
     # Add columns indicate presence/absence of DNA repair P-LP variants to histologies file
     hist_repair &lt;- hist %&gt;%
       dplyr::mutate(`All Repair` = case_when(
-        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal ~ &quot;Yes&quot;,
+        Kids_First_Biospecimen_ID_normal %in% c(repair_germline$Kids_First_Biospecimen_ID_normal,
+                                                repair_germline_sv$Kids_First_Biospecimen_ID_normal) ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
       )) %&gt;%
       dplyr::mutate(BER = case_when(
-        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$BER == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        Kids_First_Biospecimen_ID_normal %in% c(repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$BER == &quot;Yes&quot;],
+                                                repair_germline_sv$Kids_First_Biospecimen_ID_normal[repair_germline_sv$BER == &quot;Yes&quot;]) ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
       )) %&gt;%
       dplyr::mutate(HR = case_when(
-        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$HR == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        Kids_First_Biospecimen_ID_normal %in% c(repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$HR == &quot;Yes&quot;],
+                                                repair_germline_sv$Kids_First_Biospecimen_ID_normal[repair_germline_sv$HR == &quot;Yes&quot;]) ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
       )) %&gt;%
       dplyr::mutate(MMR = case_when(
-        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$MMR == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        Kids_First_Biospecimen_ID_normal %in% c(repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$MMR == &quot;Yes&quot;],
+                                                repair_germline_sv$Kids_First_Biospecimen_ID_normal[repair_germline_sv$MMR == &quot;Yes&quot;]) ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
       )) %&gt;%
       dplyr::mutate(NER = case_when(
-        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$NER == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        Kids_First_Biospecimen_ID_normal %in% c(repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$NER == &quot;Yes&quot;],
+                                                repair_germline_sv$Kids_First_Biospecimen_ID_normal[repair_germline_sv$NER == &quot;Yes&quot;]) ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
       )) %&gt;%
       dplyr::mutate(NHEJ = case_when(
-        Kids_First_Biospecimen_ID_normal %in% repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$NHEJ == &quot;Yes&quot;] ~ &quot;Yes&quot;,
+        Kids_First_Biospecimen_ID_normal %in% c(repair_germline$Kids_First_Biospecimen_ID_normal[repair_germline$NHEJ == &quot;Yes&quot;],
+                                                repair_germline_sv$Kids_First_Biospecimen_ID_normal[repair_germline_sv$NHEJ == &quot;Yes&quot;]) ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
       )) %&gt;%
       dplyr::mutate(Other = case_when(
         `All Repair` == &quot;Yes&quot; &amp; BER == &quot;No&quot; &amp; HR == &quot;No&quot; &amp; NER == &quot;No&quot; &amp; MMR == &quot;No&quot; &amp; NHEJ == &quot;No&quot; ~ &quot;Yes&quot;,
         TRUE ~ &quot;No&quot;
-      )) %&gt;%
-      dplyr::mutate(plot_group = case_when(
-        plot_group %in% c(&quot;DIPG or DMG&quot;, &quot;Other high-grade glioma&quot;) ~ &quot;High-grade glioma&quot;,
-        TRUE ~ plot_group
       ))
 
     # Run DNA repair gene P-LP enrichment by histology group and repair pathway
