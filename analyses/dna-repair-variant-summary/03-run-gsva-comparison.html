@@ -450,6 +450,8 @@ source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pr
 
 pbta_histologies_file &lt;- file.path(data_dir,&quot;histologies.tsv&quot;)
 
+independent_specimens_file &lt;- file.path(data_dir, &quot;independent-specimens.rnaseqpanel.primary-plus.tsv&quot;)
+
 gsva_file &lt;- file.path(input_dir, &#39;pbta-hallmark-gsva-scores.tsv&#39;)
 kegg_file &lt;- file.path(analysis_dir, &quot;results&quot;, &quot;pbta-KEGG-gsva-scores.tsv&quot;)
 
@@ -457,9 +459,9 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <p>Read in CBTN and PBTA histologies, gsva results, maf, and cpg files.
 Filter histologies file for high-grade glioma only</p>
 <pre class="r"><code>hist_cbtn &lt;- read_tsv(cbtn_histologies_file) %&gt;%
-  dplyr::filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))</code></pre>
-<pre><code>## Rows: 838 Columns: 36
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
+  dplyr::filter(grepl(&quot;Other high-grade glioma&quot;, plot_group))</code></pre>
+<pre><code>## Rows: 837 Columns: 36
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -471,16 +473,24 @@ Filter histologies file for high-grade glioma only</p>
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre><code>## Rows: 43729 Columns: 55
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (38): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
 ## dbl (17): age_at_diagnosis_days, OS_days, EFS_days, age_last_update_days, no...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>independent_specimens &lt;- read_tsv(independent_specimens_file)</code></pre>
+<pre><code>## Rows: 12579 Columns: 6
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;\t&quot;
+## chr (6): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, cohort, cance...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -491,7 +501,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score
@@ -507,8 +517,11 @@ cpgs &lt;- read_lines(file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-ann
 <p>Pull BS_ids corresponding to RNA-Seq experiments. Append GSVA scores
 for samples and calculate median scores in instances where there are
 &gt;1 RNA-seq sample per patient</p>
-<pre class="r"><code>rna_ids &lt;- hist_pbta %&gt;% 
-  dplyr::filter(experimental_strategy == &#39;RNA-Seq&#39; &amp; sample_id %in% hist_cbtn$sample_id_tumor) %&gt;%
+<pre class="r"><code># rna_ids &lt;- hist_pbta %&gt;% 
+#   dplyr::filter(experimental_strategy == &#39;RNA-Seq&#39; &amp; sample_id %in% hist_cbtn$sample_id_tumor) %&gt;%
+#   pull(Kids_First_Biospecimen_ID)
+
+rna_ids &lt;- independent_specimens %&gt;%
   pull(Kids_First_Biospecimen_ID)
 
 hallmark_scores &lt;- hallmark_scores %&gt;%
@@ -533,12 +546,21 @@ for (i in 1:length(repair_gene_source)){
   
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
-    dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
-    }else{
-      dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
-    }
-  
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file)
+      dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
+      }else{
+        dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
+        dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
+      }
+    
+    dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+    dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+    
+    dna_repair_plp &lt;- dna_repair_plp %&gt;%
+      dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                    BER, HR, MMR, NER, NHEJ) %&gt;%
+      bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                    BER, HR, MMR, NER, NHEJ))
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
   allRepair_germline &lt;- dna_repair_plp %&gt;%
@@ -668,28 +690,8 @@ for (i in 1:length(repair_gene_source)){
 
     }
 }</code></pre>
-<pre><code>## Rows: 189 Columns: 24
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
-## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
-<pre><code>## Rows: 240 Columns: 24
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
-## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (`position_stack()`).</code></pre>
-<pre><code>## Warning: Removed 3 rows containing missing values (`geom_text()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
@@ -698,8 +700,10 @@ for (i in 1:length(repair_gene_source)){
 variant samples, other DNA repair germline variant samples, no DNA
 repair germline variant samples)</p>
 <pre class="r"><code># Define hallmark pathways to plot
-hallmark_to_plot &lt;- c(&quot;HALLMARK_HEDGEHOG_SIGNALING&quot;, &quot;HALLMARK_DNA_REPAIR&quot;, &quot;HALLMARK_PROTEIN_SECRETION&quot;)
-kegg_to_plot &lt;- c(&quot;KEGG_GLIOMA&quot;, &quot;KEGG_ERBB_SIGNALING_PATHWAY&quot;)
+hallmark_to_plot &lt;- c(&quot;HALLMARK_G2M_CHECKPOINT&quot;, &quot;HALLMARK_DNA_REPAIR&quot;, &quot;HALLMARK_E2F_TARGETS&quot;,
+                      &quot;HALLMARK_TGF_BETA_SIGNALING&quot;, &quot;HALLMARK_P53_PATHWAY&quot;,
+                      &quot;HALLMARK_INTERFERON_GAMMA_RESPONSE&quot;)
+kegg_to_plot &lt;- c(&quot;KEGG_LYSOSOME&quot;, &quot;KEGG_NON_HOMOLOGOUS_END_JOINING&quot;)
 
 # create plots for each DNA repair gene list source
 repair_gene_source &lt;- c(&quot;Knijnenburg_repair_genes&quot;, &quot;Broad_GO_repair_genes&quot;)
@@ -712,13 +716,22 @@ for (i in 1:length(repair_gene_source)){
   plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, repair_gene_source[i])
   
   # read in DNA repair gene germline PLP file
-  if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
+if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
     dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+    dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
     }else{
       dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
+      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
     }
   
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file)
+  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp &lt;- dna_repair_plp %&gt;%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %&gt;%
+    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
 
   # Define BS_ids for normal and corresponding tumor RNA-seq IDs for each sample group 
   mmr_germline &lt;- dna_repair_plp %&gt;%
@@ -734,7 +747,7 @@ for (i in 1:length(repair_gene_source)){
     dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   otherRepair_germline &lt;- dna_repair_plp %&gt;%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %&gt;%
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline) &amp; Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
     dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline &lt;- hist_cbtn %&gt;%
@@ -865,15 +878,10 @@ for (i in 1:length(repair_gene_source)){
         write_tsv(file.path(results_dir, paste0(&quot;PBTA_hgg_samples_with_MMR_gsva.tsv&quot;)))
       
 }</code></pre>
-<pre><code>## Rows: 189 Columns: 24
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
-## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
@@ -883,15 +891,11 @@ for (i in 1:length(repair_gene_source)){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Rows: 240 Columns: 24
-## ── Column specification
-## ────────────────────────────────────────────────────────────────────────────────────────────────────── Delimiter: &quot;\t&quot; chr
-## (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo... dbl (4): start, clinvar_stars,
-## clinvar_variant_id, gnomad_3_1_1_AF_non_cancer
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types or set `show_col_types =
-## FALSE` to quiet this message.</code></pre>
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`

@@ -26,6 +26,8 @@ analysis_dir <- file.path(root_dir, "analyses", "dna-repair-variant-summary")
 input_dir <- file.path(analysis_dir, "input")
 
 source(file.path(analysis_dir, "util", "mutsigs_functions.R"))
+source(file.path(root_dir, "figures", "theme.R"))
+
 ```
 
 Set paths for: 
@@ -38,8 +40,13 @@ Set paths for:
 histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies",
                               "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
 
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 
@@ -49,16 +56,22 @@ maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
 
 ```{r read files}
-hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
-  filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
 
-plp <- read_tsv(plp_file,show_col_types = FALSE)
+hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
+  # filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
+  filter(grepl("Other high-grade glioma", plot_group))
+
+
+plp <- read_tsv(plp_file, show_col_types = FALSE)
+
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 tmb <- read_tsv(tmb_file,show_col_types = FALSE) %>%
   dplyr::rename("Kids_First_Biospecimen_ID" = "Tumor_Sample_Barcode")
 
 maf <- data.table::fread(maf_file, data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor)
+
 ```
 
 
@@ -107,11 +120,20 @@ for (j in 1:length(repair_gene_source)){
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[j] == "Knijnenburg_repair_genes"){
     dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_Knijnenburg_paper.tsv")
+    dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_Knijnenburg_paper.tsv")
     }else{
       dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
+      dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_broad.tsv")
     }
   
-  dna_repair_plp <- read_tsv(dna_repair_plp_file,show_col_types = FALSE)
+  dna_repair_plp <- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp <- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp <- dna_repair_plp %>%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %>%
+    bind_rows(dna_repair_sv_plp %>% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, 3) BRCA and BRCA_interacting genes, and 4) Other DNA repair genes, excluding MMR
   allRepair_germline <- dna_repair_plp %>%
@@ -249,11 +271,20 @@ for (j in 1:length(repair_gene_source)){
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[j] == "Knijnenburg_repair_genes"){
     dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_Knijnenburg_paper.tsv")
+    dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_Knijnenburg_paper.tsv")
     }else{
       dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
+      dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_broad.tsv")
     }
   
   dna_repair_plp <- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp <- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp <- dna_repair_plp %>%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %>%
+    bind_rows(dna_repair_sv_plp %>% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
 
   # Define BS_ids for normal and corresponding tumor IDs for each sample group 
   mmr_germline <- dna_repair_plp %>%
@@ -311,7 +342,7 @@ for (j in 1:length(repair_gene_source)){
         
       ggsave(
         file.path(plot_dir, paste0(plot_sigs[k], "_signature_byGroup_violinPlot.tiff")), 
-        width = 11, height = 8, units = "cm")
+        width = 14, height = 11, units = "cm")
                
   }
   
@@ -336,7 +367,7 @@ for (j in 1:length(repair_gene_source)){
         
   ggsave(
     file.path(plot_dir, paste0("mmr_signature_byGroup_violinPlot.tiff")), 
-    width = 11, height = 8, units = "cm")
+    width = 14, height = 11, units = "cm")
       
   # add MMR signature exposure levels to germline plp file and write to output
   plp %>%

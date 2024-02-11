@@ -443,14 +443,20 @@ data_dir &lt;- file.path(root_dir, &quot;data&quot;)
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;dna-repair-variant-summary&quot;)
 input_dir &lt;- file.path(analysis_dir, &quot;input&quot;)
 
-source(file.path(analysis_dir, &quot;util&quot;, &quot;mutsigs_functions.R&quot;))</code></pre>
+source(file.path(analysis_dir, &quot;util&quot;, &quot;mutsigs_functions.R&quot;))
+source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pre>
 <p>Set paths for: - histologies file, - germline plp variant file, -
 COSMICv3 mutational signature weights file, - TMB file</p>
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(data_dir, 
-                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)
+plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                      &quot;variant-distribution&quot;, &quot;input&quot;, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv&quot;)
+
+plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                         &quot;germline-sv&quot;, &quot;input&quot;, 
+                         &quot;pbta_germline_svs.tsv&quot;)
 
 tmb_file &lt;- file.path(data_dir, &quot;snv-mutation-tmb-coding.tsv&quot;)
 
@@ -458,9 +464,13 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <p>Read in histologies, germline PLP, and tmb file. Subset histologies
 file to include only HGG tumors</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) %&gt;%
-  filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))
+  # filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))
+  filter(grepl(&quot;Other high-grade glioma&quot;, plot_group))
 
-plp &lt;- read_tsv(plp_file,show_col_types = FALSE)
+
+plp &lt;- read_tsv(plp_file, show_col_types = FALSE)
+
+plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 tmb &lt;- read_tsv(tmb_file,show_col_types = FALSE) %&gt;%
   dplyr::rename(&quot;Kids_First_Biospecimen_ID&quot; = &quot;Tumor_Sample_Barcode&quot;)
@@ -494,7 +504,7 @@ mutate(exposure = case_when(
   TRUE ~ exposure
 ))</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
@@ -527,11 +537,20 @@ for (j in 1:length(repair_gene_source)){
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[j] == &quot;Knijnenburg_repair_genes&quot;){
     dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+    dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
     }else{
       dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
+      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
     }
   
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file,show_col_types = FALSE)
+  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp &lt;- dna_repair_plp %&gt;%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %&gt;%
+    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, 3) BRCA and BRCA_interacting genes, and 4) Other DNA repair genes, excluding MMR
   allRepair_germline &lt;- dna_repair_plp %&gt;%
@@ -643,6 +662,191 @@ for (j in 1:length(repair_gene_source)){
 
   }
 }</code></pre>
+<pre><code>## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
 <p>Run mutational signature exposure comparisons between samples with
 and without DNA repair germline variants using both DNA repair gene list
 sources (Knijnenburg et al. and GSEA Broad)</p>
@@ -667,11 +871,20 @@ for (j in 1:length(repair_gene_source)){
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[j] == &quot;Knijnenburg_repair_genes&quot;){
     dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+    dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
     }else{
       dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
+      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
     }
   
   dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp &lt;- dna_repair_plp %&gt;%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %&gt;%
+    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
 
   # Define BS_ids for normal and corresponding tumor IDs for each sample group 
   mmr_germline &lt;- dna_repair_plp %&gt;%
@@ -729,7 +942,7 @@ for (j in 1:length(repair_gene_source)){
         
       ggsave(
         file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
-        width = 11, height = 8, units = &quot;cm&quot;)
+        width = 14, height = 11, units = &quot;cm&quot;)
                
   }
   
@@ -754,7 +967,7 @@ for (j in 1:length(repair_gene_source)){
         
   ggsave(
     file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.tiff&quot;)), 
-    width = 11, height = 8, units = &quot;cm&quot;)
+    width = 14, height = 11, units = &quot;cm&quot;)
       
   # add MMR signature exposure levels to germline plp file and write to output
   plp %&gt;%
@@ -837,72 +1050,73 @@ for (j in 1:length(repair_gene_source)){
       write_tsv(file.path(results_dir, paste0(&quot;PBTA_all_samples_with_SBS3sigs.tsv&quot;)))
 
 }</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.232588780541937, 0, 0), c(0, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.232588780541937, 0, 0), c(0, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.213692514765941, 0, 0, 0.295856278517743,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.213692514765941, 0, 0, 0.295856278517743,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.192938890371646, 0, 0, 0.221089574121688,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.192938890371646, 0, 0, 0.221089574121688,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.0928821099146562, 0, 0), c(0, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.0928821099146562, 0, 0), c(0, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.11901180736911, 0, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.11901180736911, 0, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.0997620660723841, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.0997620660723841, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0, 0, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0), :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning: Computation failed in `stat_signif()`
 ## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
 ## ! missing value where TRUE/FALSE needed</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0), :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Computation failed in `stat_signif()`
+## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
+## ! missing value where TRUE/FALSE needed</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.455304813498095, : cannot compute exact p-value with ties</code></pre>
+## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.455304813498095, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.182643267529815, 0.207792303071514, :
+## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0,
+## 0.212761310183186: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0,
+## 0.212761310183186: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.182643267529815, 0.207792303071514, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.153785364813601, 0, 0, 0, 0), c(0, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.153785364813601, 0, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.516945852639431, 0.425232956528977, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.516945852639431, 0.425232956528977, 0, :
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
@@ -910,72 +1124,91 @@ for (j in 1:length(repair_gene_source)){
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.232588780541937, 0, 0, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0.295856278517743,
+## : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0.295856278517743,
+## : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0.295856278517743,
+## : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.232588780541937, 0, 0, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0, 0,
-## 0.295856278517743, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0, 0,
-## 0.295856278517743, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.192938890371646, 0, 0,
-## 0.221089574121688, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.192938890371646, 0, 0,
-## 0.221089574121688, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.0928821099146562, 0, 0, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.0928821099146562, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.124890754094255, 0.11901180736911, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.124890754094255, 0.11901180736911, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.0997620660723841, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.0997620660723841, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning: Computation failed in `stat_signif()`
 ## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
 ## ! missing value where TRUE/FALSE needed</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.455304813498095, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.455304813498095, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.145165416052735, 0, 0.390971937072957, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.124890754094255, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.145165416052735, 0, 0.390971937072957, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.124890754094255, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.124890754094255, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Computation failed in `stat_signif()`
+## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
+## ! missing value where TRUE/FALSE needed</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
+## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
+## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
+## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.390971937072957, 0.182643267529815, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.390971937072957, 0.182643267529815, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.390971937072957, 0.182643267529815, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.153785364813601, 0, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.153785364813601, 0, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;): Ignoring unknown
-## parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.516945852639431, 0.425232956528977, 0, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.153785364813601, 0, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.516945852639431, 0.425232956528977, 0, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
@@ -1001,12 +1234,14 @@ for (j in 1:length(repair_gene_source)){
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-##  [1] ggpubr_0.4.0      ggsci_2.9         forcats_1.0.0     stringr_1.5.0    
-##  [5] dplyr_1.1.0       purrr_1.0.1       readr_2.1.3       tidyr_1.3.0      
-##  [9] tibble_3.1.8      ggplot2_3.4.0     tidyverse_1.3.2   data.table_1.14.2
+##  [1] ggthemes_4.2.4    ggpubr_0.4.0      ggsci_2.9         forcats_1.0.0    
+##  [5] stringr_1.5.0     dplyr_1.1.0       purrr_1.0.1       readr_2.1.3      
+##  [9] tidyr_1.3.0       tibble_3.1.8      ggplot2_3.4.0     tidyverse_1.3.2  
+## [13] data.table_1.14.2
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] lubridate_1.9.1     rprojroot_2.0.3     assertthat_0.2.1   
@@ -1021,19 +1256,18 @@ for (j in 1:length(repair_gene_source)){
 ## [28] systemfonts_1.0.4   pkgconfig_2.0.3     htmltools_0.5.4    
 ## [31] tidyselect_1.2.0    fansi_1.0.4         crayon_1.5.2       
 ## [34] tzdb_0.3.0          dbplyr_2.3.0        withr_2.5.0        
-## [37] grid_4.2.2          jsonlite_1.8.4      gtable_0.3.1       
-## [40] lifecycle_1.0.3     DBI_1.1.3           magrittr_2.0.3     
-## [43] scales_1.2.1        vroom_1.6.1         cli_3.6.0          
-## [46] stringi_1.7.12      cachem_1.0.6        carData_3.0-5      
-## [49] farver_2.1.1        ggsignif_0.6.3      fs_1.6.0           
-## [52] xml2_1.3.3          bslib_0.4.2         ragg_1.2.5         
-## [55] ellipsis_0.3.2      generics_0.1.3      vctrs_0.5.2        
-## [58] tools_4.2.2         bit64_4.0.5         glue_1.6.2         
-## [61] hms_1.1.2           parallel_4.2.2      abind_1.4-5        
-## [64] fastmap_1.1.0       yaml_2.3.7          timechange_0.2.0   
-## [67] colorspace_2.1-0    gargle_1.3.0        rstatix_0.7.0      
-## [70] rvest_1.0.3         knitr_1.42          haven_2.5.1        
-## [73] sass_0.4.5</code></pre>
+## [37] jsonlite_1.8.4      gtable_0.3.1        lifecycle_1.0.3    
+## [40] DBI_1.1.3           magrittr_2.0.3      scales_1.2.1       
+## [43] vroom_1.6.1         cli_3.6.0           stringi_1.7.12     
+## [46] cachem_1.0.6        carData_3.0-5       farver_2.1.1       
+## [49] ggsignif_0.6.3      fs_1.6.0            xml2_1.3.3         
+## [52] bslib_0.4.2         ragg_1.2.5          ellipsis_0.3.2     
+## [55] generics_0.1.3      vctrs_0.5.2         tools_4.2.2        
+## [58] bit64_4.0.5         glue_1.6.2          hms_1.1.2          
+## [61] parallel_4.2.2      abind_1.4-5         fastmap_1.1.0      
+## [64] yaml_2.3.7          timechange_0.2.0    colorspace_2.1-0   
+## [67] gargle_1.3.0        rstatix_0.7.0       rvest_1.0.3        
+## [70] knitr_1.42          haven_2.5.1         sass_0.4.5</code></pre>
 
 
 
