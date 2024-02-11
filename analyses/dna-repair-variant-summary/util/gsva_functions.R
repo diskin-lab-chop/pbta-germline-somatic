@@ -39,7 +39,7 @@ gsva_barplot <- function(gsva, x, y, plot_name){
     labs(x = 'GSEA score difference', y = NULL,
          title = glue::glue("HGG, {plot_name} \n germline P/LP vs. no P/LP")) +
     geom_vline(xintercept = 0) + 
-    xlim(-0.2, 0.4) +
+    xlim(-0.4, 0.4) +
     geom_text(hjust = -0.5, vjust = 0.75, size = 7) +
     scale_fill_npg() + 
     theme_minimal() +

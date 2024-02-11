@@ -35,8 +35,9 @@ plot_exposure_violin <- function(df, x, y, sig){
   vplot <- df %>%
     # generate violin plot and save 
     ggplot(aes(x = !!rlang::ensym(x), y = !!rlang::ensym(y), fill = !!rlang::ensym(x))) +
-    geom_violin(binaxis = "y", stackdir = "center") +
-    geom_boxplot(width=0.1) + 
+    geom_violin(binaxis = "y", stackdir = "center", 
+                show.legend = FALSE) +
+    geom_boxplot(width=0.1, show.legend = FALSE) + 
     labs(x = 'Germline Variant Class', y = paste0(sig, " Exposure")) +
     theme_minimal() +
     theme(legend.position = 'none',
@@ -47,7 +48,8 @@ plot_exposure_violin <- function(df, x, y, sig){
                                 paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
     scale_fill_npg() +
     stat_summary(fun.data=data_summary,
-                 show.legend = F) 
+                 show.legend = F) +
+    theme_Publication()
     
     if (sig == "SBS3"){
       

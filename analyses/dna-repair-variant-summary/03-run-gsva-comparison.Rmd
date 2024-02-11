@@ -32,23 +32,30 @@ source(file.path(root_dir, "figures", "theme.R"))
 Set file paths
 
 ```{r set file paths}
+
 cbtn_histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 pbta_histologies_file <- file.path(data_dir,"histologies.tsv")
+
+independent_specimens_file <- file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")
 
 gsva_file <- file.path(input_dir, 'pbta-hallmark-gsva-scores.tsv')
 kegg_file <- file.path(analysis_dir, "results", "pbta-KEGG-gsva-scores.tsv")
 
 maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")
+
 ```
 
 Read in CBTN and PBTA histologies, gsva results, maf, and cpg files. Filter histologies file for high-grade glioma only
 
 ```{r}
+
 hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
-  dplyr::filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
+  dplyr::filter(grepl("Other high-grade glioma", plot_group))
 
 hist_pbta <- read_tsv(pbta_histologies_file) 
+
+independent_specimens <- read_tsv(independent_specimens_file)
 
 hallmark_scores <- read_tsv(gsva_file)
 hallmark_pathways <- unique(hallmark_scores$hallmark_name)
@@ -60,13 +67,18 @@ maf <- data.table::fread(maf_file, data.table = F) %>%
   dplyr::filter(Tumor_Sample_Barcode %in% hist_cbtn$Kids_First_Biospecimen_ID_tumor)
 
 cpgs <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
+
 ```
 
 Pull BS_ids corresponding to RNA-Seq experiments. Append GSVA scores for samples and calculate median scores in instances where there are >1 RNA-seq sample per patient
 
 ```{r}
-rna_ids <- hist_pbta %>% 
-  dplyr::filter(experimental_strategy == 'RNA-Seq' & sample_id %in% hist_cbtn$sample_id_tumor) %>%
+
+# rna_ids <- hist_pbta %>% 
+#   dplyr::filter(experimental_strategy == 'RNA-Seq' & sample_id %in% hist_cbtn$sample_id_tumor) %>%
+#   pull(Kids_First_Biospecimen_ID)
+
+rna_ids <- independent_specimens %>%
   pull(Kids_First_Biospecimen_ID)
 
 hallmark_scores <- hallmark_scores %>%
@@ -76,6 +88,7 @@ hallmark_scores <- hallmark_scores %>%
 kegg_scores <- kegg_scores %>%
   dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %>%
   left_join(hist_pbta[,c("Kids_First_Biospecimen_ID", "Kids_First_Participant_ID")], by = "Kids_First_Biospecimen_ID")
+
 ```
 
 Run GSVA score comparisons between samples with and without DNA repair germline variants using both DNA repair gene list sources (Knijnenburg et al. and GSEA Broad)
@@ -93,12 +106,21 @@ for (i in 1:length(repair_gene_source)){
   
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[i] == "Knijnenburg_repair_genes"){
-    dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_Knijnenburg_paper.tsv")
-    }else{
-      dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
-    }
-  
-  dna_repair_plp <- read_tsv(dna_repair_plp_file)
+      dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_Knijnenburg_paper.tsv")
+      dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_Knijnenburg_paper.tsv")
+      }else{
+        dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
+        dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_broad.tsv")
+      }
+    
+    dna_repair_plp <- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+    dna_repair_sv_plp <- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+    
+    dna_repair_plp <- dna_repair_plp %>%
+      dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                    BER, HR, MMR, NER, NHEJ) %>%
+      bind_rows(dna_repair_sv_plp %>% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                    BER, HR, MMR, NER, NHEJ))
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
   allRepair_germline <- dna_repair_plp %>%
@@ -235,8 +257,10 @@ Plot scores of Hallmark pathways of interest by group (MMR germline variant samp
 
 ```{r}
 # Define hallmark pathways to plot
-hallmark_to_plot <- c("HALLMARK_HEDGEHOG_SIGNALING", "HALLMARK_DNA_REPAIR", "HALLMARK_PROTEIN_SECRETION")
-kegg_to_plot <- c("KEGG_GLIOMA", "KEGG_ERBB_SIGNALING_PATHWAY")
+hallmark_to_plot <- c("HALLMARK_G2M_CHECKPOINT", "HALLMARK_DNA_REPAIR", "HALLMARK_E2F_TARGETS",
+                      "HALLMARK_TGF_BETA_SIGNALING", "HALLMARK_P53_PATHWAY",
+                      "HALLMARK_INTERFERON_GAMMA_RESPONSE")
+kegg_to_plot <- c("KEGG_LYSOSOME", "KEGG_NON_HOMOLOGOUS_END_JOINING")
 
 # create plots for each DNA repair gene list source
 repair_gene_source <- c("Knijnenburg_repair_genes", "Broad_GO_repair_genes")
@@ -249,13 +273,22 @@ for (i in 1:length(repair_gene_source)){
   plot_dir <- file.path(analysis_dir, "plots", repair_gene_source[i])
   
   # read in DNA repair gene germline PLP file
-  if (repair_gene_source[i] == "Knijnenburg_repair_genes"){
+if (repair_gene_source[i] == "Knijnenburg_repair_genes"){
     dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_Knijnenburg_paper.tsv")
+    dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_Knijnenburg_paper.tsv")
     }else{
       dna_repair_plp_file <- file.path(results_dir, "dna_repair_germline_variant_plp_broad.tsv")
+      dna_repair_sv_plp_file <- file.path(results_dir, "dna_repair_germline_sv_plp_broad.tsv")
     }
   
-  dna_repair_plp <- read_tsv(dna_repair_plp_file)
+  dna_repair_plp <- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp <- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp <- dna_repair_plp %>%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %>%
+    bind_rows(dna_repair_sv_plp %>% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
 
   # Define BS_ids for normal and corresponding tumor RNA-seq IDs for each sample group 
   mmr_germline <- dna_repair_plp %>%
@@ -271,7 +304,7 @@ for (i in 1:length(repair_gene_source)){
     dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   otherRepair_germline <- dna_repair_plp %>%
-    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %>%
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline) & Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %>%
     dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline <- hist_cbtn %>%

@@ -44,10 +44,13 @@ histologies_file <- file.path(root_dir, "analyses",
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-base_histologies_file <- file.path(input_dir, "survival-histologies-base-2023-10-31.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
 
-all_plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
@@ -58,7 +61,9 @@ Import histologies, plp, and cpg files
 ```{r read files, echo=FALSE}
 hist <- read_tsv(histologies_file)
 
-all_plp <- read_tsv(all_plp_file)
+plp <- read_tsv(plp_file, show_col_types = FALSE) 
+
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 cpgs <- read_lines(cpg_file)
 
@@ -74,11 +79,13 @@ hist <- hist %>%
     grepl("IHG", molecular_subtype) ~ "IHG",
     plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", molecular_subtype) ~ "HGG, IDH",
     plot_group %in% c("Low-grade glioma") & grepl("SEGA", molecular_subtype) ~ "SEGA",
+    plot_group %in% c("Low-grade glioma") & grepl("BRAF V600E", molecular_subtype) ~ "LGG, BRAF V600E",
     plot_group %in% c("Low-grade glioma") & grepl("-BRAF", molecular_subtype) ~ "LGG, BRAF fusion",
     plot_group %in% c("Low-grade glioma") & grepl("wildtype", molecular_subtype) ~ "LGG, WT",
     plot_group %in% c("Low-grade glioma") & grepl("To be classified", molecular_subtype) ~ "LGG, To be classified",
     plot_group %in% c("Low-grade glioma") ~ "LGG, Other alteration",
     plot_group %in% c("Mixed neuronal-glial tumor") & grepl("wildtype", molecular_subtype) ~ "GNG/GNT, WT",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("BRAF V600E", molecular_subtype) ~ "GNG/GNT, BRAF V600E",
     plot_group %in% c("Mixed neuronal-glial tumor") & grepl("-BRAF", molecular_subtype) ~ "GNG/GNT, BRAF fusion",
     plot_group %in% c("Mixed neuronal-glial tumor") & !grepl("To be classified", molecular_subtype) ~ "GNG/GNT, Other alteration",
     !is.na(molecular_subtype) ~ molecular_subtype
@@ -90,15 +97,19 @@ hist <- hist %>%
 Define column `cpgPLP_status` indicating presence or absence of a CPG PLP variant
 
 ```{r}
-cpg_bs <- all_plp %>%
+cpg_bs <- plp %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   filter(gene_symbol_vep %in% cpgs) %>%
   pull(Kids_First_Biospecimen_ID_normal) %>%
   unique()
 
+sv_cpg_bs <- plp_sv %>%
+  pull(Kids_First_Biospecimen_ID_normal) %>%
+  unique()
+
 hist <- hist %>%
   mutate(cpgPLP_status = case_when(
-    Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
+    Kids_First_Biospecimen_ID_normal %in% c(cpg_bs, sv_cpg_bs) ~ "cpgPLP",
     TRUE ~ "no_cpgPLP"
   ))
 ```
@@ -106,13 +117,8 @@ hist <- hist %>%
 We will define `EFS_status` as "NO EVENT" if `EFS_event_type` has values "Not Applicable" or "Not Reported", and as "EVENT" in all other cases. 
 
 ```{r}
-# add OS data from base histologies file
-hist_base <- read_tsv(base_histologies_file) %>%
-  distinct(Kids_First_Participant_ID, .keep_all = T)
 
 hist <- hist %>%
-  dplyr::select(-OS_days, -OS_status, -EFS_days, -EFS_event_type) %>%
-  left_join(hist_base[,c("Kids_First_Participant_ID", "OS_days", "OS_status", "EFS_days", "EFS_event_type")]) %>%
   mutate(EFS_days = as.numeric(EFS_days),
          OS_days = as.numeric(OS_days)) %>%
   mutate(OS_years = OS_days/365.25,
