@@ -12,9 +12,7 @@ This script calculates whole-protein and phosphoprotein abundance z-scores in CP
 # Load libraries
 ```{r load libraries, set up directories}
 suppressPackageStartupMessages({
-  library(ggplot2)
   library(tidyverse)
-  library(ggpubr)
 })
 
 # Set up directories
@@ -30,19 +28,30 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
+# set seed to reproduce plots
+set.seed(2023)
+
 ```
 
 Set file paths
 
 ```{r set file paths}
 
-hist_v13_file <- file.path(input_dir, "histologies-base.tsv")
+opc_hist_file <- file.path(root_dir, "analyses",
+                           "collapse-tumor-histologies",
+                           "input", "histologies.tsv")
+
 hist_file <- file.path(root_dir, "analyses",
                            "collapse-tumor-histologies", "results", 
                            "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation",
                              "input", "cpg.txt")
@@ -60,9 +69,9 @@ Create proteo and phospoproteo specific histologies files
 
 ```{r}
 
-hist_v13 <- read_tsv(hist_v13_file)
+opc_hist <- read_tsv(opc_hist_file)
 
-hist_v13_proteo <- hist_v13 %>%
+opc_hist_proteo <- opc_hist %>%
   dplyr::filter(experimental_strategy == "Whole Cell Proteomics") %>%
   dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID,
                 sample_id,
@@ -72,7 +81,7 @@ hist_v13_proteo <- hist_v13 %>%
                 sample_id_tumor = sample_id) %>%
   dplyr::mutate(match_id = str_replace(Kids_First_Biospecimen_ID_proteo, "_WCP", ""))
   
-hist_v13_phospho <- hist_v13 %>%
+opc_hist_phospho <- opc_hist %>%
   dplyr::filter(experimental_strategy == "Phospho-Proteomics") %>%
   dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID,
                 experimental_strategy, sample_type, tumor_descriptor,
@@ -86,10 +95,10 @@ Load project-specific histologies file and append proteo and phosphoproteo BS ID
 
 ```{r}
 hist <- read_tsv(hist_file) %>%
-  left_join(hist_v13_proteo[,c("Kids_First_Biospecimen_ID_proteo",
+  left_join(opc_hist_proteo[,c("Kids_First_Biospecimen_ID_proteo",
                            "sub_cohort", "sample_id_tumor", "match_id")],
             by = "sample_id_tumor") %>%
-  left_join(hist_v13_phospho[,c("Kids_First_Biospecimen_ID_phospho",
+  left_join(opc_hist_phospho[,c("Kids_First_Biospecimen_ID_phospho",
                            "match_id")],
             by = "match_id") %>%
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_proteo) | !is.na(Kids_First_Biospecimen_ID_phospho))
@@ -105,6 +114,15 @@ cpgs <- read_lines(cpg_file)
                    
 plp_cpg_proteo <- plp %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal & gene_symbol_vep %in% cpgs) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", "sample_id_tumor", "plot_group", "molecular_subtype")])
+
+```
+
+```{r}
+plp_sv <- read_tsv(plp_sv_file)
+
+plp_sv_cpg_proteo <- plp_sv %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", "sample_id_tumor", "plot_group", "molecular_subtype")])
 
 ```
@@ -143,7 +161,7 @@ hope_proteo <- hope_proteo[,grepl("GeneSymbol", colnames(hope_proteo)) | colname
 
 ```
 
-Merge hope and cptac proteomics data. In cases of duplicated samples, calculate average abundance. 
+Merge hope and cptac proteomics data. In cases of duplicated samples, we will determine correlation between hope vs. cptac counts; if results are highly correlated, we will take average of two data sets.  
 
 ```{r}
 
@@ -154,6 +172,27 @@ proteo_mat <- hope_proteo %>%
 # Identify duplicated columns
 duplicated_columns <- intersect(names(hope_proteo[,-1]), names(cptac_proteo[,-1]))
 
+# calcualte correlation between hope and cptac results for duplicated samples
+cor_df <- tibble(sample = duplicated_columns,
+                 correlation = rep(0, length(duplicated_columns)))
+
+for (sample in duplicated_columns) {
+  
+  sample_hope <- glue::glue("{sample}.x")
+  sample_cptac <- glue::glue("{sample}.y")
+  
+  cor_df$correlation[cor_df$sample == sample] <- cor.test(proteo_mat[,sample_hope],
+                                                          proteo_mat[,sample_cptac])$estimate
+  
+}
+
+cor_df
+
+```
+
+HOPE and CPTAC data are highly positively correlated, so we will take average of two runs for each sample
+
+```{r}
 # Calculate average of duplicated columns
 for (col_name in duplicated_columns) {
   proteo_mat[[col_name]] <- rowMeans(proteo_mat[, grepl(col_name, names(proteo_mat))], na.rm = TRUE)
@@ -257,5 +296,25 @@ plp_cpg_proteo <- plp_cpg_proteo %>%
 
 write_tsv(plp_cpg_proteo,
           file.path(results_dir, "germline-somatic-proteomics-phosphoproteomics-cpgs.tsv"))
+
+```
+
+
+```{r}
+
+plp_sv_cpg_proteo <- plp_sv_cpg_proteo %>%
+  dplyr::rename(GeneSymbol = Hugo_Symbol_cpg) %>%
+  left_join(z_scored_proteo, by = c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor", "GeneSymbol")) %>%
+  left_join(z_scored_phospho, by = c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor", "GeneSymbol")) %>%
+  dplyr::filter(!is.na(expr_zscore_proteo) | !is.na(expr_zscore_phospho)) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, GeneSymbol, Gene_Site, .keep_all = T) %>%
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal,
+                Chromosome, Start, End, Length, Type, GeneSymbol,
+                Classification, Caller,
+                sample_id_tumor, plot_group, molecular_subtype,
+                expr_zscore_proteo, Gene_Site, expr_zscore_phospho)
+
+write_tsv(plp_sv_cpg_proteo,
+          file.path(results_dir, "germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv"))
 
 ```
