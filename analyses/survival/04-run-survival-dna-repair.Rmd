@@ -42,8 +42,13 @@ Set file paths
 ```{r set paths}
 cbtn_histologies_file <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-all_plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
@@ -56,19 +61,29 @@ Import data
 ```{r data wrangling}
 hist <- read_tsv(cbtn_histologies_file)
 
-all_plp <- read_tsv(all_plp_file)
+plp <- read_tsv(plp_file, show_col_types = FALSE) 
+
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 cpgs <- read_lines(cpg_file)
 ```
 
 Load mismatch repair (MMR) gene list and identify samples with germline P-LP variants in these genes
 ```{r}
+
 mmr_genes <- read_lines(file.path(root_dir, "analyses", "dna-repair-variant-summary", "input", "Knijnenburg_paper", "mismatch_repair.txt"))
 
-mmr_bs <- all_plp %>%
+mmr_bs <- plp %>%
       filter(gene_symbol_vep %in% mmr_genes & Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
       pull(Kids_First_Biospecimen_ID_normal) %>%
       unique()
+
+mmr_bs_sv <- plp_sv %>%
+  filter(Hugo_Symbol_cpg %in% mmr_genes) %>%
+      pull(Kids_First_Biospecimen_ID_normal) %>%
+      unique()
+  
+  
 ```
 
 Subset histologies for HGG tumors and create column indicating presence/absence of MMR germline variant 
@@ -78,7 +93,7 @@ hgg_hist <- hist %>%
   mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
   mutate(MMR_variant = case_when(
-    Kids_First_Biospecimen_ID_normal %in% mmr_bs ~ "MMR PLP",
+    Kids_First_Biospecimen_ID_normal %in% c(mmr_bs, mmr_bs_sv) ~ "MMR PLP",
     TRUE ~ "MMR WT"
   ))  %>%
   mutate(mol_sub_group = factor(mol_sub_group,
@@ -91,6 +106,7 @@ hgg_hist <- hist %>%
 
 Print N per MMR variant status group
 ```{r}
+
 table(hgg_hist$MMR_variant)
 
 ```
@@ -129,17 +145,23 @@ ggsave(km_mmr_output_pdf, km_plot,
 
 Define vector of BRCA/BRCA-interacting genes
 ```{r}
-brca_bs <- all_plp %>%
+brca_bs <- plp %>%
       dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", gene_symbol_vep) & !grepl("RAD51C", gene_symbol_vep)) %>%
       pull(Kids_First_Biospecimen_ID_normal) %>%
       unique()
+
+brca_bs_sv <- plp_sv %>%
+      dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol_cpg) & !grepl("RAD51C", Hugo_Symbol_cpg)) %>%
+      pull(Kids_First_Biospecimen_ID_normal) %>%
+      unique()
+
 ```
 
 Create column indicating presence/absence of BRCA variant
 ```{r}
 hgg_hist <- hgg_hist %>%
   mutate(brca_variant = case_when(
-    Kids_First_Biospecimen_ID_normal %in% brca_bs ~ "BRCA PLP",
+    Kids_First_Biospecimen_ID_normal %in% c(brca_bs, brca_bs_sv) ~ "BRCA PLP",
     TRUE ~ "BRCA WT"
   ))  %>%
   mutate(brca_variant = factor(brca_variant,
@@ -149,6 +171,7 @@ hgg_hist <- hgg_hist %>%
 
 Print N per BRCA variant status group
 ```{r}
+
 table(hgg_hist$brca_variant)
 
 ```
