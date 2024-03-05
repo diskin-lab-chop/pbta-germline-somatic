@@ -348,7 +348,7 @@ for (cpg in cpgs_test){
   if( sum(z_scored_expression$Hugo_Symbol == cpg & z_scored_expression$plp_onco == "-\n+") > 0){
   
     # NF1 and TP53 also have samples with both germline and somatic mutations, so set comparisons and plot widths accordingly
-    if (cpg %in% c("NF1", "TP53")) {
+    if (cpg %in% c("NF1", "TP53", "APC")) {
     
       z_scored_expression %>%
         filter(Hugo_Symbol == cpg) %>%

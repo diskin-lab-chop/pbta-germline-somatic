@@ -45,7 +45,7 @@ v14_hist_file <- file.path(root_dir, "analyses",
                            "collapse-tumor-histologies",
                            "input", "histologies.tsv")
 
-plp_sv <- file.path(root_dir, "analyses", "germline-sv",
+plp_sv_file <- file.path(root_dir, "analyses", "germline-sv",
                     "input", "pbta_germline_svs.tsv")
 
 # goi file
