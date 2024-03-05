@@ -4,7 +4,7 @@ This module creates distribution plots of P-LP structural variants across 214 ca
 
 ## Usage
 
-`Rscript -e "rmarkdown::render('01-sv-summary.Rmd')"` 
+`bash run_module.sh` 
 
 ## Folder content 
 

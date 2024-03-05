@@ -267,24 +267,29 @@ sv_splice_psi_df <- splice_psi_df %>%
 
 # plot PSI diff against variant distance
 snv_splice_psi_df %>%
-  dplyr::mutate(PSI_diff = case_when(
-    !is.na(PSI_diff_group) ~ PSI_diff_group,
-    !is.na(PSI_diff_all) ~ PSI_diff_all
+  dplyr::mutate(PSI_zscore = case_when(
+    !is.na(sample_PSI_zscore_group) ~ sample_PSI_zscore_group,
+    !is.na(sample_PSI_zscore_all) ~ sample_PSI_zscore_all
   )) %>%
   transform(min_dist = pmin(start_dist, end_dist)) %>%
+ # dplyr::filter(abs(PSI_zscore) < 10) %>%
+  arrange(abs(min_dist)) %>%
+  distinct(chr, start, ref, alt, .keep_all = TRUE) %>%
   
-  ggplot(aes(x = abs(min_dist), y = abs(PSI_diff))) +
+  
+  ggplot(aes(x = log10(abs(min_dist)), y = abs(PSI_zscore))) +
   geom_point(colour = "gray50") +
-  scale_x_continuous(breaks = c(0, 100000, 200000)) +
+ # scale_x_continuous(breaks = c(0, 100000, 200000)) +
   stat_smooth(method = "lm", 
               formula = y ~ x, 
               geom = "smooth", 
               colour = "black",
               linetype="dashed") +
+  ylim(c(0, 12)) + 
   labs(x = "variant-splice site distance",
        y = "abs(PSI difference, sample-other)") + 
-  stat_cor(method = "spearman", label.x = 25000,
-           label.y = 0.8, size = 5) +
+  stat_cor(method = "spearman", label.x = 1,
+           label.y = 11, size = 4) +
   facet_wrap(~splicing_case, nrow = 2) + 
   theme_Publication()
 

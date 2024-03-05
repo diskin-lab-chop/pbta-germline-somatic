@@ -297,3 +297,10 @@ BS_0754AZX0	PT_3CHB9PK5	BS_20TBZG09	Other high-grade glioma	HGG, H3 wildtype, TP
 BS_0754AZX0	PT_3CHB9PK5	BS_8AY2GM4G	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Likely_pathogenic	ClinVar	chr2	47805662	C	G	c.3601C>G	p.Leu1201Val	neutral	0.41	0.42	-0.08000000000000002	0.095
 BS_0754AZX0	PT_3CHB9PK5	BS_20TBZG09	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Likely_pathogenic	ClinVar	chr2	47806281	C	A	c.3724C>A	p.Arg1242Ser	neutral	0.33	0.53	0.03000000000000002	0.03999999999999998
 BS_0754AZX0	PT_3CHB9PK5	BS_8AY2GM4G	Other high-grade glioma	HGG, H3 wildtype, TP53	MSH6	Likely_pathogenic	ClinVar	chr2	47806281	C	A	c.3724C>A	p.Arg1242Ser	neutral	0.33	0.55	0.05000000000000004	0.095
+BS_0WDJRMAB	PT_1DSX4VJM	BS_KYPMZZSY	DIPG or DMG	DMG, H3 K28, TP53	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	0.13166666666666668
+BS_CZGNQ9KQ	PT_XA8ASFJK	BS_Z7R92XX6	Low-grade glioma	LGG, NF1-somatic, NF1-germline, FGFR	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	0.0375
+BS_P4Z4YP0P	PT_C2D4JXS1	BS_68TZMZH1	Other high-grade glioma	HGG, H3 wildtype, TP53	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	0.06000000000000002
+BS_P4Z4YP0P	PT_C2D4JXS1	BS_AFBPM6CN	Other high-grade glioma	HGG, H3 wildtype, TP53	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	0.13888888888888887
+BS_P4Z4YP0P	PT_C2D4JXS1	BS_ASGBEHAX	Other high-grade glioma	HGG, H3 wildtype, TP53	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	NA
+BS_P4Z4YP0P	PT_C2D4JXS1	BS_V27ABVGT	Other high-grade glioma	HGG, H3 wildtype, TP53	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	NA
+BS_P4Z4YP0P	PT_C2D4JXS1	BS_YPN9H9KK	Other high-grade glioma	HGG, H3 wildtype	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	neutral	NA	NA	NA	NA
