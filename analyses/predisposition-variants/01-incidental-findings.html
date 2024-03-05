@@ -468,7 +468,7 @@ plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
 predispositions &lt;- read_tsv(predispositions_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 28 Columns: 2
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -478,16 +478,26 @@ predispositions &lt;- read_tsv(predispositions_file) %&gt;%
 histologies file:</p>
 <pre class="r"><code>table(hist$cancer_predispositions)</code></pre>
 <pre><code>## 
-##    Gorlin Syndrome (PTCH1, SUFU)      Li-Fraumeni syndrome (TP53) 
-##                                1                                7 
-## Neurofibromatosis, Type 1 (NF-1) Neurofibromatosis, Type 2 (NF-2) 
-##                               26                                7 
-##                  None documented                     Not Reported 
-##                              761                                8 
-##   Other inherited conditions NOS          Schwannomatosis (LZTR1) 
-##                               16                                1 
-##  Tuberous Sclerosis (TSC1, TSC2) 
-##                               10</code></pre>
+## Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6) 
+##                                                                                     1 
+##                                                         Gorlin Syndrome (PTCH1, SUFU) 
+##                                                                                     1 
+##                                                           Li-Fraumeni syndrome (TP53) 
+##                                                                                     7 
+##                                                      Neurofibromatosis, Type 1 (NF-1) 
+##                                                                                    25 
+##                                                      Neurofibromatosis, Type 2 (NF-2) 
+##                                                                                     7 
+##                                                                       None documented 
+##                                                                                   761 
+##                                                                          Not Reported 
+##                                                                                     8 
+##                                                        Other inherited conditions NOS 
+##                                                                                    16 
+##                                                               Schwannomatosis (LZTR1) 
+##                                                                                     1 
+##                                                       Tuberous Sclerosis (TSC1, TSC2) 
+##                                                                                    10</code></pre>
 <p>Subset PLP file to include only variants in CPGs associated with
 syndromes in <code>predispositions</code>, and include
 <code>cancer_predispositions</code> column to indicate whether syndrome
