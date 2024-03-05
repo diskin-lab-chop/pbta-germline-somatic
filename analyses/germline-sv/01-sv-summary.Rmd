@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-
+# Load libraries
 ```{r}
 suppressPackageStartupMessages({
   library(ggplot2)
@@ -26,7 +26,7 @@ results_dir <- file.path(analysis_dir, "results")
 source(file.path(root_dir, "figures", "theme.R"))
 ```
 
-
+# Set file paths
 ```{r}
 
 hist_file <- file.path(root_dir, 
@@ -40,6 +40,7 @@ sv_plp_file <- file.path(input_dir, "pbta_germline_svs.tsv")
 
 ```
 
+Load data
 ```{r}
 
 sv_plp <- read_tsv(sv_plp_file)
@@ -48,23 +49,14 @@ hist <- read_tsv(hist_file)
 
 ```
 
-
+Summarize structural variants by gene and sv type (deletion, duplication)
 ```{r}
 
-table(sv_plp$Type)
-
-table(sv_plp$Hugo_Symbol_cpg)
+table(sv_plp$Hugo_Symbol_cpg, sv_plp$Type)
 
 ```
 
-
-```{r}
-
-hist <- read_tsv(hist_file)
-
-```
-
-
+# Join plp and hist data
 ```{r}
 
 sv_plp <- sv_plp %>%
@@ -72,8 +64,7 @@ sv_plp <- sv_plp %>%
 
 ```
 
-
-
+Create barplot of patient P/LP carrier count by CPG, histology, and SV type
 ```{r}
 
 n_per_hist <- sv_plp %>%
@@ -99,7 +90,6 @@ n_per_gene <- sv_plp %>%
 plot_group_palette <- n_per_gene$plot_group_hex
 names(plot_group_palette) <- n_per_gene$plot_group
 
-
 dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol_cpg, plot_order), y = hist_n, fill = plot_group, pattern = Type)) +
   geom_col_pattern(
     aes(pattern = Type),
@@ -108,9 +98,7 @@ dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol_cpg, plot_ord
     pattern_angle = 45,
     pattern_density = 0.1,
     pattern_spacing = 0.01,
-  #  position = position_dodge2(preserve = 'single'),
   ) +
-#  geom_col(col = "black", size = 0.4) +
   scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)),
                     guide = guide_legend(override.aes = list(pattern = "none"))) + 
   scale_pattern_manual(values = c(DUP = "stripe", DEL = "none"),
