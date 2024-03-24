@@ -51,6 +51,7 @@ plp_sv_file <- file.path(root_dir, "analyses",
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 
 maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")
+
 ```
 
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
@@ -59,7 +60,8 @@ Read in histologies, germline PLP, and tmb file. Subset histologies file to incl
 
 hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
   # filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
-  filter(grepl("Other high-grade glioma", plot_group))
+  filter(grepl("Other high-grade glioma", plot_group),
+         grepl("wildtype", molecular_subtype))
 
 
 plp <- read_tsv(plp_file, show_col_types = FALSE)
@@ -232,7 +234,7 @@ for (j in 1:length(repair_gene_source)){
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
               plot.title = element_text(hjust = 0.5, size = 18)) + 
         labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
-             fill = 'sig etiology', title = glue::glue("HGG, {plot_names[k]} P/LP vs. no P/LP")) +
+             fill = 'sig etiology', title = glue::glue("HGG, H3 WT, {plot_names[k]} P/LP vs. no P/LP")) +
         geom_hline(yintercept = 0) + 
         geom_text(aes(x = signature, y = exposure_diff * 1.1,
                   label = ifelse(pvalue < 0.05, "*", "")),

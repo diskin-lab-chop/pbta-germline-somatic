@@ -459,9 +459,10 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <p>Read in CBTN and PBTA histologies, gsva results, maf, and cpg files.
 Filter histologies file for high-grade glioma only</p>
 <pre class="r"><code>hist_cbtn &lt;- read_tsv(cbtn_histologies_file) %&gt;%
-  dplyr::filter(grepl(&quot;Other high-grade glioma&quot;, plot_group))</code></pre>
+  dplyr::filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
+         grepl(&quot;wildtype&quot;, molecular_subtype))</code></pre>
 <pre><code>## Rows: 837 Columns: 36
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -473,7 +474,7 @@ Filter histologies file for high-grade glioma only</p>
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre><code>## Rows: 43729 Columns: 55
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (38): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
 ## dbl (17): age_at_diagnosis_days, OS_days, EFS_days, age_last_update_days, no...
@@ -482,7 +483,7 @@ Filter histologies file for high-grade glioma only</p>
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>independent_specimens &lt;- read_tsv(independent_specimens_file)</code></pre>
 <pre><code>## Rows: 12579 Columns: 6
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (6): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, cohort, cance...
 ## 
@@ -490,7 +491,7 @@ Filter histologies file for high-grade glioma only</p>
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -501,7 +502,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score
@@ -700,10 +701,10 @@ for (i in 1:length(repair_gene_source)){
 variant samples, other DNA repair germline variant samples, no DNA
 repair germline variant samples)</p>
 <pre class="r"><code># Define hallmark pathways to plot
-hallmark_to_plot &lt;- c(&quot;HALLMARK_G2M_CHECKPOINT&quot;, &quot;HALLMARK_DNA_REPAIR&quot;, &quot;HALLMARK_E2F_TARGETS&quot;,
-                      &quot;HALLMARK_TGF_BETA_SIGNALING&quot;, &quot;HALLMARK_P53_PATHWAY&quot;,
-                      &quot;HALLMARK_INTERFERON_GAMMA_RESPONSE&quot;)
-kegg_to_plot &lt;- c(&quot;KEGG_LYSOSOME&quot;, &quot;KEGG_NON_HOMOLOGOUS_END_JOINING&quot;)
+hallmark_to_plot &lt;- c(&quot;HALLMARK_COAGULATION&quot;, &quot;HALLMARK_DNA_REPAIR&quot;, &quot;HALLMARK_COMPLEMENT&quot;,
+                      &quot;HALLMARK_KRAS_SIGNALING_UP&quot;)
+kegg_to_plot &lt;- c(&quot;KEGG_LYSOSOME&quot;, &quot;KEGG_N_GLYCAN_BIOSYNTHESIS&quot;,
+                  &quot;KEGG_FOCAL_ADHESION&quot;, &quot;KEGG_PRION_DISEASES&quot;)
 
 # create plots for each DNA repair gene list source
 repair_gene_source &lt;- c(&quot;Knijnenburg_repair_genes&quot;, &quot;Broad_GO_repair_genes&quot;)
@@ -881,13 +882,6 @@ if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
-## Ignoring unknown parameters: `binaxis` and `stackdir`
-## Ignoring unknown parameters: `binaxis` and `stackdir`
-## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
@@ -895,6 +889,11 @@ if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
@@ -902,6 +901,8 @@ if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
