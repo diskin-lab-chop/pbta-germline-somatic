@@ -183,7 +183,23 @@ loh <- read_tsv(loh_variant_file) %>%
          Kids_First_Biospecimen_ID_tumor = BS_ID_tumor) %>%
   dplyr::filter(!is.na(proband_tumor_alt_depth))
 
+ggplot(loh, aes(x = proband_germline_vaf, y = proband_tumor_vaf,
+                colour = loh_score)) +
+  geom_point() +
+  labs(x = "Germline VAF",
+       y = "Tumor VAF", color = "LOH score") +
+  scale_color_gradient(low = "blue", high = "orangered") + 
+  theme_Publication()
 
+ggsave(file.path(plot_dir, "tumor-vaf-vs-germline-vaf.pdf"),
+       width = 5, height = 4)
+
+```
+
+
+
+
+```{r}
 germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
   left_join(loh[,c("Kids_First_Biospecimen_ID_tumor", 
                    "chr", "start", "proband_germline_vaf", "proband_tumor_vaf", 
@@ -307,12 +323,21 @@ plot_group_gene <- loh_gene %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE) %>%
   filter(is_plp == "Yes") %>%
   count(group_gene) %>%
-  dplyr::filter(n >= 3) %>%
+  dplyr::filter(n >= 2) %>%
+  pull(group_gene)
+
+compare_means_result <- loh_gene %>%
+  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Neurofibroma plexiform") %>%
+  group_by(group_gene) %>%
+  summarize(p_value = wilcox.test(gene_LOH ~ is_plp)$p.value)
+
+to_plot <- compare_means_result %>%
+  dplyr::filter(p_value < 0.05) %>%
   pull(group_gene)
 
 # plot LOH scores by P/LP status within histologies for selected gene-histology pairs
 loh_gene %>%
-  dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Neurofibroma plexiform") %>%
+  dplyr::filter(group_gene %in% to_plot) %>%
   
    ggplot(aes(x = is_plp, y = gene_LOH)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, 
@@ -322,16 +347,17 @@ loh_gene %>%
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "greater")) + 
     geom_hline(yintercept = 0.25, linetype = "dashed", color = "gray") + 
-    labs(x = "Germline P/LP variant", y = "gene LOH score") +
+    labs(x = "Germline P/LP variant", y = "gene LOH score",
+         fill = "Histology") +
     ylim(c(0,0.75)) +
     scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
-    facet_wrap(~group_gene, nrow = 3,
+    facet_wrap(~group_gene, nrow = 1,
                labeller = labeller(group_gene = label_wrap_gen(18))) + 
     theme_Publication()
 
   
   ggsave(file.path(plot_dir, "hist-gene-LOH-plp-vs-noplp.pdf"),
-                   width = 11, height = 6)
+                   width = 12, height = 3)
 
 ```
 

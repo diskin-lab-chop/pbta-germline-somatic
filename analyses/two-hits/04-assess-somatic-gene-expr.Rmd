@@ -189,7 +189,7 @@ germline_all <- germline %>%
 z_scored_expression <- z_scored_expression %>%
   # Add BS normal ids
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_rna", 
-                    "plot_group", "plot_group_hex")],
+                    "plot_group", "plot_group_hex", "molecular_subtype")],
             by = "Kids_First_Biospecimen_ID_rna") %>%
   dplyr::mutate(sample_gene = glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}")) %>%
   # add column indicating if patient has P/LP variant in gene
@@ -285,12 +285,21 @@ plot_group_gene <- z_scored_expression %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE) %>%
   filter(is_plp == "Yes") %>%
   count(group_gene) %>%
-  dplyr::filter(n >= 3) %>%
+  dplyr::filter(n >= 2) %>%
+  pull(group_gene)
+
+compare_means_result <- z_scored_expression %>%
+  dplyr::filter(group_gene %in% plot_group_gene) %>%
+  group_by(group_gene) %>%
+  summarize(p_value = wilcox.test(expr_zscore ~ is_plp)$p.value)
+
+to_plot <- compare_means_result %>%
+  dplyr::filter(p_value < 0.05) %>%
   pull(group_gene)
 
 # plot expr z-scores by P/LP status within histologies for selected gene-histology pairs
 z_scored_expression %>%
-  dplyr::filter(group_gene %in% plot_group_gene) %>%
+  dplyr::filter(group_gene %in% to_plot) %>%
   
    ggplot(aes(x = is_plp, y = expr_zscore)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
@@ -300,14 +309,15 @@ z_scored_expression %>%
                        method.args = list(alternative = "two.sided")) + 
     labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3,5.75)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
-    facet_wrap(~group_gene, nrow = 3,
+    facet_wrap(~group_gene, nrow = 2,
                labeller = labeller(group_gene = label_wrap_gen(18))) + 
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 11, height = 6)
+                   width = 10, height = 5)
 
 ```
 
@@ -410,5 +420,4 @@ for (cpg in cpgs_test){
 Print session info
 ```{r session info}
 sessionInfo()
-
 ```
