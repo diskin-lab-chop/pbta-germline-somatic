@@ -374,7 +374,7 @@ for (j in 1:length(repair_gene_source)){
                           c("MMR", "Non-repair"))
   
   tmb %>%
-    dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID) %>%
+    dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
     mutate(germline_variant = case_when(
         Kids_First_Biospecimen_ID %in% mmr_ids ~ "MMR",
         Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/interacting",
@@ -390,7 +390,7 @@ for (j in 1:length(repair_gene_source)){
     geom_violin(binaxis = "y", stackdir = "center", 
                 show.legend = FALSE) +
     geom_boxplot(width=0.1, show.legend = FALSE) + 
-    stat_compare_means(comparisons = comparisons_mmr, size = 3)
+    stat_compare_means(comparisons = comparisons_mmr, size = 3) +
     labs(x = 'Germline Variant Class', y = "log10(TMB)") +
     theme_minimal() +
     theme(legend.position = 'none',

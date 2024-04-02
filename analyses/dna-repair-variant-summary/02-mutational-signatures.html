@@ -505,7 +505,7 @@ mutate(exposure = case_when(
   TRUE ~ exposure
 ))</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
@@ -2266,10 +2266,47 @@ for (j in 1:length(repair_gene_source)){
              )
   
   plot_exposure_violin(mmr_df, &quot;germline_variant&quot;, &quot;sum&quot;, &quot;MMR&quot;)
-
-        
+  
   ggsave(
     file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.tiff&quot;)), 
+    width = 14, height = 11, units = &quot;cm&quot;)
+  
+  comparisons_mmr &lt;- list(c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;), c(&quot;MMR&quot;, &quot;Other repair&quot;),
+                          c(&quot;MMR&quot;, &quot;Non-repair&quot;))
+  
+  tmb %&gt;%
+    dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
+    mutate(germline_variant = case_when(
+        Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
+        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;BRCA/interacting&quot;,
+        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
+        TRUE ~ &quot;Non-repair&quot;
+      )) %&gt;%
+    mutate(germline_variant = factor(germline_variant)) %&gt;% 
+    mutate(germline_variant = fct_relevel(germline_variant,
+                                          c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
+           ) %&gt;%
+    
+    ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
+    geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, 
+                show.legend = FALSE) +
+    geom_boxplot(width=0.1, show.legend = FALSE) + 
+    stat_compare_means(comparisons = comparisons_mmr, size = 3) +
+    labs(x = &#39;Germline Variant Class&#39;, y = &quot;log10(TMB)&quot;) +
+    theme_minimal() +
+    theme(legend.position = &#39;none&#39;,
+          text = element_text(size = 12)) +
+    scale_x_discrete(labels = c(paste0(&quot;MMR\n (n=&quot;, length(mmr_ids), &quot;)&quot;), 
+                                paste0(&quot;BRCA/\nBRCA-interacting\n (n=&quot;, length(brca_ids), &quot;)&quot;),
+                                paste0(&quot;Other repair\n (n=&quot;, length(otherRepair_ids), &quot;)&quot;),
+                                paste0(&quot;No DNA repair\n (n=&quot;, length(ctrl_ids), &quot;)&quot;))) +
+    scale_fill_npg() +
+    stat_summary(fun.data=data_summary,
+                 show.legend = F) +
+    theme_Publication()
+        
+  ggsave(
+    file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.tiff&quot;)), 
     width = 14, height = 11, units = &quot;cm&quot;)
       
   # add MMR signature exposure levels to germline plp file and write to output
@@ -2439,6 +2476,12 @@ for (j in 1:length(repair_gene_source)){
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(2.55652994090163, 2.45040830918134,
+## 2.31340748943946, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(2.55652994090163, 2.45040830918134,
+## 2.31340748943946, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
@@ -2531,6 +2574,12 @@ for (j in 1:length(repair_gene_source)){
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(2.55652994090163, 2.45040830918134,
+## 2.31340748943946, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(2.55652994090163, 2.45040830918134,
+## 2.31340748943946, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`

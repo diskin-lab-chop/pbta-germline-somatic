@@ -462,7 +462,7 @@ Filter histologies file for high-grade glioma only</p>
   dplyr::filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
          grepl(&quot;wildtype&quot;, molecular_subtype))</code></pre>
 <pre><code>## Rows: 837 Columns: 36
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -474,7 +474,7 @@ Filter histologies file for high-grade glioma only</p>
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre><code>## Rows: 43729 Columns: 55
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (38): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
 ## dbl (17): age_at_diagnosis_days, OS_days, EFS_days, age_last_update_days, no...
@@ -483,7 +483,7 @@ Filter histologies file for high-grade glioma only</p>
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>independent_specimens &lt;- read_tsv(independent_specimens_file)</code></pre>
 <pre><code>## Rows: 12579 Columns: 6
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (6): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, cohort, cance...
 ## 
@@ -491,7 +491,7 @@ Filter histologies file for high-grade glioma only</p>
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -502,7 +502,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score
