@@ -431,8 +431,8 @@ font-size: 0.95em;
 between PBTA samples with and without DNA repair gene germline PLP
 variants</p>
 <p>Load packages and set directories</p>
-<pre class="r"><code>library(data.table)
-library(tidyverse)
+<pre class="r"><code>library(tidyverse)
+#library(data.table)
 library(ggplot2)
 library(ggsci)
 library(ggpubr)
@@ -450,6 +450,8 @@ source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pr
 
 pbta_histologies_file &lt;- file.path(data_dir,&quot;histologies.tsv&quot;)
 
+independent_specimens_file &lt;- file.path(data_dir, &quot;independent-specimens.rnaseqpanel.primary-plus.tsv&quot;)
+
 gsva_file &lt;- file.path(input_dir, &#39;pbta-hallmark-gsva-scores.tsv&#39;)
 kegg_file &lt;- file.path(analysis_dir, &quot;results&quot;, &quot;pbta-KEGG-gsva-scores.tsv&quot;)
 
@@ -457,31 +459,39 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <p>Read in CBTN and PBTA histologies, gsva results, maf, and cpg files.
 Filter histologies file for high-grade glioma only</p>
 <pre class="r"><code>hist_cbtn &lt;- read_tsv(cbtn_histologies_file) %&gt;%
-  filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))</code></pre>
-<pre><code>## Rows: 838 Columns: 36
-## ── Column specification ────────────────────────────────────────────────────────
+  dplyr::filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
+         grepl(&quot;wildtype&quot;, molecular_subtype))</code></pre>
+<pre><code>## Rows: 837 Columns: 36
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
-## chr (27): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
-## dbl  (9): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
+## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
+## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hist_pbta &lt;- read_tsv(pbta_histologies_file) </code></pre>
-<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
-## e.g.:
+<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre><code>## Rows: 43729 Columns: 55
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (38): Kids_First_Biospecimen_ID, sample_id, aliquot_id, Kids_First_Parti...
 ## dbl (17): age_at_diagnosis_days, OS_days, EFS_days, age_last_update_days, no...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>independent_specimens &lt;- read_tsv(independent_specimens_file)</code></pre>
+<pre><code>## Rows: 12579 Columns: 6
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;\t&quot;
+## chr (6): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, cohort, cance...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -492,7 +502,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score
@@ -502,22 +512,25 @@ kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre class="r"><code>kegg_pathways &lt;- unique(kegg_scores$kegg_name)
 
 maf &lt;- data.table::fread(maf_file, data.table = F) %&gt;%
-  filter(Tumor_Sample_Barcode %in% hist_cbtn$Kids_First_Biospecimen_ID_tumor)
+  dplyr::filter(Tumor_Sample_Barcode %in% hist_cbtn$Kids_First_Biospecimen_ID_tumor)
 
 cpgs &lt;- read_lines(file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation&quot;, &quot;input&quot;, &quot;cpg.txt&quot;))</code></pre>
 <p>Pull BS_ids corresponding to RNA-Seq experiments. Append GSVA scores
 for samples and calculate median scores in instances where there are
 &gt;1 RNA-seq sample per patient</p>
-<pre class="r"><code>rna_ids &lt;- hist_pbta %&gt;% 
-  filter(experimental_strategy == &#39;RNA-Seq&#39; &amp; sample_id %in% hist_cbtn$sample_id_tumor) %&gt;%
+<pre class="r"><code># rna_ids &lt;- hist_pbta %&gt;% 
+#   dplyr::filter(experimental_strategy == &#39;RNA-Seq&#39; &amp; sample_id %in% hist_cbtn$sample_id_tumor) %&gt;%
+#   pull(Kids_First_Biospecimen_ID)
+
+rna_ids &lt;- independent_specimens %&gt;%
   pull(Kids_First_Biospecimen_ID)
 
 hallmark_scores &lt;- hallmark_scores %&gt;%
-  filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
   left_join(hist_pbta[,c(&quot;Kids_First_Biospecimen_ID&quot;, &quot;Kids_First_Participant_ID&quot;)], by = &quot;Kids_First_Biospecimen_ID&quot;)
 
 kegg_scores &lt;- kegg_scores %&gt;%
-  filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
   left_join(hist_pbta[,c(&quot;Kids_First_Biospecimen_ID&quot;, &quot;Kids_First_Participant_ID&quot;)], by = &quot;Kids_First_Biospecimen_ID&quot;)</code></pre>
 <p>Run GSVA score comparisons between samples with and without DNA
 repair germline variants using both DNA repair gene list sources
@@ -534,34 +547,43 @@ for (i in 1:length(repair_gene_source)){
   
   # read in DNA repair gene germline PLP file
   if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
-    dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
-    }else{
-      dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
-    }
-  
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file)
+      dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
+      }else{
+        dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
+        dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
+      }
+    
+    dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+    dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+    
+    dna_repair_plp &lt;- dna_repair_plp %&gt;%
+      dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                    BER, HR, MMR, NER, NHEJ) %&gt;%
+      bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                    BER, HR, MMR, NER, NHEJ))
   
   # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, and 3) Other DNA repair genes, excluding MMR
   allRepair_germline &lt;- dna_repair_plp %&gt;%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
-    distinct(Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   mmr_germline &lt;- dna_repair_plp %&gt;%
-    filter(MMR == &quot;Yes&quot; &amp; Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
-    distinct(Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == &quot;Yes&quot; &amp; Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
+    pull(Kids_First_Biospecimen_ID_normal)
   
   brca_germline &lt;- dna_repair_plp %&gt;%
-    filter(grepl(&quot;BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2&quot;, Hugo_Symbol) &amp; !grepl(&quot;RAD51C&quot;, Hugo_Symbol)) %&gt;%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
-    distinct(Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(grepl(&quot;BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2&quot;, gene_symbol_vep) &amp; !grepl(&quot;RAD51C&quot;, gene_symbol_vep)) %&gt;%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
+    pull(Kids_First_Biospecimen_ID_normal)
 
   otherRepair_germline &lt;- dna_repair_plp %&gt;%
-    filter(!Kids_First_Biospecimen_ID %in% c(mmr_germline, brca_germline) &amp; Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
-    distinct(Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline) &amp; Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
+    pull(Kids_First_Biospecimen_ID_normal)
     
    # define list of BS_ids in each group, and names for subsequent plots
   sample_list &lt;- list(allRepair_germline, mmr_germline, brca_germline, otherRepair_germline)
@@ -574,19 +596,19 @@ for (i in 1:length(repair_gene_source)){
     repair_germline &lt;- sample_list[[j]]
     
     ctrl_germline &lt;- hist_cbtn %&gt;%
-      filter(!Kids_First_Biospecimen_ID_normal %in% repair_germline) %&gt;%
+      dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% repair_germline) %&gt;%
       pull(Kids_First_Biospecimen_ID_normal)
     
     # obtain corresponding RNA-seq tumors BS_IDs for `repair_germline` and `ctrl_germline` samples 
     repair_ids &lt;- hist_pbta %&gt;%
-      filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% repair_germline]) %&gt;%
-      filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
+      dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% repair_germline]) %&gt;%
+      dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
       pull(Kids_First_Participant_ID) %&gt;%
       unique()
 
     ctrl_ids &lt;- hist_pbta %&gt;%
-      filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %&gt;%
-      filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
+      dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %&gt;%
+      dplyr::filter(Kids_First_Biospecimen_ID %in% rna_ids) %&gt;%
       pull(Kids_First_Participant_ID) %&gt;%
       unique()
     
@@ -659,7 +681,7 @@ for (i in 1:length(repair_gene_source)){
 
     # create barplot of score differences between groups
     kegg_res &lt;- kegg_res %&gt;%
-      filter(!is.na(pvalue) &amp; abs(score_diff) &gt; 0.175 &amp; !grepl(&quot;GLYCOS&quot;, pathway))
+      dplyr::filter(!is.na(pvalue) &amp; abs(score_diff) &gt; 0.175 &amp; !grepl(&quot;GLYCOS&quot;, pathway))
 
     gsva_barplot(kegg_res, &quot;score_diff&quot;, &quot;pathway&quot;, plot_names[j])
 
@@ -669,30 +691,20 @@ for (i in 1:length(repair_gene_source)){
 
     }
 }</code></pre>
-<pre><code>## Rows: 197 Columns: 12
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
-<pre><code>## Rows: 316 Columns: 12
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (`position_stack()`).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (`geom_text()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`position_stack()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
 <p>Plot scores of Hallmark pathways of interest by group (MMR germline
 variant samples, other DNA repair germline variant samples, no DNA
 repair germline variant samples)</p>
 <pre class="r"><code># Define hallmark pathways to plot
-hallmark_to_plot &lt;- c(&quot;HALLMARK_HEDGEHOG_SIGNALING&quot;, &quot;HALLMARK_DNA_REPAIR&quot;, &quot;HALLMARK_PROTEIN_SECRETION&quot;)
-kegg_to_plot &lt;- c(&quot;KEGG_GLIOMA&quot;, &quot;KEGG_ERBB_SIGNALING_PATHWAY&quot;)
+hallmark_to_plot &lt;- c(&quot;HALLMARK_COAGULATION&quot;, &quot;HALLMARK_DNA_REPAIR&quot;, &quot;HALLMARK_COMPLEMENT&quot;,
+                      &quot;HALLMARK_KRAS_SIGNALING_UP&quot;)
+kegg_to_plot &lt;- c(&quot;KEGG_LYSOSOME&quot;, &quot;KEGG_N_GLYCAN_BIOSYNTHESIS&quot;,
+                  &quot;KEGG_FOCAL_ADHESION&quot;, &quot;KEGG_PRION_DISEASES&quot;)
 
 # create plots for each DNA repair gene list source
 repair_gene_source &lt;- c(&quot;Knijnenburg_repair_genes&quot;, &quot;Broad_GO_repair_genes&quot;)
@@ -705,47 +717,66 @@ for (i in 1:length(repair_gene_source)){
   plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, repair_gene_source[i])
   
   # read in DNA repair gene germline PLP file
-  if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
+if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
     dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+    dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
     }else{
       dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
+      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
     }
   
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file)
+  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+  dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  
+  dna_repair_plp &lt;- dna_repair_plp %&gt;%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %&gt;%
+    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))
 
   # Define BS_ids for normal and corresponding tumor RNA-seq IDs for each sample group 
   mmr_germline &lt;- dna_repair_plp %&gt;%
-    filter(MMR == &quot;Yes&quot;) %&gt;%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
-    distinct(Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == &quot;Yes&quot;) %&gt;%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
+  
+  brca_germline &lt;- dna_repair_plp %&gt;%
+    dplyr::filter(grepl(&quot;BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2&quot;, gene_symbol_vep) &amp; !grepl(&quot;RAD51C&quot;, gene_symbol_vep)) %&gt;%
+    dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   otherRepair_germline &lt;- dna_repair_plp %&gt;%
-    filter(grepl(&quot;BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2&quot;, Hugo_Symbol) &amp; !grepl(&quot;RAD51C&quot;, Hugo_Symbol)) %&gt;%
-    filter(Kids_First_Biospecimen_ID %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
-    distinct(Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID)
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline) &amp; Kids_First_Biospecimen_ID_normal %in% hist_cbtn$Kids_First_Biospecimen_ID_normal) %&gt;%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   ctrl_germline &lt;- hist_cbtn %&gt;%
-    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID) %&gt;%
-    pull(Kids_First_Biospecimen_ID_normal)
+    dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal) %&gt;%
+    dplyr::pull(Kids_First_Biospecimen_ID_normal)
   
   mmr_ids &lt;- hist_pbta %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %&gt;%
-    filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
-    pull(Kids_First_Participant_ID) %&gt;%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% mmr_germline]) %&gt;%
+    dplyr::filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
+    dplyr::pull(Kids_First_Participant_ID) %&gt;%
+    unique()
+  
+  brca_ids &lt;- hist_pbta %&gt;%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% brca_germline]) %&gt;%
+    dplyr::filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
+    dplyr::pull(Kids_First_Participant_ID) %&gt;%
     unique()
   
   otherRepair_ids &lt;- hist_pbta %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% otherRepair_germline]) %&gt;%
-    filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
-    pull(Kids_First_Participant_ID) %&gt;%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% otherRepair_germline]) %&gt;%
+    dplyr::filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
+    dplyr::pull(Kids_First_Participant_ID) %&gt;%
     unique()
 
   ctrl_ids &lt;- hist_pbta %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %&gt;%
-    filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
-    pull(Kids_First_Participant_ID) %&gt;%
+    dplyr::filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID %in% ctrl_germline]) %&gt;%
+    dplyr::filter(sample_type == &#39;Tumor&#39; &amp; experimental_strategy == &#39;RNA-Seq&#39;) %&gt;%
+    dplyr::pull(Kids_First_Participant_ID) %&gt;%
     unique()
     
   # Loop through hallmark pathways of interest to generate violin plots by group
@@ -753,49 +784,49 @@ for (i in 1:length(repair_gene_source)){
     
     # Create data frame for plotting
     score_df &lt;- hallmark_scores %&gt;%
-      filter(hallmark_name == hallmark_to_plot[j] &amp; Kids_First_Participant_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %&gt;%
-      mutate(germline_variant = case_when(
+      dplyr::filter(hallmark_name == hallmark_to_plot[j] &amp; Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %&gt;%
+      dplyr::mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ &quot;MMR&quot;,
-        Kids_First_Participant_ID %in% otherRepair_ids ~ &quot;BRCA/interacting&quot;,
+        Kids_First_Participant_ID %in% brca_ids ~ &quot;BRCA/BRCA-interacting&quot;,
+        Kids_First_Participant_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
         TRUE ~ &quot;Non-repair&quot;
       )) %&gt;%
-      mutate(germline_variant = factor(germline_variant)) %&gt;% 
-      mutate(germline_variant = fct_relevel(germline_variant,
-                                            c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Non-repair&quot;))
+      dplyr::mutate(germline_variant = factor(germline_variant)) %&gt;% 
+      dplyr::mutate(germline_variant = fct_relevel(germline_variant,
+                                            c(&quot;MMR&quot;, &quot;BRCA/BRCA-interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
              )
     
     gsva_violin(score_df, &quot;germline_variant&quot;, &quot;gsea_score&quot;, hallmark_to_plot[j])
         
       ggsave(
         file.path(plot_dir, paste0(hallmark_to_plot[j], &quot;_gsea_score_byGroup_violinPlot.tiff&quot;)), 
-        width = 14, height = 10, units = &quot;cm&quot;)
+        width = 14, height = 11, units = &quot;cm&quot;)
                
   }
   
   # Create summary table of samples with high (&gt;3rd quartile) DNA repair GSVA scores
   collapsed_germline &lt;- dna_repair_plp %&gt;%
-    filter(MMR == &quot;Yes&quot; &amp; Hugo_Symbol %in% cpgs) %&gt;%
-    group_by(Kids_First_Biospecimen_ID) %&gt;%
-    summarise(Hugo_Symbol_germline = str_c(sort(unique(Hugo_Symbol)), collapse = &quot;; &quot;)) %&gt;%
-    rename(&quot;Kids_First_Biospecimen_ID_normal&quot; = Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == &quot;Yes&quot; &amp; gene_symbol_vep %in% cpgs) %&gt;%
+    group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
+    summarise(Hugo_Symbol_germline = str_c(sort(unique(gene_symbol_vep)), collapse = &quot;; &quot;))
 
   collapsed_onco &lt;- maf %&gt;%
-    filter(Hugo_Symbol %in% cpgs) %&gt;%
+    dplyr::filter(Hugo_Symbol %in% cpgs) %&gt;%
     dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
                   Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
                   Hugo_Symbol_somatic = Hugo_Symbol) %&gt;%
     group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
     summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))
-  
+
   hallmark_scores %&gt;%
-    filter(hallmark_name == &quot;HALLMARK_DNA_REPAIR&quot; &amp; Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %&gt;%
-    filter(gsea_score &gt; 0.4) %&gt;%
-    left_join(hist_cbtn[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;, 
+    dplyr::filter(hallmark_name == &quot;HALLMARK_DNA_REPAIR&quot; &amp; Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %&gt;%
+    dplyr::filter(gsea_score &gt; 0.4) %&gt;%
+    left_join(hist_cbtn[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;,
                           &quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
         left_join(collapsed_germline) %&gt;%
         left_join(collapsed_onco) %&gt;%
         dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-               plot_group, molecular_subtype, gsea_score, 
+               plot_group, molecular_subtype, gsea_score,
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %&gt;%
         write_tsv(file.path(results_dir, &quot;PBTA_hgg_samples_with_DNArepair_gsva.tsv&quot;))
   
@@ -803,123 +834,131 @@ for (i in 1:length(repair_gene_source)){
     
     # Create data frame for plotting
     score_df &lt;- kegg_scores %&gt;%
-      filter(kegg_name == kegg_to_plot[j] &amp; Kids_First_Participant_ID %in% c(mmr_ids, otherRepair_ids, ctrl_ids)) %&gt;%
+      dplyr::filter(kegg_name == kegg_to_plot[j] &amp; Kids_First_Participant_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %&gt;%
       dplyr::mutate(germline_variant = case_when(
         Kids_First_Participant_ID %in% mmr_ids ~ &quot;MMR&quot;,
-        Kids_First_Participant_ID %in% otherRepair_ids ~ &quot;BRCA/interacting&quot;,
+        Kids_First_Participant_ID %in% brca_ids ~ &quot;BRCA/BRCA-interacting&quot;,
+        Kids_First_Participant_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
         TRUE ~ &quot;Non-repair&quot;
       )) %&gt;%
       dplyr::mutate(germline_variant = factor(germline_variant,
-                                       c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Non-repair&quot;)))
+                                       c(&quot;MMR&quot;, &quot;BRCA/BRCA-interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;)))
     
     gsva_violin(score_df, &quot;germline_variant&quot;, &quot;gsea_score&quot;, kegg_to_plot[j])
         
       ggsave(
         file.path(plot_dir, paste0(kegg_to_plot[j], &quot;_gsea_score_byGroup_violinPlot.tiff&quot;)), 
-        width = 14, height = 10, units = &quot;cm&quot;)
+        width = 14, height = 11, units = &quot;cm&quot;)
                
   }
   
-  # Create summary table of samples with high (&gt;3rd quartile) mismatch repair GSVA scores
+#  Create summary table of samples with high (&gt;3rd quartile) mismatch repair GSVA scores
   collapsed_germline &lt;- dna_repair_plp %&gt;%
-    filter(MMR == &quot;Yes&quot; &amp; Hugo_Symbol %in% cpgs) %&gt;%
-    group_by(Kids_First_Biospecimen_ID) %&gt;%
-    summarise(Hugo_Symbol_germline = str_c(sort(unique(Hugo_Symbol)), collapse = &quot;; &quot;)) %&gt;%
-    rename(&quot;Kids_First_Biospecimen_ID_normal&quot; = Kids_First_Biospecimen_ID)
+    dplyr::filter(MMR == &quot;Yes&quot; &amp; gene_symbol_vep %in% cpgs) %&gt;%
+    group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
+    summarise(Hugo_Symbol_germline = str_c(sort(unique(gene_symbol_vep)), collapse = &quot;; &quot;))
 
   collapsed_onco &lt;- maf %&gt;%
-    filter(Hugo_Symbol %in% cpgs) %&gt;%
+    dplyr::filter(Hugo_Symbol %in% cpgs) %&gt;%
     dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
                   Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
                   Hugo_Symbol_somatic = Hugo_Symbol) %&gt;%
     group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
     summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))
-  
+
   kegg_scores %&gt;%
-    filter(kegg_name == &quot;KEGG_MISMATCH_REPAIR&quot; &amp; Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %&gt;%
-    filter(gsea_score &gt; .4) %&gt;%
-    left_join(hist_cbtn[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;, 
+    dplyr::filter(kegg_name == &quot;KEGG_MISMATCH_REPAIR&quot; &amp; Kids_First_Participant_ID %in% hist_cbtn$Kids_First_Participant_ID) %&gt;%
+    dplyr::filter(gsea_score &gt; .4) %&gt;%
+    left_join(hist_cbtn[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;,
                           &quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
         left_join(collapsed_germline) %&gt;%
         left_join(collapsed_onco) %&gt;%
         dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-               plot_group, molecular_subtype, gsea_score, 
+               plot_group, molecular_subtype, gsea_score,
                Hugo_Symbol_germline, Hugo_Symbol_somatic) %&gt;%
         write_tsv(file.path(results_dir, paste0(&quot;PBTA_hgg_samples_with_MMR_gsva.tsv&quot;)))
       
 }</code></pre>
-<pre><code>## Rows: 197 Columns: 12
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
-## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Rows: 316 Columns: 12
-## ── Column specification
-## ──────────────────────────────────────────────────────── Delimiter: &quot;\t&quot; chr
-## (12): Kids_First_Biospecimen_ID, experimental_strategy, L-LP_Call_final,...
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-## Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend = FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
+## Ignoring unknown parameters: `binaxis` and `stackdir`
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Participant_ID)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.2.2 (2022-10-31)
-## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Big Sur ... 10.16
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 22.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] grid      stats     graphics  grDevices utils     datasets  methods  
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] ggthemes_4.2.4    ggpubr_0.6.0      ggsci_3.0.0       lubridate_1.9.2  
-##  [5] forcats_1.0.0     stringr_1.5.0     dplyr_1.1.2       purrr_1.0.1      
-##  [9] readr_2.1.4       tidyr_1.3.0       tibble_3.2.1      ggplot2_3.4.2    
-## [13] tidyverse_2.0.0   data.table_1.14.8
+##  [1] ggthemes_4.2.4  ggpubr_0.4.0    ggsci_2.9       forcats_1.0.0  
+##  [5] stringr_1.5.0   dplyr_1.1.0     purrr_1.0.1     readr_2.1.3    
+##  [9] tidyr_1.3.0     tibble_3.1.8    ggplot2_3.4.0   tidyverse_1.3.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.2.0  xfun_0.38         bslib_0.4.2       carData_3.0-5    
-##  [5] colorspace_2.1-1  vctrs_0.6.1       generics_0.1.3    htmltools_0.5.5  
-##  [9] yaml_2.3.7        utf8_1.2.3        rlang_1.1.0       jquerylib_0.1.4  
-## [13] pillar_1.9.0      glue_1.6.2        withr_2.5.0       bit64_4.0.5      
-## [17] lifecycle_1.0.3   munsell_0.5.0     ggsignif_0.6.4    gtable_0.3.3     
-## [21] ragg_1.2.5        evaluate_0.20     labeling_0.4.2    knitr_1.42       
-## [25] tzdb_0.3.0        fastmap_1.1.1     parallel_4.2.2    fansi_1.0.4      
-## [29] broom_1.0.4       scales_1.2.1      backports_1.4.1   cachem_1.0.7     
-## [33] vroom_1.6.1       jsonlite_1.8.4    abind_1.4-5       farver_2.1.1     
-## [37] systemfonts_1.0.4 bit_4.0.5         textshaping_0.3.6 hms_1.1.3        
-## [41] digest_0.6.31     stringi_1.7.12    rstatix_0.7.2     rprojroot_2.0.3  
-## [45] cli_3.6.1         tools_4.2.2       magrittr_2.0.3    sass_0.4.5       
-## [49] crayon_1.5.2      car_3.1-2         pkgconfig_2.0.3   timechange_0.2.0 
-## [53] rmarkdown_2.21    rstudioapi_0.14   R6_2.5.1          compiler_4.2.2</code></pre>
+##  [1] lubridate_1.9.1     rprojroot_2.0.3     assertthat_0.2.1   
+##  [4] digest_0.6.31       utf8_1.2.3          R6_2.5.1           
+##  [7] cellranger_1.1.0    backports_1.4.1     reprex_2.0.2       
+## [10] evaluate_0.20       httr_1.4.4          pillar_1.8.1       
+## [13] rlang_1.0.6         googlesheets4_1.0.1 readxl_1.4.1       
+## [16] data.table_1.14.2   car_3.1-0           jquerylib_0.1.4    
+## [19] rmarkdown_2.20      labeling_0.4.2      textshaping_0.3.6  
+## [22] googledrive_2.0.0   bit_4.0.5           munsell_0.5.0      
+## [25] broom_1.0.3         compiler_4.2.2      modelr_0.1.10      
+## [28] xfun_0.37           systemfonts_1.0.4   pkgconfig_2.0.3    
+## [31] htmltools_0.5.4     tidyselect_1.2.0    fansi_1.0.4        
+## [34] crayon_1.5.2        tzdb_0.3.0          dbplyr_2.3.0       
+## [37] withr_2.5.0         jsonlite_1.8.4      gtable_0.3.1       
+## [40] lifecycle_1.0.3     DBI_1.1.3           magrittr_2.0.3     
+## [43] scales_1.2.1        vroom_1.6.1         cli_3.6.0          
+## [46] stringi_1.7.12      cachem_1.0.6        carData_3.0-5      
+## [49] farver_2.1.1        ggsignif_0.6.3      fs_1.6.0           
+## [52] xml2_1.3.3          bslib_0.4.2         ragg_1.2.5         
+## [55] ellipsis_0.3.2      generics_0.1.3      vctrs_0.5.2        
+## [58] tools_4.2.2         bit64_4.0.5         glue_1.6.2         
+## [61] hms_1.1.2           parallel_4.2.2      abind_1.4-5        
+## [64] fastmap_1.1.0       yaml_2.3.7          timechange_0.2.0   
+## [67] colorspace_2.1-0    gargle_1.3.0        rstatix_0.7.0      
+## [70] rvest_1.0.3         knitr_1.42          haven_2.5.1        
+## [73] sass_0.4.5</code></pre>
 
 
 
