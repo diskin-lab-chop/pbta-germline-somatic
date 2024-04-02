@@ -449,19 +449,26 @@ predisposition syndromes files</p>
                            &quot;results&quot;,
                            &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(data_dir, 
-                      &quot;pbta_germline_plp_calls_autogvp_abridged_11062023.tsv&quot;)
+plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                      &quot;variant-distribution&quot;, &quot;input&quot;, 
+                      &quot;pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv&quot;)
+
+plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
+                         &quot;germline-sv&quot;, &quot;input&quot;, 
+                         &quot;pbta_germline_svs.tsv&quot;)
 
 predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)</code></pre>
 <p>Read in histologies, germline PLP, and predispositions file</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) 
 
-plp &lt;- read_tsv(plp_file,show_col_types = FALSE)
+plp &lt;- read_tsv(plp_file, show_col_types = FALSE)
+
+plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 predispositions &lt;- read_tsv(predispositions_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 28 Columns: 2
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -471,16 +478,26 @@ predispositions &lt;- read_tsv(predispositions_file) %&gt;%
 histologies file:</p>
 <pre class="r"><code>table(hist$cancer_predispositions)</code></pre>
 <pre><code>## 
-##    Gorlin Syndrome (PTCH1, SUFU)      Li-Fraumeni syndrome (TP53) 
-##                                1                                7 
-## Neurofibromatosis, Type 1 (NF-1) Neurofibromatosis, Type 2 (NF-2) 
-##                               26                                7 
-##                  None documented                     Not Reported 
-##                              762                                8 
-##   Other inherited conditions NOS          Schwannomatosis (LZTR1) 
-##                               16                                1 
-##  Tuberous Sclerosis (TSC1, TSC2) 
-##                               10</code></pre>
+## Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6) 
+##                                                                                     1 
+##                                                         Gorlin Syndrome (PTCH1, SUFU) 
+##                                                                                     1 
+##                                                           Li-Fraumeni syndrome (TP53) 
+##                                                                                     7 
+##                                                      Neurofibromatosis, Type 1 (NF-1) 
+##                                                                                    25 
+##                                                      Neurofibromatosis, Type 2 (NF-2) 
+##                                                                                     7 
+##                                                                       None documented 
+##                                                                                   761 
+##                                                                          Not Reported 
+##                                                                                     8 
+##                                                        Other inherited conditions NOS 
+##                                                                                    16 
+##                                                               Schwannomatosis (LZTR1) 
+##                                                                                     1 
+##                                                       Tuberous Sclerosis (TSC1, TSC2) 
+##                                                                                    10</code></pre>
 <p>Subset PLP file to include only variants in CPGs associated with
 syndromes in <code>predispositions</code>, and include
 <code>cancer_predispositions</code> column to indicate whether syndrome
@@ -519,6 +536,36 @@ plp_predisposition_syndromes &lt;- hist %&gt;%
 <p>Save output</p>
 <pre class="r"><code>write_tsv(plp_predisposition_syndromes,
           file.path(results_dir, &quot;incidental-findings-predisposition-variants.tsv&quot;))</code></pre>
+<p>Generate same file for germline P/LP SVs:</p>
+<pre class="r"><code>predisposition_plp_sv_bs &lt;- plp_sv %&gt;%
+  filter(Hugo_Symbol_cpg %in% predispositions$gene_symbol_vep) %&gt;%
+  pull(Kids_First_Biospecimen_ID_normal)
+
+plp_sv_predisposition_syndromes &lt;- hist %&gt;%
+  filter(Kids_First_Biospecimen_ID_normal %in% predisposition_plp_sv_bs) %&gt;%
+  left_join(plp_sv) %&gt;%
+  dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg) %&gt;%
+  left_join(predispositions) %&gt;%
+  filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
+  dplyr::rename(&quot;associated_syndrome&quot; = `Associated Syndrome`,
+                &quot;clinically_reported_syndrome&quot; = cancer_predispositions) %&gt;%
+  dplyr::mutate(incidental_finding = case_when(
+    !str_detect(clinically_reported_syndrome, associated_syndrome) ~ &quot;Yes&quot;,
+    TRUE ~ &quot;No&quot;
+  )) %&gt;%
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+         Kids_First_Biospecimen_ID_tumor,
+         sample_id_normal, sample_id_tumor,
+         plot_group, molecular_subtype, 
+         Chromosome, Start, End, Length,
+         Type, Classification, 
+         gene_symbol_vep, 
+         associated_syndrome, clinically_reported_syndrome, incidental_finding)</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(gene_symbol_vep)`</code></pre>
+<p>Save output</p>
+<pre class="r"><code>write_tsv(plp_sv_predisposition_syndromes,
+          file.path(results_dir, &quot;incidental-findings-predisposition-structural-variants.tsv&quot;))</code></pre>
 
 
 

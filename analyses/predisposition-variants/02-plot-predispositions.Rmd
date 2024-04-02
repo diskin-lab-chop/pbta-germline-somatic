@@ -34,8 +34,13 @@ Set paths for:
 ```{r set paths}
 histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
 
 predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
 
@@ -48,6 +53,8 @@ hist <- read_tsv(histologies_file, guess_max = 10000,
                  show_col_types = FALSE) 
 
 plp <- read_tsv(plp_file, show_col_types = FALSE)
+
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
 
 syndromes <- read_tsv(predispositions_file) %>%
   # Abbreviate syndromes for plotting
@@ -96,7 +103,8 @@ suppressWarnings(
     dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, sample_id_tumor, plot_group, molecular_subtype) %>%
     dplyr::mutate(predisposition = predisposition) %>%
     dplyr::mutate(plp_variant = case_when(
-      Kids_First_Biospecimen_ID_normal %in% plp$Kids_First_Biospecimen_ID_normal[plp$gene_symbol_vep %in% genes] ~ "Yes",
+      Kids_First_Biospecimen_ID_normal %in% c(plp$Kids_First_Biospecimen_ID_normal[plp$gene_symbol_vep %in% genes],
+                                              plp_sv$Kids_First_Biospecimen_ID_normal[plp$Hugo_Symbol_cpg %in% genes])~ "Yes",
       TRUE ~ "No"
     ))
   }
@@ -109,6 +117,7 @@ predisposition_df <- Reduce(rbind, predisposition_list)
 
 Filter for patients that do not show P-LP variant associated with predisposition syndrome, and write to output
 ```{r}
+
 predisposition_df %>%
   dplyr::filter(plp_variant == "No") %>%
   write_tsv(file.path(results_dir, "predisposition-patients-no-plp-variants.tsv"))
@@ -175,9 +184,35 @@ write_tsv(incidental_df,
 
 ```
 
+Load incidental findings summary, and change incidental findings to "No" when predisposition is recorded in path review 
+```{r}
+incidental_sv_df <- read_tsv(file.path(results_dir, "incidental-findings-predisposition-structural-variants.tsv"))
+
+incidental_sv_df <- incidental_sv_df %>%
+  left_join(predispositions_path_review[,c("Kids_First_Biospecimen_ID_normal", "gene_symbol_vep", "cancer_predispositions_path")]) %>%
+  dplyr::rename("path_report_findings" = cancer_predispositions_path) %>%
+  dplyr::mutate(path_report_findings = case_when(
+    !is.na(path_report_findings) ~ glue::glue("{path_report_findings} confirmed"),
+    is.na(path_report_findings) ~ ""
+  ),
+  incidental_finding = case_when(
+    incidental_finding == "No" | path_report_findings != "" ~ "No",
+    TRUE ~ "Yes"
+  )) %>%
+    # retain only unique pt-gene pairs (remove cases of multi-hits to gene in same pt)
+  distinct(Kids_First_Participant_ID, gene_symbol_vep, .keep_all = T)
+
+# Save update incidental findings
+write_tsv(incidental_sv_df,
+          file.path(results_dir, "incidental-findings-predisposition-structural-variants-path-review.tsv"))
+
+```
+
 How many of these findings are incidental? 
 ```{r}
 table(incidental_df$incidental_finding)
+
+table(incidental_sv_df$incidental_finding)
 
 ```
 
@@ -185,6 +220,9 @@ Plot predisposition gene variant count, and distinguish between patients who hav
 ```{r}
 # Calculate predisposition gene counts for ordering plot
 total_cts <- incidental_df %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep) %>%
+  bind_rows(incidental_sv_df %>% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep)) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep) %>%
   count(gene_symbol_vep) %>%
   arrange(n)
 
@@ -193,6 +231,10 @@ labels <- glue::glue("{syndrome_genes} ({syndromes$`Associated Syndrome`})")
 names(labels) <- syndrome_genes
 
 incidental_df %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, incidental_finding) %>%
+  bind_rows(incidental_sv_df %>% dplyr::select(Kids_First_Biospecimen_ID_normal, 
+                                               gene_symbol_vep, incidental_finding)) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, .keep_all = T) %>%
   dplyr::mutate(predisposition = case_when(
     incidental_finding == "Yes" ~ "No",
     incidental_finding == "No" ~ "Yes"
@@ -208,7 +250,7 @@ incidental_df %>%
   labs(x = "No. patients",
        y = "",
        fill = "Predisposition clinically-reported") +
-  xlim(c(0,20)) +
+  xlim(c(0,25)) +
   scale_y_discrete(labels=labels) +
   scale_fill_npg() +
   theme_Publication() +
