@@ -20,3 +20,6 @@ Rscript -e "rmarkdown::render('05-assess-alternative-splicing.Rmd')"
 
 # Run proteomics analysis
 Rscript -e "rmarkdown::render('06-proteomics.Rmd')"
+
+# merge alterations output
+Rscript -e "rmarkdown::render('07-merge-somatic-alterations.Rmd')"
