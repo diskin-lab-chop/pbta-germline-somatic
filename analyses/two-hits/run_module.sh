@@ -17,3 +17,6 @@ Rscript -e "rmarkdown::render('04-assess-somatic-gene-expr.Rmd')"
 
 # Run gene expression analysis
 Rscript -e "rmarkdown::render('05-assess-alternative-splicing.Rmd')"
+
+# Run proteomics analysis
+Rscript -e "rmarkdown::render('06-proteomics.Rmd')"
