@@ -74,6 +74,8 @@ for (group in groups){
   # define output file
   km_output_pdf <- file.path(plots_dir, glue::glue("km_{dir_names[group]}_cpgPLPstatus.pdf"))
   
+  pdf(NULL)
+  
   # generate plot
   km_plot <- plotKM(model = list(km_os_result, km_efs_result),
                     variable = "cpgPLP_status",
@@ -88,47 +90,49 @@ for (group in groups){
   
   # Read in coxph models
   if (grepl("Low-grade glioma|LGG", group)){
-    survival_result <- read_rds(
+    os_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{dir_names[group]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")
       ))
   }else{
-    survival_result <- read_rds(
+    os_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{dir_names[group]}_OS_additive_terms_subtype_cpgPLPstatus.RDS")
       ))
   }
   
   # define forest plot output file
-  forest_pdf <- file.path(plots_dir, 
+  os_forest_pdf <- file.path(plots_dir, 
                           glue::glue("forest_{dir_names[group]}_OS_subtype_cpgPLPstatus.pdf"))
   
+  pdf(NULL)
+  
   # generate forest plot
-  forest_plot <- plotForest(survival_result)
+  os_forest_plot <- plotForest(os_result)
   
   # save plot
-  ggsave(forest_pdf, forest_plot, width = 8, height = 3)
+  ggsave(os_forest_pdf, os_forest_plot, width = 8, height = 3)
   
   
   if (grepl("Low-grade glioma|LGG", group)){
-    survival_result <- read_rds(
+    efs_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{dir_names[group]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")
       ))
   }else{
-    survival_result <- read_rds(
+    efs_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{dir_names[group]}_EFS_additive_terms_subtype_cpgPLPstatus.RDS")
       ))
   }
   
-  forest_pdf <- file.path(plots_dir, 
+  efs_forest_pdf <- file.path(plots_dir, 
                           glue::glue("forest_{dir_names[group]}_EFS_subtype_cpgPLPstatus.pdf"))
   
   
-  forest_plot <- plotForest(survival_result)
+  efs_forest_plot <- plotForest(efs_result)
   
-  ggsave(forest_pdf, forest_plot, width = 8, height = 3)
+  ggsave(efs_forest_pdf, efs_forest_plot, width = 8, height = 3)
   
   
 }
@@ -149,76 +153,80 @@ for (i in 1:nrow(subtype_df)){
   }
   
   # read in km files
-  km_os_result <- read_rds(
+  subtype_km_os_result <- read_rds(
     file.path(input_dir,
               glue::glue("logrank_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_OS_cpgPLPstatus.RDS")
     )
   )
   
-  km_efs_result <- read_rds(
+  subtype_km_efs_result <- read_rds(
     file.path(input_dir,
               glue::glue("logrank_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_EFS_cpgPLPstatus.RDS")
     )
   )
   
   # define output file
-  km_output_pdf <- file.path(plots_dir, glue::glue("km_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_cpgPLPstatus.pdf"))
+  subtype_km_output_pdf <- file.path(plots_dir, glue::glue("km_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_cpgPLPstatus.pdf"))
+  
+  pdf(NULL)
   
   # generate plot
-  km_plot <- plotKM(model = list(km_os_result, km_efs_result),
+  subtype_km_plot <- plotKM(model = list(subtype_km_os_result, subtype_km_efs_result),
                     variable = "cpgPLP_status",
                     combined = T, 
                     title = subtype_df$mol_sub_group[i])
   
   # save plot
-  ggsave(km_output_pdf, km_plot,
+  ggsave(subtype_km_output_pdf, subtype_km_plot,
          width = 10, height = 6, units = "in",
          device = "pdf")
   
   
   # Read in coxph models
   if (grepl("Low-grade glioma", subtype_df$plot_group[i])){
-    survival_result <- read_rds(
+    subtype_os_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_OS_additive_terms_subtype_resection_cpgPLPstatus.RDS")
       ))
   }else{
-    survival_result <- read_rds(
+    subtype_os_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_OS_additive_terms_subtype_cpgPLPstatus.RDS")
       ))
   }
   
   # define forest plot output file
-  forest_pdf <- file.path(plots_dir, 
+  subtype_os_forest_pdf <- file.path(plots_dir, 
                           glue::glue("forest_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_OS_subtype_cpgPLPstatus.pdf"))
   
+  pdf(NULL)
+  
   # generate forest plot
-  forest_plot <- plotForest(survival_result)
+  subtype_os_forest_plot <- plotForest(subtype_os_result)
   
   # save plot
-  ggsave(forest_pdf, forest_plot, width = 8, height = 3)
+  ggsave(subtype_os_forest_pdf, subtype_os_forest_plot, width = 8, height = 3)
   
   
   if (grepl("Low-grade glioma", subtype_df$plot_group[i])){
-    survival_result <- read_rds(
+    subtype_efs_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_EFS_additive_terms_subtype_resection_cpgPLPstatus.RDS")
       ))
   }else{
-    survival_result <- read_rds(
+    subtype_efs_result <- read_rds(
       file.path(input_dir,
                 glue::glue("cox_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_EFS_additive_terms_subtype_cpgPLPstatus.RDS")
       ))
   }
   
-  forest_pdf <- file.path(plots_dir, 
+  subtype_efs_forest_pdf <- file.path(plots_dir, 
                           glue::glue("forest_{subtype_df$hist[i]}_{subtype_df$subtype[i]}_EFS_subtype_cpgPLPstatus.pdf"))
   
   
-  forest_plot <- plotForest(survival_result)
+  subtype_efs_forest_plot <- plotForest(subtype_efs_result)
   
-  ggsave(forest_pdf, forest_plot, width = 8, height = 3)
+  ggsave(subtype_efs_forest_pdf, subtype_efs_forest_plot, width = 8, height = 3)
   
   dev.off()
 }
