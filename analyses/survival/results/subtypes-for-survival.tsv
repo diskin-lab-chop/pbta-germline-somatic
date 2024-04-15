@@ -1,16 +1,14 @@
 mol_sub_group	plot_group	n	hist	subtype
 CRANIO, ADAM	Craniopharyngioma	27	CRANIO	ADAM
-DHG, H3 G35	Other high-grade glioma	12	DHG	H3-G35
 DMG, H3 K28	DIPG or DMG	53	DMG	H3-K28
-EPN, PF A	Ependymoma	25	EPN	PF-A
-EPN, ST ZFTA	Ependymoma	18	EPN	ST-ZFTA
-GNG/GNT, Other alteration	Mixed neuronal-glial tumor	62	GNG-GNT	Other-alteration
-HGG, H3 WT	Other high-grade glioma	54	HGG	H3-WT
+EPN, PF A	Ependymoma	24	EPN	PF-A
+EPN, ST ZFTA	Ependymoma	19	EPN	ST-ZFTA
+GNG/GNT, BRAF V600E	Mixed neuronal-glial tumor	16	GNG-GNT	BRAF-V600E
+GNG/GNT, Other alteration	Mixed neuronal-glial tumor	44	GNG-GNT	Other-alteration
+HGG, H3 WT	Other high-grade glioma	53	HGG	H3-WT
+LGG, BRAF V600E	Low-grade glioma	29	LGG	BRAF-V600E
 LGG, BRAF fusion	Low-grade glioma	117	LGG	BRAF-fusion
-LGG, Other alteration	Low-grade glioma	80	LGG	Other-alteration
-LGG, WT	Low-grade glioma	13	LGG	WT
-MB, Group3	Medulloblastoma	20	MB	Group3
+LGG, Other alteration	Low-grade glioma	50	LGG	Other-alteration
+MB, Group3	Medulloblastoma	19	MB	Group3
 MB, Group4	Medulloblastoma	45	MB	Group4
 MB, SHH	Medulloblastoma	19	MB	SHH
-MB, WNT	Medulloblastoma	11	MB	WNT
-SEGA	Low-grade glioma	11	SEGA	NA
