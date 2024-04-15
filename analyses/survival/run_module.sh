@@ -10,7 +10,7 @@ Rscript -e "rmarkdown::render('01-format-survival.Rmd')"
 Rscript -e "rmarkdown::render('02-run-survival-plp-status.Rmd')"
 
 # Plot survival models
-Rscript 03-plot-survival-plp-status.R
+Rscript --vanilla 03-plot-survival-plp-status.R
 
 # Assess HGG survival by DNA repair gene P/LP status
 Rscript -e "rmarkdown::render('04-run-survival-dna-repair.Rmd')"
