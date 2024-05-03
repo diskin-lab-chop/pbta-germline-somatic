@@ -155,7 +155,7 @@ z_scored_expression <- z_scored_expression %>%
   dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol)
 
 write_tsv(z_scored_expression,
-          file.path(results_dir, "pbta-germline-838-gene-expr-zscores.tsv"))
+          file.path(results_dir, "pbta-germline-gene-expr-zscores.tsv"))
 
 ```
 
