@@ -17,7 +17,7 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 5. `04-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
 
 5. `input/` directory contains the following files: 
-  - `splice_events_germline_pbta_cpgs_only.tsv.gz`; splice events and PSI values for CPGs in PBTA germline samples 
+  - `splice_events_germline_pbta_cpgs_only.tsv.gz`; splice events and PSI values for CPGs in PBTA germline samples, filtered from OPC v13 RMATs file
 
 6. `results/` directory contains the following files: 
   - `pbta-oncokb-oncogenic-maf.tsv`; subset of oncoKB results containing only oncogenic/likely oncogenic SNVs. 
