@@ -30,7 +30,7 @@ hist <- read_tsv(file.path(root_dir,
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 
 # read in plp file
-plp_all <- read_tsv(file.path(root_dir, "analyses", "variant-distribution", "input", "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")) %>%
+plp_all <- read_tsv(file.path(data_dir, "pbta-germline-plp-variants-autogvp-abridged.tsv")) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # determine whether final call was due to clinvar or intervar
   mutate(final_call_source = case_when(autogvp_call == "Likely_pathogenic" & autogvp_call_reason == "ClinVar" ~ "ClinVar - Likely Pathogenic",
@@ -94,18 +94,18 @@ dev.off()
 
 # summary of variants for all genes or just CPGs
 plp_all_genes <- plp_all %>%
-  select(final_call_source) %>%
+  dplyr::select(final_call_source) %>%
   table(dnn = c("final_call_source", "n")) %>%
   as.data.frame() %>%
-  rename("final_call_source" = final_call_source.1) %>%
+  dplyr::rename("final_call_source" = final_call_source.1) %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_all_genes
 
 plp_cpgs <- plp_cpg %>%
-  select(final_call_source) %>%
+  dplyr::select(final_call_source) %>%
   table(dnn = c("final_call_source", "n")) %>%
   as.data.frame() %>%
-  rename("final_call_source" = final_call_source.1) %>%
+  dplyr::rename("final_call_source" = final_call_source.1) %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_cpgs
 
