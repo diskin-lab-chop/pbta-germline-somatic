@@ -35,9 +35,8 @@ histologies_file <- file.path(root_dir,
                            "results",
                            "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "variant-distribution", "input", 
-                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta-germline-plp-variants-autogvp-abridged.tsv")
 
 plp_sv_file <- file.path(root_dir, "analyses", 
                          "germline-sv", "input", 
@@ -86,7 +85,7 @@ plp_predisposition_syndromes <- hist %>%
     !str_detect(clinically_reported_syndrome, associated_syndrome) ~ "Yes",
     TRUE ~ "No"
   )) %>%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
          sample_id_normal, sample_id_tumor,
          plot_group, molecular_subtype, 
          chr, start, alt, ref,
@@ -125,7 +124,7 @@ plp_sv_predisposition_syndromes <- hist %>%
     !str_detect(clinically_reported_syndrome, associated_syndrome) ~ "Yes",
     TRUE ~ "No"
   )) %>%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
          Kids_First_Biospecimen_ID_tumor,
          sample_id_normal, sample_id_tumor,
          plot_group, molecular_subtype, 
