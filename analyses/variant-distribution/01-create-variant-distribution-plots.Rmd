@@ -61,7 +61,7 @@ hist <- read_tsv(file.path(root_dir,
 
 # Merge clin with germline plp file
 ```{r data wrangling}
-plp <- read_tsv(file.path(input_dir, "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv"), 
+plp <- read_tsv(file.path(data_dir, "pbta-germline-plp-variants-autogvp-abridged.tsv"), 
                 show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
@@ -237,8 +237,8 @@ for (each in names(plplists)){
 ```
 Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
-plp_full <- read_tsv(file.path(input_dir,
-                               "pbta_germline_plp_calls_autogvp_full_gnomad_popmax.tsv")) %>%
+plp_full <- read_tsv(file.path(data_dir,
+                               "pbta-germline-plp-variants-autogvp-full.tsv")) %>%
   dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref)) %>%
   dplyr::filter(gene_symbol_vep %in% cpg)
 
