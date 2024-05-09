@@ -1,5 +1,4 @@
 Kids_First_Biospecimen_ID_normal	Kids_First_Participant_ID	Kids_First_Biospecimen_ID_rna	plot_group	molecular_subtype	Hugo_Symbol	autogvp_call	autogvp_call_reason	chr	start	ref	alt	HGVSc	HGVSp	expr	plot_group_hex	expr_zscore
-BS_ZRVFD8TY	PT_WYVMWYVA	BS_FAVRBEW7	Choroid plexus tumor	NA	KMT2C	Likely_pathogenic	InterVar	chr7	152247985	T	TA	c.2448_2449insT	p.Ile817TyrfsTer11	4.12267271882414	#00441B	-0.15433742543393836
 BS_YWHDJ7FE	PT_DEYCW197	BS_HV8PFRBR	Low-grade glioma	LGG, KIAA1549-BRAF	EPHA7	Likely_pathogenic	InterVar	chr6	93356910	GC	G	c.1130del	p.Gly377AlafsTer19	0.014355292977070054	#8f8fbf	-0.676746848548049
 BS_YG4EJAF4	PT_V3Q78E6F	BS_0QYS36NR	Ependymoma	EPN, To be classified	PIK3R1	Pathogenic	ClinVar	chr5	68273995	C	T	c.484C>T	p.Arg162Ter	3.130930869826449	#2200ff	-0.7583147421006804
 BS_X7EQKJZH	PT_QT9T89S5	BS_T1W4JA94	Low-grade glioma	LGG, KIAA1549-BRAF	PPM1D	Likely_pathogenic	ClinVar	chr17	60663106	C	T	c.1372C>T	p.Arg458Ter	2.572889668420581	#8f8fbf	0.7388016732871922
