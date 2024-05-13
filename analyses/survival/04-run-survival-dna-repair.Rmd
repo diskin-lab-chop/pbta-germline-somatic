@@ -42,9 +42,8 @@ Set file paths
 ```{r set paths}
 cbtn_histologies_file <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "variant-distribution", "input", 
-                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta-germline-plp-variants-autogvp-abridged.tsv")
 
 plp_sv_file <- file.path(root_dir, "analyses", 
                          "germline-sv", "input", 
