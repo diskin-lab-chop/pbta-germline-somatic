@@ -97,7 +97,7 @@ RUN R -e 'BiocManager::install(c( \
 
 
 # Patchwork for plot compositions
-RUN R -e "remotes::install_github('thomasp85/patchwork', ref = 'c67c6603ba59dd46899f17197f9858bc5672e9f4', dependencies = TRUE)"
+RUN R -e "remotes::install_github('thomasp85/patchwork', ref = '1cb732b129ed6a65774796dc1f618558c7498b66', dependencies = TRUE)"
 RUN R -e "remotes::install_github('clauswilke/colorblindr', ref = '90d64f8fc50bee7060be577f180ae019a9bbbb84', dependencies = TRUE)"
 RUN R -e "remotes::install_github('coolbutuseless/ggpattern', ref = 'bc9e4cd1271674a537bf3406663765648e3963bd', dependencies = TRUE)"
 RUN R -e "remotes::install_github('PoisonAlien/maftools', ref = 'ecaf525b95449b719fa62c1e693aa67a9356b344', dependencies = TRUE)"
@@ -106,6 +106,7 @@ RUN R -e "remotes::install_github('PoisonAlien/maftools', ref = 'ecaf525b95449b7
 RUN apt-get update
 RUN apt-get -y --no-install-recommends install \
     python3-pip python3-dev
+RUN python3 -m pip install --upgrade pip
 RUN pip3 install \
   "matplotlib==3.1.2" \
   "kiwisolver==1.2.0" \
