@@ -12,20 +12,20 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 
 2. `02-cnv-loh-second-hits.Rmd` identifies patients exhibiting both germline P/LP variation as well as copy number variation (CNV) or loss of heterozygosity (LOH) in the same CPG. 
 
-4.`03-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
+3. `03-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
 
-5. `04-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
+4. `04-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
 
-6. `06-proteomics.Rmd`; pulls proteomics and phospoproteomics data from CPTAC and HOPE data sets, and identifies differential protein and phosphoprotein expression associated with germline CPG P/LP variants. 
+5. `05-proteomics.Rmd`; pulls proteomics and phosphoproteomics data from CPTAC and HOPE data sets, and identifies differential protein and phosphoprotein expression associated with germline CPG P/LP variants. 
 
-7. `input/` directory contains the following files: 
+6. `input/` directory contains the following files: 
   - `splice_events_germline_pbta_cpgs_only.tsv.gz`; splice events and PSI values for CPGs in PBTA germline samples
   - `HOPE_Harmonized_G_H_P_Proteome_UMich_RefSeq_Sinai_imputed_02-22-2022_V2.tsv`; HOPE proteomics total protein abundances
   - `PBT_Harmonized_G_H_P_Proteome_UMich_RefSeq_Sinai_imputed_06302022_exclude_bridging_V2.tsv`; CPTAC proteomics total protein abundances
   - `hope-protein-imputed-phospho-expression.tsv`; HOPE total phosphoprotein abundances 
   - `histologies-base.tsv`; v13 histologies base file (will be removed here following v7 data release)
 
-8. `results/` directory contains the following files: 
+7. `results/` directory contains the following files: 
   - `pbta-oncokb-oncogenic-maf.tsv`; subset of oncoKB results containing only oncogenic/likely oncogenic SNVs
   - `germline-somatic-two-gene-hits.tsv`; table of patients possessing germline P/LP variant and oncogenic/likely oncogenic SNV in same CPG
   - `germline-somatic-collapsed-by-gene.tsv`; summary of oncogenic/likely oncogenic SNVs in CPGs by patient and matched tumor sample
@@ -60,22 +60,21 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 ├── 01-assess-two-hits-snv.nb.html
 ├── 02-cnv-loh-second-hits.Rmd
 ├── 02-cnv-loh-second-hits.nb.html
-├── 03-somatic-alteration-enrichment.Rmd
-├── 03-somatic-alteration-enrichment.nb.html
-├── 04-assess-somatic-gene-expr.Rmd
-├── 04-assess-somatic-gene-expr.nb.html
-├── 05-assess-alternative-splicing.Rmd
-├── 05-assess-alternative-splicing.nb.html
-├── 06-proteomics.Rmd
-├── 06-proteomics.nb.html
+├── 03-assess-somatic-gene-expr.Rmd
+├── 03-assess-somatic-gene-expr.nb.html
+├── 04-assess-alternative-splicing.Rmd
+├── 04-assess-alternative-splicing.nb.html
+├── 05-proteomics.Rmd
+├── 05-proteomics.nb.html
 ├── README.md
 ├── input
 │   ├── cptac-protein-imputed-prot-expression-abundance.tsv.gz
-│   ├── histologies-base.tsv
 │   ├── hope-protein-imputed-phospho-expression-abundance.tsv.gz
 │   ├── hope-protein-imputed-prot-expression-abundance.tsv.gz
+│   ├── pbta-plp-all-loh.tsv
 │   └── splice_events_germline_pbta_cpgs_only.tsv.gz
 ├── plots
+│   ├── APC-expr-by-plp-onco-snv-status.pdf
 │   ├── ATM-expr-by-plp-onco-snv-status.pdf
 │   ├── CHEK2-expr-by-plp-onco-snv-status.pdf
 │   ├── ERCC2-expr-by-plp-onco-snv-status.pdf
@@ -85,7 +84,6 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 │   ├── NF2-expr-by-plp-onco-snv-status.pdf
 │   ├── PMS2-expr-by-plp-onco-snv-status.pdf
 │   ├── PSI-diff-by-variant-dist.pdf
-│   ├── PSI-diff-by-variant-dist_all_plp.pdf
 │   ├── RAD50-expr-by-plp-onco-snv-status.pdf
 │   ├── RECQL4-expr-by-plp-onco-snv-status.pdf
 │   ├── TP53-expr-by-plp-onco-snv-status.pdf
@@ -93,25 +91,35 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 │   ├── TSC2-expr-by-plp-onco-snv-status.pdf
 │   ├── cpg-LOH-plp-vs-noplp.pdf
 │   ├── cpg-sig-expr-diff-plp-vs-noplp.pdf
+│   ├── diff-psi-splice-candidates.pdf
 │   ├── hist-gene-LOH-plp-vs-noplp.pdf
 │   ├── hist-gene-expr-plp-vs-noplp.pdf
-│   ├── proximal-splice-event-distribution.tiff
-│   ├── sig-somatic-alteration-enr.pdf
-│   └── somatic-alteration-enr-heatmap.pdf
+│   ├── skipped-exon-psi-splice-plp-vs-nonsplice.pdf
+│   └── tumor-vaf-vs-germline-vaf.pdf
 ├── results
 │   ├── candidate_plp_associated_splice_events.tsv
+│   ├── candidate_sv_plp_associated_splice_events.tsv
 │   ├── cptac-hope-cpg-proteomics-zscores.tsv
 │   ├── gene-expr-diff-plp-vs-no-plp.tsv
+│   ├── germline-primary-plus-tumor-histologies-proteomics.tsv
 │   ├── germline-somatic-cnv-loh-cpgs.tsv
 │   ├── germline-somatic-cnv-loh-somatic-non-cpgs.tsv
 │   ├── germline-somatic-collapsed-by-gene.tsv
 │   ├── germline-somatic-expr-cpgs.tsv
 │   ├── germline-somatic-expr-somatic-non-cpgs.tsv
+│   ├── germline-somatic-proteomics-cpgs.tsv
 │   ├── germline-somatic-proteomics-phosphoproteomics-cpgs.tsv
 │   ├── germline-somatic-two-gene-hits.tsv
+│   ├── germline-sv-somatic-cnv-loh-somatic-cpgs.tsv
+│   ├── germline-sv-somatic-expr-cpgs.tsv
+│   ├── germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv
+│   ├── germline-sv-somatic-two-gene-hits.tsv
 │   ├── hope-cpg-phosphoproteomics-zscores.tsv
 │   ├── pbta-germline-838-gene-expr-zscores.tsv
 │   ├── pbta-oncokb-oncogenic-maf.tsv
-│   └── splicing_events_plp_variants.tsv
-└── run_module.sh
+│   ├── splicing_events_plp_variants.tsv
+│   ├── splicing_events_snv_plp_variants.tsv
+│   └── splicing_events_sv_plp_variants.tsv
+└──  run_module.sh
+
 ```
