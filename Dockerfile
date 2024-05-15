@@ -1,13 +1,13 @@
-FROM rocker/tidyverse:4.2
+FROM rocker/tidyverse:4.4.0
 MAINTAINER rokita@chop.edu
 WORKDIR /rocker-build/
 
-RUN RSPM="https://packagemanager.rstudio.com/cran/2022-10-07" \
-  && echo "options(repos = c(CRAN='$RSPM'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
+#RUN RSPM="https://packagemanager.rstudio.com/cran/2022-10-07" \
+#  && echo "options(repos = c(CRAN='$RSPM'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
   
-COPY scripts/install_bioc.r .
+#COPY scripts/install_bioc.r .
 
-COPY scripts/install_github.r .
+#COPY scripts/install_github.r .
 
 ### Install apt-getable packages to start
 #########################################
@@ -41,40 +41,66 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 RUN apt-get -y --no-install-recommends install \
     cmake
 
+# Set the Bioconductor repository as the primary repository
+RUN R -e "options(repos = BiocManager::repositories())"
+
+# Install BiocManager and the desired version of Bioconductor
+RUN R -e "install.packages('BiocManager', dependencies=TRUE)"
+RUN R -e "BiocManager::install(version = '3.19')"
+
+# Install packages
+RUN R -e 'BiocManager::install(c( \
+	"BiocManager", \
+  "data.table", \
+  "ggpubr", \
+  "ggthemes", \
+  "msigdbr", \
+  "openxlsx", \
+	"optparse", \
+	"pheatmap", \
+	"RColorBrewer", \
+	"survival", \
+  "survMisc", \
+  "survminer", \
+  "tidytext", \
+  "ComplexHeatmap", \
+  "GSVA" \
+))'
+
 # install R packages from CRAN
-RUN install2.r \
-	BiocManager \
-  data.table \
-  ggpubr \
-  ggthemes \
-  msigdbr \
-  openxlsx \
-	optparse \
-	pheatmap \
-	RColorBrewer \
-	survival \
-  survMisc \
-  survminer \
-  tidytext
+#RUN install2.r \
+#	BiocManager \
+#  data.table \
+#  ggpubr \
+#  ggthemes \
+#  msigdbr \
+#  openxlsx \
+#	optparse \
+#	pheatmap \
+#	RColorBrewer \
+#	survival \
+# survMisc \
+#  survminer \
+#  tidytext
   
   
 # install R packages from Bioconductor 
-RUN ./install_bioc.r \
-  ComplexHeatmap \
-  GSVA 
+#RUN ./install_bioc.r \
+#  ComplexHeatmap \
+#  GSVA 
 
 # install R packages from GitHub
 
 # Maftools
-RUN ./install_github.r \
-	PoisonAlien/maftools
+#RUN ./install_github.r \
+#	PoisonAlien/maftools
 
 
 # Patchwork for plot compositions
-RUN ./install_github.r  'thomasp85/patchwork' --ref 'c67c6603ba59dd46899f17197f9858bc5672e9f4'
-RUN ./install_github.r 'clauswilke/colorblindr' --ref '90d64f8fc50bee7060be577f180ae019a9bbbb84'
-RUN ./install_github.r 'coolbutuseless/ggpattern' --ref 'bc9e4cd1271674a537bf3406663765648e3963bd'
-
+RUN R -e "remotes::install_github('thomasp85/patchwork', ref = 'c67c6603ba59dd46899f17197f9858bc5672e9f4', dependencies = TRUE)"
+RUN R -e "remotes::install_github('clauswilke/colorblindr', ref = '90d64f8fc50bee7060be577f180ae019a9bbbb84', dependencies = TRUE)"
+RUN R -e "remotes::install_github('coolbutuseless/ggpattern', ref = 'bc9e4cd1271674a537bf3406663765648e3963bd', dependencies = TRUE)"
+RUN R -e "remotes::install_github('PoisonAlien/maftools', ref = 'ecaf525b95449b719fa62c1e693aa67a9356b344', dependencies = TRUE)"
 
 # Install pip3 and python reqs for oncokb
 RUN apt-get update
