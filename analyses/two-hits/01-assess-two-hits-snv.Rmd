@@ -41,7 +41,7 @@ histologies_file <- file.path(root_dir,"analyses",
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # remove cell lines from histologies file
-v14_hist_file <- file.path(root_dir, "analyses",
+opc_hist_file <- file.path(root_dir, "analyses",
                            "collapse-tumor-histologies",
                            "input", "histologies.tsv")
 
@@ -63,7 +63,7 @@ germline <- read_tsv(file.path(root_dir, params$germ_in)) %>%
                 HGVSp_germ = HGVSp) 
 
 integrated_hist <- read_tsv(histologies_file)
-v14_hist <- read_tsv(v14_hist_file, guess_max = 3000) %>%
+opc_hist <- read_tsv(opc_hist_file, guess_max = 3000) %>%
   filter(!is.na(pathology_diagnosis),
          experimental_strategy == "WGS",
          tumor_descriptor != "Derived Cell Line")
@@ -73,7 +73,7 @@ cpg <- read_lines(cpg_file)
 
 # load maf
 maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
-  filter(Tumor_Sample_Barcode %in% v14_hist$Kids_First_Biospecimen_ID)
+  filter(Tumor_Sample_Barcode %in% opc_hist$Kids_First_Biospecimen_ID)
 
 # CPGs without somatic hits
 setdiff(cpg, unique(maf$Hugo_Symbol))

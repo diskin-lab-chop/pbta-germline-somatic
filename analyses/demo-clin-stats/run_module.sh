@@ -7,4 +7,4 @@ set -o pipefail
 Rscript -e "rmarkdown::render('01-demo-clin-stats.Rmd')"
 
 # Plot somalier predicted ancestry
-Rscript 02-plot-ancestry.R
+Rscript --vanilla 02-plot-ancestry.R

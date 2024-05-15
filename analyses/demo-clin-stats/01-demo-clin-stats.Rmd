@@ -315,7 +315,7 @@ write.xlsx(pvalue_list,
            file.path(results_dir, "demo-clin-pvalues-by-histology.xlsx"),
            overwrite = TRUE,
            keepNA = TRUE,
-           rowNames = TRUE)
+           rowNames = FALSE)
 ```
 
 

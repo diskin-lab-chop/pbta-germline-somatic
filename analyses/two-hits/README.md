@@ -12,11 +12,9 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 
 2. `02-cnv-loh-second-hits.Rmd` identifies patients exhibiting both germline P/LP variation as well as copy number variation (CNV) or loss of heterozygosity (LOH) in the same CPG. 
 
-3. `03-somatic-alteration-enrichment.Rmd` tests for enrichment of somatic alterations (SNV, CNV, LOH, gene expression gain/loss) in patients with vs. without germline P/LP variants in select CPGs. 
+4.`03-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
 
-4.`04-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
-
-5. `05-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
+5. `04-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
 
 6. `06-proteomics.Rmd`; pulls proteomics and phospoproteomics data from CPTAC and HOPE data sets, and identifies differential protein and phosphoprotein expression associated with germline CPG P/LP variants. 
 
@@ -114,7 +112,6 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 │   ├── hope-cpg-phosphoproteomics-zscores.tsv
 │   ├── pbta-germline-838-gene-expr-zscores.tsv
 │   ├── pbta-oncokb-oncogenic-maf.tsv
-│   ├── somatic-alteration-enrichment.tsv
 │   └── splicing_events_plp_variants.tsv
 └── run_module.sh
 ```
