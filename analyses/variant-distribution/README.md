@@ -22,5 +22,4 @@ This module creates distribution plots of P-LP variants across 214 cancer predis
 4. `plots/` directory contains the following figures: 
   - Barplots of no. P-LP variants by CPG in 837 PBTA cohort by histology and variant classification (`cpg-variant-distribution-by-histology.tiff`, `cpg-variant-distribution-by-variant-classification.tiff`)
   - Barplot of no. P-LP variants in somatic driver genes that are also CPGs by histology and variant classification (`somatic_drivers-variant-distribution-by-histology.tiff`, `somatic_drivers-variant-distribution-by-variant-classification.tiff`)
-  - Barplot of no. P-L variants in somatic driver genes that are not CPGs by histology and variant classification (`somatic_not_cpg-variant-distribution-by-histology.tiff`, `somatic_not_cpg-variant-distribution-by-variant-classification.tiff`)
-
+  - Barplot of no. P-LP variants in somatic driver genes that are not CPGs by histology and variant classification (`somatic_not_cpg-variant-distribution-by-histology.tiff`, `somatic_not_cpg-variant-distribution-by-variant-classification.tiff`)

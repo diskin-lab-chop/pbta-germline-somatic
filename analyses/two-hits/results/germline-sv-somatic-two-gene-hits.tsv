@@ -1,0 +1,2 @@
+Matched_Norm_Sample_Barcode	Chromosome	Start	End	Length	Type	Classification	Caller	Hugo_Symbol_all	Hugo_Symbol	Tumor_Sample_Barcode	Transcript_ID	HGVSc	HGVSp	VAF	SIFT	PolyPhen	Variant_Classification	HotSpotAllele	ONCOGENIC	MUTATION_EFFECT	VARIANT_IN_ONCOKB
+BS_CZGNQ9KQ	chr17	30664701	32080800	1416099	DEL	Pathogenic	ClassifyCNV	CRLF3, ATAD5, TEFM, ADAP2, RNF135, LOC107984974, NF1, OMG, EVI2B, EVI2A, RAB11FIP4, COPRS, UTP6, SUZ12, LRRC37B	NF1	BS_Z7R92XX6	ENST00000358273	c.2446C>T	p.Arg816Ter	0.2631578947368421			Nonsense_Mutation	0	Likely Oncogenic	Likely Loss-of-function	TRUE
