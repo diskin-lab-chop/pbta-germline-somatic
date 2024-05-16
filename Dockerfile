@@ -2,13 +2,6 @@ FROM rocker/tidyverse:4.4.0
 MAINTAINER rokita@chop.edu
 WORKDIR /rocker-build/
 
-#RUN RSPM="https://packagemanager.rstudio.com/cran/2022-10-07" \
-#  && echo "options(repos = c(CRAN='$RSPM'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
-  
-#COPY scripts/install_bioc.r .
-
-#COPY scripts/install_github.r .
-
 ### Install apt-getable packages to start
 #########################################
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
@@ -64,39 +57,12 @@ RUN R -e 'BiocManager::install(c( \
   "survminer", \
   "tidytext", \
   "ComplexHeatmap", \
-  "GSVA" \
+  "GSVA", \
+  "R.utils" \
 ))'
-
-# install R packages from CRAN
-#RUN install2.r \
-#	BiocManager \
-#  data.table \
-#  ggpubr \
-#  ggthemes \
-#  msigdbr \
-#  openxlsx \
-#	optparse \
-#	pheatmap \
-#	RColorBrewer \
-#	survival \
-# survMisc \
-#  survminer \
-#  tidytext
-  
-  
-# install R packages from Bioconductor 
-#RUN ./install_bioc.r \
-#  ComplexHeatmap \
-#  GSVA 
 
 # install R packages from GitHub
 
-# Maftools
-#RUN ./install_github.r \
-#	PoisonAlien/maftools
-
-
-# Patchwork for plot compositions
 RUN R -e "remotes::install_github('thomasp85/patchwork', ref = '1cb732b129ed6a65774796dc1f618558c7498b66', dependencies = TRUE)"
 RUN R -e "remotes::install_github('clauswilke/colorblindr', ref = '90d64f8fc50bee7060be577f180ae019a9bbbb84', dependencies = TRUE)"
 RUN R -e "remotes::install_github('coolbutuseless/ggpattern', ref = 'bc9e4cd1271674a537bf3406663765648e3963bd', dependencies = TRUE)"
