@@ -16,7 +16,7 @@ Rscript -e "rmarkdown::render('03-assess-somatic-gene-expr.Rmd')"
 Rscript -e "rmarkdown::render('04-assess-alternative-splicing.Rmd')"
 
 # Run proteomics analysis
-Rscript -e "rmarkdown::render('06-proteomics.Rmd')"
+Rscript -e "rmarkdown::render('05-proteomics.Rmd')"
 
 # merge alterations output
-Rscript -e "rmarkdown::render('07-merge-somatic-alterations.Rmd')"
+Rscript -e "rmarkdown::render('06-merge-somatic-alterations.Rmd')"
