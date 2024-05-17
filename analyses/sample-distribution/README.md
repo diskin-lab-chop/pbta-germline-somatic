@@ -4,7 +4,7 @@ This module creates distribution plots of CPG P-LP variants across the PBTA germ
 
 ## Usage
 
-`Rscript 01-create-cancer-distribution-plot.R` 
+`bash run_module.sh` 
 
 ## Folder content 
 
