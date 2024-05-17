@@ -21,9 +21,8 @@ suppressPackageStartupMessages({
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 
-data_dir <- file.path(root_dir, "data")
+data_dir <- file.path(root_dir, "data/v6")
 analysis_dir <- file.path(root_dir, "analyses", "two-hits")
-input_dir <- file.path(analysis_dir, "results")
 results_dir <- file.path(analysis_dir, "results")
 
 # If the directory does not exist, create it
@@ -51,17 +50,21 @@ hist_file <- file.path(root_dir, "analyses",
 indepedent_specimens_rna <- file.path(data_dir,
                                      "independent-specimens.rnaseqpanel.primary-plus.tsv")
 
-onco_snv_file <- file.path(input_dir, "germline-somatic-two-gene-hits.tsv")
-sv_onco_snv_file <- file.path(input_dir, "germline-sv-somatic-two-gene-hits.tsv")
+# oncogenic SNVs/INDELS identified in analyses/two-hits/01-assess-two-hits-snv.Rmd
+onco_snv_file <- file.path(results_dir, "germline-somatic-two-gene-hits.tsv")
+sv_onco_snv_file <- file.path(results_dir, "germline-sv-somatic-two-gene-hits.tsv")
 
-cnv_loh_file <- file.path(input_dir, "germline-somatic-cnv-loh-cpgs.tsv")
-sv_cnv_loh_file <- file.path(input_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv")
+# CNVs and LOH events identified in analyses/two-hits/02-cnv-loh-second-hits.Rmd
+cnv_loh_file <- file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")
+sv_cnv_loh_file <- file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv")
 
-expr_file <- file.path(input_dir, "germline-somatic-expr-cpgs.tsv")
-sv_expr_file <- file.path(input_dir, "germline-sv-somatic-expr-cpgs.tsv")
+# Differential RNA expression identified in analyses/two-hits/03-assess-somatic-gene-expr.Rmd
+expr_file <- file.path(results_dir, "germline-somatic-expr-cpgs.tsv")
+sv_expr_file <- file.path(results_dir, "germline-sv-somatic-expr-cpgs.tsv")
 
-proteo_file <- file.path(input_dir, "germline-somatic-proteomics-phosphoproteomics-cpgs.tsv")
-sv_proteo_file <- file.path(input_dir, "germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv")
+# Differential protein expression identified in analyses/two-hits/05-proteomics.Rmd
+proteo_file <- file.path(results_dir, "germline-somatic-proteomics-phosphoproteomics-cpgs.tsv")
+sv_proteo_file <- file.path(results_dir, "germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv")
 ```
 
 read in autogvp plp output and plp svs, filter gnomad non-pass
@@ -70,7 +73,8 @@ cpgs <- read_lines(cpg_file)
 
 plp <- read_tsv(plp_file) %>%
   dplyr::filter(gene_symbol_vep %in% cpgs)
-
+ 
+# remove gnomad non-PASS filter variants
 to_rm <- plp %>%
   dplyr::filter(gene_symbol_vep %in% cpgs) %>%
   dplyr::filter(rs_id %in% c("rs200962248", "rs1296066077", "rs1205853831") |
@@ -82,7 +86,7 @@ plp_sv <- read_tsv(plp_sv_file) %>%
 rna_specimens <- read_tsv(indepedent_specimens_rna)
 ```
 
-Define all unique P/LP cases in which a somatic alteration was observed in each data modality
+Define all unique SNV/INDEL P/LP cases in which a somatic alteration was observed in each data modality
 ```{r}
 hist <- read_tsv(hist_file)
 
@@ -116,6 +120,8 @@ proteomics_snv <- read_tsv(proteo_file) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE)
 ```
 
+Merge somatic SNV, CNV, LOH, differential RNA and protein expression data to P/LP variants
+
 ```{r}
 somatic_alterations_snv_plp <- plp %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
@@ -132,6 +138,7 @@ write_tsv(somatic_alterations_snv_plp,
           file.path(results_dir, "plp_snv_indel_somatic_alterations_merged.tsv"))
 ```
 
+Define all unique SV P/LP cases in which a somatic alteration was observed in each data modality
 
 ```{r}
 snv_hits_sv <- read_tsv(sv_onco_snv_file) %>%
@@ -158,6 +165,7 @@ protemics_sv <- read_tsv(sv_proteo_file) %>%
                 Hugo_Symbol, expr_zscore_proteo)
 ```
 
+Merge somatic SNV, CNV, LOH, differential RNA and protein expression data to SV P/LP variants
 
 ```{r}
 somatic_alterations_sv_plp <- plp_sv %>%
@@ -170,6 +178,8 @@ somatic_alterations_sv_plp <- plp_sv %>%
 write_tsv(somatic_alterations_sv_plp,
           file.path(results_dir, "plp_sv_somatic_alterations_merged.tsv"))
 ```
+
+Print session info
 
 ```{r}
 sessionInfo()
