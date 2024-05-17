@@ -42,6 +42,8 @@ plp_sv_file <- file.path(root_dir, "analyses",
                          "germline-sv", "input", 
                          "pbta_germline_svs.tsv")
 
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+
 ```
 
 wrangle data
@@ -53,6 +55,8 @@ hist <- read_tsv(histologies_file,show_col_types = FALSE)
 germline <- read_tsv(plp_file, show_col_types = FALSE) 
 
 germline_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+
+cpgs <- read_lines(cpg_file)
 
 ```
 
@@ -80,7 +84,7 @@ for (i in 1:length(repair_gene_source)){
 
   # filter germline PLP variants for DNA repair genes 
   repair_germline <- germline %>%
-    filter(gene_symbol_vep %in% repair_genes) %>%
+    filter(gene_symbol_vep %in% repair_genes & gene_symbol_vep %in% cpgs) %>%
   
   # add columns indicating if gene is involved in specific DNA repair pathways
     mutate(BER = case_when(
@@ -104,7 +108,7 @@ for (i in 1:length(repair_gene_source)){
   
   repair_germline_sv <- germline_sv %>%
     dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg) %>%
-    filter(gene_symbol_vep %in% repair_genes) %>%
+    filter(gene_symbol_vep %in% repair_genes & gene_symbol_vep %in% cpgs) %>%
   
   # add columns indicating if gene is involved in specific DNA repair pathways
     mutate(BER = case_when(

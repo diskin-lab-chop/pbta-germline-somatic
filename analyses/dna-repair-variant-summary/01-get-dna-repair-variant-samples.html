@@ -455,13 +455,17 @@ plp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 
 plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
                          &quot;germline-sv&quot;, &quot;input&quot;, 
-                         &quot;pbta_germline_svs.tsv&quot;)</code></pre>
+                         &quot;pbta_germline_svs.tsv&quot;)
+
+cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation&quot;, &quot;input&quot;, &quot;cpg.txt&quot;)</code></pre>
 <p>wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE)
 
 germline &lt;- read_tsv(plp_file, show_col_types = FALSE) 
 
-germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)</code></pre>
+germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
+
+cpgs &lt;- read_lines(cpg_file)</code></pre>
 <p>Using DNA repair gene lists obtained from Knijnenburg et al. and
 Broad GSEA, identify patients with germline PLP variants in DNA repair
 genes and save results to separate outputs</p>
@@ -486,7 +490,7 @@ for (i in 1:length(repair_gene_source)){
 
   # filter germline PLP variants for DNA repair genes 
   repair_germline &lt;- germline %&gt;%
-    filter(gene_symbol_vep %in% repair_genes) %&gt;%
+    filter(gene_symbol_vep %in% repair_genes &amp; gene_symbol_vep %in% cpgs) %&gt;%
   
   # add columns indicating if gene is involved in specific DNA repair pathways
     mutate(BER = case_when(
@@ -510,7 +514,7 @@ for (i in 1:length(repair_gene_source)){
   
   repair_germline_sv &lt;- germline_sv %&gt;%
     dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg) %&gt;%
-    filter(gene_symbol_vep %in% repair_genes) %&gt;%
+    filter(gene_symbol_vep %in% repair_genes &amp; gene_symbol_vep %in% cpgs) %&gt;%
   
   # add columns indicating if gene is involved in specific DNA repair pathways
     mutate(BER = case_when(
