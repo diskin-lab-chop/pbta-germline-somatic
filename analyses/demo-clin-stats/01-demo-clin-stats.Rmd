@@ -36,6 +36,7 @@ if (!dir.exists(results_dir)) {
 
 # Load function script for generating summary tables
 source(file.path(analysis_dir, "util", "summary_functions.R"))
+source(file.path(analysis_dir, "util", "heatmap_function.R"))
 ```
 
 Set file paths
@@ -43,8 +44,11 @@ Set file paths
 ```{r set paths}
 cbtn_histologies_file <- file.path(root_dir, "analyses", "survival", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-all_plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+all_plp_file <- file.path(input_dir, 
+                      "pbta-germline-autogvp-full-may2024-adjacent-indels-rm-vaf10.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses",
+                         "germline-sv", "input", "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
@@ -55,6 +59,8 @@ Wrangle data
 hist <- read_tsv(cbtn_histologies_file)
 
 all_plp <- read_tsv(all_plp_file)
+
+plp_sv <- read_tsv(plp_sv_file)
 
 cpgs <- read_lines(cpg_file)
 
@@ -69,6 +75,10 @@ Merge sample metadata
 cpg_bs <- all_plp %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   filter(gene_symbol_vep %in% cpgs) %>%
+  dplyr::mutate(vaf = AD_alt/(AD_ref + AD_alt)) %>%
+  filter(vaf >=0.2) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal) %>%
+  bind_rows(plp_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal)) %>%
   pull(Kids_First_Biospecimen_ID_normal)
 
 # Append CPG PLP status and TMB data to `hist`
@@ -319,7 +329,16 @@ write.xlsx(pvalue_list,
 ```
 
 
+```{r}
+ht_group <- plot_enr(hist, "plot_group", "cpgPLP_status",
+                     var1_names = sort(unique(hist$plot_group)), 
+                     var2_names = unique(hist$cpgPLP_status),
+                     padjust = FALSE)
+ht_group
+
+```
+
+
 ```{r echo=TRUE}
 sessionInfo()
-
 ```
