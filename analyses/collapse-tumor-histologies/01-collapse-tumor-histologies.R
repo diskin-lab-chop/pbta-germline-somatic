@@ -115,6 +115,11 @@ combined_map <- combined %>%
 # make sure no duplicate normal ids
 combined_map[duplicated(combined_map$Kids_First_Biospecimen_ID_normal),]
 
+combined_map <- combined_map %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor != "BS_ASGBEHAX") %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+           .keep_all = TRUE)
+
 # write plot group counts file
 plot_groups <- combined_map %>%
   count(plot_group) %>%
@@ -126,6 +131,7 @@ tumor_clin_meta <- opc_hist %>%
   dplyr::filter(Kids_First_Biospecimen_ID %in% tumor_ids$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::select(sample_id, tumor_descriptor, race, ethnicity, cancer_predispositions, age_at_diagnosis_days, age_last_update_days, OS_days, OS_status, 
          EFS_days, EFS_event_type, extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
+  distinct() %>%
   dplyr::rename(sample_id_tumor = sample_id) %>%
   # remove NF-1 predisposition from participant PT_3CHB9PK5, and add reported CMMRD diagnosis 
   dplyr::mutate(cancer_predispositions = case_when(
