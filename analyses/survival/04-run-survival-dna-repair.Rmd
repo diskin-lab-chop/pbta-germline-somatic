@@ -74,7 +74,7 @@ Load mismatch repair (MMR) gene list and identify samples with germline P-LP var
 mmr_genes <- read_lines(file.path(root_dir, "analyses", "dna-repair-variant-summary", "input", "Knijnenburg_paper", "mismatch_repair.txt"))
 
 mmr_bs <- plp %>%
-      filter(gene_symbol_vep %in% mmr_genes & Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+      filter(gene_symbol_vep %in% mmr_genes & gene_symbol_vep %in% cpgs & Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
       pull(Kids_First_Biospecimen_ID_normal) %>%
       unique()
 
@@ -89,7 +89,7 @@ mmr_bs_sv <- plp_sv %>%
 Subset histologies for HGG tumors and create column indicating presence/absence of MMR germline variant 
 ```{r}
 hgg_hist <- hist %>%
-  filter(plot_group %in% c("DIPG or DMG", "Other high-grade glioma")) %>%
+  filter(plot_group %in% c("Other high-grade glioma")) %>%
   mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
   mutate(MMR_variant = case_when(
@@ -98,7 +98,7 @@ hgg_hist <- hist %>%
   ))  %>%
   mutate(mol_sub_group = factor(mol_sub_group,
                                 c("HGG, H3 WT", "DHG, H3 G35",
-                                  "DMG, H3 K28", "HGG, IDH", "IHG"))) %>%
+                                  "HGG, IDH", "IHG"))) %>%
   mutate(MMR_variant = factor(MMR_variant,
                                    c("MMR WT",
                                      "MMR PLP")))

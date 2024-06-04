@@ -51,7 +51,8 @@ Read in CBTN and PBTA histologies, gsva results, maf, and cpg files. Filter hist
 ```{r}
 
 hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
-  dplyr::filter(grepl("Other high-grade glioma", plot_group))
+  dplyr::filter(grepl("Other high-grade glioma", plot_group),
+         grepl("wildtype", molecular_subtype))
 
 hist_pbta <- read_tsv(pbta_histologies_file) 
 
@@ -257,10 +258,10 @@ Plot scores of Hallmark pathways of interest by group (MMR germline variant samp
 
 ```{r}
 # Define hallmark pathways to plot
-hallmark_to_plot <- c("HALLMARK_G2M_CHECKPOINT", "HALLMARK_DNA_REPAIR", "HALLMARK_E2F_TARGETS",
-                      "HALLMARK_TGF_BETA_SIGNALING", "HALLMARK_P53_PATHWAY",
-                      "HALLMARK_INTERFERON_GAMMA_RESPONSE")
-kegg_to_plot <- c("KEGG_LYSOSOME", "KEGG_NON_HOMOLOGOUS_END_JOINING")
+hallmark_to_plot <- c("HALLMARK_COAGULATION", "HALLMARK_DNA_REPAIR", "HALLMARK_COMPLEMENT",
+                      "HALLMARK_KRAS_SIGNALING_UP")
+kegg_to_plot <- c("KEGG_LYSOSOME", "KEGG_N_GLYCAN_BIOSYNTHESIS",
+                  "KEGG_FOCAL_ADHESION", "KEGG_PRION_DISEASES")
 
 # create plots for each DNA repair gene list source
 repair_gene_source <- c("Knijnenburg_repair_genes", "Broad_GO_repair_genes")
