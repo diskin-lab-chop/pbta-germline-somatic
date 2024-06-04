@@ -61,7 +61,7 @@ hist <- read_tsv(file.path(root_dir,
 
 # Merge clin with germline plp file
 ```{r data wrangling}
-plp <- read_tsv(file.path(input_dir, "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv"), 
+plp <- read_tsv(file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv"), 
                 show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
@@ -174,7 +174,7 @@ plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not
 
 
 vc_colors <- tibble(variant_classification_vep = unique(plp_cpg$variant_classification_vep),
-                    vc_hex = RColorBrewer::brewer.pal(n = 12, name = 'Paired'))
+                    vc_hex = RColorBrewer::brewer.pal(n = 11, name = 'Paired'))
 
 for (each in names(plplists)){
   
@@ -237,12 +237,13 @@ for (each in names(plplists)){
 ```
 Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
-plp_full <- read_tsv(file.path(input_dir,
-                               "pbta_germline_plp_calls_autogvp_full_gnomad_popmax.tsv")) %>%
-  dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref)) %>%
-  dplyr::filter(gene_symbol_vep %in% cpg)
+plp_full <- read_tsv(file.path(data_dir,
+                               "pbta-merged-plp-variants-autogvp-full.tsv")) %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref))
 
 plp_full %>%
+  dplyr::filter(gene_symbol_vep %in% cpg) %>%
   ggplot(aes(x = AF)) +
   geom_histogram(color = "black", fill = "cadetblue") +
   xlim(c(0,1.0)) + 
@@ -252,6 +253,15 @@ plp_full %>%
 ggsave(file.path(plot_dir, "cpg-variant-allele-freq-hist.tiff"),
        width = 4, height = 6)
 
+plp_full %>%
+  ggplot(aes(x = AF)) +
+  geom_histogram(color = "black", fill = "cadetblue") +
+  xlim(c(0,1.0)) + 
+  xlab("Variant allele frequency") +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "all-variant-allele-freq-hist.tiff"),
+       width = 4, height = 6)
 ```
 
 # print session info
