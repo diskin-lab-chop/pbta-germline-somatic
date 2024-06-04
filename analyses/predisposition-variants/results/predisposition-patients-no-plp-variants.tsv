@@ -1,7 +1,7 @@
 Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	sample_id_normal	sample_id_tumor	plot_group	molecular_subtype	predisposition	plp_variant
 PT_PFP1ZVHD	BS_5FP2H6VW	7316-2629	7316-2310	Low-grade glioma	LGG, BRAF V600E, CDKN2A/B	Li-Fraumeni syndrome	No
-PT_DPVW4M1W	BS_GTY5J0S4	7316-2271	7316-2271	Mesenchymal tumor	NA	Li-Fraumeni syndrome	No
-PT_KCTZZA3G	BS_0YV62XEX	7316-216	7316-216	Neurofibroma plexiform	NA	NF-1	No
+PT_DPVW4M1W	BS_GTY5J0S4	7316-2271	7316-4309	Mesenchymal tumor	NA	Li-Fraumeni syndrome	No
+PT_KCTZZA3G	BS_0YV62XEX	7316-216	7316-223	Neurofibroma plexiform	NA	NF-1	No
 PT_MXASQ2GW	BS_30WN9M3C	7316-3558	7316-3558	Neurofibroma plexiform	NA	NF-1	No
 PT_XA8ASFJK	BS_CZGNQ9KQ	7316-3559	7316-3762	Low-grade glioma	LGG, NF1-somatic, NF1-germline, FGFR	NF-1	No
 PT_9ZY739FB	BS_E45WEXMB	7316-170	7316-170	Neurofibroma plexiform	NA	NF-1	No
@@ -11,4 +11,4 @@ PT_J4MWGQFQ	BS_44WJZ1HP	7316-2071	7316-2071	Meningioma	NA	NF-2	No
 PT_EG7PH32E	BS_AGNSAKZG	7316-2144	7316-2144	Ependymoma	EPN, SP	NF-2	No
 PT_DTP4MMRA	BS_CEZVJC67	7316-410	7316-1463	Schwannoma	NA	NF-2	No
 PT_WVAJN6WR	BS_CKWQKB3A	7316-456	7316-456	Schwannoma	NA	NF-2	No
-PT_EYWDFKA7	BS_JZKV3CQ1	7316-30	7316-29	Schwannoma	NA	Schwannomatosis	No
+PT_EYWDFKA7	BS_JZKV3CQ1	7316-30	7316-30	Schwannoma	NA	Schwannomatosis	No
