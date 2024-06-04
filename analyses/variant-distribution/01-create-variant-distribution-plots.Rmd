@@ -239,10 +239,11 @@ Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
 plp_full <- read_tsv(file.path(data_dir,
                                "pbta-merged-plp-variants-autogvp-full.tsv")) %>%
-  dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref)) %>%
-  dplyr::filter(gene_symbol_vep %in% cpg)
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref))
 
 plp_full %>%
+  dplyr::filter(gene_symbol_vep %in% cpg) %>%
   ggplot(aes(x = AF)) +
   geom_histogram(color = "black", fill = "cadetblue") +
   xlim(c(0,1.0)) + 
@@ -252,6 +253,15 @@ plp_full %>%
 ggsave(file.path(plot_dir, "cpg-variant-allele-freq-hist.tiff"),
        width = 4, height = 6)
 
+plp_full %>%
+  ggplot(aes(x = AF)) +
+  geom_histogram(color = "black", fill = "cadetblue") +
+  xlim(c(0,1.0)) + 
+  xlab("Variant allele frequency") +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "all-variant-allele-freq-hist.tiff"),
+       width = 4, height = 6)
 ```
 
 # print session info
