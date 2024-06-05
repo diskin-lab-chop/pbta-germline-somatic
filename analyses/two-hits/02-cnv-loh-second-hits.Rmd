@@ -47,10 +47,6 @@ histologies_file <- file.path(root_dir, "analyses",
                                   "collapse-tumor-histologies", "results", 
                                   "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plot_mapping_file <- file.path(root_dir, "analyses",
-                               "collapse-tumor-histologies",
-                               "input", "plot-mapping.tsv")
-
 # cnv file with annotation 
 cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.gz")
 cnv_xy_file <- file.path(data_dir, "consensus_seg_annotated_cn_x_and_y.tsv.gz")
@@ -76,8 +72,6 @@ germline <- read_tsv(plp_file) %>%
 
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
-
-plot_mapping <- read_tsv(plot_mapping_file)
 
 hist <- read_tsv(histologies_file)
 
