@@ -79,9 +79,9 @@ predispositions_path_review <- read_tsv(predispositions_path_review_file) %>%
 
 Define cancer predispositions and associated genes
 ```{r}
-predisposition_genes <- c("Gorlin syndrome" = "PTCH1|SUFU", "Li-Fraumeni syndrome" = "TP53", "NF-1" = "NF1", "NF-2" = "NF2", "Schwannomatosis" = "LZTR1", "Tuberous Sclerosis" = "TSC1|TSC2")
-predispositions <- names(predisposition_genes)
+predisposition_genes <- c("Gorlin Syndrome" = "PTCH1|SUFU", "Li-Fraumeni syndrome" = "TP53", "NF-1" = "NF1", "NF-2" = "NF2", "Schwannomatosis" = "LZTR1", "Tuberous Sclerosis" = "TSC1|TSC2")
 
+predispositions <- names(predisposition_genes)
 ```
 
 Loop through cancer predispositions and create a data frame indicating presence/absence of associated gene germline P/LP variant
@@ -94,18 +94,19 @@ suppressWarnings(
   genes <- unlist(strsplit(predisposition_genes[predisposition], "[|]"))
   
   # get pts confirmed to have syndrome through path report review 
-  predisposition_review_ids <- predispositions_path_review %>%
-    dplyr::filter(cancer_predispositions_path == predisposition) %>%
-    pull(Kids_First_Biospecimen_ID_normal)
+  # predisposition_review_ids <- predispositions_path_review %>%
+  #   dplyr::filter(cancer_predispositions_path == predisposition) %>%
+  #   pull(Kids_First_Biospecimen_ID_normal)
   
   predisposition_list[[predisposition]] <- hist %>%
     # filter for patients with predisposition, either reported in hist OR confirmed through path report review
-    filter(grepl(predisposition, cancer_predispositions) | Kids_First_Biospecimen_ID_normal %in% predisposition_review_ids) %>%
+   # filter(grepl(predisposition, cancer_predispositions) | Kids_First_Biospecimen_ID_normal %in% predisposition_review_ids) %>%
+    filter(grepl(predisposition, cancer_predispositions)) %>%
     dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, sample_id_tumor, plot_group, molecular_subtype) %>%
     dplyr::mutate(predisposition = predisposition) %>%
     dplyr::mutate(plp_variant = case_when(
       Kids_First_Biospecimen_ID_normal %in% c(plp$Kids_First_Biospecimen_ID_normal[plp$gene_symbol_vep %in% genes],
-                                              plp_sv$Kids_First_Biospecimen_ID_normal[plp$Hugo_Symbol_cpg %in% genes])~ "Yes",
+                                              plp_sv$Kids_First_Biospecimen_ID_normal[plp_sv$Hugo_Symbol_cpg %in% genes])~ "Yes",
       TRUE ~ "No"
     ))
   }
@@ -118,11 +119,9 @@ predisposition_df <- Reduce(rbind, predisposition_list)
 
 Filter for patients that do not show P-LP variant associated with predisposition syndrome, and write to output
 ```{r}
-
 predisposition_df %>%
   dplyr::filter(plp_variant == "No") %>%
   write_tsv(file.path(results_dir, "predisposition-patients-no-plp-variants.tsv"))
-  
 ```
 
 Create bar plot of patients with/without P/LP germline variants in gene associated with each cancer predisposition syndrome
@@ -137,7 +136,7 @@ labels <- c("Schwannomatosis (LZTR1)",
 predisposition_df %>%
   count(predisposition, plp_variant) %>%
   dplyr::mutate(predisposition = fct_relevel(predisposition,
-                                      c("Schwannomatosis", "Gorlin syndrome", 
+                                      c("Schwannomatosis", "Gorlin Syndrome", 
                                         "NF-2", "Li-Fraumeni syndrome",
                                         "Tuberous Sclerosis", "NF-1"))) %>%
   dplyr::mutate(plp_variant = fct_relevel(plp_variant,
