@@ -51,7 +51,8 @@ Read in CBTN and PBTA histologies, gsva results, maf, and cpg files. Filter hist
 ```{r}
 
 hist_cbtn <- read_tsv(cbtn_histologies_file) %>%
-  dplyr::filter(grepl("Other high-grade glioma", plot_group),
+  # filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
+  filter(grepl("Other high-grade glioma", plot_group),
          grepl("wildtype", molecular_subtype))
 
 hist_pbta <- read_tsv(pbta_histologies_file) 
