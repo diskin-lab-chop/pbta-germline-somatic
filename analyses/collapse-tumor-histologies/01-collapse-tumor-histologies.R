@@ -115,16 +115,13 @@ combined_map <- combined %>%
 # make sure no duplicate normal ids
 combined_map[duplicated(combined_map$Kids_First_Biospecimen_ID_normal),]
 
-# combined_map <- combined_map %>%
-#   dplyr::filter(Kids_First_Biospecimen_ID_tumor != "BS_ASGBEHAX") %>%
-#   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-#            .keep_all = TRUE)
-
 # write plot group counts file
 plot_groups <- combined_map %>%
   count(plot_group) %>%
   arrange(n) %>%
   write_tsv(file.path(results_dir, "plot_group_counts.tsv"))
+
+pts_nos_review <- read_tsv(file.path(input_dir, "condition_NOS_pts.tsv"))
 
 # finally, add relevant clinical information to new histologies and plot group file
 tumor_clin_meta <- opc_hist %>%
@@ -133,12 +130,14 @@ tumor_clin_meta <- opc_hist %>%
          EFS_days, EFS_event_type, extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
   distinct() %>%
   dplyr::rename(sample_id_tumor = sample_id) %>%
-  # remove NF-1 predisposition from participant PT_3CHB9PK5, and add reported CMMRD diagnosis 
+  left_join(pts_nos_review %>% dplyr::select(sample_id_tumor,
+                                             predisposition_path_report)) %>%
   dplyr::mutate(cancer_predispositions = case_when(
+    grepl("NOS", cancer_predispositions) & !is.na(predisposition_path_report) ~  predisposition_path_report,
     sample_id_tumor == "7316-515" ~ "Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6)",
     TRUE ~ cancer_predispositions
-    
-  ))
+  )) %>%
+  dplyr::select(-predisposition_path_report)
 
 # Add ancestry prediction results from Somalier
 ancestry <- read_tsv(file.path(input_dir, "DEI_CBTN-PNOC_rerun.somalier-ancestry.tsv")) %>%
