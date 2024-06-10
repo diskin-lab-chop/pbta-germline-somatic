@@ -51,7 +51,11 @@ predispositions_path_review_file <- file.path(input_dir, "predispositions-path-r
 Load files
 ```{r read files}
 hist <- read_tsv(histologies_file, guess_max = 10000, 
-                 show_col_types = FALSE) 
+                 show_col_types = FALSE) %>%
+  dplyr::mutate(cancer_predispositions = case_when(
+    grepl("Constitutional|Lynch", cancer_predispositions) ~ "CMMRD/Lynch Syndrome",
+    TRUE ~ cancer_predispositions
+  ))
 
 plp <- read_tsv(plp_file, show_col_types = FALSE)
 
@@ -79,7 +83,14 @@ predispositions_path_review <- read_tsv(predispositions_path_review_file) %>%
 
 Define cancer predispositions and associated genes
 ```{r}
-predisposition_genes <- c("Gorlin Syndrome" = "PTCH1|SUFU", "Li-Fraumeni syndrome" = "TP53", "NF-1" = "NF1", "NF-2" = "NF2", "Schwannomatosis" = "LZTR1", "Tuberous Sclerosis" = "TSC1|TSC2")
+predisposition_genes <- c("CMMRD/Lynch Syndrome" = "PMS2|MLH1|MSH2|MSH6",
+                          "Familial Adenomatous Polyposis" = "APC",
+                          "Gorlin Syndrome" = "PTCH1|SUFU",
+                          "Li-Fraumeni syndrome" = "TP53",
+                          "NF-1" = "NF1", "NF-2" = "NF2",
+                          "Schwannomatosis" = "LZTR1",
+                          "Tuberous Sclerosis" = "TSC1|TSC2",
+                          "Von Hippel-Lindau" = "VHL")
 
 predispositions <- names(predisposition_genes)
 ```
@@ -126,8 +137,11 @@ predisposition_df %>%
 
 Create bar plot of patients with/without P/LP germline variants in gene associated with each cancer predisposition syndrome
 ```{r}
-labels <- c("Schwannomatosis (LZTR1)",
+labels <- c("Von Hippel-Lindau (VHL)",
+            "Schwannomatosis (LZTR1)",
+            "Familial Adenomatous Polyposis (APC)",
             "Gorlin Syndrome (PTCH1,SUFU)",
+            "CMMRD/Lynch Syndrome (PMS2, MLH1, MSH2, MSH6)",
             "NF-2 (NF2)",
             "Li-Fraumeni Syndrome (TP53)",
             "Tuberous Sclerosis (TSC1/2)",
@@ -136,7 +150,10 @@ labels <- c("Schwannomatosis (LZTR1)",
 predisposition_df %>%
   count(predisposition, plp_variant) %>%
   dplyr::mutate(predisposition = fct_relevel(predisposition,
-                                      c("Schwannomatosis", "Gorlin Syndrome", 
+                                      c("Von Hippel-Lindau", "Schwannomatosis",
+                                        "Familial Adenomatous Polyposis",
+                                        "Gorlin Syndrome", 
+                                        "CMMRD/Lynch Syndrome",
                                         "NF-2", "Li-Fraumeni syndrome",
                                         "Tuberous Sclerosis", "NF-1"))) %>%
   dplyr::mutate(plp_variant = fct_relevel(plp_variant,
@@ -155,7 +172,7 @@ predisposition_df %>%
   xlim(c(0,30))
 
 ggsave(file.path(plots_dir, "gene-plp-prevalence-by-syndrome.pdf"),
-       width = 5, height = 4)
+       width = 7, height = 4)
 ```
 
 ## Plot frequency of incidental findings in cohort
