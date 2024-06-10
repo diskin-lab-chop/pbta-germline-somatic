@@ -223,15 +223,13 @@ ggsave(file.path(plot_dir, "tumor-vaf-vs-germline-vaf.pdf"),
 germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
   left_join(loh[,c("Kids_First_Biospecimen_ID_tumor", 
                    "chr", "start", "proband_germline_vaf", "proband_tumor_vaf", 
-                   "loh_score")], 
+                   "loh_score", "loh_OR", "loh_pvalue")], 
             by = c("Kids_First_Biospecimen_ID_tumor", "chr", "start")) %>%
   distinct()
-
 ```
 
 Load gene LOH data and append to `germline_somatic_cnvs_loh`
 ```{r get gene loh data}
-
 loh_gene <- read_tsv(loh_gene_file) %>%
   dplyr::filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   dplyr::rename(gene_LOH = LOH_score) %>%
@@ -244,7 +242,6 @@ germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
 
 germline_sv_somatic_cnvs_loh_gene <- germline_sv_somatic_cnvs %>%
   left_join(loh_gene)
-
 ```
 
 Save CNV and LOH scores for all samples to output
@@ -264,7 +261,6 @@ germline_sv_somatic_cnvs_loh_gene %>%
 ```
 
 ```{r}
-
 cnv_loh_plot_df <- germline_somatic_cnvs_loh_gene %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor,
                 Hugo_Symbol %in% cpgs) %>%
@@ -317,8 +313,6 @@ cnv_loh_plot_df %>%
 
   ggsave(file.path(plot_dir, "gene-LOH-by-cnv-status.pdf"),
                  width = 6, height = 4)
-
-
 ```
 
 
