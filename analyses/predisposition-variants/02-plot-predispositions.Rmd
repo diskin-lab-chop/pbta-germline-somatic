@@ -39,6 +39,9 @@ histologies_file <- file.path(root_dir, "analyses",
 plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
+plp_lowVAF_file <- file.path(data_dir, 
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+
 plp_sv_file <- file.path(root_dir, "analyses", 
                          "germline-sv", "input", 
                          "pbta_germline_svs.tsv")
@@ -57,7 +60,10 @@ hist <- read_tsv(histologies_file, guess_max = 10000,
     TRUE ~ cancer_predispositions
   ))
 
-plp <- read_tsv(plp_file, show_col_types = FALSE)
+plp_lowVAF <- read_tsv(plp_lowVAF_file, show_col_types = FALSE)
+
+plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
+  bind_rows(plp_lowVAF)
 
 plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
 
@@ -105,13 +111,8 @@ suppressWarnings(
   genes <- unlist(strsplit(predisposition_genes[predisposition], "[|]"))
   
   # get pts confirmed to have syndrome through path report review 
-  # predisposition_review_ids <- predispositions_path_review %>%
-  #   dplyr::filter(cancer_predispositions_path == predisposition) %>%
-  #   pull(Kids_First_Biospecimen_ID_normal)
   
   predisposition_list[[predisposition]] <- hist %>%
-    # filter for patients with predisposition, either reported in hist OR confirmed through path report review
-   # filter(grepl(predisposition, cancer_predispositions) | Kids_First_Biospecimen_ID_normal %in% predisposition_review_ids) %>%
     filter(grepl(predisposition, cancer_predispositions)) %>%
     dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, sample_id_tumor, plot_group, molecular_subtype) %>%
     dplyr::mutate(predisposition = predisposition) %>%
