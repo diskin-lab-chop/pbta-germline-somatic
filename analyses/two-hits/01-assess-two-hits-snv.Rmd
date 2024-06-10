@@ -12,7 +12,7 @@ params:
     input: file
   germ_in:
     label: "germline file"
-    value: analyses/variant-distribution/input/pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv
+    value: data/pbta-merged-plp-variants-autogvp-abridged.tsv
     input: file
 editor_options: 
   chunk_output_type: inline
@@ -122,13 +122,11 @@ onco_hits_subset <- onco_hits %>%
 germline_somatic_gene_matches <- germline %>%
   inner_join(onco_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
   write_tsv(file.path(results_dir, "germline-somatic-two-gene-hits.tsv"))
-
 ```
 
 ### List germline + somatic gene hits by sample
 
 ```{r gene hits by patient}
-
 collapsed <- germline %>%
   filter(Hugo_Symbol %in% cpg) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
@@ -146,12 +144,10 @@ collapsed_onco <- onco_hits_subset %>%
 collapsed_germ_som <- collapsed %>%
   left_join(collapsed_onco, by = "Kids_First_Biospecimen_ID_normal") %>%
   write_tsv(file.path(results_dir, "germline-somatic-collapsed-by-gene.tsv"))
-
 ```
 
 
 ```{r}
-
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
                 Hugo_Symbol = Hugo_Symbol_cpg) 
@@ -160,12 +156,62 @@ germline_sv <- read_tsv(plp_sv_file) %>%
 germline_sv_somatic_gene_matches <- germline_sv %>%
   inner_join(onco_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-two-gene-hits.tsv"))
-
 ```
+
+```{r}
+pathway_files <- list.files(file.path(root_dir, "analyses",
+                                      "cpg-enrichment", "input"))
+pathway_files <- pathway_files[grepl("pathway_genes.tsv", pathway_files)]
+
+pathway_hits_list_germline_snv <- list()
+pathway_hits_list_germline_sv <- list()
+
+for (file in pathway_files){
+  
+  pathway <- str_replace(file, "_KEGG_pathway_genes.tsv", "")
+  
+  pathway_genes <- read_tsv(file.path(root_dir, "analyses",
+                                      "cpg-enrichment", "input",
+                                      file)) %>%
+    pull(genes)
+  
+    # collapse calls a bit
+  onco_hits_pathway <- onco_hits %>%
+    dplyr::filter(Hugo_Symbol %in% pathway_genes) %>%
+    mutate(VAF = t_alt_count / t_depth) %>%
+    select(Matched_Norm_Sample_Barcode, Tumor_Sample_Barcode, Hugo_Symbol, Transcript_ID, HGVSc, HGVSp, VAF, SIFT, PolyPhen, Variant_Classification, HotSpotAllele, ONCOGENIC, MUTATION_EFFECT, VARIANT_IN_ONCOKB)
+  
+  # two hit CPG matches
+  pathway_hits_list_germline_snv[[pathway]] <- germline %>%
+    dplyr::filter(Hugo_Symbol %in% pathway_genes,
+                  Hugo_Symbol %in% cpg) %>%
+    dplyr::select(Matched_Norm_Sample_Barcode, chr, start, ref, alt, Hugo_Symbol,
+                  variant_classification_vep, HGVSc_germ, HGVSp_germ) %>%
+    inner_join(onco_hits_pathway, by = c("Matched_Norm_Sample_Barcode"),
+               suffix = c("_germ", "_somatic")) %>%
+    dplyr::mutate(pathway = pathway)
+  
+    # two hit CPG matches
+  pathway_hits_list_germline_sv[[pathway]] <- germline_sv %>%
+    dplyr::filter(Hugo_Symbol %in% pathway_genes,
+                  Hugo_Symbol %in% cpg) %>%
+    inner_join(onco_hits_pathway, by = c("Matched_Norm_Sample_Barcode"),
+               suffix = c("_germ", "_somatic")) %>%
+    dplyr::mutate(pathway = pathway)
+  
+}
+
+pathway_hits_snv_df <- Reduce(rbind, pathway_hits_list_germline_snv)
+pathway_hits_sv_df <- Reduce(rbind, pathway_hits_list_germline_sv)
+
+write_tsv(pathway_hits_snv_df,
+          file.path(results_dir, "germline-snv-somatic-pathway-second-hits.tsv"))
+write_tsv(pathway_hits_sv_df,
+          file.path(results_dir, "germline-sv-somatic-pathway-second-hits.tsv"))
+```
+
 
 Print session info
 ```{r}
-
 sessionInfo()
-
 ```
