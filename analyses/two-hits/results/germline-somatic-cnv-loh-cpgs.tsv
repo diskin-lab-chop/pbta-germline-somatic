@@ -201,7 +201,7 @@ BS_ZVFTWY6Y	PT_NXX0M835	BS_NS8G0465	Schwannoma	NA	NF2	Likely_pathogenic	InterVar
 BS_ZVXHWM3N	PT_37WTWPZY	BS_MHT5C2AP	Other tumor	NA	POLE	Pathogenic	ClinVar	chr12	132677419	G	A	c.745C>T	p.Arg249Ter	neutral	0.61	0.47	-0.14	NA
 BS_ZX3ZSN8F	PT_R63RHJWX	BS_G4EX0H98	Medulloblastoma	MB, Group4	CREBBP	Pathogenic	ClinVar	chr16	3729209	TG	T	c.5837del	p.Pro1946HisfsTer30	neutral	NA	NA	NA	0.242
 BS_ZY319KJ4	PT_Z4BF2NSB	BS_W2QCHQ7E	Other high-grade glioma	HGG, H3 wildtype, TP53	ATM	Pathogenic	ClinVar	chr11	108330308	G	GA	c.7406dup	p.Asn2469LysfsTer13	neutral	0.51	0.49	-0.020000000000000018	0.33571428571428574
-BS_XM3ER1N6	PT_G9A050X1	BS_18RH1034	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr17	7675189	G	C	c.423C>G	p.Cys141Trp	neutral	0.44	0.65	0.21000000000000002	NA
+BS_XM3ER1N6	PT_G9A050X1	BS_18RH1034	Other high-grade glioma	HGG, H3 wildtype, TP53	TP53	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr17	7675189	G	C	c.423C>G	p.Cys141Trp	neutral	0.54	0.65	0.10999999999999999	NA
 BS_R7TZRSZT	PT_P5HHJJPH	BS_KXGJ1HMG	Other high-grade glioma	HGG, PXA	CDKN2A	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr9	21974682	A	G	c.146T>C	p.Ile49Thr	loss	0.68	0.45	-0.23000000000000004	NA
 BS_HJ99CJ2R	PT_MT27S7S4	BS_9GJHMA3J	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr17	7674887	C	T	c.644G>A	p.Ser215Asn	neutral	0.38	0.97	0.59	NA
 BS_8HZ761SQ	PT_NSXP8AWV	BS_M18CDDGK	Meningioma	NA	CHEK2	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr22	28734532	C	T	c.190G>A	p.Glu64Lys	neutral	NA	NA	NA	0.02000000000000001
