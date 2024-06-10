@@ -15,6 +15,7 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(tidyverse)
   library(ggpubr)
+  library(ggrepel)
 })
 
 # Set up directories
@@ -36,7 +37,6 @@ source(file.path(root_dir, "figures", "theme.R"))
 
 # set seed to reproduce plots
 set.seed(2023)
-
 ```
 
 Set input file paths
