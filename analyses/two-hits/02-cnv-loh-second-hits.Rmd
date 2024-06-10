@@ -38,6 +38,9 @@ Define file paths
 plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+
 plp_sv_file <- file.path(root_dir, "analyses", 
                          "germline-sv", "input", 
                          "pbta_germline_svs.tsv")
@@ -68,7 +71,8 @@ Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add hi
 ```{r get all matched tumors}
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  bind_rows(read_tsv(plp_lowVAF_file))
 
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
@@ -114,8 +118,8 @@ germline_sv <- germline_sv %>%
 ```
 
 Load CNV files, and identify patients with germline PLP variant and somatic CNV in same CPG
-```{r get cnv data}
 
+```{r get cnv data}
 # filter cnv to patients in cohort and CPG calls only
 cnv_auto <- read_tsv(cnv_auto_file) %>%
   dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% c(cpgs, somatic_drivers)) %>%
@@ -158,12 +162,11 @@ germline_sv_somatic_cnvs <- germline_sv %>%
     TRUE ~ CNV_status_somatic
   )) %>%
   distinct()
-
 ```
 
 Read in LOH results, and append LOH scores to rows of `germline_somatic_cnvs`
-```{r get variant loh data}
 
+```{r get variant loh data}
 loh <- read_tsv(loh_variant_file) %>%
   dplyr::filter(start %in% germline$start) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = BS_ID,
@@ -191,6 +194,9 @@ for (i in 1:nrow(loh)){
   loh$loh_pvalue[i] <- fisher.test(mat)$p.value
   
 }
+
+write_tsv(loh, file.path(results_dir,
+                    "pbta-loh-sig-calculated.tsv"))
 
 loh %>%
   dplyr::mutate(sig_loh = case_when(
@@ -335,7 +341,7 @@ loh_gene <- loh_gene %>%
   )) %>%
   # append plot_group and hex code for plotting
   left_join(germline_all[,c("Kids_First_Biospecimen_ID_normal", "plot_group")]) %>%
-  left_join(plot_mapping[,c("plot_group", "plot_group_hex")]) %>%
+  left_join(hist[,c("plot_group", "plot_group_hex")]) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, .keep_all = TRUE)
 
 ```
