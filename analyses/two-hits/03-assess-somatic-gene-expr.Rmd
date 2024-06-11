@@ -41,18 +41,17 @@ set.seed(2023)
 
 Set input file paths
 ```{r}
+plp_file <- file.path(data_dir, 
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "variant-distribution", "input", 
-                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
-
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir, 
                          "pbta_germline_svs.tsv")
 
-histologies_file <- file.path(root_dir, "analyses",
-                           "collapse-tumor-histologies",
-                           "input", "histologies.tsv")
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+
+histologies_file <- file.path(data_dir,
+                              "histologies.tsv")
 
 hist_cohort_file <- file.path(root_dir, "analyses", 
                               "collapse-tumor-histologies", "results", 
@@ -66,7 +65,6 @@ hgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "h
 lgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "lgat_goi_list.tsv")
 embryonal_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "embryonal-tumor_goi_list.tsv")
 other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "other_goi_list.tsv")
-
 ```
 
 # Load files
@@ -89,6 +87,7 @@ Read in germline plp file, and append coordinate and ref/alt allele info
 
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) 
 
 germline_sv <- read_tsv(plp_sv_file) %>%
@@ -190,6 +189,7 @@ expr_plot_df <- germline_somatic_expr %>%
   left_join(hist %>% dplyr::select(plot_group, plot_group_hex)) %>%
   distinct() %>%
   dplyr::mutate(gene_text = case_when(
+#    grepl("TSC", Hugo_Symbol) ~ "",
     expr_zscore > 2 | expr_zscore < -2 ~ Hugo_Symbol,
     TRUE ~ ""
   ))
@@ -210,14 +210,15 @@ expr_plot_df %>%
   geom_violin(aes(fill = plot_group),
               alpha = 0.2, outlier.shape = NA,
                show.legend = FALSE) +
+  geom_vline(xintercept = c(-2, 0, 2), linetype = "dashed", color = "gray60") + 
   geom_label_repel(aes(label = gene_text),
-                  size = 2.5,
-                  box.padding   = 0.35, 
+                  size = 2.25,
+                  box.padding   = 0.3, 
                   label.padding = 0.1,
                   point.padding = 0.25,
                   segment.color = 'grey50',
-                  min.segment.length = 0.1) +
-  geom_vline(xintercept = c(-2, 0, 2), linetype = "dashed", color = "gray60") + 
+                  min.segment.length = 0.1,
+                  max.overlaps = 14) +
   annotate("text", x = 4, 
            y = min(expr_plot_df$plot_group), 
            label = glue::glue("N={sum(expr_plot_df$expr_zscore > 2 & !is.na(expr_plot_df$expr_zscore))}"), 
@@ -343,7 +344,7 @@ z_scored_expression %>%
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 8, height = 4)
+                   width = 10, height = 4)
 ```
 
 We can further separate samples based on whether matched tumors have detected oncogenic/likely oncogenic SNV, which may influence gene expression
@@ -354,7 +355,8 @@ maf <- read_tsv(file.path(root_dir, "analyses", "oncokb-annotation", "results", 
 
 loh <- read_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor,
-                loh_score >= 0.15)
+                loh_OR > 1,
+                loh_pvalue < 0.1)
 
 second_hits_pathway <- read_tsv(file.path(results_dir, "germline_somatic_second_pathway_hits.tsv"))
 
@@ -365,8 +367,7 @@ z_scored_expression <- z_scored_expression %>%
 z_scored_expression <- z_scored_expression %>%
   dplyr::mutate(second_hit = case_when(
     glue::glue("{Kids_First_Biospecimen_ID_tumor}:{Hugo_Symbol}") %in% c(glue::glue("{maf$Tumor_Sample_Barcode}:{maf$Hugo_Symbol}"),
-                                                                         glue::glue("{loh$Kids_First_Biospecimen_ID_tumor}:{loh$Hugo_Symbol}"),
-glue::glue("{second_hits_pathway$Kids_First_Biospecimen_ID_tumor_maf}:{second_hits_pathway$Hugo_Symbol}")) ~ "Yes",
+                                                                         glue::glue("{loh$Kids_First_Biospecimen_ID_tumor}:{loh$Hugo_Symbol}")) ~ "Yes",
     TRUE ~ "No"
   ))
 
