@@ -51,6 +51,7 @@ plp_sv_file <- file.path(root_dir, "analyses",
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 
 maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")
+
 ```
 
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
@@ -59,7 +60,8 @@ Read in histologies, germline PLP, and tmb file. Subset histologies file to incl
 
 hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
   # filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
-  filter(grepl("Other high-grade glioma", plot_group))
+  filter(grepl("Other high-grade glioma", plot_group),
+         grepl("wildtype", molecular_subtype))
 
 
 plp <- read_tsv(plp_file, show_col_types = FALSE)
@@ -232,7 +234,7 @@ for (j in 1:length(repair_gene_source)){
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
               plot.title = element_text(hjust = 0.5, size = 18)) + 
         labs(x = 'COSMIC v3.3 signature', y = 'exposure difference',
-             fill = 'sig etiology', title = glue::glue("HGG, {plot_names[k]} P/LP vs. no P/LP")) +
+             fill = 'sig etiology', title = glue::glue("HGG, H3 WT, {plot_names[k]} P/LP vs. no P/LP")) +
         geom_hline(yintercept = 0) + 
         geom_text(aes(x = signature, y = exposure_diff * 1.1,
                   label = ifelse(pvalue < 0.05, "*", "")),
@@ -363,10 +365,47 @@ for (j in 1:length(repair_gene_source)){
              )
   
   plot_exposure_violin(mmr_df, "germline_variant", "sum", "MMR")
-
-        
+  
   ggsave(
     file.path(plot_dir, paste0("mmr_signature_byGroup_violinPlot.tiff")), 
+    width = 14, height = 11, units = "cm")
+  
+  comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"),
+                          c("MMR", "Non-repair"))
+  
+  tmb %>%
+    dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+    mutate(germline_variant = case_when(
+        Kids_First_Biospecimen_ID %in% mmr_ids ~ "MMR",
+        Kids_First_Biospecimen_ID %in% brca_ids ~ "BRCA/interacting",
+        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ "Other repair",
+        TRUE ~ "Non-repair"
+      )) %>%
+    mutate(germline_variant = factor(germline_variant)) %>% 
+    mutate(germline_variant = fct_relevel(germline_variant,
+                                          c("MMR", "BRCA/interacting", "Other repair", "Non-repair"))
+           ) %>%
+    
+    ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
+    geom_violin(binaxis = "y", stackdir = "center", 
+                show.legend = FALSE) +
+    geom_boxplot(width=0.1, show.legend = FALSE) + 
+    stat_compare_means(comparisons = comparisons_mmr, size = 3) +
+    labs(x = 'Germline Variant Class', y = "log10(TMB)") +
+    theme_minimal() +
+    theme(legend.position = 'none',
+          text = element_text(size = 12)) +
+    scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
+                                paste0("BRCA/\nBRCA-interacting\n (n=", length(brca_ids), ")"),
+                                paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
+                                paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
+    scale_fill_npg() +
+    stat_summary(fun.data=data_summary,
+                 show.legend = F) +
+    theme_Publication()
+        
+  ggsave(
+    file.path(plot_dir, paste0("tmb_byGroup_violinPlot.tiff")), 
     width = 14, height = 11, units = "cm")
       
   # add MMR signature exposure levels to germline plp file and write to output

@@ -5,20 +5,12 @@ output:
   toc: TRUE
 toc_float: TRUE
 author: Jo Lynne Rokita
-params:
-  maf_in:
-    label: "MAF input file"
-    value: data/snv-consensus-plus-hotspots.maf.tsv.gz
-    input: file
-  maf_goi:
-    label: "goi MAF output file"
-    value: results/snv-consensus-plus-hotspots-goi.maf.tsv
-    input: file
 ---
 
 ```{r load libraries}
 # load libraries
 library(tidyverse)
+library(data.table)
 
 # define directories 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -54,9 +46,10 @@ tumor_ids <- read_tsv(histologies_file, guess_max = 3000) %>%
 
 cpgs <- read_lines(cpg_file)
 
-maf <- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %>%
+maf <- data.table::fread(file.path(data_dir, "snv-consensus-plus-hotspots.maf.tsv.gz"), 
+                         data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% tumor_ids,
          Hugo_Symbol %in% cpgs) %>%
   unique() %>%
-  write_tsv(file.path(analysis_dir, params$maf_goi))
+  write_tsv(file.path(analysis_dir, "snv-consensus-plus-hotspots-goi.maf.tsv"))
 ```

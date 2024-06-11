@@ -30,7 +30,7 @@ hist <- read_tsv(file.path(root_dir,
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 
 # read in plp file
-plp_all <- read_tsv(file.path(data_dir, "pbta-germline-plp-variants-autogvp-abridged.tsv")) %>%
+plp_all <- read_tsv(file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv")) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # determine whether final call was due to clinvar or intervar
   mutate(final_call_source = case_when(autogvp_call == "Likely_pathogenic" & autogvp_call_reason == "ClinVar" ~ "ClinVar - Likely Pathogenic",
