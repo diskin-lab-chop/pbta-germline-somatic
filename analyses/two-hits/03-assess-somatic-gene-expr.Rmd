@@ -69,8 +69,9 @@ other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "
 
 # Load files
 ```{r load files}
+hist <- read_tsv(hist_file)
 
-hist <- read_tsv(hist_cohort_file)
+hist_cohort <- read_tsv(hist_cohort_file)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
@@ -79,7 +80,6 @@ lgat_drivers <- read_lines(lgat_file)
 embryonal_drivers <- read_lines(embryonal_file)
 other_drivers <- read_lines(other_file)
 somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_drivers)
-
 ```
 
 Read in germline plp file, and append coordinate and ref/alt allele info
@@ -92,7 +92,6 @@ germline <- read_tsv(plp_file) %>%
 
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
-
 ```
 
 Extract tumor RNA IDs from hist file, and append to `germline`
@@ -101,15 +100,21 @@ Extract tumor RNA IDs from hist file, and append to `germline`
 rna_specimens <- read_tsv(file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
 
-hist <- hist %>%
-  left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")])
+hist_cohort <- read_tsv(hist_cohort_file) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID = Kids_First_Biospecimen_ID_tumor) %>%
+  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID,
+                                   match_id)) %>%
+  left_join(hist %>% dplyr::filter(experimental_strategy == "RNA-Seq") %>%
+              dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
+              dplyr::select(match_id, Kids_First_Biospecimen_ID_rna)) %>%
+  distinct(match_id, .keep_all = TRUE)
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
   filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
+  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal",
                     "Kids_First_Biospecimen_ID_rna", "plot_group", "molecular_subtype")]) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
+  dplyr::select(Kids_First_Biospecimen_ID_normal,
                 Kids_First_Biospecimen_ID_rna, 
                 plot_group, molecular_subtype,
                 Hugo_Symbol, autogvp_call, autogvp_call_reason,
@@ -118,7 +123,7 @@ germline <- germline %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, Hugo_Symbol, start, .keep_all = T)
 
 germline_sv <- germline_sv %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
+  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
                     "Kids_First_Biospecimen_ID_rna", "plot_group", "molecular_subtype")]) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_rna, 
@@ -134,7 +139,7 @@ Read in gene expression RDS file, and calculate z-scores
 ```{r format expression data}
 expr <- readRDS(expr_file)
 # subset `expr` to only include BS IDs in hist
-subset_expr <- expr[,intersect(hist$Kids_First_Biospecimen_ID_rna, colnames(expr))]
+subset_expr <- expr[,intersect(hist_cohort$Kids_First_Biospecimen_ID_rna, colnames(expr))]
 
 # log2(x + 1) transform the expression matrix
 log_expression <- log2(subset_expr + 1)
@@ -143,7 +148,7 @@ z_scored_expression <- log_expression %>%
   as.data.frame() %>%
   rownames_to_column("Hugo_Symbol") %>%
   gather(key = "Kids_First_Biospecimen_ID_rna", value = "expr", -Hugo_Symbol) %>%
-  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_rna, Kids_First_Biospecimen_ID_normal,
+  left_join(hist_cohort %>% dplyr::select(Kids_First_Biospecimen_ID_rna, Kids_First_Biospecimen_ID_normal,
                                    plot_group, plot_group_hex)) %>%
   group_by(Hugo_Symbol, plot_group) %>%
   dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol) %>%
@@ -157,7 +162,6 @@ write_tsv(z_scored_expression,
 
 Append expression z-scores to genes with P/LP variants across cohort, and write to output
 ```{r get expression z-scores}
-
 germline_somatic_expr <- germline %>%
   left_join(z_scored_expression)
 
@@ -186,7 +190,7 @@ expr_plot_df <- germline_somatic_expr %>%
   bind_rows(germline_sv_somatic_expr %>%
               dplyr::select(Kids_First_Biospecimen_ID_rna, plot_group,
                             Hugo_Symbol, expr_zscore)) %>%
-  left_join(hist %>% dplyr::select(plot_group, plot_group_hex)) %>%
+  left_join(hist_cohort %>% dplyr::select(plot_group, plot_group_hex)) %>%
   distinct() %>%
   dplyr::mutate(gene_text = case_when(
 #    grepl("TSC", Hugo_Symbol) ~ "",
@@ -241,7 +245,8 @@ For assessing differences in gene expression between patients with vs. without P
 ```{r get mean expression by P/LP status}
 germline_all <- germline %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group) %>%
-  bind_rows(germline_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group))
+  bind_rows(germline_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group)) %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs)
 
 z_scored_expression <- z_scored_expression %>%
   # Add BS normal ids
@@ -265,7 +270,6 @@ mean_expr <- z_scored_expression %>%
 
 # filter cpg list for those with P/LP variant in 4 or more patients
 cpgs_test <- germline_all %>%
-  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = T) %>%
   count(Hugo_Symbol) %>%
   filter(n >= 4) %>%
@@ -344,7 +348,7 @@ z_scored_expression %>%
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 10, height = 4)
+                   width = 10, height = 5)
 ```
 
 We can further separate samples based on whether matched tumors have detected oncogenic/likely oncogenic SNV, which may influence gene expression
@@ -354,19 +358,19 @@ maf <- read_tsv(file.path(root_dir, "analyses", "oncokb-annotation", "results", 
   filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic"))
 
 loh <- read_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor,
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID,
                 loh_OR > 1,
-                loh_pvalue < 0.1)
+                loh_pvalue < 0.05)
 
 second_hits_pathway <- read_tsv(file.path(results_dir, "germline_somatic_second_pathway_hits.tsv"))
 
 # append matched tumor genomic ID to z_scored_expression
 z_scored_expression <- z_scored_expression %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor")])
+  left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID")])
 
 z_scored_expression <- z_scored_expression %>%
   dplyr::mutate(second_hit = case_when(
-    glue::glue("{Kids_First_Biospecimen_ID_tumor}:{Hugo_Symbol}") %in% c(glue::glue("{maf$Tumor_Sample_Barcode}:{maf$Hugo_Symbol}"),
+    glue::glue("{Kids_First_Biospecimen_ID}:{Hugo_Symbol}") %in% c(glue::glue("{maf$Tumor_Sample_Barcode}:{maf$Hugo_Symbol}"),
                                                                          glue::glue("{loh$Kids_First_Biospecimen_ID_tumor}:{loh$Hugo_Symbol}")) ~ "Yes",
     TRUE ~ "No"
   ))
@@ -386,10 +390,11 @@ z_scored_expression %>%
   geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
   scale_fill_manual(values = plot_group_palette, 
                     breaks = sort(names(plot_group_palette))) +
+#  facet_wrap(~plot_group, nrow = 4) +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "gene-expr-second-hit-vs-none.pdf"),
-                   width = 3.5, height = 4)
+                   width = 4, height = 4)
 ```
 
 Print session info
