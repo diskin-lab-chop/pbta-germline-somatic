@@ -18,6 +18,7 @@ suppressPackageStartupMessages({
   library(vroom)
   library(circlize)
   library(ggpubr)
+  library(ggrepel)
 })
 
 # Set up directories
@@ -154,8 +155,16 @@ plp_rna_df <- plp %>%
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_rna)) %>%
   left_join(splice_events, by = c("Kids_First_Biospecimen_ID_rna", "Hugo_Symbol")) %>%
   distinct(Kids_First_Biospecimen_ID_rna, Hugo_Symbol, splicing_case, region, .keep_all = TRUE) %>%
-  dplyr::mutate(region_start = as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[1]))),
-                region_end = as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[2])))) %>%
+  dplyr::mutate(region_start = case_when(
+    splicing_case == "RI" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[4]))),
+    splicing_case == "A5SS" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[3]))),
+    TRUE ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[1])))
+    )) %>%
+  dplyr::mutate(region_end = case_when(
+    splicing_case == "RI" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[6]))),
+    splicing_case == "A3SS" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[3]))),
+    TRUE ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[2])))
+    )) %>%
   dplyr::mutate(start_dist = abs(start - region_start),
                 end_dist = abs(start - region_end)) %>%
   transform(min_dist = pmin(start_dist, end_dist)) %>%
@@ -310,7 +319,7 @@ expr <- read_tsv(file.path(results_dir, "pbta-germline-gene-expr-zscores.tsv"),
                  show_col_types = FALSE)
 
 plp_splice_candidates <- snv_splice_psi_df %>%
-  dplyr::filter(abs(sample_PSI_zscore) > 2 & (abs(start_dist) < 250 | abs(end_dist) < 250)) %>%
+  dplyr::filter(abs(round(sample_PSI_zscore, 1)) >= 2 & (abs(start_dist) < 250 | abs(end_dist) < 250)) %>%
   # order by z-score 
   dplyr::arrange(-abs(sample_PSI_zscore)) %>%
   # retain only one splice event per splice region
