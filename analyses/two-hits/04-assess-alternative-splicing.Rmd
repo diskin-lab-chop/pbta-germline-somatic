@@ -52,10 +52,12 @@ plp_sv_file <- file.path(root_dir, "analyses",
                          "germline-sv", "input", 
                          "pbta_germline_svs.tsv")
 
-hist_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
-                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+histologies_file <- file.path(data_dir,
+                              "histologies.tsv")
 
-rna_specimens_file <- file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")
+hist_cohort_file <- file.path(root_dir, "analyses", 
+                              "collapse-tumor-histologies", "results", 
+                              "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 splice_events_file <- file.path(input_dir, "splice_events_germline_pbta_cpgs_only.tsv.gz")
 
@@ -77,12 +79,16 @@ plp_sv <- read_tsv(plp_sv_file) %>%
 # CPGs
 cpgs <- read_lines(cpg_file)
 
-rna_specimens <- read_tsv(rna_specimens_file) %>%
-  dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
 
-#plp_full <- read_tsv(plp_full_file)
-hist <- read_tsv(hist_file) %>%
-  left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")])
+opc_hist <- read_tsv(hist_file)
+
+hist <- read_tsv(hist_cohort_file) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID = Kids_First_Biospecimen_ID_tumor) %>%
+  left_join(opc_hist %>% dplyr::select(Kids_First_Biospecimen_ID,
+                                   match_id)) %>%
+  left_join(opc_hist %>% dplyr::filter(experimental_strategy == "RNA-Seq") %>%
+              dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
+              dplyr::select(match_id, Kids_First_Biospecimen_ID_rna))
 
 splice_events <- vroom(splice_events_file) %>%
   dplyr::filter(sample_id %in% hist$Kids_First_Biospecimen_ID_rna,
@@ -100,6 +106,10 @@ splice_events <- vroom(splice_events_file) %>%
          -`2ndExonEnd`) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = sample_id,
                 Hugo_Symbol = geneSymbol)
+
+hist <- hist %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_rna %in% splice_events$Kids_First_Biospecimen_ID_rna) %>%
+  distinct(match_id, .keep_all = TRUE)
 ```
 
 
