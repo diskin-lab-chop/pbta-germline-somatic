@@ -1,6 +1,6 @@
-# Plot P-LP variant distribution across cancer predisposition genes
+# Generate demographic and clinical summary statistics among germline P/LP variant carriers in PBTA germline cohort
 
-This module creates distribution plots of P-LP variants across 214 cancer predisposition genes (CPGs). Additional code is included to create plots with PBTA X01 samples for R03 grant. 
+This module assesses demographic and clinical summary stats among P/LP carriers in PBTA germline cohort and within tumor histologies 
 
 ## Usage
 
@@ -8,18 +8,29 @@ This module creates distribution plots of P-LP variants across 214 cancer predis
 
 ## Folder content 
 
-1. `01-create-variant-distribution-plots.Rmd` runs plotting script
+1. `01-demo-clin-stats.Rmd` generate demographic and clinical summary stats
 
-2. `input/` directory contains the following files:
-  - `embryonal-tumor_goi_list.tsv`; list of embryonal tumor driver genes
-  - `hgat_goi_list.tsv`; list of hgat driver genes
-  - `lgat_goi_list.tsv`; list of lgg tumor driver genes
-  - `other_goi_list.tsv`; list of other tumor driver genes
+2. `02-plot-ancestry.R` plot Somalier genetic ancestry PCs
 
-3. `results/` directory contains the following files: 
-  - `plp-variants-in-somatic-drivers-not-cpg.tsv`
-  
-4. `plots/` directory contains the following figures: 
-  - Barplots of no. P-LP variants by CPG in 837 PBTA cohort by histology and variant classification (`cpg-variant-distribution-by-histology.tiff`, `cpg-variant-distribution-by-variant-classification.tiff`)
-  - Barplot of no. P-LP variants in somatic driver genes that are also CPGs by histology and variant classification (`somatic_drivers-variant-distribution-by-histology.tiff`, `somatic_drivers-variant-distribution-by-variant-classification.tiff`)
-  - Barplot of no. P-LP variants in somatic driver genes that are not CPGs by histology and variant classification (`somatic_not_cpg-variant-distribution-by-histology.tiff`, `somatic_not_cpg-variant-distribution-by-variant-classification.tiff`)
+## Directory structure
+```
+.
+├── 01-demo-clin-stats.Rmd
+├── 01-demo-clin-stats.nb.html
+├── 02-plot-ancestry.R
+├── README.md
+├── input
+├── plots
+│   ├── plot_group_plp_carrier_enr_heatmap.pdf
+│   └── predicted-ancestry-pca.pdf
+├── results
+│   ├── cohort-summary-table-manuscript.tsv
+│   ├── demo-clin-pvals-all.tsv
+│   ├── demo-clin-pvalues-by-histology.xlsx
+│   ├── demo-clin-stats-all.tsv
+│   └── demo-clin-stats-by-histology.xlsx
+├── run_module.sh
+└── util
+    ├── heatmap_function.R
+    └── summary_functions.R
+```
