@@ -14,8 +14,8 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
-# load v12 OpenPedCan histologies file + additional samples
-opc_hist <- read_tsv(file.path(input_dir, "histologies.tsv"), guess_max = 100000) %>%
+# load v15 OpenPedCan histologies file + additional samples
+opc_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000) %>%
   filter(cohort == "PBTA") %>%
   # update choroid plexus from benign to tumor category
   mutate(broad_histology = case_when(pathology_diagnosis == "Choroid plexus papilloma" ~ "Choroid plexus tumor",
@@ -61,7 +61,7 @@ opc_hist <- read_tsv(file.path(input_dir, "histologies.tsv"), guess_max = 100000
          
   )
 
-# pull tumor BS IDs 
+# pull tumor BS IDs that are not included in independent specimens
 tumors_to_add <- opc_hist %>%
   dplyr::filter(Kids_First_Biospecimen_ID %in% c("BS_A70G7S2W", "BS_YETTZ1NC")) %>%
   dplyr::select(Kids_First_Biospecimen_ID)
@@ -130,8 +130,10 @@ tumor_clin_meta <- opc_hist %>%
          EFS_days, EFS_event_type, extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
   distinct() %>%
   dplyr::rename(sample_id_tumor = sample_id) %>%
+  # Determine if patients with NOS predisposition have defined syndrome after path review
   left_join(pts_nos_review %>% dplyr::select(sample_id_tumor,
                                              predisposition_path_report)) %>%
+  # Add syndrome as `cancer_predispositions` value when identified in path report 
   dplyr::mutate(cancer_predispositions = case_when(
     grepl("NOS", cancer_predispositions) & !is.na(predisposition_path_report) ~  predisposition_path_report,
     sample_id_tumor == "7316-515" ~ "Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6)",

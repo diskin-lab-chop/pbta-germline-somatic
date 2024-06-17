@@ -1,0 +1,186 @@
+---
+title: "Generate oncoprint matrix"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This script compares genes expression z-scores in patients with vs. without germline pathogenic/likely pathogenic (P/LP) variants in PBTA germline cohort. 
+
+# Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+  library(ggpubr)
+  library(ComplexHeatmap)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data/v6")
+analysis_dir <- file.path(root_dir, "analyses", "two-hits")
+results_dir <- file.path(analysis_dir, "results")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+```
+
+Set input file paths
+```{r}
+plp_file <- file.path(data_dir, 
+                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+
+plp_sv_file <- file.path(root_dir, "analyses", 
+                         "germline-sv", "input", 
+                         "pbta_germline_svs.tsv")
+
+# cpg file
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+
+hist_file <- file.path(root_dir, "analyses", 
+                              "collapse-tumor-histologies", "results", 
+                              "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+indepedent_specimens_rna <- file.path(data_dir,
+                                     "independent-specimens.rnaseqpanel.primary-plus.tsv")
+
+# oncogenic SNVs/INDELS identified in analyses/two-hits/01-assess-two-hits-snv.Rmd
+onco_snv_file <- file.path(results_dir, "germline-somatic-two-gene-hits.tsv")
+sv_onco_snv_file <- file.path(results_dir, "germline-sv-somatic-two-gene-hits.tsv")
+
+# CNVs and LOH events identified in analyses/two-hits/02-cnv-loh-second-hits.Rmd
+cnv_loh_file <- file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")
+sv_cnv_loh_file <- file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv")
+
+# Differential RNA expression identified in analyses/two-hits/03-assess-somatic-gene-expr.Rmd
+expr_file <- file.path(results_dir, "germline-somatic-expr-cpgs.tsv")
+sv_expr_file <- file.path(results_dir, "germline-sv-somatic-expr-cpgs.tsv")
+
+# Differential protein expression identified in analyses/two-hits/05-proteomics.Rmd
+proteo_file <- file.path(results_dir, "germline-somatic-proteomics-phosphoproteomics-cpgs.tsv")
+sv_proteo_file <- file.path(results_dir, "germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv")
+```
+
+read in autogvp plp output and plp svs, filter gnomad non-pass
+```{r}
+cpgs <- read_lines(cpg_file)
+
+plp <- read_tsv(plp_file) %>%
+  dplyr::filter(gene_symbol_vep %in% cpgs)
+ 
+# remove gnomad non-PASS filter variants
+to_rm <- plp %>%
+  dplyr::filter(gene_symbol_vep %in% cpgs) %>%
+  dplyr::filter(rs_id %in% c("rs200962248", "rs1296066077", "rs1205853831") |
+                start == 10087255)
+
+plp_sv <- read_tsv(plp_sv_file) %>%
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+
+rna_specimens <- read_tsv(indepedent_specimens_rna)
+```
+
+Define all unique SNV/INDEL P/LP cases in which a somatic alteration was observed in each data modality
+```{r}
+hist <- read_tsv(hist_file)
+
+snv_hits_snv <- read_tsv(onco_snv_file) %>%
+  dplyr::filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
+                Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
+                HGVSc_tumor = HGVSc,
+                HGVSp_tumor = HGVSp) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, start,
+                Kids_First_Biospecimen_ID_tumor, HGVSc_tumor, HGVSp_tumor, VAF, 
+                Variant_Classification, ONCOGENIC)
+
+cnv_loh_snv <- read_tsv(cnv_loh_file) %>%
+  dplyr::filter(!glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}") %in% to_rm,
+                Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+                Hugo_Symbol, start, CNV_status_somatic, proband_germline_vaf, proband_tumor_vaf, loh_score, gene_LOH)
+
+expression_snv <- read_tsv(expr_file) %>%
+  dplyr::filter(!glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}") %in% to_rm,
+                Kids_First_Biospecimen_ID_rna %in% rna_specimens$Kids_First_Biospecimen_ID) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna,
+                Hugo_Symbol, start, expr_zscore)
+
+proteomics_snv <- read_tsv(proteo_file) %>%
+  dplyr::filter(!glue::glue("{Kids_First_Biospecimen_ID_normal}:{GeneSymbol}") %in% to_rm) %>%
+  dplyr::rename(Hugo_Symbol = GeneSymbol) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, sample_id_tumor,
+                Hugo_Symbol, start, expr_zscore_proteo) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE)
+```
+
+Merge somatic SNV, CNV, LOH, differential RNA and protein expression data to P/LP variants
+
+```{r}
+somatic_alterations_snv_plp <- plp %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol,
+                chr, start, ref, alt, HGVSc, HGVSp, 
+                variant_classification_vep, autogvp_call, autogvp_call_reason) %>%
+  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor)) %>%
+  left_join(snv_hits_snv, by = c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor", "Hugo_Symbol", "start")) %>%
+  left_join(cnv_loh_snv, by = c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor", "Hugo_Symbol", "start")) %>%
+  left_join(expression_snv, by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "start")) %>%
+  left_join(proteomics_snv, by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "start"))
+
+write_tsv(somatic_alterations_snv_plp,
+          file.path(results_dir, "plp_snv_indel_somatic_alterations_merged.tsv"))
+```
+
+Define all unique SV P/LP cases in which a somatic alteration was observed in each data modality
+
+```{r}
+snv_hits_sv <- read_tsv(sv_onco_snv_file) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
+                Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
+                HGVSc_tumor = HGVSc,
+                HGVSp_tumor = HGVSp) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol,
+                Kids_First_Biospecimen_ID_tumor, HGVSc_tumor, HGVSp_tumor, VAF, 
+                Variant_Classification, ONCOGENIC)
+
+cnv_loh_sv <- read_tsv(sv_cnv_loh_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+                Hugo_Symbol, CNV_status_somatic, gene_LOH)
+
+expression_sv <- read_tsv(sv_expr_file) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna,
+                Hugo_Symbol, expr_zscore)
+
+protemics_sv <- read_tsv(sv_proteo_file) %>%
+  dplyr::rename(Hugo_Symbol = GeneSymbol) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, sample_id_tumor,
+                Hugo_Symbol, expr_zscore_proteo)
+```
+
+Merge somatic SNV, CNV, LOH, differential RNA and protein expression data to SV P/LP variants
+
+```{r}
+somatic_alterations_sv_plp <- plp_sv %>%
+  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor)) %>%
+  left_join(snv_hits_sv, by = c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor", "Hugo_Symbol")) %>%
+  left_join(cnv_loh_sv, by = c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_tumor", "Hugo_Symbol")) %>%
+  left_join(expression_sv, by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol")) %>%
+  left_join(protemics_sv, by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol"))
+
+write_tsv(somatic_alterations_sv_plp,
+          file.path(results_dir, "plp_sv_somatic_alterations_merged.tsv"))
+```
+
+Print session info
+
+```{r}
+sessionInfo()
+```
