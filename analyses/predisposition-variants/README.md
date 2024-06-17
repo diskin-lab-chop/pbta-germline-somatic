@@ -12,17 +12,25 @@ This module identifies all P/LP variants in genes associated with cancer predisp
 
 2. `02-plot-predispositions.Rmd`; creates predisposition variant plots
 
-3. `input/` directory contains the following files:
-  - `predisposition-syndromes.tsv`; list of syndromes and associated genes
-  - `predispositions-path-review.tsv`; path report notes in patients with incidental findings
-
-3. `results/` directory contains the following files: 
-  - `incidental-findings-predisposition-variants.tsv`; all syndrome-associated snv/indel variants and initial assessment of whether incidental 
-  - `incidental-findings-predisposition-variants-path-review.tsv`; update of above file, with incidental status updated after path report review
-  - `incidental-findings-predisposition-structural-variants.tsv`; all syndrome-associated SVs and initial assessment of whether incidental 
-  - `incidental-findings-predisposition-structural-variants-path-review.tsv`; update of above file, with incidental status updated after path report review
-  - `predisposition-patients-no-plp-variants.tsv`; patients with reported syndrome but no P/LP variant identified
-  
-4. `plots/` directory contains the following figures: 
-  - Bar plot of number of patients with identified P/LP variant by syndrome (`gene-plp-prevalence-by-syndrome.pdf`)
-  - Bar plot of number of patietns with reported syndrome by syndrome-associated gene with identified P/LP variant (`syndrome-prevalence-by-gene.pdf`)
+## Directory Structure
+```
+.
+├── 01-incidental-findings.Rmd
+├── 01-incidental-findings.html
+├── 02-plot-predispositions.Rmd
+├── 02-plot-predispositions.html
+├── README.md
+├── input
+│   ├── predisposition-syndromes.tsv
+│   └── predispositions-path-review.tsv
+├── plots
+│   ├── gene-plp-prevalence-by-syndrome.pdf
+│   └── syndrome-prevalence-by-gene.pdf
+├── results
+│   ├── incidental-findings-predisposition-structural-variants-path-review.tsv
+│   ├── incidental-findings-predisposition-structural-variants.tsv
+│   ├── incidental-findings-predisposition-variants-path-review.tsv
+│   ├── incidental-findings-predisposition-variants.tsv
+│   └── predisposition-patients-no-plp-variants.tsv
+└── run_module.sh
+```
