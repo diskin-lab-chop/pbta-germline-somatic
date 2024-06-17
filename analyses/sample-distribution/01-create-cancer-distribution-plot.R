@@ -156,7 +156,7 @@ for (df in names(dfs)) {
 plp_cpg <- plp_cpg %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal")
 
-plp_sv <- read_tsv(file.path(root_dir, "analyses", "germline-sv", "input", "pbta_germline_svs.tsv")) %>%
+plp_sv <- read_tsv(file.path(data_dir, "pbta_germline_svs.tsv")) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal") %>%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg)
 
