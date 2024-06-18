@@ -450,12 +450,10 @@ COSMICv3 mutational signature weights file, - TMB file</p>
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;variant-distribution&quot;, &quot;input&quot;, 
-                      &quot;pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta-merged-plp-variants-autogvp-abridged.tsv&quot;)
 
-plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                         &quot;germline-sv&quot;, &quot;input&quot;, 
+plp_sv_file &lt;- file.path(data_dir,
                          &quot;pbta_germline_svs.tsv&quot;)
 
 tmb_file &lt;- file.path(data_dir, &quot;snv-mutation-tmb-coding.tsv&quot;)
@@ -465,7 +463,8 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 file to include only HGG tumors</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) %&gt;%
   # filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))
-  filter(grepl(&quot;Other high-grade glioma&quot;, plot_group))
+  filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
+         grepl(&quot;wildtype&quot;, molecular_subtype))
 
 
 plp &lt;- read_tsv(plp_file, show_col_types = FALSE)
@@ -504,7 +503,7 @@ mutate(exposure = case_when(
   TRUE ~ exposure
 ))</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
@@ -649,7 +648,7 @@ for (j in 1:length(repair_gene_source)){
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
               plot.title = element_text(hjust = 0.5, size = 18)) + 
         labs(x = &#39;COSMIC v3.3 signature&#39;, y = &#39;exposure difference&#39;,
-             fill = &#39;sig etiology&#39;, title = glue::glue(&quot;HGG, {plot_names[k]} P/LP vs. no P/LP&quot;)) +
+             fill = &#39;sig etiology&#39;, title = glue::glue(&quot;HGG, H3 WT, {plot_names[k]} P/LP vs. no P/LP&quot;)) +
         geom_hline(yintercept = 0) + 
         geom_text(aes(x = signature, y = exposure_diff * 1.1,
                   label = ifelse(pvalue &lt; 0.05, &quot;*&quot;, &quot;&quot;)),
@@ -664,187 +663,994 @@ for (j in 1:length(repair_gene_source)){
 }</code></pre>
 <pre><code>## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
-
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
 <p>Run mutational signature exposure comparisons between samples with
@@ -963,10 +1769,47 @@ for (j in 1:length(repair_gene_source)){
              )
   
   plot_exposure_violin(mmr_df, &quot;germline_variant&quot;, &quot;sum&quot;, &quot;MMR&quot;)
-
-        
+  
   ggsave(
     file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.tiff&quot;)), 
+    width = 14, height = 11, units = &quot;cm&quot;)
+  
+  comparisons_mmr &lt;- list(c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;), c(&quot;MMR&quot;, &quot;Other repair&quot;),
+                          c(&quot;MMR&quot;, &quot;Non-repair&quot;))
+  
+  tmb %&gt;%
+    dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
+    mutate(germline_variant = case_when(
+        Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
+        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;BRCA/interacting&quot;,
+        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
+        TRUE ~ &quot;Non-repair&quot;
+      )) %&gt;%
+    mutate(germline_variant = factor(germline_variant)) %&gt;% 
+    mutate(germline_variant = fct_relevel(germline_variant,
+                                          c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
+           ) %&gt;%
+    
+    ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
+    geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, 
+                show.legend = FALSE) +
+    geom_boxplot(width=0.1, show.legend = FALSE) + 
+    stat_compare_means(comparisons = comparisons_mmr, size = 3) +
+    labs(x = &#39;Germline Variant Class&#39;, y = &quot;log10(TMB)&quot;) +
+    theme_minimal() +
+    theme(legend.position = &#39;none&#39;,
+          text = element_text(size = 12)) +
+    scale_x_discrete(labels = c(paste0(&quot;MMR\n (n=&quot;, length(mmr_ids), &quot;)&quot;), 
+                                paste0(&quot;BRCA/\nBRCA-interacting\n (n=&quot;, length(brca_ids), &quot;)&quot;),
+                                paste0(&quot;Other repair\n (n=&quot;, length(otherRepair_ids), &quot;)&quot;),
+                                paste0(&quot;No DNA repair\n (n=&quot;, length(ctrl_ids), &quot;)&quot;))) +
+    scale_fill_npg() +
+    stat_summary(fun.data=data_summary,
+                 show.legend = F) +
+    theme_Publication()
+        
+  ggsave(
+    file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.tiff&quot;)), 
     width = 14, height = 11, units = &quot;cm&quot;)
       
   # add MMR signature exposure levels to germline plp file and write to output
@@ -1053,6 +1896,104 @@ for (j in 1:length(repair_gene_source)){
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
+## FALSE): cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Computation failed in `stat_signif()`.
+## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
+## ! missing value where TRUE/FALSE needed</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
+## FALSE): cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Computation failed in `stat_signif()`.
+## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
+## ! missing value where TRUE/FALSE needed</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
+## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
+## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
+## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0),
+## c(0.30228968835189, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0),
+## c(0.254246127632911, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0),
+## c(0.293982011033159, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0), c(0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0), c(0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0), c(0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(2.44656665591908, 2.54635035171737,
+## 0.357696195313068, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
+## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
 ## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
 ## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
@@ -1062,21 +2003,27 @@ for (j in 1:length(repair_gene_source)){
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
 ## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
+## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
+## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0), :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
+## FALSE): cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Computation failed in `stat_signif()`.
 ## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
 ## ! missing value where TRUE/FALSE needed</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
@@ -1087,120 +2034,38 @@ for (j in 1:length(repair_gene_source)){
 ## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
 ## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
+## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0), :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
+## FALSE): cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Computation failed in `stat_signif()`.
 ## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
 ## ! missing value where TRUE/FALSE needed</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
+## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
+## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
+## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0,
-## 0.212761310183186: cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0,
-## 0.212761310183186: cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0, 0),
+## c(0.30228968835189, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0, 0),
+## c(0.254246127632911, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0, 0),
+## c(0.293982011033159, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0.295856278517743,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0.295856278517743,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.213692514765941, 0.295856278517743,
-## : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0, 0.192938890371646, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0, 0.192938890371646, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0, 0.192938890371646, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`
-## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
-## ! missing value where TRUE/FALSE needed</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.124890754094255, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.124890754094255, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.124890754094255, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`
-## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
-## ! missing value where TRUE/FALSE needed</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.203419453896402,
-## 0.516568326820801, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.390971937072957, 0.182643267529815, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.390971937072957, 0.182643267529815, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.390971937072957, 0.182643267529815, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.153785364813601, 0, 0, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.153785364813601, 0, 0, 0, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0.153785364813601, 0, 0, 0, 0, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
@@ -1210,6 +2075,10 @@ for (j in 1:length(repair_gene_source)){
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(2.44656665591908, 2.54635035171737,
+## 0.357696195313068, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
@@ -1217,13 +2086,13 @@ for (j in 1:length(repair_gene_source)){
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
 ## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.2.2 (2022-10-31)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 22.04.1 LTS
+<pre><code>## R version 4.4.0 (2024-04-24)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Ubuntu 22.04.4 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
-## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -1233,41 +2102,34 @@ for (j in 1:length(repair_gene_source)){
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
+## time zone: Etc/UTC
+## tzcode source: system (glibc)
+## 
 ## attached base packages:
 ## [1] grid      stats     graphics  grDevices utils     datasets  methods  
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] ggthemes_4.2.4    ggpubr_0.4.0      ggsci_2.9         forcats_1.0.0    
-##  [5] stringr_1.5.0     dplyr_1.1.0       purrr_1.0.1       readr_2.1.3      
-##  [9] tidyr_1.3.0       tibble_3.1.8      ggplot2_3.4.0     tidyverse_1.3.2  
-## [13] data.table_1.14.2
+##  [1] ggthemes_5.1.0    ggpubr_0.6.0      ggsci_3.1.0       lubridate_1.9.3  
+##  [5] forcats_1.0.0     stringr_1.5.1     dplyr_1.1.4       purrr_1.0.2      
+##  [9] readr_2.1.5       tidyr_1.3.1       tibble_3.2.1      ggplot2_3.5.1    
+## [13] tidyverse_2.0.0   data.table_1.15.4
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] lubridate_1.9.1     rprojroot_2.0.3     assertthat_0.2.1   
-##  [4] digest_0.6.31       utf8_1.2.3          R6_2.5.1           
-##  [7] cellranger_1.1.0    backports_1.4.1     reprex_2.0.2       
-## [10] evaluate_0.20       httr_1.4.4          pillar_1.8.1       
-## [13] rlang_1.0.6         googlesheets4_1.0.1 readxl_1.4.1       
-## [16] car_3.1-0           jquerylib_0.1.4     rmarkdown_2.20     
-## [19] labeling_0.4.2      textshaping_0.3.6   googledrive_2.0.0  
-## [22] bit_4.0.5           munsell_0.5.0       broom_1.0.3        
-## [25] compiler_4.2.2      modelr_0.1.10       xfun_0.37          
-## [28] systemfonts_1.0.4   pkgconfig_2.0.3     htmltools_0.5.4    
-## [31] tidyselect_1.2.0    fansi_1.0.4         crayon_1.5.2       
-## [34] tzdb_0.3.0          dbplyr_2.3.0        withr_2.5.0        
-## [37] jsonlite_1.8.4      gtable_0.3.1        lifecycle_1.0.3    
-## [40] DBI_1.1.3           magrittr_2.0.3      scales_1.2.1       
-## [43] vroom_1.6.1         cli_3.6.0           stringi_1.7.12     
-## [46] cachem_1.0.6        carData_3.0-5       farver_2.1.1       
-## [49] ggsignif_0.6.3      fs_1.6.0            xml2_1.3.3         
-## [52] bslib_0.4.2         ragg_1.2.5          ellipsis_0.3.2     
-## [55] generics_0.1.3      vctrs_0.5.2         tools_4.2.2        
-## [58] bit64_4.0.5         glue_1.6.2          hms_1.1.2          
-## [61] parallel_4.2.2      abind_1.4-5         fastmap_1.1.0      
-## [64] yaml_2.3.7          timechange_0.2.0    colorspace_2.1-0   
-## [67] gargle_1.3.0        rstatix_0.7.0       rvest_1.0.3        
-## [70] knitr_1.42          haven_2.5.1         sass_0.4.5</code></pre>
+##  [1] sass_0.4.9        utf8_1.2.4        generics_0.1.3    rstatix_0.7.2    
+##  [5] stringi_1.8.4     hms_1.1.3         digest_0.6.35     magrittr_2.0.3   
+##  [9] evaluate_0.23     timechange_0.3.0  fastmap_1.2.0     rprojroot_2.0.4  
+## [13] jsonlite_1.8.8    backports_1.4.1   fansi_1.0.6       scales_1.3.0     
+## [17] textshaping_0.4.0 jquerylib_0.1.4   abind_1.4-5       cli_3.6.2        
+## [21] crayon_1.5.2      rlang_1.1.3       bit64_4.0.5       munsell_0.5.1    
+## [25] withr_3.0.0       cachem_1.1.0      yaml_2.3.8        parallel_4.4.0   
+## [29] tools_4.4.0       tzdb_0.4.0        ggsignif_0.6.4    colorspace_2.1-0 
+## [33] broom_1.0.5       vctrs_0.6.5       R6_2.5.1          lifecycle_1.0.4  
+## [37] bit_4.0.5         car_3.1-2         vroom_1.6.5       ragg_1.3.2       
+## [41] pkgconfig_2.0.3   pillar_1.9.0      bslib_0.7.0       gtable_0.3.5     
+## [45] glue_1.7.0        systemfonts_1.1.0 xfun_0.44         tidyselect_1.2.1 
+## [49] knitr_1.47        farver_2.1.2      htmltools_0.5.8.1 labeling_0.4.3   
+## [53] rmarkdown_2.27    carData_3.0-5     compiler_4.4.0</code></pre>
 
 
 

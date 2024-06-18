@@ -449,12 +449,10 @@ predisposition syndromes files</p>
                            &quot;results&quot;,
                            &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;variant-distribution&quot;, &quot;input&quot;, 
-                      &quot;pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta-merged-plp-variants-autogvp-abridged.tsv&quot;)
 
-plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                         &quot;germline-sv&quot;, &quot;input&quot;, 
+plp_sv_file &lt;- file.path(data_dir, 
                          &quot;pbta_germline_svs.tsv&quot;)
 
 predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)</code></pre>
@@ -468,7 +466,7 @@ plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
 predispositions &lt;- read_tsv(predispositions_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 28 Columns: 2
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -480,10 +478,14 @@ histologies file:</p>
 <pre><code>## 
 ## Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6) 
 ##                                                                                     1 
-##                                                         Gorlin Syndrome (PTCH1, SUFU) 
+##                                                  Familial Adenomatous Polyposis (APC) 
 ##                                                                                     1 
+##                                                         Gorlin Syndrome (PTCH1, SUFU) 
+##                                                                                     2 
 ##                                                           Li-Fraumeni syndrome (TP53) 
 ##                                                                                     7 
+##                                               Lynch Syndrome (PMS2, MLH1, MSH2, MSH6) 
+##                                                                                     2 
 ##                                                      Neurofibromatosis, Type 1 (NF-1) 
 ##                                                                                    25 
 ##                                                      Neurofibromatosis, Type 2 (NF-2) 
@@ -493,11 +495,13 @@ histologies file:</p>
 ##                                                                          Not Reported 
 ##                                                                                     8 
 ##                                                        Other inherited conditions NOS 
-##                                                                                    16 
+##                                                                                    11 
 ##                                                               Schwannomatosis (LZTR1) 
 ##                                                                                     1 
 ##                                                       Tuberous Sclerosis (TSC1, TSC2) 
-##                                                                                    10</code></pre>
+##                                                                                    10 
+##                                                               Von Hippel-Lindau (VHL) 
+##                                                                                     1</code></pre>
 <p>Subset PLP file to include only variants in CPGs associated with
 syndromes in <code>predispositions</code>, and include
 <code>cancer_predispositions</code> column to indicate whether syndrome
@@ -520,7 +524,7 @@ plp_predisposition_syndromes &lt;- hist %&gt;%
     !str_detect(clinically_reported_syndrome, associated_syndrome) ~ &quot;Yes&quot;,
     TRUE ~ &quot;No&quot;
   )) %&gt;%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
          sample_id_normal, sample_id_tumor,
          plot_group, molecular_subtype, 
          chr, start, alt, ref,
@@ -528,11 +532,8 @@ plp_predisposition_syndromes &lt;- hist %&gt;%
          clinvar_variant_id,
          associated_syndrome, clinically_reported_syndrome, incidental_finding) %&gt;%
   dplyr::mutate(clinvar_variant_link = glue::glue(&quot;https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/&quot;))</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<pre><code>## Warning in left_join(., plp[, c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;chr&quot;, : Each row in `x` is expected to match at most 1 row in `y`.
-## ℹ Row 1 of `x` matches multiple rows.
-## ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to silence this warning.</code></pre>
-<pre><code>## Joining with `by = join_by(gene_symbol_vep)`</code></pre>
+<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
+## Joining with `by = join_by(gene_symbol_vep)`</code></pre>
 <p>Save output</p>
 <pre class="r"><code>write_tsv(plp_predisposition_syndromes,
           file.path(results_dir, &quot;incidental-findings-predisposition-variants.tsv&quot;))</code></pre>
@@ -553,7 +554,7 @@ plp_sv_predisposition_syndromes &lt;- hist %&gt;%
     !str_detect(clinically_reported_syndrome, associated_syndrome) ~ &quot;Yes&quot;,
     TRUE ~ &quot;No&quot;
   )) %&gt;%
-  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, 
          Kids_First_Biospecimen_ID_tumor,
          sample_id_normal, sample_id_tumor,
          plot_group, molecular_subtype, 

@@ -12,32 +12,13 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 
 2. `02-cnv-loh-second-hits.Rmd` identifies patients exhibiting both germline P/LP variation as well as copy number variation (CNV) or loss of heterozygosity (LOH) in the same CPG. 
 
-4.`03-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
+3. `03-assess-somatic-gene-expr.Rmd`; pulls somatic gene expression data from matched tumor RNA-seq, and plots expression z-scores by P/LP status for select CPGs. 
 
-5. `04-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
+4. `04-assess-alternative-splicing.Rmd`; pulls somatic splicing events and PSI values from matched tumor RNA-seq, and identifies alternative splicing events associated with germline CPG P/LP variants. 
 
-5. `input/` directory contains the following files: 
-  - `splice_events_germline_pbta_cpgs_only.tsv.gz`; splice events and PSI values for CPGs in PBTA cohort, filtered from OPC v13 RMATs file
+5. `05-proteomics.Rmd`; pulls proteomics and phosphoproteomics data from CPTAC and HOPE data sets, and identifies differential protein and phosphoprotein expression associated with germline CPG P/LP variants. 
 
-6. `results/` directory contains the following files: 
-  - `pbta-oncokb-oncogenic-maf.tsv`; subset of oncoKB results containing only oncogenic/likely oncogenic SNVs. 
-  - `germline-somatic-two-gene-hits.tsv`; table of patients possessing germline P/LP variant and oncogenic/likely oncogenic SNV in same CPG. 
-  - `germline-somatic-collapsed-by-gene.tsv`; summary of oncogenic/likely oncogenic SNVs in CPGs by patient and matched tumor sample. 
-  - `germline-somatic-cnv-loh.tsv`; summary of CNV and LOH status by patients and CPG with germline P/LP variant. 
-  - `germline-somatic-expr.tsv`; summary of expression z-scores for patient and CPG harboring a germline P/LP variant. 
-  - `gene-expr-diff-plp-vs-no-plp.tsv`; mean expression z-scores by gene and germline P/LP status with wilcoxon rank p-values assessing significance of difference.  
-  - `splicing_events_plp_variants.tsv`; splicing events and PSI values, z-scores, and differences relative to other hist group samples in in CPG P/LP carriers. 
-  
-7. `plots/` directory contains the following files: 
-  - `cpg-LOH-plp-vs-noplp.pdf`; box plots of LOH scores by P/LP status for select CPGs.
-  - `hist-gene-LOH-plp-vs-noplp.pdf`; box plots of LOH scores by P/LP status for select CPGs within histologies.
-  - `cpg-LOH-plp-vs-noplp.pdf`; box plots of LOH score by germline P/LP status for select CPGs.
-  - `hist-gene-LOH-plp-vs-noplp.pdf` box plots of LOH score by germline P/LP status for select CPGs within histologies. 
-  - `cpg-sig-expr-diff-plp-vs-noplp.pdf`; box plots of expression z-scores by germline P/LP status for select CPGs. 
-  - `hist-gene-expr-plp-vs-noplp.pdf`; box plots of expression z-scores by germline P/LP status for select CPGs within histologies.
-  - `*-expr-by-plp-onco-snv-status.pdf`; gene-specific box plots of expression z-scores by germline P/LP status and somatic oncogenic/likely oncogenic SNV status. 
-  - `PSI-diff-by-variant-dist.pdf`; scatter plot of PSI difference by P/LP variant distance to splice region. 
-
+6. `06-merge-somatic-alterations.Rmd`; merges all P/LP variant and same-gene somatic alteration data for P/LP carriers
 
 ##Analysis module directory structure
 
@@ -51,42 +32,65 @@ This module queries SNV, CNV, LOH, and gene expression data from matched tumor s
 ├── 03-assess-somatic-gene-expr.nb.html
 ├── 04-assess-alternative-splicing.Rmd
 ├── 04-assess-alternative-splicing.nb.html
+├── 05-proteomics.Rmd
+├── 05-proteomics.nb.html
+├── 06-merge-somatic-alterations.Rmd
+├── 06-merge-somatic-alterations.nb.html
 ├── README.md
 ├── input
-│   ├── PBTA-838-germline_plp-2023-02-05.tsv
+│   ├── cptac-protein-imputed-prot-expression-abundance.tsv.gz
+│   ├── hope-protein-imputed-phospho-expression-abundance.tsv.gz
+│   ├── hope-protein-imputed-prot-expression-abundance.tsv.gz
+│   ├── pbta-plp-all-loh.tsv
 │   └── splice_events_germline_pbta_cpgs_only.tsv.gz
 ├── plots
+│   ├── APC-expr-by-plp-onco-snv-status.pdf
 │   ├── ATM-expr-by-plp-onco-snv-status.pdf
 │   ├── CHEK2-expr-by-plp-onco-snv-status.pdf
 │   ├── ERCC2-expr-by-plp-onco-snv-status.pdf
-│   ├── ERCC5-expr-by-plp-onco-snv-status.pdf
-│   ├── FAH-expr-by-plp-onco-snv-status.pdf
 │   ├── FANCA-expr-by-plp-onco-snv-status.pdf
-│   ├── GJB2-expr-by-plp-onco-snv-status.pdf
 │   ├── MUTYH-expr-by-plp-onco-snv-status.pdf
 │   ├── NF1-expr-by-plp-onco-snv-status.pdf
 │   ├── NF2-expr-by-plp-onco-snv-status.pdf
 │   ├── PMS2-expr-by-plp-onco-snv-status.pdf
 │   ├── PSI-diff-by-variant-dist.pdf
-│   ├── PTCH1-expr-by-plp-onco-snv-status.pdf
 │   ├── RAD50-expr-by-plp-onco-snv-status.pdf
-│   ├── RAD51D-expr-by-plp-onco-snv-status.pdf
 │   ├── RECQL4-expr-by-plp-onco-snv-status.pdf
 │   ├── TP53-expr-by-plp-onco-snv-status.pdf
 │   ├── TSC1-expr-by-plp-onco-snv-status.pdf
 │   ├── TSC2-expr-by-plp-onco-snv-status.pdf
 │   ├── cpg-LOH-plp-vs-noplp.pdf
 │   ├── cpg-sig-expr-diff-plp-vs-noplp.pdf
+│   ├── diff-psi-splice-candidates.pdf
 │   ├── hist-gene-LOH-plp-vs-noplp.pdf
-│   └── hist-gene-expr-plp-vs-noplp.pdf
+│   ├── hist-gene-expr-plp-vs-noplp.pdf
+│   ├── skipped-exon-psi-splice-plp-vs-nonsplice.pdf
+│   └── tumor-vaf-vs-germline-vaf.pdf
 ├── results
+│   ├── candidate_plp_associated_splice_events.tsv
+│   ├── candidate_sv_plp_associated_splice_events.tsv
+│   ├── cptac-hope-cpg-proteomics-zscores.tsv
 │   ├── gene-expr-diff-plp-vs-no-plp.tsv
-│   ├── germline-somatic-cnv-loh-expr.tsv
-│   ├── germline-somatic-cnv-loh.tsv
+│   ├── germline-primary-plus-tumor-histologies-proteomics.tsv
+│   ├── germline-somatic-cnv-loh-cpgs.tsv
+│   ├── germline-somatic-cnv-loh-somatic-non-cpgs.tsv
 │   ├── germline-somatic-collapsed-by-gene.tsv
-│   ├── germline-somatic-expr.tsv
+│   ├── germline-somatic-expr-cpgs.tsv
+│   ├── germline-somatic-expr-somatic-non-cpgs.tsv
+│   ├── germline-somatic-proteomics-cpgs.tsv
+│   ├── germline-somatic-proteomics-phosphoproteomics-cpgs.tsv
 │   ├── germline-somatic-two-gene-hits.tsv
+│   ├── germline-sv-somatic-cnv-loh-somatic-cpgs.tsv
+│   ├── germline-sv-somatic-expr-cpgs.tsv
+│   ├── germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv
+│   ├── germline-sv-somatic-two-gene-hits.tsv
+│   ├── hope-cpg-phosphoproteomics-zscores.tsv
+│   ├── pbta-germline-838-gene-expr-zscores.tsv
 │   ├── pbta-oncokb-oncogenic-maf.tsv
-│   └── splicing_events_plp_variants.tsv
+│   ├── plp_snv_indel_somatic_alterations_merged.tsv
+│   ├── plp_sv_somatic_alterations_merged.tsv
+│   ├── splicing_events_plp_variants.tsv
+│   ├── splicing_events_snv_plp_variants.tsv
+│   └── splicing_events_sv_plp_variants.tsv
 └── run_module.sh
 ```

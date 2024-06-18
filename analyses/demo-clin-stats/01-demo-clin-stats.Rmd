@@ -21,6 +21,8 @@ Load packages and set directory paths
 ```{r}
 library(tidyverse)
 library(openxlsx)
+library(ComplexHeatmap)
+library(circlize)
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 
@@ -28,6 +30,7 @@ data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "demo-clin-stats")
 input_dir <- file.path(analysis_dir, "input")
 results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
 
 # If the input and results directories do not exist, create it
 if (!dir.exists(results_dir)) {
@@ -36,15 +39,20 @@ if (!dir.exists(results_dir)) {
 
 # Load function script for generating summary tables
 source(file.path(analysis_dir, "util", "summary_functions.R"))
+source(file.path(analysis_dir, "util", "heatmap_function.R"))
 ```
 
 Set file paths
 
 ```{r set paths}
-cbtn_histologies_file <- file.path(root_dir, "analyses", "survival", "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
+cbtn_histologies_file <- file.path(root_dir, "analyses", 
+                                   "collapse-tumor-histologies", "results", 
+                                   "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 all_plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_sv_file <- file.path(data_dir, "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
@@ -52,9 +60,13 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 Wrangle data
 
 ```{r}
-hist <- read_tsv(cbtn_histologies_file)
+hist <- read_tsv(cbtn_histologies_file) %>%
+  dplyr::mutate(OS_years = OS_days/365.25,
+                EFS_years = EFS_days/365.25)
 
 all_plp <- read_tsv(all_plp_file)
+
+plp_sv <- read_tsv(plp_sv_file)
 
 cpgs <- read_lines(cpg_file)
 
@@ -69,6 +81,8 @@ Merge sample metadata
 cpg_bs <- all_plp %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   filter(gene_symbol_vep %in% cpgs) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal) %>%
+  bind_rows(plp_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal)) %>%
   pull(Kids_First_Biospecimen_ID_normal)
 
 # Append CPG PLP status and TMB data to `hist`
@@ -315,11 +329,26 @@ write.xlsx(pvalue_list,
            file.path(results_dir, "demo-clin-pvalues-by-histology.xlsx"),
            overwrite = TRUE,
            keepNA = TRUE,
-           rowNames = TRUE)
+           rowNames = FALSE)
+```
+
+Plot tumor histology enrichment for P/LP carriers
+
+```{r}
+ht_group <- plot_enr(hist, "plot_group", "cpgPLP_status",
+                     var1_names = sort(unique(hist$plot_group)), 
+                     var2_names = unique(hist$cpgPLP_status),
+                     padjust = FALSE)
+
+pdf(file.path(plot_dir, "plot_group_plp_carrier_enr_heatmap.pdf"),
+    width = 5, height = 8)
+
+draw(ht_group)
+
+dev.off()
 ```
 
 
 ```{r echo=TRUE}
 sessionInfo()
-
 ```
