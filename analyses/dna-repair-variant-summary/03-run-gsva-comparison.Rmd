@@ -32,7 +32,6 @@ source(file.path(root_dir, "figures", "theme.R"))
 Set file paths
 
 ```{r set file paths}
-
 cohort_histologies_file <- file.path(root_dir, 'analyses', 'collapse-tumor-histologies', 'results',"germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 pbta_histologies_file <- file.path(data_dir,"histologies.tsv")
@@ -43,7 +42,6 @@ gsva_file <- file.path(input_dir, 'pbta-hallmark-gsva-scores.tsv')
 kegg_file <- file.path(analysis_dir, "results", "pbta-KEGG-gsva-scores.tsv")
 
 maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")
-
 ```
 
 Read in CBTN and PBTA histologies, gsva results, maf, and cpg files. Filter histologies file for high-grade glioma only

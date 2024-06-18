@@ -55,12 +55,9 @@ maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
 
 ```{r read files}
-
 hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
-  # filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
   filter(grepl("Other high-grade glioma", plot_group),
          grepl("wildtype", molecular_subtype))
-
 
 plp <- read_tsv(plp_file, show_col_types = FALSE)
 
@@ -71,7 +68,6 @@ tmb <- read_tsv(tmb_file,show_col_types = FALSE) %>%
 
 maf <- data.table::fread(maf_file, data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor)
-
 ```
 
 
