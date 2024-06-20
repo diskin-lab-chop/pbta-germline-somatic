@@ -19,6 +19,7 @@ Determine the effect of germline DNA repair gene PLP variants on overall and eve
 #### Packages and functions
 
 Load packages, set directory paths and call setup script
+
 ```{r}
 library(tidyverse)
 library(survival)
@@ -39,14 +40,14 @@ input_dir <- file.path(root_dir, "analyses", "survival", "results")
 ```
 
 Set file paths
+
 ```{r set paths}
 cbtn_histologies_file <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
 plp_file <- file.path(data_dir, 
-                      "pbta-germline-plp-variants-autogvp-abridged.tsv")
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir, 
                          "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -57,6 +58,7 @@ km_brca_output_pdf <- file.path(plots_dir, "BRCA_km_survival_hgg.pdf")
 ```
 
 Import data
+
 ```{r data wrangling}
 hist <- read_tsv(cbtn_histologies_file)
 
@@ -68,8 +70,8 @@ cpgs <- read_lines(cpg_file)
 ```
 
 Load mismatch repair (MMR) gene list and identify samples with germline P-LP variants in these genes
-```{r}
 
+```{r}
 mmr_genes <- read_lines(file.path(root_dir, "analyses", "dna-repair-variant-summary", "input", "Knijnenburg_paper", "mismatch_repair.txt"))
 
 mmr_bs <- plp %>%
@@ -81,14 +83,14 @@ mmr_bs_sv <- plp_sv %>%
   filter(Hugo_Symbol_cpg %in% mmr_genes) %>%
       pull(Kids_First_Biospecimen_ID_normal) %>%
       unique()
-  
-  
 ```
 
 Subset histologies for HGG tumors and create column indicating presence/absence of MMR germline variant 
+
 ```{r}
 hgg_hist <- hist %>%
-  filter(plot_group %in% c("Other high-grade glioma")) %>%
+  filter(plot_group %in% c("Other high-grade glioma"),
+         grepl("wildtype", molecular_subtype)) %>%
   mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
   mutate(MMR_variant = case_when(
@@ -96,18 +98,16 @@ hgg_hist <- hist %>%
     TRUE ~ "MMR WT"
   ))  %>%
   mutate(mol_sub_group = factor(mol_sub_group,
-                                c("HGG, H3 WT", "DHG, H3 G35",
-                                  "HGG, IDH", "IHG"))) %>%
+                                c("HGG, H3 wildtype", "HGG, H3 wildtype, TP53"))) %>%
   mutate(MMR_variant = factor(MMR_variant,
                                    c("MMR WT",
                                      "MMR PLP")))
 ```
 
 Print N per MMR variant status group
+
 ```{r}
-
 table(hgg_hist$MMR_variant)
-
 ```
   
 Run Kaplain meier tests for survival by MMR germline variant status and plot curves
@@ -143,6 +143,7 @@ ggsave(km_mmr_output_pdf, km_plot,
 
 
 Define vector of BRCA/BRCA-interacting genes
+
 ```{r}
 brca_bs <- plp %>%
       dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", gene_symbol_vep) & !grepl("RAD51C", gene_symbol_vep)) %>%
@@ -153,10 +154,10 @@ brca_bs_sv <- plp_sv %>%
       dplyr::filter(grepl("BRCA|BARD1|BRIP1|ATM|CHEK2|RAD51|PALB2", Hugo_Symbol_cpg) & !grepl("RAD51C", Hugo_Symbol_cpg)) %>%
       pull(Kids_First_Biospecimen_ID_normal) %>%
       unique()
-
 ```
 
 Create column indicating presence/absence of BRCA variant
+
 ```{r}
 hgg_hist <- hgg_hist %>%
   mutate(brca_variant = case_when(
@@ -170,12 +171,11 @@ hgg_hist <- hgg_hist %>%
 
 Print N per BRCA variant status group
 ```{r}
-
 table(hgg_hist$brca_variant)
-
 ```
   
 Run KM survival models by BRCA variant status, and plot results
+
 ```{r}
 kap_os <- survival_analysis(
   metadata  = hgg_hist,
@@ -208,10 +208,10 @@ ggsave(km_brca_output_pdf, km_plot,
 Run cox proportional hazards models for HGG OS and EFS, including covariates `mol_sub_group`, `age_at_diagnosis_years`, `MMR_variant`, and `brca_variant`
 
 Interaction OS model: 
-```{r coxph int OS repair plp}  
 
+```{r coxph int OS repair plp}  
 int_os_model <- fit_save_model(hgg_hist,
-                             "age_at_diagnosis_years+mol_sub_group*MMR_variant+mol_sub_group*brca_variant",
+                             "age_at_diagnosis_years+molecular_subtype*MMR_variant+molecular_subtype*brca_variant",
                                  file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS"),
                                  "multivariate",
                                  years_col = "OS_years",
@@ -227,9 +227,10 @@ ggsave(file.path(plots_dir, "forest_hgg_int_OS_subtype_age_repairPLP.pdf"),
 readRDS(file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS"))
 ```
 Additive OS model: 
+
 ```{r coxph add OS repair plp}
 add_os_model <- fit_save_model(hgg_hist,
-                             "mol_sub_group+age_at_diagnosis_years+MMR_variant+brca_variant",
+                             "molecular_subtype+age_at_diagnosis_years+MMR_variant+brca_variant",
                                  file.path(results_dir, "coxph_add_hgg_OS_subtype_age_repairPLP.RDS"),
                                  "multivariate",
                                  years_col = "OS_years",
@@ -246,9 +247,10 @@ readRDS(file.path(results_dir, "coxph_add_hgg_OS_subtype_age_repairPLP.RDS"))
 ```
 
 Interaction EFS model: 
+
 ```{r coxph int EFS repair plp}
 int_efs_model <- fit_save_model(hgg_hist,
-                             "age_at_diagnosis_years+mol_sub_group*MMR_variant+mol_sub_group*brca_variant",
+                             "age_at_diagnosis_years+molecular_subtype*MMR_variant+molecular_subtype*brca_variant",
                              file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_repairPLP.RDS"),
                              "multivariate",
                              years_col = "EFS_years",
@@ -262,13 +264,13 @@ ggsave(file.path(plots_dir, "forest_hgg_int_EFS_subtype_age_repairPLP.pdf"),
        device = "pdf")
 
 readRDS(file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_repairPLP.RDS"))
-
 ```
 
 Additive EFS model: 
+
 ```{r coxph add EFS repair plp}
 add_efs_model <- fit_save_model(hgg_hist,
-                             "mol_sub_group+age_at_diagnosis_years+MMR_variant+brca_variant",
+                             "molecular_subtype+age_at_diagnosis_years+MMR_variant+brca_variant",
                              file.path(results_dir, "coxph_add_hgg_EFS_subtype_age_repairPLP.RDS"),
                              "multivariate",
                              years_col = "EFS_years",
@@ -282,10 +284,9 @@ ggsave(file.path(plots_dir, "forest_hgg_add_EFS_subtype_age_repairPLP.pdf"),
        device = "pdf")
 
 readRDS(file.path(results_dir, "coxph_add_hgg_EFS_subtype_age_repairPLP.RDS"))
-
 ```
+Print session info
 
 ```{r}
 sessionInfo()
-
 ```
