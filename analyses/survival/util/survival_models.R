@@ -531,18 +531,23 @@ plotForest <- function(model) {
   term_labels <- c(numeric_terms, term_labels)
   
   survival_n <- broom::glance(model) %>%
-    select(n, nevent)
+    dplyr::select(n, nevent)
   
   # Convert survival model result to data frame, and exponentiate estimates/CIs to get HRs
-  survival_df <- broom::tidy(model) %>%
+  survival_df <- summary(model)$coefficients %>%
+    as.data.frame() %>%
+    rownames_to_column("term") %>%
+    bind_cols(matrix(summary(model)$conf.int[,3:4], ncol = 2, dimnames = list(NULL, c("lower .95", "upper .95")))) %>%
+    dplyr::filter(!is.nan(`Pr(>|z|)`)) %>%
     
     # Add references
     add_row(term = term_order[!term_order %in% broom::tidy(model)$term], 
-            estimate = 0) %>%
+            `exp(coef)` = 1) %>%
     mutate(
-      conf.low = exp(estimate-std.error),
-      conf.high = exp(estimate+std.error),
-      estimate = exp(estimate),
+      conf.low = `lower .95`,
+      conf.high = `upper .95`,
+      estimate = `exp(coef)`,
+      p.value = `Pr(>|z|)`,
       # significance indicator column for filling points.
       # Note T/F these are strings for type compatibility with "REF"
       significant = case_when(p.value <= 0.05 ~ "TRUE", 
@@ -553,7 +558,7 @@ plotForest <- function(model) {
                     levels = term_order,
                     labels = term_labels)
     ) %>%
-    filter(estimate > 1e-7 & estimate < 5000)
+    filter(estimate > 1e-4 & estimate < 1500)
   
   forest_plot <- ggplot(survival_df) +
     aes(x = estimate, y = term, fill = significant
@@ -577,10 +582,12 @@ plotForest <- function(model) {
          subtitle = glue::glue("{event_type}: N = {survival_n$n} with {survival_n$nevent} events")
     ) + 
     # log-scale the x-axis
-    scale_x_log10() +
+    #  scale_x_log10() +
+    scale_x_log10(labels = function(x) format(x, scientific = FALSE)) +
     ggpubr::theme_pubr() + 
     theme(
-      plot.subtitle = element_text(face = "bold")
+      plot.subtitle = element_text(face = "bold"),
+      plot.margin = margin(r=6, unit = "pt")
     ) +
     # grid makes it easier to follow lines
     cowplot::background_grid()
@@ -594,17 +601,19 @@ plotForest <- function(model) {
     mutate(
       # Clean pvalues into labels. 
       p_string = if_else(
-        p.value >= 0.001, 
-        paste0("P = ",round(p.value,3)),
-        "P < 0.001"
+        p.value >= 0.01, 
+        paste0("P = ", format(round(p.value, 2), nsmall = 2)),
+        "P < 0.01"
       ),
-      # round to 2 digits and create single string with "hr (low-high)"
-      conf.low = signif(conf.low, 2),
-      conf.high = signif(conf.high, 2),
-      estimate = signif(estimate, 2),
+      conf.low = format(round(conf.low, 2), nsmall = 2),
+      conf.high = format(round(conf.high, 2), nsmall = 2),
+      estimate = format(round(estimate, 2), nsmall = 2),
       hr_ci = glue::glue("{estimate} ({conf.low} - {conf.high})")
     ) %>%
-    select(term, hr_ci, p_string) %>%
+    dplyr::mutate(hr_ci = str_replace_all(hr_ci, " - ", "-"),
+                  hr_ci = str_replace_all(hr_ci, "  ", ""),
+                  hr_ci = str_replace_all(hr_ci, "- ", "-")) %>%
+    dplyr::select(term, hr_ci, p_string) %>%
     # this throws a warning but it's ok
     # format tibble for plotting
     gather(hr_ci:p_string, key = "name", value = "value") %>%
@@ -613,17 +622,13 @@ plotForest <- function(model) {
   
   labels_panel <- ggplot(survival_df_spread) +
     aes(x = name, y = term, label = value) + 
-    geom_text(hjust = 0, size = 3) +
-    labs(
-      # hack!
-      subtitle = paste0("               ",
-                        "HR (95% CI)        P-value")
-    ) +
+    geom_text(hjust = 0, size = 3,
+              nudge_x = -0.5) +
     ggpubr::theme_pubr() + 
     # remove axes.
     theme(
       axis.title.x = element_blank(),
-      axis.text.x = element_blank(),
+      axis.text.x = element_text(face = "bold"),
       axis.ticks.x = element_blank(),
       axis.line.x = element_blank(),
       axis.title.y = element_blank(),
@@ -631,11 +636,15 @@ plotForest <- function(model) {
       axis.ticks.y = element_blank(),
       axis.line.y = element_blank(),
       # -26 is as low as we can go before plot starts to get coverd
-      plot.margin = margin(6, 0, 36, -25, unit = "pt"),
-      plot.subtitle = element_text(face = "bold")
-    ) 
+      plot.margin = margin(6, 0, 6, 0, unit = "pt"),
+      #  plot.subtitle = element_text(face = "bold")
+    ) +
+    scale_x_discrete(labels = c("      HR (95% CI)            ", 
+                                "P-value              "),
+                     position = "top")
   
-  forest_panels <- cowplot::plot_grid(forest_plot, labels_panel, nrow = 1, rel_widths = c(1,0.5), scale = 0.95)
+  forest_panels <- cowplot::plot_grid(forest_plot, labels_panel, nrow = 1, rel_widths = c(1,0.5), 
+                                      scale = 1, align = "h", hjust = 0, ncol = 2)
   
   print(forest_panels)
 }
