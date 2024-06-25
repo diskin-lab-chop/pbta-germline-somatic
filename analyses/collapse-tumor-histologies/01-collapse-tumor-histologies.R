@@ -14,8 +14,8 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
-# load v12 OpenPedCan histologies file + additional samples
-opc_hist <- read_tsv(file.path(input_dir, "histologies.tsv"), guess_max = 100000) %>%
+# load v15 OpenPedCan histologies file + additional samples
+opc_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000) %>%
   filter(cohort == "PBTA") %>%
   # update choroid plexus from benign to tumor category
   mutate(broad_histology = case_when(pathology_diagnosis == "Choroid plexus papilloma" ~ "Choroid plexus tumor",
@@ -61,18 +61,18 @@ opc_hist <- read_tsv(file.path(input_dir, "histologies.tsv"), guess_max = 100000
          
   )
 
-# pull cell line info for PT_C2D4JXS1, which has no tumor WGS
-BS_AFBPM6CN <- opc_hist %>%
-  dplyr::filter(Kids_First_Biospecimen_ID == "BS_AFBPM6CN") %>%
-  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID)
+# pull tumor BS IDs that are not included in independent specimens
+tumors_to_add <- opc_hist %>%
+  dplyr::filter(Kids_First_Biospecimen_ID %in% c("BS_A70G7S2W", "BS_YETTZ1NC")) %>%
+  dplyr::select(Kids_First_Biospecimen_ID)
 
 # select all normal BS_ids of interest
 germline_ids <- read_lines(file.path(input_dir, "samples_of_interest.txt"))
 
 # add independent specimen file to get primary plus tumor bs ids
 tumor_ids <- read_tsv(file.path(data_dir, "independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv")) %>%
-  bind_rows(BS_AFBPM6CN) %>%
   dplyr::select(Kids_First_Biospecimen_ID) %>%
+  bind_rows(tumors_to_add) %>%
   inner_join(opc_hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID", "sample_id", "tumor_descriptor", "pathology_diagnosis", "pathology_free_text_diagnosis", "cancer_group", "broad_histology", "molecular_subtype")]) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
                 sample_id_tumor = sample_id)
@@ -121,18 +121,25 @@ plot_groups <- combined_map %>%
   arrange(n) %>%
   write_tsv(file.path(results_dir, "plot_group_counts.tsv"))
 
+pts_nos_review <- read_tsv(file.path(input_dir, "condition_NOS_pts.tsv"))
+
 # finally, add relevant clinical information to new histologies and plot group file
 tumor_clin_meta <- opc_hist %>%
   dplyr::filter(Kids_First_Biospecimen_ID %in% tumor_ids$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::select(sample_id, tumor_descriptor, race, ethnicity, cancer_predispositions, age_at_diagnosis_days, age_last_update_days, OS_days, OS_status, 
          EFS_days, EFS_event_type, extent_of_tumor_resection, CNS_region, molecular_subtype) %>%
+  distinct() %>%
   dplyr::rename(sample_id_tumor = sample_id) %>%
-  # remove NF-1 predisposition from participant PT_3CHB9PK5, and add reported CMMRD diagnosis 
+  # Determine if patients with NOS predisposition have defined syndrome after path review
+  left_join(pts_nos_review %>% dplyr::select(sample_id_tumor,
+                                             predisposition_path_report)) %>%
+  # Add syndrome as `cancer_predispositions` value when identified in path report 
   dplyr::mutate(cancer_predispositions = case_when(
+    grepl("NOS", cancer_predispositions) & !is.na(predisposition_path_report) ~  predisposition_path_report,
     sample_id_tumor == "7316-515" ~ "Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6)",
     TRUE ~ cancer_predispositions
-    
-  ))
+  )) %>%
+  dplyr::select(-predisposition_path_report)
 
 # Add ancestry prediction results from Somalier
 ancestry <- read_tsv(file.path(input_dir, "DEI_CBTN-PNOC_rerun.somalier-ancestry.tsv")) %>%
