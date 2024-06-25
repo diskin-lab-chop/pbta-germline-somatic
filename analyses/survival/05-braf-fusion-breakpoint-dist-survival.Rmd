@@ -83,6 +83,18 @@ plp <- read_tsv(plp_file) %>%
 plp_sv <- read_tsv(plp_sv_file)
 ```
 
+Obtain all BS IDs of P/LP carriers with BRAF fusion-positive LGG
+
+```{r}
+plp_ids <- unique(c(plp$Kids_First_Biospecimen_ID_normal,
+                    plp_sv$Kids_First_Biospecimen_ID_normal))
+
+braf_plp <- hist %>%
+  dplyr::filter(plot_group == "Low-grade glioma" & grepl("-BRAF", molecular_subtype),
+                Kids_First_Biospecimen_ID_normal %in% plp_ids) %>%
+  pull(Kids_First_Participant_ID)
+```
+
 Load braf fusions file, and add column indicating if patient is CPG P/LP carrier
 
 ```{r}
@@ -151,10 +163,10 @@ dev.off()
 Assess distribution of diagnoses among patients with BRAF fusion LGG by P/LP carrier status
 
 ```{r}
-diagnosis_enr <- plot_enr(fusions, 
+diagnosis_enr <- plot_enr(fusions[!is.na(fusions$diagnosis),], 
                        var1 = "diagnosis", 
                        var2 = "cpg_plp",
-                       var1_names = unique(fusions$diagnosis), 
+                       var1_names = unique(fusions$diagnosis[!is.na(fusions$diagnosis)]), 
                        var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
@@ -208,7 +220,7 @@ kap_1509_efs <- survival_analysis(
   status_col = "EFS_status"
 )
 
-km_1509_plot <- plotKM(model = kap_efs,
+km_1509_plot <- plotKM(model = kap_1509_efs,
                   variable = "cpg_plp",
                   combined = F, 
                   title = "LGG, 15:09 KIAA1549::BRAF fusion")
@@ -242,7 +254,7 @@ kap_1609_efs <- survival_analysis(
   status_col = "EFS_status"
 )
 
-km_1609_plot <- plotKM(model = kap_efs,
+km_1609_plot <- plotKM(model = kap_1609_efs,
                   variable = "cpg_plp",
                   combined = F, 
                   title = "LGG, 16:09 KIAA1549::BRAF fusion")
