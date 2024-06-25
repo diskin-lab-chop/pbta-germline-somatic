@@ -35,7 +35,7 @@ hist_file <- file.path(root_dir,
                  "results",
                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-sv_plp_file <- file.path(input_dir, "pbta_germline_svs.tsv")
+sv_plp_file <- file.path(data_dir, "pbta_germline_svs.tsv")
 
 cancer_list_file <- file.path(root_dir, "analyses",
                               "variant-distribution",
