@@ -114,7 +114,7 @@ table(fusions$breakpoint_group, fusions$cpg_plp)
 
 Determine if breakpoint groups are enriched among P/LP carriers
 
-````{r}
+```{r}
 fusion_enr <- plot_enr(fusions, 
                        var1 = "breakpoint_group", 
                        var2 = "cpg_plp",
