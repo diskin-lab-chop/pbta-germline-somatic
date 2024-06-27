@@ -79,30 +79,6 @@ plp <- read_tsv(file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.t
     TRUE ~ variant_classification_vep
   ))
 
-cancer_gene_df <- read_tsv(file.path(input_dir, "cancerGeneList.tsv"))
-
-po_genes <- cancer_gene_df %>%
-  dplyr::filter(`Is Oncogene` == "Yes") %>%
-  pull(`Hugo Symbol`) 
-
-ts_genes <- cancer_gene_df %>%
-  dplyr::filter(`Is Tumor Suppressor Gene` == "Yes") %>%
-  pull(`Hugo Symbol`)
-
-plp <- plp %>%
-  dplyr::mutate(gene_class = case_when(
-    gene_symbol_vep %in% po_genes & gene_symbol_vep %in% ts_genes ~ "Both",
-    gene_symbol_vep %in% po_genes ~ "Proto-oncogene",
-    gene_symbol_vep %in% ts_genes ~ "Tumor suppressor gene",
-    TRUE ~ "Unknown"
-  )) %>%
-  dplyr::mutate(gene_symbol_stylized = case_when(
-    gene_class == "Both" ~ glue::glue("<b><i>{gene_symbol_vep}</i></b>"),
-    gene_class == "Proto-oncogene" ~ glue::glue("<b>{gene_symbol_vep}</b>"),
-    gene_class == "Tumor suppressor gene" ~ glue::glue("<i>{gene_symbol_vep}</i>"),
-    TRUE ~ gene_symbol_vep
-  ))
-
 # how many CPG have P/LP?
 plp_cpg <- plp %>%
   filter(gene_symbol_vep %in% cpg)
@@ -165,21 +141,20 @@ for (each in names(plplists)){
     # add back histology info
     left_join(n_per_hist) %>%
     left_join(plot_df[,c("plot_group", "plot_group_hex")]) %>%
-    left_join(plot_df[,c("gene_symbol_vep", "gene_class", "gene_symbol_stylized")]) %>%
+    left_join(plot_df[,c("gene_symbol_vep")]) %>%
     distinct()
 
   # palette
   plot_group_palette <- n_per_gene$plot_group_hex
   names(plot_group_palette) <- n_per_gene$plot_group
 
-  dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_stylized, plot_order), y = hist_n, fill = plot_group)) +
+  dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = hist_n, fill = plot_group)) +
     geom_col(col = "black", size = 0.4) +
     scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
     ylab("Number of patients with P/LP variants") +
     xlab(x_axis_title) +
     theme_Publication() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-    theme(axis.text.x = ggtext::element_markdown()) +
     ylim(0,20) +
     labs(fill = "Tumor diagnosis")
   
@@ -236,20 +211,19 @@ for (each in names(plplists)){
     # add back variant classification info
     left_join(n_per_vc) %>%
     left_join(vc_colors) %>%
-    left_join(plot_df[,c("gene_symbol_vep", "gene_class", "gene_symbol_stylized")]) %>%
+    left_join(plot_df[,c("gene_symbol_vep")]) %>%
     distinct()
 
   vc_palette <- n_per_gene$vc_hex
   names(vc_palette) <- n_per_gene$variant_classification_vep
 
-  dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_stylized, plot_order), y = vc_n, fill = variant_classification_vep)) +
+  dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = vc_n, fill = variant_classification_vep)) +
     geom_col(col = "black", size = 0.4) +
     scale_fill_manual(values = vc_palette, breaks = sort(names(vc_palette))) + 
     ylab("Number of patients with P/LP variants") +
     xlab(x_axis_title) +
     theme_Publication() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-    theme(axis.text.x = ggtext::element_markdown()) +
     ylim(0,20) +
     labs(fill = "Variant Classification")
 
