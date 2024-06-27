@@ -45,31 +45,8 @@ cancer_list_file <- file.path(root_dir, "analyses",
 Load data
 
 ```{r}
-cancer_gene_df <- read_tsv(cancer_list_file)
-
-# define proto-oncogenes and ts genes
-po_genes <- cancer_gene_df %>%
-  dplyr::filter(`Is Oncogene` == "Yes") %>%
-  pull(`Hugo Symbol`) 
-
-ts_genes <- cancer_gene_df %>%
-  dplyr::filter(`Is Tumor Suppressor Gene` == "Yes") %>%
-  pull(`Hugo Symbol`)
-
-# load SV file and add columns indicating if proto-oncogene/ts gene
-sv_plp <- read_tsv(sv_plp_file) %>%
-  dplyr::mutate(gene_class = case_when(
-    Hugo_Symbol_cpg %in% po_genes & Hugo_Symbol_cpg %in% ts_genes ~ "Both",
-    Hugo_Symbol_cpg %in% po_genes ~ "Proto-oncogene",
-    Hugo_Symbol_cpg %in% ts_genes ~ "Tumor suppressor gene",
-    TRUE ~ "Unknown"
-  )) %>%
-  dplyr::mutate(gene_symbol_stylized = case_when(
-    gene_class == "Both" ~ glue::glue("<b><i>{Hugo_Symbol_cpg}</i></b>"),
-    gene_class == "Proto-oncogene" ~ glue::glue("<b>{Hugo_Symbol_cpg}</b>"),
-    gene_class == "Tumor suppressor gene" ~ glue::glue("<i>{Hugo_Symbol_cpg}</i>"),
-    TRUE ~ Hugo_Symbol_cpg
-  ))
+# load SV file
+sv_plp <- read_tsv(sv_plp_file)
 
 hist <- read_tsv(hist_file)
 ```
@@ -107,14 +84,14 @@ n_per_gene <- sv_plp %>%
   # add back histology info
   left_join(n_per_hist) %>%
   left_join(hist[,c("plot_group", "plot_group_hex")]) %>%
-  left_join(sv_plp[,c("Hugo_Symbol_cpg", "gene_symbol_stylized")]) %>%
+  left_join(sv_plp[,c("Hugo_Symbol_cpg")]) %>%
   distinct()
 
   # palette
 plot_group_palette <- n_per_gene$plot_group_hex
 names(plot_group_palette) <- n_per_gene$plot_group
 
-dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_stylized, plot_order), y = hist_n, fill = plot_group, pattern = Type)) +
+dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol_cpg, plot_order), y = hist_n, fill = plot_group, pattern = Type)) +
   geom_col_pattern(
     aes(pattern = Type),
     colour = "black",
@@ -131,7 +108,6 @@ dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_stylized, plo
   xlab("Cancer Predisposition Gene") +
   theme_Publication() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  theme(axis.text.x = ggtext::element_markdown()) +
   ylim(0,5) +
   labs(fill = "Tumor diagnosis", pattern = "SV Type")
 
