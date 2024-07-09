@@ -36,17 +36,19 @@ Define file paths
 ```{r set file paths}
 # germline P-LP calls 
 plp_file <- file.path(data_dir, 
-                      "pbta-germline-plp-variants-autogvp-abridged.tsv")
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
 plp_sv_file <- file.path(root_dir, "analyses", 
                          "germline-sv", "input", 
                          "pbta_germline_svs.tsv")
 
 # add histologies file 
-histologies_file <- file.path(root_dir, "analyses",
-                           "collapse-tumor-histologies",
-                           "input", "histologies.tsv")
-plot_mapping_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies/input/plot-mapping.tsv")
+histologies_file <- file.path(root_dir, "analyses", 
+                                  "collapse-tumor-histologies", "results", 
+                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # cnv file with annotation 
 cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.gz")
@@ -62,36 +64,20 @@ hgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "h
 lgat_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "lgat_goi_list.tsv")
 embryonal_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "embryonal-tumor_goi_list.tsv")
 other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "other_goi_list.tsv")
-
 ```
 
 Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add histology
 
 ```{r get all matched tumors}
-
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  bind_rows(read_tsv(plp_lowVAF_file))
 
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
 
-plot_mapping <- read_tsv(plot_mapping_file)
-
-hist <- read_tsv(histologies_file) %>%
-  left_join(plot_mapping[,c("cancer_group", "plot_group")])
-
-hist_tumor <- hist %>%
-  dplyr::filter(sample_type == "Tumor" & experimental_strategy %in% c("WGS", "WXS")) %>%
-  dplyr::rename("Kids_First_Biospecimen_ID_tumor" = Kids_First_Biospecimen_ID)
-
-hist_normal <- hist %>%
-  dplyr::filter(sample_type == "Normal") %>%
-  dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
-
-hist_cohort <- read_tsv(file.path(root_dir, "analyses", 
-                                  "collapse-tumor-histologies", "results", 
-                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
+hist <- read_tsv(histologies_file)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
@@ -104,9 +90,10 @@ somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_driver
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
   filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
-  left_join(hist_normal[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal")]) %>%
-  left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_tumor",
-                    "plot_group", "molecular_subtype")], by = "Kids_First_Participant_ID") %>%
+  left_join(hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal",
+                          "Kids_First_Biospecimen_ID_tumor",
+                          "plot_group", "molecular_subtype")], 
+            by = "Kids_First_Biospecimen_ID_normal") %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_tumor, 
                 plot_group, molecular_subtype,
@@ -117,9 +104,10 @@ germline <- germline %>%
 
 germline_sv <- germline_sv %>%
   filter(Hugo_Symbol %in% cpgs) %>%
-  left_join(hist_normal[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal")]) %>%
-  left_join(hist_tumor[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_tumor",
-                    "plot_group", "molecular_subtype")], by = "Kids_First_Participant_ID") %>%
+  left_join(hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal",
+                          "Kids_First_Biospecimen_ID_tumor",
+                          "plot_group", "molecular_subtype")], 
+            by = "Kids_First_Biospecimen_ID_normal") %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_tumor, 
                 plot_group, molecular_subtype,
@@ -127,12 +115,11 @@ germline_sv <- germline_sv %>%
                 Chromosome, Start, End, Length,
                 Type, Classification) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, .keep_all = T)
-
 ```
 
 Load CNV files, and identify patients with germline PLP variant and somatic CNV in same CPG
-```{r get cnv data}
 
+```{r get cnv data}
 # filter cnv to patients in cohort and CPG calls only
 cnv_auto <- read_tsv(cnv_auto_file) %>%
   dplyr::filter(biospecimen_id %in% germline$Kids_First_Biospecimen_ID_tumor & gene_symbol %in% c(cpgs, somatic_drivers)) %>%
@@ -157,7 +144,7 @@ cnv_xy <- read_tsv(cnv_xy_file) %>%
 # merge cnv tables
 cnv <- cnv_auto %>%
   bind_rows(cnv_xy) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor)
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor)
 
 # merge germline SNV and somatic CNV calls by bs and gene id
 germline_somatic_cnvs <- germline %>%
@@ -175,26 +162,53 @@ germline_sv_somatic_cnvs <- germline_sv %>%
     TRUE ~ CNV_status_somatic
   )) %>%
   distinct()
-
 ```
 
 Read in LOH results, and append LOH scores to rows of `germline_somatic_cnvs`
-```{r get variant loh data}
 
+```{r get variant loh data}
 loh <- read_tsv(loh_variant_file) %>%
   dplyr::filter(start %in% germline$start) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = BS_ID,
          Kids_First_Biospecimen_ID_tumor = BS_ID_tumor) %>%
   dplyr::filter(!is.na(proband_tumor_alt_depth),
-                Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor) %>%
-  dplyr::mutate(loh_score = proband_tumor_vaf - 0.5)
+                Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::mutate(loh_score = proband_tumor_vaf - proband_germline_vaf,
+                loh_OR = 0,
+                loh_pvalue = 0) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+           .keep_all = TRUE)
 
-ggplot(loh, aes(x = proband_germline_vaf, y = proband_tumor_vaf,
-                colour = loh_score)) +
+for (i in 1:nrow(loh)){
+  
+  germline_ref_count <- loh$proband_germline_ref_depth[i]
+  germline_alt_count <- loh$proband_germline_alt_depth[i]
+  tumor_ref_count <- loh$proband_tumor_depth[i] - loh$proband_tumor_alt_depth[i]
+  tumor_alt_count <- loh$proband_tumor_alt_depth[i]
+  
+  mat <- matrix(c(germline_ref_count, germline_alt_count,
+                  tumor_ref_count, tumor_alt_count),
+                2,2)
+  
+  loh$loh_OR[i] <- fisher.test(mat)$estimate
+  loh$loh_pvalue[i] <- fisher.test(mat)$p.value
+  
+}
+
+write_tsv(loh, file.path(results_dir,
+                    "pbta-loh-sig-calculated.tsv"))
+
+loh %>%
+  dplyr::mutate(sig_loh = case_when(
+    loh_pvalue < 0.05 ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
+ggplot(aes(x = proband_germline_vaf, y = proband_tumor_vaf,
+                colour = sig_loh)) +
   geom_point() +
   labs(x = "Germline VAF",
-       y = "Tumor VAF", color = "LOH score") +
-  scale_color_gradient(low = "blue", high = "orangered") + 
+       y = "Tumor VAF", color = "Sig LOH") +
+  scale_color_manual(values = c("Yes" = "orangered", "No" = "gray")) + 
   theme_Publication()
 
 ggsave(file.path(plot_dir, "tumor-vaf-vs-germline-vaf.pdf"),
@@ -209,28 +223,25 @@ ggsave(file.path(plot_dir, "tumor-vaf-vs-germline-vaf.pdf"),
 germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
   left_join(loh[,c("Kids_First_Biospecimen_ID_tumor", 
                    "chr", "start", "proband_germline_vaf", "proband_tumor_vaf", 
-                   "loh_score")], 
+                   "loh_score", "loh_OR", "loh_pvalue")], 
             by = c("Kids_First_Biospecimen_ID_tumor", "chr", "start")) %>%
   distinct()
-
 ```
 
 Load gene LOH data and append to `germline_somatic_cnvs_loh`
 ```{r get gene loh data}
-
 loh_gene <- read_tsv(loh_gene_file) %>%
   dplyr::filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   dplyr::rename(gene_LOH = LOH_score) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
          gene_LOH) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor)
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor)
 
 germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
   left_join(loh_gene)
 
 germline_sv_somatic_cnvs_loh_gene <- germline_sv_somatic_cnvs %>%
   left_join(loh_gene)
-
 ```
 
 Save CNV and LOH scores for all samples to output
@@ -250,9 +261,8 @@ germline_sv_somatic_cnvs_loh_gene %>%
 ```
 
 ```{r}
-
 cnv_loh_plot_df <- germline_somatic_cnvs_loh_gene %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor,
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor,
                 Hugo_Symbol %in% cpgs) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, 
                 CNV_status_somatic, loh_score, gene_LOH) %>%
@@ -264,7 +274,7 @@ cnv_loh_plot_df <- germline_somatic_cnvs_loh_gene %>%
                                                  c("gain", "neutral", "loss")))
 
 cnv_loh_plot_df %>%
-  ggplot(aes(x = CNV_status_somatic, y = loh_score,
+  ggplot(aes(x = CNV_status_somatic, y = abs(loh_score),
               fill = CNV_status_somatic)) +
   geom_jitter(shape = 21, width = 0.2, size = 2.5, alpha = 0.85,
               show.legend = FALSE) +
@@ -276,8 +286,8 @@ cnv_loh_plot_df %>%
                                         c("gain", "neutral")),
                      method.args = list(alternative = "greater")) + 
   geom_hline(yintercept = 0.2, linetype = "dashed", color = "gray") + 
-  labs(x = "Germline P/LP variant", y = "variant LOH score", color = "Histology") +
-  ylim(c(-0.5,0.8)) +
+  labs(x = "Germline P/LP variant", y = "abs(variant LOH score)", color = "Histology") +
+  ylim(c(0,0.8)) +
   theme_Publication()
 
   ggsave(file.path(plot_dir, "variant-LOH-by-cnv-status.pdf"),
@@ -303,8 +313,6 @@ cnv_loh_plot_df %>%
 
   ggsave(file.path(plot_dir, "gene-LOH-by-cnv-status.pdf"),
                  width = 6, height = 4)
-
-
 ```
 
 
@@ -317,13 +325,9 @@ germline_all <- germline %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group) %>%
   bind_rows(germline_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group))
 
-hist_cohort <- read_tsv(file.path(root_dir, "analyses", 
-                                  "collapse-tumor-histologies", "results", 
-                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
-
 loh_gene <- loh_gene %>%
   # filter for only tumor IDs in cohort histologies
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
   # add column indicating germline P/LP status for each gene and patient
   dplyr::mutate(is_plp = case_when(
     glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}") %in% glue::glue("{germline_all$Kids_First_Biospecimen_ID_normal}:{germline_all$Hugo_Symbol}") ~ "Yes",
@@ -331,14 +335,13 @@ loh_gene <- loh_gene %>%
   )) %>%
   # append plot_group and hex code for plotting
   left_join(germline_all[,c("Kids_First_Biospecimen_ID_normal", "plot_group")]) %>%
-  left_join(plot_mapping[,c("plot_group", "plot_group_hex")]) %>%
+  left_join(hist[,c("plot_group", "plot_group_hex")]) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, .keep_all = TRUE)
 
 ```
 
 For genes with P/LP variants in >= 4 patients, plot LOH scores by P/LP status 
 ```{r plot LOH by P/LP status}
-
 # Get list of genes with P/LP variants in at least 4 patients
 cpgs_test <- germline_all %>%
   dplyr::filter(Hugo_Symbol %in% cpgs) %>%
@@ -374,7 +377,6 @@ loh_gene %>%
 
   ggsave(file.path(plot_dir, "cpg-LOH-plp-vs-noplp.pdf"),
                  width = 14, height = 7)
-
 ```
 
 Look at LOH score differences for genes within histologies 
@@ -429,5 +431,4 @@ loh_gene %>%
 
 ```{r}
 sessionInfo()
-
 ```
