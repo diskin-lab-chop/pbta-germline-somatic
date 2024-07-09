@@ -176,7 +176,7 @@ loh <- read_tsv(loh_variant_file) %>%
   dplyr::mutate(loh_score = proband_tumor_vaf - proband_germline_vaf,
                 loh_OR = 0,
                 loh_pvalue = 0) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
+  distinct(Kids_First_Biospecimen_ID_normal, gene, Kids_First_Biospecimen_ID_tumor,
            .keep_all = TRUE)
 
 for (i in 1:nrow(loh)){
