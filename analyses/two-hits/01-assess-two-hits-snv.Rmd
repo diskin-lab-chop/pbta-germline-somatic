@@ -41,12 +41,9 @@ histologies_file <- file.path(root_dir,"analyses",
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # remove cell lines from histologies file
-opc_hist_file <- file.path(root_dir, "analyses",
-                           "collapse-tumor-histologies",
-                           "input", "histologies.tsv")
+opc_hist_file <- file.path(data_dir, "histologies.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", "germline-sv",
-                    "input", "pbta_germline_svs.tsv")
+plp_sv_file <- file.path(data_dir, "pbta_germline_svs.tsv")
 
 # goi file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -83,10 +80,12 @@ maf %>%
   count(ONCOGENIC) %>%
   arrange(-n)
 
-# filter known oncogenic/likely oncogenic/resistance hits
 onco_hits <- maf %>%
-  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance")) %>%
-  write_tsv(file.path(results_dir, "pbta-oncokb-oncogenic-maf.tsv"))
+  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance") |
+           Variant_Classification %in% c("Frame_Shift_Del", "Frame_Shift_Ins",
+                                         "Missense_Mutation", "Nonsense_Mutation",
+                                         "Splice_Site", "Translation_Start_Site")) %>%
+  write_tsv(file.path(results_dir, "pbta-oncokb-oncogenic-lof-maf.tsv"))
 
 # prevalence by gene
 onco_hits %>%
