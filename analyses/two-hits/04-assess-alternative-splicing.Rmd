@@ -80,7 +80,7 @@ plp_sv <- read_tsv(plp_sv_file) %>%
 cpgs <- read_lines(cpg_file)
 
 
-opc_hist <- read_tsv(hist_file)
+opc_hist <- read_tsv(histologies_file)
 
 hist <- read_tsv(hist_cohort_file) %>%
   dplyr::rename(Kids_First_Biospecimen_ID = Kids_First_Biospecimen_ID_tumor) %>%
