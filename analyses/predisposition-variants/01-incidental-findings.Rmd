@@ -28,6 +28,7 @@ Set paths for:
 - histologies file, 
 - germline plp variant file
 - predisposition syndromes files
+
 ```{r set paths}
 histologies_file <- file.path(root_dir, 
                            "analyses", 
@@ -38,8 +39,7 @@ histologies_file <- file.path(root_dir,
 plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir, 
                          "pbta_germline_svs.tsv")
 
 predispositions_file <- file.path(input_dir, "predisposition-syndromes.tsv")
@@ -66,7 +66,6 @@ table(hist$cancer_predispositions)
 Subset PLP file to include only variants in CPGs associated with syndromes in `predispositions`, and include `cancer_predispositions` column to indicate whether syndrome is currently reported.
 
 ```{r }
-
 predisposition_plp_bs <- plp %>%
   filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %>%
   pull(Kids_First_Biospecimen_ID_normal)
@@ -93,7 +92,6 @@ plp_predisposition_syndromes <- hist %>%
          clinvar_variant_id,
          associated_syndrome, clinically_reported_syndrome, incidental_finding) %>%
   dplyr::mutate(clinvar_variant_link = glue::glue("https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/"))
-
 ```
 
 Save output
@@ -107,7 +105,6 @@ write_tsv(plp_predisposition_syndromes,
 Generate same file for germline P/LP SVs: 
 
 ```{r}
-
 predisposition_plp_sv_bs <- plp_sv %>%
   filter(Hugo_Symbol_cpg %in% predispositions$gene_symbol_vep) %>%
   pull(Kids_First_Biospecimen_ID_normal)
@@ -132,7 +129,6 @@ plp_sv_predisposition_syndromes <- hist %>%
          Type, Classification, 
          gene_symbol_vep, 
          associated_syndrome, clinically_reported_syndrome, incidental_finding)
-
 ```
 
 Save output

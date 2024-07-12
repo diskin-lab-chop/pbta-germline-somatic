@@ -22,6 +22,7 @@ editor_options:
 ```{r load libraries}
 # load libraries
 library(tidyverse)
+library(maftools)
 
 # define directories 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
