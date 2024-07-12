@@ -41,8 +41,7 @@ plp_file <- file.path(data_dir,
 plp_lowVAF_file <- file.path(data_dir,
                              "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
 # add histologies file 

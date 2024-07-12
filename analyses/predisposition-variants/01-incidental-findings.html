@@ -452,8 +452,7 @@ predisposition syndromes files</p>
 plp_file &lt;- file.path(data_dir, 
                       &quot;pbta-merged-plp-variants-autogvp-abridged.tsv&quot;)
 
-plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                         &quot;germline-sv&quot;, &quot;input&quot;, 
+plp_sv_file &lt;- file.path(data_dir, 
                          &quot;pbta_germline_svs.tsv&quot;)
 
 predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.tsv&quot;)</code></pre>
@@ -479,10 +478,14 @@ histologies file:</p>
 <pre><code>## 
 ## Constitutional Mismatch Repair Deficiency Syndrome (biallelic PMS2, MLH1, MSH2, MSH6) 
 ##                                                                                     1 
-##                                                         Gorlin Syndrome (PTCH1, SUFU) 
+##                                                  Familial Adenomatous Polyposis (APC) 
 ##                                                                                     1 
+##                                                         Gorlin Syndrome (PTCH1, SUFU) 
+##                                                                                     2 
 ##                                                           Li-Fraumeni syndrome (TP53) 
 ##                                                                                     7 
+##                                               Lynch Syndrome (PMS2, MLH1, MSH2, MSH6) 
+##                                                                                     2 
 ##                                                      Neurofibromatosis, Type 1 (NF-1) 
 ##                                                                                    25 
 ##                                                      Neurofibromatosis, Type 2 (NF-2) 
@@ -492,11 +495,13 @@ histologies file:</p>
 ##                                                                          Not Reported 
 ##                                                                                     8 
 ##                                                        Other inherited conditions NOS 
-##                                                                                    16 
+##                                                                                    11 
 ##                                                               Schwannomatosis (LZTR1) 
 ##                                                                                     1 
 ##                                                       Tuberous Sclerosis (TSC1, TSC2) 
-##                                                                                    10</code></pre>
+##                                                                                    10 
+##                                                               Von Hippel-Lindau (VHL) 
+##                                                                                     1</code></pre>
 <p>Subset PLP file to include only variants in CPGs associated with
 syndromes in <code>predispositions</code>, and include
 <code>cancer_predispositions</code> column to indicate whether syndrome
