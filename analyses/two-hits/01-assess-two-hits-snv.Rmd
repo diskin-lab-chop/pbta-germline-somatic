@@ -22,6 +22,7 @@ editor_options:
 ```{r load libraries}
 # load libraries
 library(tidyverse)
+library(maftools)
 
 # define directories 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -41,12 +42,9 @@ histologies_file <- file.path(root_dir,"analyses",
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # remove cell lines from histologies file
-opc_hist_file <- file.path(root_dir, "analyses",
-                           "collapse-tumor-histologies",
-                           "input", "histologies.tsv")
+opc_hist_file <- file.path(data_dir, "histologies.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", "germline-sv",
-                    "input", "pbta_germline_svs.tsv")
+plp_sv_file <- file.path(data_dir, "pbta_germline_svs.tsv")
 
 # goi file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -83,10 +81,12 @@ maf %>%
   count(ONCOGENIC) %>%
   arrange(-n)
 
-# filter known oncogenic/likely oncogenic/resistance hits
 onco_hits <- maf %>%
-  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance")) %>%
-  write_tsv(file.path(results_dir, "pbta-oncokb-oncogenic-maf.tsv"))
+  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance") |
+           Variant_Classification %in% c("Frame_Shift_Del", "Frame_Shift_Ins",
+                                         "Missense_Mutation", "Nonsense_Mutation",
+                                         "Splice_Site", "Translation_Start_Site")) %>%
+  write_tsv(file.path(results_dir, "pbta-oncokb-oncogenic-lof-maf.tsv"))
 
 # prevalence by gene
 onco_hits %>%
@@ -210,6 +210,94 @@ write_tsv(pathway_hits_sv_df,
           file.path(results_dir, "germline-sv-somatic-pathway-second-hits.tsv"))
 ```
 
+Create lollipop plots of germline variants + somatic mutations. First, modify germline variant df to be compatible with maf columns:
+
+```{r}
+germ_maf <- germline_somatic_gene_matches %>%
+  dplyr::select(-HGVSc, -HGVSp, -Variant_Classification) %>%
+  # rename columns to match maf columns
+  dplyr::rename(Chromosome = chr,
+                Start_Position = start,
+                Variant_Classification = variant_classification_vep,
+                Reference_Allele = ref,
+                HGVSc = HGVSc_germ,
+                HGVSp_Short = HGVSp_germ) %>%
+  # modify variant classifications to match those in maf
+  dplyr::mutate(Variant_Classification = case_when(
+    Variant_Classification == "missense_variant" ~ "Missense_Mutation",
+    grepl("stop_gained", Variant_Classification) ~ "Nonsense_Mutation",
+    grepl("splice_acceptor|splice_donor", Variant_Classification) ~ "Splice_Site",
+    Variant_Classification == "frameshift_variant" & nchar(alt) > nchar(Reference_Allele) ~ "Frame_Shift_Ins",
+    Variant_Classification == "frameshift_variant" & nchar(alt) < nchar(Reference_Allele) ~ "Frame_Shift_Del",
+    Variant_Classification == "inframe_deletion" ~ "In_Frame_Del",
+    TRUE ~ Variant_Classification
+  )) %>%
+  # add variant_type column
+  dplyr::mutate(Variant_Type = case_when(
+    nchar(alt) == nchar(Reference_Allele) ~ "SNP",
+    nchar(alt) < nchar(Reference_Allele) ~ "DEL",
+    nchar(alt) > nchar(Reference_Allele) ~ "INS"
+  )) %>%
+  # Replace AA symbols with one-letter symbols
+  dplyr::mutate(HGVSp_Short = str_replace(HGVSp_Short, "Leu", "L"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Val", "V"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Arg", "R"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Ser", "S"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Asn", "N"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Met", "M"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Lys", "K"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Ter", "*"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Gln", "G"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Tyr", "Y"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Phe", "F"),
+                HGVSp_Short = str_replace(HGVSp_Short, "Ala", "A")) %>%
+  dplyr::select(Matched_Norm_Sample_Barcode, Hugo_Symbol,
+                Tumor_Sample_Barcode,
+                Chromosome, Start_Position, Variant_Classification,
+                Reference_Allele, HGVSc, HGVSp_Short, Variant_Type)
+
+merged_maf <- maf %>%
+  bind_rows(germ_maf)
+
+write_tsv(merged_maf, file.path(results_dir, "germ-somatic-merged-maf.tsv"))
+```
+
+Re-load merged_maf as maf object and generate lollipop plots
+
+```{r}
+merged_maf <- maftools::read.maf(file.path(results_dir, "germ-somatic-merged-maf.tsv"))
+
+ids <- germline_somatic_gene_matches %>%
+  distinct(Tumor_Sample_Barcode) %>%
+  pull(Tumor_Sample_Barcode)
+
+for (id in ids){
+  
+  gene <- germline_somatic_gene_matches %>%
+    dplyr::filter(Tumor_Sample_Barcode == id) %>%
+    pull(Hugo_Symbol) %>%
+    unique()
+  
+  to_rm <- unique(maf$Tumor_Sample_Barcode[maf$Tumor_Sample_Barcode != id])
+
+  plot_maf <- maftools::filterMaf(merged_maf, tsb = to_rm)
+  
+  pdf(file.path(plot_dir,
+                   glue::glue("{id}-{gene}-lollipop.pdf")),
+         width = 6, height = 4)
+  
+  lollipopPlot(plot_maf, gene = gene, AACol = "HGVSp_Short", 
+               showDomainLabel = FALSE, labPosAngle = 55, 
+               labelPos = "all", legendTxtSize = 1, 
+               labPosSize = 1.25,
+               pointSize = 2,
+               showMutationRate = FALSE,
+               collapsePosLabel = TRUE)
+  
+  dev.off()
+  
+}
+```
 
 Print session info
 ```{r}

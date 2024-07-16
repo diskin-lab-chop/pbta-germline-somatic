@@ -69,7 +69,7 @@ other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "
 
 # Load files
 ```{r load files}
-hist <- read_tsv(hist_file)
+hist <- read_tsv(histologies_file)
 
 hist_cohort <- read_tsv(hist_cohort_file)
 
@@ -362,7 +362,7 @@ loh <- read_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")) %>%
                 loh_OR > 1,
                 loh_pvalue < 0.05)
 
-second_hits_pathway <- read_tsv(file.path(results_dir, "germline_somatic_second_pathway_hits.tsv"))
+#second_hits_pathway <- read_tsv(file.path(results_dir, "germline_somatic_second_pathway_hits.tsv"))
 
 # append matched tumor genomic ID to z_scored_expression
 z_scored_expression <- z_scored_expression %>%

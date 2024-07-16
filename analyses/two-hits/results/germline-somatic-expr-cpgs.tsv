@@ -206,6 +206,7 @@ BS_R7TZRSZT	BS_4PPHAQXF	Other high-grade glioma	HGG, PXA	CDKN2A	Likely_pathogeni
 BS_HJ99CJ2R	BS_VJ2S5DVS	Ependymoma	EPN, To be classified	TP53	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr17	7674887	C	T	c.644G>A	p.Ser215Asn	5.119771161952904	#2200ff	2.0367316898098675
 BS_8HZ761SQ	NA	Meningioma	NA	CHEK2	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr22	28734532	C	T	c.190G>A	p.Glu64Lys	NA	NA	NA
 BS_358WF90F	BS_TDEFAPNH	Mixed neuronal-glial tumor	NA	CHEK2	Likely_pathogenic	ClinVar, upgraded to P/LP following manual review	chr22	28734532	C	T	c.190G>A	p.Glu64Lys	0.5058909297299573	#685815	-0.5621338833360766
+BS_0YV62XEX	BS_ENKG5GF3	Neurofibroma plexiform	NA	NF1	Likely_pathogenic	InterVar, upgraded to LP based on Koczkowska et al 2023	chr17	31207125	T	G	c.1392+754T>G	NA	3.058316495590823	#e6ac39	0.6433797425991644
 BS_0QC2QX0P	BS_RB2S0KDF	Meningioma	NA	BRCA2	Pathogenic	ClinVar	chr13	32333283	GA	G	c.1813del	p.Ile605TyrfsTer9	0.4222330006830478	#2db398	-0.026949213115848823
 BS_4EAVBDKR	BS_J1AB8PMA	Medulloblastoma	MB, SHH	GNAS	Pathogenic	ClinVar	chr20	58903701	G	GC	c.348dup	p.Val117ArgfsTer23	6.159467729266766	#a340ff	-3.7375654871269686
 BS_BZ7FK347	BS_VMQMGSJY	DIPG or DMG	DMG, H3 K28	COL7A1	Pathogenic	ClinVar	chr3	48576272	G	A	c.5797C>T	p.Arg1933Ter	3.527320607877047	#ff40d9	0.6538119606084762
