@@ -12,6 +12,7 @@ editor_options:
 suppressPackageStartupMessages({
   library(ggplot2)
   library(tidyverse)
+  library(ggtext)
 })
 
 # Set up directories
@@ -61,7 +62,7 @@ hist <- read_tsv(file.path(root_dir,
 
 # Merge clin with germline plp file
 ```{r data wrangling}
-plp <- read_tsv(file.path(input_dir, "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv"), 
+plp <- read_tsv(file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv"), 
                 show_col_types = FALSE) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # unique one gene per patient if multiple variants (in this case we have 1 normal per pt, so can use bs_id)
@@ -110,7 +111,7 @@ for (each in names(plplists)){
   # add titles to print
   if (each == "cpg"){
     x_axis_title <- "Cancer predisposition gene (CPG)"
-    fig_width <- 4200
+    fig_width <- 4300
   }
   if (each == "somatic_drivers"){
     x_axis_title <- "CPG or somatic driver gene"
@@ -140,29 +141,29 @@ for (each in names(plplists)){
     # add back histology info
     left_join(n_per_hist) %>%
     left_join(plot_df[,c("plot_group", "plot_group_hex")]) %>%
+    left_join(plot_df[,c("gene_symbol_vep")]) %>%
     distinct()
 
   # palette
   plot_group_palette <- n_per_gene$plot_group_hex
   names(plot_group_palette) <- n_per_gene$plot_group
 
-
-dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = hist_n, fill = plot_group)) +
-  geom_col(col = "black", size = 0.4) +
-  scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
-  ylab("Number of patients with P/LP variants") +
-  xlab(x_axis_title) +
-  theme_Publication() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  ylim(0,20) +
-  labs(fill = "Tumor diagnosis")
-
-print(dist_plot)
-
-dev.set(dev.next())
-tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-histology.tiff")), height = 1800, width = fig_width, res = 300)
-print(dist_plot)
-dev.off()
+  dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = hist_n, fill = plot_group)) +
+    geom_col(col = "black", size = 0.4) +
+    scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
+    ylab("Number of patients with P/LP variants") +
+    xlab(x_axis_title) +
+    theme_Publication() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+    ylim(0,20) +
+    labs(fill = "Tumor diagnosis")
+  
+  print(dist_plot)
+  
+  dev.set(dev.next())
+  tiff(file.path(paste0(plot_dir, each, "-variant-distribution-by-histology.tiff")), height = 1800, width = fig_width, res = 300)
+  print(dist_plot)
+  dev.off()
 
 }
 
@@ -174,7 +175,7 @@ plplists <-  list("cpg" = plp_cpg, "somatic_drivers" = plp_somatic, "somatic_not
 
 
 vc_colors <- tibble(variant_classification_vep = unique(plp_cpg$variant_classification_vep),
-                    vc_hex = RColorBrewer::brewer.pal(n = 12, name = 'Paired'))
+                    vc_hex = RColorBrewer::brewer.pal(n = 11, name = 'Paired'))
 
 for (each in names(plplists)){
   
@@ -210,6 +211,7 @@ for (each in names(plplists)){
     # add back variant classification info
     left_join(n_per_vc) %>%
     left_join(vc_colors) %>%
+    left_join(plot_df[,c("gene_symbol_vep")]) %>%
     distinct()
 
   vc_palette <- n_per_gene$vc_hex
@@ -237,12 +239,13 @@ for (each in names(plplists)){
 ```
 Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
-plp_full <- read_tsv(file.path(input_dir,
-                               "pbta_germline_plp_calls_autogvp_full_gnomad_popmax.tsv")) %>%
-  dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref)) %>%
-  dplyr::filter(gene_symbol_vep %in% cpg)
+plp_full <- read_tsv(file.path(data_dir,
+                               "pbta-merged-plp-variants-autogvp-full.tsv")) %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref))
 
 plp_full %>%
+  dplyr::filter(gene_symbol_vep %in% cpg) %>%
   ggplot(aes(x = AF)) +
   geom_histogram(color = "black", fill = "cadetblue") +
   xlim(c(0,1.0)) + 
@@ -252,6 +255,15 @@ plp_full %>%
 ggsave(file.path(plot_dir, "cpg-variant-allele-freq-hist.tiff"),
        width = 4, height = 6)
 
+plp_full %>%
+  ggplot(aes(x = AF)) +
+  geom_histogram(color = "black", fill = "cadetblue") +
+  xlim(c(0,1.0)) + 
+  xlab("Variant allele frequency") +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "all-variant-allele-freq-hist.tiff"),
+       width = 4, height = 6)
 ```
 
 # print session info
