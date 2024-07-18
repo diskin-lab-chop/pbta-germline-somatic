@@ -30,7 +30,7 @@ hist <- read_tsv(file.path(root_dir,
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 
 # read in plp file
-plp_all <- read_tsv(file.path(root_dir, "analyses", "variant-distribution", "input", "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")) %>%
+plp_all <- read_tsv(file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv")) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # determine whether final call was due to clinvar or intervar
   mutate(final_call_source = case_when(autogvp_call == "Likely_pathogenic" & autogvp_call_reason == "ClinVar" ~ "ClinVar - Likely Pathogenic",
@@ -94,18 +94,18 @@ dev.off()
 
 # summary of variants for all genes or just CPGs
 plp_all_genes <- plp_all %>%
-  select(final_call_source) %>%
+  dplyr::select(final_call_source) %>%
   table(dnn = c("final_call_source", "n")) %>%
   as.data.frame() %>%
-  rename("final_call_source" = final_call_source.1) %>%
+  dplyr::rename("final_call_source" = final_call_source.1) %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_all_genes
 
 plp_cpgs <- plp_cpg %>%
-  select(final_call_source) %>%
+  dplyr::select(final_call_source) %>%
   table(dnn = c("final_call_source", "n")) %>%
   as.data.frame() %>%
-  rename("final_call_source" = final_call_source.1) %>%
+  dplyr::rename("final_call_source" = final_call_source.1) %>%
   mutate(final_call_source = fct_reorder(final_call_source, Freq))
 plp_cpgs
 
@@ -156,7 +156,7 @@ for (df in names(dfs)) {
 plp_cpg <- plp_cpg %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal")
 
-plp_sv <- read_tsv(file.path(root_dir, "analyses", "germline-sv", "input", "pbta_germline_svs.tsv")) %>%
+plp_sv <- read_tsv(file.path(data_dir, "pbta_germline_svs.tsv")) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal") %>%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg)
 
@@ -207,7 +207,7 @@ hist_gene_plp_cpg <- plp_cpg %>%
   count(plot_group, gene_symbol_vep) %>%
   dplyr::rename('plp_cpg_n' = n) %>%
   filter(!is.na(plot_group)) %>%
-  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
+  left_join(unique(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group")) %>%
   mutate(freq = plp_cpg_n/n) %>%
   arrange(plot_group, freq) %>%
   mutate(gene_symbol_vep = factor(gene_symbol_vep, unique(gene_symbol_vep)))
@@ -221,8 +221,7 @@ hist_gene_plp_cpg <- plp_sv %>%
   group_by(plot_group, gene_symbol_vep) %>%
   summarize(n = sum(n)) %>%
   dplyr::rename('plp_cpg_n' = n) %>%
-  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
-  distinct(plot_group, gene_symbol_vep, .keep_all = TRUE) %>%
+  left_join(unique(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group")) %>%
   mutate(freq = plp_cpg_n/n*100)
 
 # Create gene-by-histology freq plot
