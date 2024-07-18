@@ -26,47 +26,47 @@ results_dir <- file.path(analysis_dir, "results")
 source(file.path(root_dir, "figures", "theme.R"))
 ```
 
-# Set file paths
-```{r}
+Set file paths
 
+```{r}
 hist_file <- file.path(root_dir, 
                  "analyses", 
                  "collapse-tumor-histologies", 
                  "results",
                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-sv_plp_file <- file.path(input_dir, "pbta_germline_svs.tsv")
+sv_plp_file <- file.path(data_dir, "pbta_germline_svs.tsv")
 
-
+cancer_list_file <- file.path(root_dir, "analyses",
+                              "variant-distribution",
+                              "input", "cancerGeneList.tsv")
 ```
 
 Load data
-```{r}
 
+```{r}
+# load SV file
 sv_plp <- read_tsv(sv_plp_file)
 
 hist <- read_tsv(hist_file)
-
 ```
 
 Summarize structural variants by gene and sv type (deletion, duplication)
+
 ```{r}
-
 table(sv_plp$Hugo_Symbol_cpg, sv_plp$Type)
-
 ```
 
-# Join plp and hist data
-```{r}
+Join plp and hist data
 
+```{r}
 sv_plp <- sv_plp %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group")])
-
 ```
 
 Create barplot of patient P/LP carrier count by CPG, histology, and SV type
-```{r}
 
+```{r}
 n_per_hist <- sv_plp %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol_cpg, .keep_all = T) %>%
   count(Hugo_Symbol_cpg, Type, plot_group) %>%
@@ -84,6 +84,7 @@ n_per_gene <- sv_plp %>%
   # add back histology info
   left_join(n_per_hist) %>%
   left_join(hist[,c("plot_group", "plot_group_hex")]) %>%
+  left_join(sv_plp[,c("Hugo_Symbol_cpg")]) %>%
   distinct()
 
   # palette
@@ -103,7 +104,7 @@ dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol_cpg, plot_ord
                     guide = guide_legend(override.aes = list(pattern = "none"))) + 
   scale_pattern_manual(values = c(DUP = "stripe", DEL = "none"),
                        guide = guide_legend(override.aes = list(fill = "white"))) +
-  ylab("Number of patients with P/LP CNV") +
+  ylab("Number of patients with P/LP SV") +
   xlab("Cancer Predisposition Gene") +
   theme_Publication() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
@@ -114,5 +115,4 @@ dist_plot
 
 ggsave(file.path(plot_dir, "sv-plp-distribution-plot.tiff"),
        width = 7, height = 5, units = "in")
-
 ```
