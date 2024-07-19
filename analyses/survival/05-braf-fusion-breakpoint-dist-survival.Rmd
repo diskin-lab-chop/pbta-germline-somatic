@@ -65,6 +65,8 @@ plp_sv_file <- file.path(data_dir,
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
 fusions_file <- file.path(input_dir, "lgg-braf-fusion-breakpoint-annotation.tsv")
+
+cns_region_file <- file.path(input_dir, "pbta-lgg-braf-fusion-mixed-location.tsv")
 ```
 
 Wrangle data
@@ -80,6 +82,8 @@ plp <- read_tsv(plp_file) %>%
   dplyr::filter(gene_symbol_vep %in% cpgs)
 
 plp_sv <- read_tsv(plp_sv_file)
+
+cns_regions <- read_tsv(cns_region_file)
 ```
 
 Obtain all BS IDs of P/LP carriers with BRAF fusion-positive LGG
@@ -106,7 +110,11 @@ fusions <- read_tsv(fusions_file) %>%
   dplyr::mutate(breakpoint_group = fct_relevel(breakpoint_group,
                                                c("16:09", "15:09", "16:11", "18:10", "rare"))) %>%
   dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
-                                               c("No P/LP", "CPG P/LP")))
+                                               c("No P/LP", "CPG P/LP"))) %>%
+  dplyr::mutate(CNS_region = case_when(
+    Kids_First_Participant_ID %in% cns_regions$Kids_First_Participant_ID ~ cns_regions$CNS_region[match(Kids_First_Participant_ID, cns_regions$Kids_First_Participant_ID)],
+    TRUE ~ CNS_region
+  ))
 
 table(fusions$cpg_plp)
 table(fusions$breakpoint_group, fusions$cpg_plp)
