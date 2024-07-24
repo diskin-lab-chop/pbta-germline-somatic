@@ -397,7 +397,7 @@ plot_group_gene <- loh_gene %>%
 compare_means_result <- loh_gene %>%
   dplyr::filter(group_gene %in% plot_group_gene & group_gene != "NF1: Neurofibroma plexiform") %>%
   group_by(group_gene) %>%
-  summarize(p_value = wilcox.test(gene_LOH ~ is_plp)$p.value)
+  summarize(p_value = wilcox.test(gene_LOH ~ is_plp, alternative = "less")$p.value)
 
 to_plot <- compare_means_result %>%
   dplyr::filter(p_value < 0.05) %>%
@@ -409,23 +409,24 @@ loh_gene %>%
   
    ggplot(aes(x = is_plp, y = gene_LOH)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, 
-                width = 0.2, size = 2.5, alpha = 0.85) +
-    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+                width = 0.2, size = 2.5, alpha = 0.85,
+                show.legend = FALSE) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                 show.legend = FALSE) +
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "greater")) + 
-    geom_hline(yintercept = 0.25, linetype = "dashed", color = "gray") + 
+  #  geom_hline(yintercept = 0.25, linetype = "dashed", color = "gray") + 
     labs(x = "Germline P/LP variant", y = "gene LOH score",
          fill = "Histology") +
     ylim(c(0,0.75)) +
     scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
-    facet_wrap(~group_gene, nrow = 1,
+    facet_wrap(~group_gene, nrow = 2,
                labeller = labeller(group_gene = label_wrap_gen(18))) + 
     theme_Publication()
-
   
   ggsave(file.path(plot_dir, "hist-gene-LOH-plp-vs-noplp.pdf"),
-                   width = 12, height = 3)
+                   width = 9, height = 6)
 
 ```
 
