@@ -355,12 +355,19 @@ We can further separate samples based on whether matched tumors have detected on
 ```{r get ONCO SNV status}
 # read in MAF file with oncokb annotation
 maf <- read_tsv(file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")) %>%
-  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic"))
+    filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance") |
+           Variant_Classification %in% c("Frame_Shift_Del", "Frame_Shift_Ins",
+                                         "Missense_Mutation", "Nonsense_Mutation",
+                                         "Splice_Site", "Translation_Start_Site"))
 
 loh <- read_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID,
                 loh_OR > 1,
                 loh_pvalue < 0.05)
+
+loh_sv <- read_tsv(file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv")) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID,
+                gene_LOH > 0.25)
 
 #second_hits_pathway <- read_tsv(file.path(results_dir, "germline_somatic_second_pathway_hits.tsv"))
 
@@ -371,7 +378,8 @@ z_scored_expression <- z_scored_expression %>%
 z_scored_expression <- z_scored_expression %>%
   dplyr::mutate(second_hit = case_when(
     glue::glue("{Kids_First_Biospecimen_ID}:{Hugo_Symbol}") %in% c(glue::glue("{maf$Tumor_Sample_Barcode}:{maf$Hugo_Symbol}"),
-                                                                         glue::glue("{loh$Kids_First_Biospecimen_ID_tumor}:{loh$Hugo_Symbol}")) ~ "Yes",
+                                                                         glue::glue("{loh$Kids_First_Biospecimen_ID_tumor}:{loh$Hugo_Symbol}"),
+                                                                   glue::glue("{loh_sv$Kids_First_Biospecimen_ID_tumor}:{loh_sv$Hugo_Symbol}")) ~ "Yes",
     TRUE ~ "No"
   ))
 
