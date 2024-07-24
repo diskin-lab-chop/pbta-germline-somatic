@@ -70,8 +70,9 @@ Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add hi
 ```{r get all matched tumors}
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
-  bind_rows(read_tsv(plp_lowVAF_file))
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
+
 
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
