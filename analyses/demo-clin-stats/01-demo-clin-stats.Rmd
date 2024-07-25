@@ -38,6 +38,7 @@ if (!dir.exists(results_dir)) {
 }
 
 # Load function script for generating summary tables
+source(file.path(root_dir, "figures", "theme.R"))
 source(file.path(analysis_dir, "util", "summary_functions.R"))
 source(file.path(analysis_dir, "util", "heatmap_function.R"))
 ```
