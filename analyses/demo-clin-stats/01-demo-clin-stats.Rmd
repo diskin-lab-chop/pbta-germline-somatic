@@ -38,6 +38,7 @@ if (!dir.exists(results_dir)) {
 }
 
 # Load function script for generating summary tables
+source(file.path(root_dir, "figures", "theme.R"))
 source(file.path(analysis_dir, "util", "summary_functions.R"))
 source(file.path(analysis_dir, "util", "heatmap_function.R"))
 ```
@@ -348,6 +349,108 @@ draw(ht_group)
 dev.off()
 ```
 
+Plot P-LP carrier enrichment for tumor molecular subtypes
+
+```{r}
+hist <- hist %>%
+    mutate(mol_sub_group = case_when(
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("wildtype", molecular_subtype) ~ "HGG, H3 WT",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("K28", molecular_subtype) ~ "DMG, H3 K28",
+    grepl("G35", molecular_subtype) ~ "DHG, H3 G35",
+    grepl("IHG", molecular_subtype) ~ "IHG",
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("IDH", molecular_subtype) ~ "HGG, IDH",
+    plot_group %in% c("Low-grade glioma") & grepl("SEGA", molecular_subtype) ~ "SEGA",
+    plot_group %in% c("Low-grade glioma") & grepl("BRAF V600E", molecular_subtype) ~ "LGG, BRAF V600E",
+    plot_group %in% c("Low-grade glioma") & grepl("-BRAF", molecular_subtype) ~ "LGG, BRAF fusion",
+    plot_group %in% c("Low-grade glioma") & grepl("wildtype", molecular_subtype) ~ "LGG, WT",
+    plot_group %in% c("Low-grade glioma") ~ "LGG, Other alteration",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("wildtype", molecular_subtype) ~ "GNG/GNT, WT",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("BRAF V600E", molecular_subtype) ~ "GNG/GNT, BRAF V600E",
+    plot_group %in% c("Mixed neuronal-glial tumor") & grepl("-BRAF", molecular_subtype) ~ "GNG/GNT, BRAF fusion",
+    plot_group %in% c("Mixed neuronal-glial tumor") & !grepl("To be classified", molecular_subtype) ~ "GNG/GNT, Other alteration",
+    !is.na(molecular_subtype) ~ molecular_subtype
+  ))
+
+subtypes <- hist %>%
+  count(mol_sub_group) %>%
+  dplyr::filter(n >= 8, !is.na(mol_sub_group)) %>%
+  pull(mol_sub_group)
+
+hist <- hist %>%
+  dplyr::mutate(subtype = case_when(
+    mol_sub_group %in% subtypes & !grepl("classified", mol_sub_group) ~ mol_sub_group,
+    TRUE ~ "Other"
+  ))
+
+total_plp <- sum(hist$cpgPLP_status == "cpgPLP")
+total_no_plp <- sum(hist$cpgPLP_status == "no_cpgPLP")
+
+subtype_cts <- hist %>%
+  ## group by junction and calculate means
+  select(subtype, cpgPLP_status) %>%
+  group_by(subtype, cpgPLP_status) %>%
+  count() %>%
+  ungroup() %>%
+  # Spread to wide format to get separate columns for "High" and "Low"
+  pivot_wider(names_from = cpgPLP_status, values_from = n, values_fill = list(n = 0)) %>%
+  rowwise() %>%
+  mutate(
+    Fisher_Test = list(
+      fisher.test(
+        matrix(
+          c(cpgPLP, total_plp - cpgPLP,  # Counts of High and the absence of High
+            no_cpgPLP, total_no_plp - no_cpgPLP),    # Counts of Low and the absence of Low
+          nrow = 2
+        )
+      )
+    ),
+    OR = Fisher_Test$estimate,
+    P_Value = Fisher_Test$p.value,
+    CI_lower = Fisher_Test$conf.int[1],
+    CI_upper = Fisher_Test$conf.int[2]
+  ) %>%
+  select(subtype, cpgPLP, no_cpgPLP, OR, P_Value,
+         CI_lower, CI_upper) %>%
+  ungroup() %>%
+  dplyr::mutate(adjusted_p = p.adjust(P_Value, method = "fdr")) %>%
+  arrange(desc(OR)) %>%
+  dplyr::mutate(fdr_label = case_when(
+    adjusted_p < 0.05 ~ "**",
+    TRUE ~ ""
+  )) %>%
+  dplyr::mutate(OR = case_when(
+    OR > 100 ~ 100, 
+    OR < 0.01 ~ 0.01, 
+    TRUE ~ OR
+  )) %>%
+  dplyr::mutate(CI_upper = case_when(
+    is.infinite(CI_upper) ~ 1000, 
+    TRUE ~ CI_upper
+  )) %>%
+  write_tsv(file.path(results_dir, "plp-carrier-subtype-counts.tsv"))
+
+subtype_enr <- subtype_cts %>% 
+  dplyr::filter(subtype != "Other") %>%
+  dplyr::mutate(subtype = fct_relevel(subtype,
+                                          rev(unique(subtype)))) %>%
+  ggplot(aes(x = log10(OR), y = subtype, label = fdr_label)) +
+  geom_point(size = 3, color = "#00A087FF",
+             show.legend = FALSE) + 
+  geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
+                show.legend = FALSE, color = "#00A087FF") +
+  geom_text(x = log10(subtype_cts$CI_upper[subtype_cts$subtype != "Other"])+0.25, hjust = 0, vjust = .5, size = 4, fontface = 2) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "log10-OR (95% CI)", y = NULL) + 
+  xlim(-2.5, 4) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  theme_Publication() +
+  theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
+
+pdf(file.path(plot_dir, "subtype_plp_carrier_enr.pdf"),
+    width = 4, height = 8)
+subtype_enr
+dev.off()
+```
 
 ```{r echo=TRUE}
 sessionInfo()
