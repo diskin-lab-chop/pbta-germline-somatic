@@ -462,10 +462,8 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <p>Read in histologies, germline PLP, and tmb file. Subset histologies
 file to include only HGG tumors</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) %&gt;%
-  # filter(grepl(&quot;DIPG or DMG|Other high-grade glioma&quot;, plot_group))
   filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
          grepl(&quot;wildtype&quot;, molecular_subtype))
-
 
 plp &lt;- read_tsv(plp_file, show_col_types = FALSE)
 
@@ -503,7 +501,7 @@ mutate(exposure = case_when(
   TRUE ~ exposure
 ))</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
