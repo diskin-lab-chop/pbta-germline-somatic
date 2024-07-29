@@ -2,9 +2,9 @@ Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	Kids_First_Biospecime
 PT_J4MWGQFQ	BS_44WJZ1HP	BS_E8SJ36A6	7316-2071	7316-2071	Meningioma	NA	chr22	29601424	29604338	2914	DEL	Pathogenic	NF2	NF-2	None documented	No	NF-2 confirmed
 PT_63HDZHCN	BS_7CBZW7P6	BS_S0T3CQ97	7316-141	7316-2980	Other high-grade glioma	HGG, H3 wildtype, TP53	chr2	47409614	47421535	11921	DEL	Pathogenic	MSH2	LS or CMMRD	None documented	Yes	
 PT_F822DBA0	BS_874XHFP7	BS_KPWRDRFP	7316-458	7316-458	Mesenchymal tumor	EWS	chr22	28660786	28732535	71749	DUP	Pathogenic	CHEK2	CHEK2	None documented	Yes	
-PT_VTM2STE3	BS_AYFJ1B57	BS_02YBZSBY	7316-2189	7316-2189	Other high-grade glioma	HGG, H3 wildtype, TP53	chr7	5989301	5994272	4950	DEL	Pathogenic	PMS2	LS or CMMRD	Other inherited conditions NOS	No	LS or CMMRD confirmed
+PT_VTM2STE3	BS_AYFJ1B57	BS_02YBZSBY	7316-2189	7316-2189	Other high-grade glioma	HGG, H3 wildtype, TP53	chr7	5989301	5994272	4950	DEL	Pathogenic	PMS2	LS or CMMRD	Lynch Syndrome (PMS2, MLH1, MSH2, MSH6)	No	LS or CMMRD confirmed
 PT_XA8ASFJK	BS_CZGNQ9KQ	BS_Z7R92XX6	7316-3559	7316-3762	Low-grade glioma	LGG, NF1-somatic, NF1-germline, FGFR	chr17	30664701	32080800	1416099	DEL	Pathogenic	NF1	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
-PT_DPVW4M1W	BS_GTY5J0S4	BS_SQSH5G7A	7316-2271	7316-2271	Mesenchymal tumor	NA	chr17	7674611	7681757	7146	DUP	Pathogenic	TP53	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
+PT_DPVW4M1W	BS_GTY5J0S4	BS_1Y62MR17	7316-2271	7316-4309	Mesenchymal tumor	NA	chr17	7674611	7681757	7146	DUP	Pathogenic	TP53	Li-Fraumeni syndrome	Li-Fraumeni syndrome (TP53)	No	
 PT_CQ7EGCMB	BS_HQEFFVM1	BS_PJ08ZW9A	7316-3816	7316-3809	Medulloblastoma	MB, SHH	chr10	102541403	102551733	10330	DEL	Pathogenic	SUFU	Gorlin syndrome	None documented	Yes	
 PT_0K0DPVF6	BS_JQB0CTE7	BS_Z4Q8RH5M	7316-121	7316-121	Low-grade glioma	LGG, KIAA1549-BRAF	chr22	28696570	28701967	5397	DEL	Pathogenic	CHEK2	CHEK2	None documented	Yes	
 PT_4ZSR5DY8	BS_PFE6M2EW	BS_YH4DYNQ2	7316-2667	7316-264	Low-grade glioma	LGG, NF1-germline, FGFR	chr17	31270360	31774532	504172	DEL	Pathogenic	NF1	NF-1	Neurofibromatosis, Type 1 (NF-1)	No	
