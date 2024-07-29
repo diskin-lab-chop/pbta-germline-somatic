@@ -44,22 +44,24 @@ pdf(file.path(plots_dir, "predicted-ancestry-pca.pdf"),
     height = 4, width = 10)
 
 pc12 <- hist %>%
+  dplyr::filter(!is.na(predicted_ancestry)) %>%
   ggplot(aes(x = PC1, y = PC2, fill = predicted_ancestry)) +
   geom_point(size=2, shape=23,
              show.legend = FALSE) +
   scale_fill_manual(values = okabe_palette,
                     labels=c("AFR (n=76)", "AMR (n=101)", "EAS (n=24)",
-                             "EUR (n=576)", "SAS (n=21)")) +
+                             "EUR (n=575)", "SAS (n=21)")) +
   labs(fill = "predictd ancestry") +
   theme_Publication()
 
 # Plot PC3 and PC4
 pc34 <- hist %>%
+  dplyr::filter(!is.na(predicted_ancestry)) %>%
   ggplot(aes(x = PC3, y = PC4, fill = predicted_ancestry)) +
   geom_point(size=2, shape=23) +
   scale_fill_manual(values = okabe_palette,
                     labels=c("AFR (n=76)", "AMR (n=101)", "EAS (n=24)",
-                             "EUR (n=576)", "SAS (n=21)")) +
+                             "EUR (n=575)", "SAS (n=21)")) +
   labs(fill = "predicted ancestry") +
   theme_Publication()
 
