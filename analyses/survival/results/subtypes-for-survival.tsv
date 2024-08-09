@@ -3,11 +3,11 @@ CRANIO, ADAM	Craniopharyngioma	27	CRANIO	ADAM
 DMG, H3 K28	DIPG or DMG	53	DMG	H3-K28
 EPN, PF A	Ependymoma	24	EPN	PF-A
 EPN, ST ZFTA	Ependymoma	19	EPN	ST-ZFTA
-GNG/GNT, BRAF V600E	Mixed neuronal-glial tumor	16	GNG-GNT	BRAF-V600E
+GNG/GNT, BRAF V600E	Mixed neuronal-glial tumor	15	GNG-GNT	BRAF-V600E
 GNG/GNT, Other alteration	Mixed neuronal-glial tumor	44	GNG-GNT	Other-alteration
 HGG, H3 WT	Other high-grade glioma	53	HGG	H3-WT
 LGG, BRAF V600E	Low-grade glioma	29	LGG	BRAF-V600E
-LGG, BRAF fusion	Low-grade glioma	117	LGG	BRAF-fusion
+LGG, BRAF fusion	Low-grade glioma	116	LGG	BRAF-fusion
 LGG, Other alteration	Low-grade glioma	50	LGG	Other-alteration
 MB, Group3	Medulloblastoma	19	MB	Group3
 MB, Group4	Medulloblastoma	45	MB	Group4

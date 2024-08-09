@@ -63,7 +63,8 @@ Define plot groups for which survival analyses should be run
 groups <- c("Atypical Teratoid Rhabdoid Tumor",
             "Choroid plexus tumor",
             "Craniopharyngioma",
-            "DIPG or DMG|Other high-grade glioma",
+            "DIPG or DMG",
+            "Other high-grade glioma",
             "Ependymoma",
             "Low-grade glioma",
             "Medulloblastoma",
@@ -74,7 +75,7 @@ groups <- c("Atypical Teratoid Rhabdoid Tumor",
             )
 
 # create names vector for output files
-plot_names <- c("ATRT", "CPT", "CRANIO", "HGG", "EPN", "LGG", "MB", "MNG", "MES", "GNG-GNT", "NFP")
+plot_names <- c("ATRT", "CPT", "CRANIO", "DMG", "HGG", "EPN", "LGG", "MB", "MNG", "MES", "GNG-GNT", "NFP")
 names(plot_names) <- groups
 
 ```
@@ -115,15 +116,17 @@ for (group in groups){
   group_hist <- hist %>%
     filter(grepl(group, plot_group))
   
-  if (group == "DIPG or DMG|Other high-grade glioma"){
+  if (group == "Other high-grade glioma"){
     group_hist <- group_hist %>%
-       dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
-                                      c("HGG, H3 WT",
-                                        "DHG, H3 G35",
-                                        "DMG, H3 K28",
-                                        "HGG, IDH",
-                                        "IHG", "PXA"))) %>%
-     arrange(mol_sub_group)
+       dplyr::mutate(molecular_subtype = fct_relevel(molecular_subtype,
+                                      c("HGG, H3 wildtype", "HGG, H3 wildtype, TP53",
+                                        "DHG, H3 G35", "DHG, H3 G35, TP53",
+                                        "HGG, IDH", "HGG, IDH, TP53",
+                                        "IHG, ALK-altered", "IHG, NTRK-altered",
+                                        "IHG, NTRK-altered, TP53", 
+                                        "IHG, ROS1-altered",
+                                        "HGG, PXA"))) %>%
+     arrange(molecular_subtype)
   }
   
     if (group == "Ependymoma") {
@@ -150,10 +153,9 @@ for (group in groups){
       group_hist <- group_hist %>%
         dplyr::mutate(mol_sub_group = fct_relevel(mol_sub_group,
                                                   c("GNG/GNT, WT", 
-                                                    "GNG/GNT, BRAFV600E",
+                                                    "GNG/GNT, BRAF V600E",
                                                     "GNG/GNT, BRAF fusion",
                                                     "GNG/GNT, Other alteration",
-                                                    "GNG, To be classified",
                                                     "GNT, To be classified")))
     }
   
@@ -192,12 +194,14 @@ for (group in groups){
   add_model_os <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
-                                     "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
-                                        ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
-                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
-                                                            "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
-                                                            "age_at_diagnosis_years+cpgPLP_status"
-                                  )),
+                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status",
+                                     ifelse(group %in% c("DIPG or DMG", "Other high-grade glioma"),
+                                            "molecular_subtype+cpgPLP_status",
+                                            ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
+                                                                "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
+                                                                "mol_sub_group+cpgPLP_status",
+                                                                "cpgPLP_status"
+                                      ))),
              coxph_os_model_file,
              "multivariate",
              years_col = "OS_years",
@@ -207,12 +211,14 @@ for (group in groups){
   add_model_efs <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
-                                     "mol_sub_group+extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
-                                        ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
-                                                            "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
-                                                            "mol_sub_group+age_at_diagnosis_years+cpgPLP_status",
-                                                            "age_at_diagnosis_years+cpgPLP_status"
-                                  )),
+                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status",
+                                     ifelse(group %in% c("DIPG or DMG", "Other high-grade glioma"),
+                                            "molecular_subtype+cpgPLP_status",
+                                            ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor","DIPG or DMG|Other high-grade glioma", 
+                                                                "Ependymoma", "Medulloblastoma", "Mixed neuronal-glial tumor"),
+                                                                "mol_sub_group+cpgPLP_status",
+                                                                "cpgPLP_status"
+                                      ))),
              coxph_efs_model_file,
              "multivariate",
              years_col = "EFS_years",
@@ -314,10 +320,10 @@ for (j in 1:nrow(subtypes)) {
     # Run coxph models and save to output
     add_model_os <- fit_save_model(subtype_hist,
                                   terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
-                                                 "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
+                                                 "extent_of_tumor_resection+cpgPLP_status",
                                                  ifelse(subtypes$plot_group[j] %in% c("DIPG or DMG", "Other high-grade glioma"),
-                                                        "molecular_subtype+age_at_diagnosis_years+cpgPLP_status",
-                                                        "age_at_diagnosis_years+cpgPLP_status")),
+                                                        "molecular_subtype+cpgPLP_status",
+                                                        "cpgPLP_status")),
                                    coxph_os_model_file,
                                    "multivariate",
                                    years_col = "OS_years",
@@ -325,10 +331,10 @@ for (j in 1:nrow(subtypes)) {
     
     add_model_efs <- fit_save_model(subtype_hist,
                                   terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma"),
-                                                 "extent_of_tumor_resection+age_at_diagnosis_years+cpgPLP_status",
+                                                 "extent_of_tumor_resection+cpgPLP_status",
                                                  ifelse(subtypes$plot_group[j] %in% c("DIPG or DMG", "Other high-grade glioma"),
-                                                        "molecular_subtype+age_at_diagnosis_years+cpgPLP_status",
-                                                        "age_at_diagnosis_years+cpgPLP_status")),
+                                                        "molecular_subtype+cpgPLP_status",
+                                                        "cpgPLP_status")),
                                      coxph_efs_model_file,
                                      "multivariate",
                                      years_col = "EFS_years",

@@ -156,7 +156,7 @@ for (df in names(dfs)) {
 plp_cpg <- plp_cpg %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal")
 
-plp_sv <- read_tsv(file.path(root_dir, "analyses", "germline-sv", "input", "pbta_germline_svs.tsv")) %>%
+plp_sv <- read_tsv(file.path(data_dir, "pbta_germline_svs.tsv")) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "plot_group", "plot_group_hex")], by = "Kids_First_Biospecimen_ID_normal") %>%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol_cpg)
 
@@ -207,7 +207,7 @@ hist_gene_plp_cpg <- plp_cpg %>%
   count(plot_group, gene_symbol_vep) %>%
   dplyr::rename('plp_cpg_n' = n) %>%
   filter(!is.na(plot_group)) %>%
-  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
+  left_join(unique(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group")) %>%
   mutate(freq = plp_cpg_n/n) %>%
   arrange(plot_group, freq) %>%
   mutate(gene_symbol_vep = factor(gene_symbol_vep, unique(gene_symbol_vep)))
@@ -221,8 +221,7 @@ hist_gene_plp_cpg <- plp_sv %>%
   group_by(plot_group, gene_symbol_vep) %>%
   summarize(n = sum(n)) %>%
   dplyr::rename('plp_cpg_n' = n) %>%
-  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
-  distinct(plot_group, gene_symbol_vep, .keep_all = TRUE) %>%
+  left_join(unique(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group")) %>%
   mutate(freq = plp_cpg_n/n*100)
 
 # Create gene-by-histology freq plot
