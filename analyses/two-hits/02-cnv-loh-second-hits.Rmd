@@ -35,8 +35,9 @@ source(file.path(root_dir, "figures", "theme.R"))
 Define file paths
 ```{r set file paths}
 # germline P-LP calls 
-plp_file <- file.path(data_dir, 
-                      "pbta-germline-plp-variants-autogvp-abridged.tsv")
+plp_file <- file.path(root_dir, "analyses", 
+                      "variant-distribution", "input", 
+                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
 
 plp_sv_file <- file.path(root_dir, "analyses", 
                          "germline-sv", "input", 
@@ -53,7 +54,7 @@ cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.g
 cnv_xy_file <- file.path(data_dir, "consensus_seg_annotated_cn_x_and_y.tsv.gz")
 
 # LOH variant and gene files
-loh_variant_file <- file.path(data_dir, "pbta-plp-all-loh.tsv")
+loh_variant_file <- file.path(input_dir, "pbta-plp-all-loh.tsv")
 loh_gene_file <- file.path(data_dir, "pbta-all-gene-loh.tsv.gz")
 
 # cpg file
@@ -88,10 +89,6 @@ hist_tumor <- hist %>%
 hist_normal <- hist %>%
   dplyr::filter(sample_type == "Normal") %>%
   dplyr::rename("Kids_First_Biospecimen_ID_normal" = Kids_First_Biospecimen_ID)
-
-hist_cohort <- read_tsv(file.path(root_dir, "analyses", 
-                                  "collapse-tumor-histologies", "results", 
-                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv"))
 
 # CPGs
 cpgs <- read_lines(cpg_file)
@@ -156,8 +153,7 @@ cnv_xy <- read_tsv(cnv_xy_file) %>%
 
 # merge cnv tables
 cnv <- cnv_auto %>%
-  bind_rows(cnv_xy) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor)
+  bind_rows(cnv_xy)
 
 # merge germline SNV and somatic CNV calls by bs and gene id
 germline_somatic_cnvs <- germline %>%
@@ -185,9 +181,7 @@ loh <- read_tsv(loh_variant_file) %>%
   dplyr::filter(start %in% germline$start) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = BS_ID,
          Kids_First_Biospecimen_ID_tumor = BS_ID_tumor) %>%
-  dplyr::filter(!is.na(proband_tumor_alt_depth),
-                Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor) %>%
-  dplyr::mutate(loh_score = proband_tumor_vaf - 0.5)
+  dplyr::filter(!is.na(proband_tumor_alt_depth))
 
 ggplot(loh, aes(x = proband_germline_vaf, y = proband_tumor_vaf,
                 colour = loh_score)) +
@@ -222,8 +216,7 @@ loh_gene <- read_tsv(loh_gene_file) %>%
   dplyr::filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   dplyr::rename(gene_LOH = LOH_score) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
-         gene_LOH) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor)
+         gene_LOH)
 
 germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
   left_join(loh_gene)
@@ -248,65 +241,6 @@ germline_sv_somatic_cnvs_loh_gene %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv"))
 
 ```
-
-```{r}
-
-cnv_loh_plot_df <- germline_somatic_cnvs_loh_gene %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID_tumor,
-                Hugo_Symbol %in% cpgs) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, 
-                CNV_status_somatic, loh_score, gene_LOH) %>%
-  bind_rows(germline_sv_somatic_cnvs_loh_gene %>%
-              dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, 
-                CNV_status_somatic, gene_LOH)) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE) %>%
-  dplyr::mutate(CNV_status_somatic = fct_relevel(CNV_status_somatic,
-                                                 c("gain", "neutral", "loss")))
-
-cnv_loh_plot_df %>%
-  ggplot(aes(x = CNV_status_somatic, y = loh_score,
-              fill = CNV_status_somatic)) +
-  geom_jitter(shape = 21, width = 0.2, size = 2.5, alpha = 0.85,
-              show.legend = FALSE) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA,
-               show.legend = FALSE) +
-  stat_compare_means(method = "wilcox",
-                     comparisons = list(c("gain", "loss"),
-                                        c("loss", "neutral"),
-                                        c("gain", "neutral")),
-                     method.args = list(alternative = "greater")) + 
-  geom_hline(yintercept = 0.2, linetype = "dashed", color = "gray") + 
-  labs(x = "Germline P/LP variant", y = "variant LOH score", color = "Histology") +
-  ylim(c(-0.5,0.8)) +
-  theme_Publication()
-
-  ggsave(file.path(plot_dir, "variant-LOH-by-cnv-status.pdf"),
-                 width = 6, height = 4)
-  
-  
-cnv_loh_plot_df %>%
-  ggplot(aes(x = CNV_status_somatic, y = abs(gene_LOH),
-              fill = CNV_status_somatic)) +
-  geom_jitter(shape = 21, width = 0.2, size = 2.5, alpha = 0.85,
-              show.legend = FALSE) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA,
-               show.legend = FALSE) +
-  stat_compare_means(method = "wilcox",
-                     comparisons = list(c("gain", "loss"),
-                                        c("loss", "neutral"),
-                                        c("gain", "neutral")),
-                     method.args = list(alternative = "greater")) + 
-  geom_hline(yintercept = 0.2, linetype = "dashed", color = "gray") + 
-  labs(x = "Germline P/LP variant", y = "gene LOH score", color = "Histology") +
-  ylim(c(0,0.7)) +
-  theme_Publication()
-
-  ggsave(file.path(plot_dir, "gene-LOH-by-cnv-status.pdf"),
-                 width = 6, height = 4)
-
-
-```
-
 
 ## Plotting LOH by gene and P-LP status
 
