@@ -84,7 +84,6 @@ somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_driver
 
 Read in germline plp file, and append coordinate and ref/alt allele info
 ```{r format germline data}
-
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
@@ -95,8 +94,8 @@ germline_sv <- read_tsv(plp_sv_file) %>%
 ```
 
 Extract tumor RNA IDs from hist file, and append to `germline`
-```{r get matched tumor RNA IDs}
 
+```{r get matched tumor RNA IDs}
 rna_specimens <- read_tsv(file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
 
@@ -132,10 +131,10 @@ germline_sv <- germline_sv %>%
                 Chromosome, Start, End, Length,
                 Type, Classification) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, Hugo_Symbol, .keep_all = T)
-
 ```
 
 Read in gene expression RDS file, and calculate z-scores
+
 ```{r format expression data}
 expr <- readRDS(expr_file)
 # subset `expr` to only include BS IDs in hist
@@ -165,10 +164,10 @@ z_scored_expression <- z_scored_expression %>%
 
 write_tsv(z_scored_expression,
           file.path(results_dir, "pbta-germline-gene-expr-zscores.tsv"))
-
 ```
 
 Append expression z-scores to genes with P/LP variants across cohort, and write to output
+
 ```{r get expression z-scores}
 germline_somatic_expr <- germline %>%
   left_join(z_scored_expression)
@@ -184,7 +183,9 @@ germline_somatic_expr %>%
 germline_sv_somatic_expr <- germline_sv %>%
   left_join(z_scored_expression) %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-expr-cpgs.tsv"))
+```
 
+Plot gene expression z-scores in P-LP carriers
 
 ```{r}
 expr_plot_df <- germline_somatic_expr %>%
@@ -197,7 +198,6 @@ expr_plot_df <- germline_somatic_expr %>%
   left_join(hist_cohort %>% dplyr::select(plot_group, plot_group_hex)) %>%
   distinct() %>%
   dplyr::mutate(gene_text = case_when(
-#    grepl("TSC", Hugo_Symbol) ~ "",
     expr_zscore > 2 | expr_zscore < -2 ~ Hugo_Symbol,
     TRUE ~ ""
   ))
@@ -246,18 +246,14 @@ ggsave(file.path(plot_dir, "germline_plp_expr_zscores.pdf"),
 ```
 
 For assessing differences in gene expression between patients with vs. without P/LP variants, we will take a single matched tumor RNA-seq sample for each patient from independent specimens file
-```{r get mean expression by P/LP status}
 
+```{r get mean expression by P/LP status}
 germline_all <- germline %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group) %>%
   bind_rows(germline_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, plot_group)) %>%
   dplyr::filter(Hugo_Symbol %in% cpgs)
 
 z_scored_expression <- z_scored_expression %>%
-  # Add BS normal ids
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID_rna", 
-                    "plot_group", "plot_group_hex", "molecular_subtype")],
-            by = "Kids_First_Biospecimen_ID_rna") %>%
   dplyr::mutate(sample_gene = glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}")) %>%
   # add column indicating if patient has P/LP variant in gene
   dplyr::mutate(is_plp = case_when(
@@ -266,12 +262,11 @@ z_scored_expression <- z_scored_expression %>%
   )) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, Hugo_Symbol,
            .keep_all = TRUE)
-
 ```
 
 Calculate mean expression z-scores by gene and P/LP status, and identify genes with significant differences in expression between groups
-```{r}
 
+```{r}
 # calculate mean z-scored expression by gene and sample
 mean_expr <- z_scored_expression %>%
   group_by(Hugo_Symbol, is_plp) %>%
@@ -301,10 +296,10 @@ for (i in 1:length(cpgs_test)) {
 
 write_tsv(expr_diff_df, 
           file.path(results_dir, "gene-expr-diff-plp-vs-no-plp.tsv"))
-
 ```
 
 Plot gene expression z-scores of selected CPGs by P/LP status
+
 ```{r plot expression by P/LP status}
 z_scored_expression <- z_scored_expression %>%
   # Only samples with P/LP variants in genes will be colored by plot group
@@ -337,10 +332,10 @@ z_scored_expression %>%
 
   ggsave(file.path(plot_dir, "cpg-sig-expr-diff-plp-vs-noplp.pdf"),
                  width = 14, height = 7)
-
 ```
 
 Plot normalized expression within histologies, for genes that have P/LP variants in >= 3 patients within histology group
+
 ```{r plot expr by P/LP status within hist}
 # define group_gene column
 z_scored_expression <- z_scored_expression %>%
@@ -387,6 +382,7 @@ z_scored_expression %>%
 ```
 
 We can further separate samples based on whether matched tumors have detected oncogenic/likely oncogenic SNV, which may influence gene expression
+
 ```{r get ONCO SNV status}
 # read in MAF file with oncokb annotation
 maf <- read_tsv(file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv-consensus-plus-hotspots-goi-oncokb.maf.tsv")) %>%
@@ -404,8 +400,6 @@ loh_sv <- read_tsv(file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-c
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID,
                 gene_LOH > 0.2)
 
-#second_hits_pathway <- read_tsv(file.path(results_dir, "germline_somatic_second_pathway_hits.tsv"))
-
 # append matched tumor genomic ID to z_scored_expression
 z_scored_expression <- z_scored_expression %>%
   left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Biospecimen_ID")])
@@ -416,20 +410,10 @@ z_scored_expression <- z_scored_expression %>%
                                                                          glue::glue("{loh$Kids_First_Biospecimen_ID_tumor}:{loh$Hugo_Symbol}"),
                                                                    glue::glue("{loh_sv$Kids_First_Biospecimen_ID_tumor}:{loh_sv$Hugo_Symbol}")) ~ "Yes",
     TRUE ~ "No"
-  )) %>%
-  # add column indicating if patient harbors germline P/LP variant AND/OR oncogenic mutation
-  dplyr::mutate(plp_onco = case_when(
-    is_plp == "Yes" & is_onco == "Yes" ~ "+\n+",
-    is_plp == "Yes" & is_onco == "No" ~ "+\n-",
-    is_plp == "No" & is_onco == "Yes" ~ "-\n+",
-    is_plp == "No" & is_onco == "No" ~ "-\n-"
-  )) %>%
-  dplyr::mutate(plp_group = case_when(
-    plp_onco == "-\n-" ~ NA_character_, 
-    TRUE ~ plot_group
   ))
 ```
 
+```{r}
 z_scored_expression %>%
   dplyr::filter(is_plp == "Yes") %>%
   ggplot(aes(x = second_hit, y = expr_zscore)) +
