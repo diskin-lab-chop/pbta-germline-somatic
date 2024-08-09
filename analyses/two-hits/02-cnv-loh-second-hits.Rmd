@@ -54,7 +54,7 @@ cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.g
 cnv_xy_file <- file.path(data_dir, "consensus_seg_annotated_cn_x_and_y.tsv.gz")
 
 # LOH variant and gene files
-loh_variant_file <- file.path(data_dir, "pbta-plp-all-loh.tsv")
+loh_variant_file <- file.path(input_dir, "pbta-plp-all-loh.tsv")
 loh_gene_file <- file.path(data_dir, "pbta-all-gene-loh.tsv.gz")
 
 # cpg file
