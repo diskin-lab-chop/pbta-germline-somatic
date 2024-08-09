@@ -143,14 +143,8 @@ subset_expr <- expr[,intersect(hist_cohort$Kids_First_Biospecimen_ID_rna, colnam
 # log2(x + 1) transform the expression matrix
 log_expression <- log2(subset_expr + 1)
 
-# Scale the gene values -- scale() works on the columns, hence the transpose
-z_scored_expression <- scale(t(log_expression),
-                             center = TRUE,
-                             scale = TRUE)
-z_scored_expression <- as.data.frame(z_scored_expression)
-
-z_scored_expression <- z_scored_expression %>%
-  t() %>%
+z_scored_expression <- log_expression %>%
+#  t() %>%
   as.data.frame() %>%
   rownames_to_column("Hugo_Symbol") %>%
   gather(key = "Kids_First_Biospecimen_ID_rna", value = "expr", -Hugo_Symbol) %>%
@@ -352,7 +346,7 @@ plot_group_gene <- z_scored_expression %>%
 compare_means_result <- z_scored_expression %>%
   dplyr::filter(group_gene %in% plot_group_gene) %>%
   group_by(group_gene) %>%
-  summarize(p_value = wilcox.test(expr_zscore ~ is_plp)$p.value)
+  summarize(p_value = wilcox.test(expr_zscore ~ is_plp, alternative = "two.sided")$p.value)
 
 to_plot <- compare_means_result %>%
   dplyr::filter(p_value < 0.05) %>%
@@ -369,7 +363,7 @@ z_scored_expression %>%
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) + 
     labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
-    ylim(c(-3,5.75)) +
+    ylim(c(-3.5,5.75)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
