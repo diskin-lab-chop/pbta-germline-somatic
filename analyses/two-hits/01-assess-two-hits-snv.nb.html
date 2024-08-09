@@ -1512,7 +1512,7 @@ window.initializeCodeFolding = function(show) {
     $(this).detach().appendTo(div);
 
     // add a show code button right above
-    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Show') + '</span>');
+    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Code') + '</span>');
     var showCodeButton = $('<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm code-folding-btn pull-right float-right"></button>');
     showCodeButton.append(showCodeText);
     showCodeButton
@@ -1538,7 +1538,7 @@ window.initializeCodeFolding = function(show) {
     //   * Change text
     //   * add a class for intermediate states styling
     div.on('hide.bs.collapse', function () {
-      showCodeText.text('Show');
+      showCodeText.text('Code');
       showCodeButton.addClass('btn-collapsing');
     });
     div.on('hidden.bs.collapse', function () {
@@ -1841,8 +1841,7 @@ library(tidyverse)</code></pre>
 ✔ purrr     1.0.2     
 ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+✖ dplyr::lag()    masks stats::lag()</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkobWFmdG9vbHMpIiwiIiwiIyBkZWZpbmUgZGlyZWN0b3JpZXMgIiwicm9vdF9kaXIgPC0gcnByb2pyb290OjpmaW5kX3Jvb3QocnByb2pyb290OjpoYXNfZGlyKFwiLmdpdFwiKSkiLCJhbmFseXNpc19kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFwidHdvLWhpdHNcIikiLCJyZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCBcInJlc3VsdHNcIikiLCJkYXRhX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiZGF0YVwiKSIsInBsb3RfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwicGxvdHNcIikiLCIiLCIjIElmIHRoZSBpbnB1dCBhbmQgcmVzdWx0cyBkaXJlY3RvcmllcyBkbyBub3QgZXhpc3QsIGNyZWF0ZSBpdCIsImlmICghZGlyLmV4aXN0cyhyZXN1bHRzX2RpcikpIHtcbiAgZGlyLmNyZWF0ZShyZXN1bHRzX2RpciwgcmVjdXJzaXZlID0gVFJVRSlcbn0iLCIiLCIjIGFkZCBoaXN0b2xvZ2llcyBmaWxlIHNvIHdlIGNhbiBzdWJzZXQgbWFmIiwiaGlzdG9sb2dpZXNfZmlsZSA8LSBmaWxlLnBhdGgocm9vdF9kaXIsXCJhbmFseXNlc1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiY29sbGFwc2UtdHVtb3ItaGlzdG9sb2dpZXNcIiwgXCJyZXN1bHRzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJnZXJtbGluZS1wcmltYXJ5LXBsdXMtdHVtb3ItaGlzdG9sb2dpZXMtcGxvdC1ncm91cHMtY2xpbi1tZXRhLnRzdlwiKSIsIiIsIiMgcmVtb3ZlIGNlbGwgbGluZXMgZnJvbSBoaXN0b2xvZ2llcyBmaWxlIiwib3BjX2hpc3RfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwiaGlzdG9sb2dpZXMudHN2XCIpIiwiIiwicGxwX3N2X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcInBidGFfZ2VybWxpbmVfc3ZzLnRzdlwiKSIsIiIsIiMgZ29pIGZpbGUiLCJjcGdfZmlsZSA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiYW5hbHlzZXNcIiwgXCJvbmNva2ItYW5ub3RhdGlvblwiLCBcImlucHV0XCIsIFwiY3BnLnR4dFwiKSJdfQ== -->
 <pre class="r"><code>library(maftools)
@@ -1890,8 +1889,8 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <pre><code>Rows: 2869 Columns: 23
 ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
-chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
-dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
+chr (16): Kids_First_Biospecimen_ID_normal, chr, ref, alt, rs_id, gene_symbo...
+dbl  (5): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
@@ -1941,11 +1940,17 @@ setdiff(cpg, unique(maf$Hugo_Symbol))</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-output-begin eyJkYXRhIjpbIkdQQzE2MVxuIiwiSDE5XG4iLCJLQ05RMU9UMVxuIiwiTDJIR0FcbiIsIk1SRTExQVxuIiwiUk1SUFxuIiwiVE5GUlNGNlxuIl19 -->
 <pre><code>GPC161
+
 H19
+
 KCNQ1OT1
+
 L2HGA
+
 MRE11A
+
 RMRP
+
 TNFRSF6</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgdGFibGUgb2YgZ2VuZSBjb3VudHMgYnkgb25jb2dlbmljIGVmZmVjdCIsIm1hZiAlPiVcbiAgY291bnQoT05DT0dFTklDKSAlPiVcbiAgYXJyYW5nZSgtbikiXX0= -->
@@ -1956,7 +1961,7 @@ maf %&gt;%
 <!-- rnb-source-end -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["ONCOGENIC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"26350"},{"1":"Likely Oncogenic","2":"397"},{"1":"Oncogenic","2":"100"},{"1":"Inconclusive","2":"3"},{"1":"Resistance","2":"2"},{"1":"Likely Neutral","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["ONCOGENIC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"26355"},{"1":"Likely Oncogenic","2":"392"},{"1":"Oncogenic","2":"100"},{"1":"Inconclusive","2":"3"},{"1":"Resistance","2":"2"},{"1":"Likely Neutral","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-source-begin eyJkYXRhIjpbIm9uY29faGl0cyA8LSBtYWYgJT4lXG4gIGZpbHRlcihPTkNPR0VOSUMgJWluJSBjKFwiTGlrZWx5IE9uY29nZW5pY1wiLCBcIk9uY29nZW5pY1wiLCBcIlJlc2lzdGFuY2VcIikgfFxuICAgICAgICAgICBWYXJpYW50X0NsYXNzaWZpY2F0aW9uICVpbiUgYyhcIkZyYW1lX1NoaWZ0X0RlbFwiLCBcIkZyYW1lX1NoaWZ0X0luc1wiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIk1pc3NlbnNlX011dGF0aW9uXCIsIFwiTm9uc2Vuc2VfTXV0YXRpb25cIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJTcGxpY2VfU2l0ZVwiLCBcIlRyYW5zbGF0aW9uX1N0YXJ0X1NpdGVcIikpICU+JVxuICB3cml0ZV90c3YoZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcInBidGEtb25jb2tiLW9uY29nZW5pYy1sb2YtbWFmLnRzdlwiKSkiLCIiLCIjIHByZXZhbGVuY2UgYnkgZ2VuZSIsIm9uY29faGl0cyAlPiVcbiAgY291bnQoSHVnb19TeW1ib2wpICU+JVxuICBhcnJhbmdlKC1uKSJdfQ== -->
@@ -3111,8 +3116,8 @@ Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 22.04.4 LTS
 
 Matrix products: default
-BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
 
 locale:
  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -3121,9 +3126,6 @@ locale:
  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-
-time zone: Etc/UTC
-tzcode source: system (glibc)
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     

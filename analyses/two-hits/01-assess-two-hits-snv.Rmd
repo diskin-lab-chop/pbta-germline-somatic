@@ -12,7 +12,7 @@ params:
     input: file
   germ_in:
     label: "germline file"
-    value: data/pbta-merged-plp-variants-autogvp-abridged.tsv
+    value: analyses/variant-distribution/input/pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv
     input: file
 editor_options: 
   chunk_output_type: inline
@@ -122,11 +122,13 @@ onco_hits_subset <- onco_hits %>%
 germline_somatic_gene_matches <- germline %>%
   inner_join(onco_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
   write_tsv(file.path(results_dir, "germline-somatic-two-gene-hits.tsv"))
+
 ```
 
 ### List germline + somatic gene hits by sample
 
 ```{r gene hits by patient}
+
 collapsed <- germline %>%
   filter(Hugo_Symbol %in% cpg) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
@@ -144,10 +146,12 @@ collapsed_onco <- onco_hits_subset %>%
 collapsed_germ_som <- collapsed %>%
   left_join(collapsed_onco, by = "Kids_First_Biospecimen_ID_normal") %>%
   write_tsv(file.path(results_dir, "germline-somatic-collapsed-by-gene.tsv"))
+
 ```
 
 
 ```{r}
+
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
                 Hugo_Symbol = Hugo_Symbol_cpg) 
@@ -156,6 +160,7 @@ germline_sv <- read_tsv(plp_sv_file) %>%
 germline_sv_somatic_gene_matches <- germline_sv %>%
   inner_join(onco_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-two-gene-hits.tsv"))
+
 ```
 
 ```{r}
@@ -301,5 +306,7 @@ for (id in ids){
 
 Print session info
 ```{r}
+
 sessionInfo()
+
 ```
