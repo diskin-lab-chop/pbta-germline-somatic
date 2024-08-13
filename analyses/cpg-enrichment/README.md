@@ -10,12 +10,15 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 
 1. `01-cpg-list-enr.R` plots CPG P-LP carrier enrichment in entire PBTA cohort and individual plot groups relative to tumor-free control cohorts
 
+2. `02-gene-pathway-enrichment.R` plots gene- and pathway-level P-LP carrier enrichment in PBTA cohort relative to tumor-free control cohorts
+
 
 ##Analysis module directory structure
 
 ```
 .
 ├── 01-cpg-list-enr.R
+├── 02-gene-pathway-enrichment.R
 ├── README.md
 ├── input
 │   ├── pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_Knijnenburg_PMBB_enrichment.tsv
@@ -28,7 +31,10 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 │   └── pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_kegg_gnomAD_enrichment.tsv
 ├── plots
 │   ├── all-CPG-enrichment-PBTA-vs-control.tiff
-│   └── hist-all-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── hist-all-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.tiff
+│   └── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.tiff
 ├── run_module.sh
 └── util
     └── enrichment_functions.R
