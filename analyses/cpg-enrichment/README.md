@@ -12,6 +12,7 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 
 2. `02-gene-pathway-enrichment.R` plots gene- and pathway-level P-LP carrier enrichment in PBTA cohort relative to tumor-free control cohorts
 
+3. `03-hist-gene-enr.R` plots gene-level P-LP carrier enrichment by histology cohort relative to tumor-free control cohorts
 
 ##Analysis module directory structure
 
@@ -19,6 +20,7 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 .
 ├── 01-cpg-list-enr.R
 ├── 02-gene-pathway-enrichment.R
+├── 03-hist-gene-enr.R
 ├── README.md
 ├── input
 │   ├── pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_Knijnenburg_PMBB_enrichment.tsv
@@ -32,9 +34,19 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 ├── plots
 │   ├── all-CPG-enrichment-PBTA-vs-control.tiff
 │   ├── hist-all-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Atypical Teratoid Rhabdoid Tumor-CPG-enrichment-PBTA-vs-control.tiff
 │   ├── sig-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Choroid plexus tumor-CPG-enrichment-PBTA-vs-control.tiff
 │   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.tiff
-│   └── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Low-grade glioma-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Medulloblastoma-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Meningioma-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Mixed neuronal-glial tumor-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Neurofibroma plexiform-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Non-neoplastic tumor-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── sig-Other high-grade glioma-CPG-enrichment-PBTA-vs-control.tiff
+│   └── sig-Pineoblastoma-CPG-enrichment-PBTA-vs-control.tiff
 ├── run_module.sh
 └── util
     └── enrichment_functions.R
