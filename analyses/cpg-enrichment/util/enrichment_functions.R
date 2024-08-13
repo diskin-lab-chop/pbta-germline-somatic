@@ -1,9 +1,17 @@
 
 
 
-plot_pvalue <- function(enr_df, facet_var){
+plot_pvalue <- function(enr_df, facet_var,
+                        to_retain = NULL){
   
   ntests <- length(unique(enr_df[[facet_var]]))
+  
+  if (!is.null(to_retain)){
+    
+    enr_df <- enr_df %>%
+      dplyr::filter(!!sym(facet_var) %in% to_retain)
+    
+  }
   
   pval_plot <- enr_df %>% 
     mutate(p = -log10(p)) %>%
@@ -11,6 +19,7 @@ plot_pvalue <- function(enr_df, facet_var){
     geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
     labs(x = "-log10(p)", y = "") + 
     geom_vline(xintercept = -log10(0.05/ntests), linetype = "dashed") + 
+    xlim(0, NA) + 
     facet_wrap(facet_var, scale = "fixed",
                nrow = length(unique(enr_df[[facet_var]])),
                labeller = labeller(.cols = label_wrap_gen(18))) +  
@@ -24,30 +33,59 @@ plot_pvalue <- function(enr_df, facet_var){
 
 
 plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
+
+  if (log_scale == TRUE){
+    
+    # enr_df <- enr_df %>%
+    #   dplyr::mutate(ci.int2 = case_when(
+    #     ci.int2 > 1000 ~ 1000,
+    #     TRUE ~ ci.int2
+    #   ))
   
-  enr_df <- enr_df %>%
-    dplyr::mutate(ci.int2 = case_when(
-      ci.int2 > 50 ~ 50,
-      TRUE ~ ci.int2
-    ))
+    enr_plot <- enr_df %>% 
+      ggplot(aes(x = log10(OR), y = factor(cohort))) +
+      geom_point(size = 3, color = "#00A087FF",
+                 show.legend = FALSE) + 
+      geom_errorbar(aes(xmin = log10(ci.int1), xmax = log10(ci.int2)), width = 0.2, 
+                    show.legend = FALSE, color = "#00A087FF") +
+      labs(x = "log10-Odds Ratio (95% CI)", y = NULL) + 
+      geom_vline(xintercept = 0, linetype = "dashed") +
+      scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
+                                "PMBB" = "")) +
+      facet_wrap(facet_var, scale = "fixed",
+                 nrow = length(unique(enr_df[[facet_var]])),
+                 labeller = labeller(.cols = label_wrap_gen(18))) +  
+      expand_limits(y=0) +
+      theme_Publication() +
+      theme(plot.margin = unit(c(2,0.5,1,0.25), "lines")) +
+      theme(strip.placement = "outside")
   
-  enr_plot <- enr_df %>% 
-    ggplot(aes(x = OR, y = factor(cohort))) +
-    geom_point(size = 3, color = "#00A087FF",
-               show.legend = FALSE) + 
-    geom_errorbar(aes(xmin = ci.int1, xmax = ci.int2), width = 0.2, 
-                  show.legend = FALSE, color = "#00A087FF") +
-    labs(x = "Odds Ratio (95% CI)", y = NULL) + 
-    geom_vline(xintercept = 1, linetype = "dashed") +
-    scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                              "PMBB" = "")) +
-    facet_wrap(facet_var, scale = "fixed",
-               nrow = length(unique(enr_df[[facet_var]])),
-               labeller = labeller(.cols = label_wrap_gen(18))) +  
-    expand_limits(y=0) +
-    theme_Publication() +
-    theme(plot.margin = unit(c(2,0.5,1,0.25), "lines")) +
-    theme(strip.placement = "outside")
+  } else {
+    
+    enr_df <- enr_df %>%
+      dplyr::mutate(ci.int2 = case_when(
+        ci.int2 > 50 ~ 50,
+        TRUE ~ ci.int2
+      ))
+    
+    enr_plot <- enr_df %>% 
+      ggplot(aes(x = OR, y = factor(cohort))) +
+      geom_point(size = 3, color = "#00A087FF",
+                 show.legend = FALSE) + 
+      geom_errorbar(aes(xmin = ci.int1, xmax = ci.int2), width = 0.2, 
+                    show.legend = FALSE, color = "#00A087FF") +
+      labs(x = "Odds Ratio (95% CI)", y = NULL) + 
+      geom_vline(xintercept = 1, linetype = "dashed") +
+      scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
+                                "PMBB" = "")) +
+      facet_wrap(facet_var, scale = "fixed",
+                 nrow = length(unique(enr_df[[facet_var]])),
+                 labeller = labeller(.cols = label_wrap_gen(18))) +  
+      expand_limits(y=0) +
+      theme_Publication() +
+      theme(plot.margin = unit(c(2,0.5,1,0.25), "lines")) +
+      theme(strip.placement = "outside")
+  }
   
   return(enr_plot)
   
@@ -70,7 +108,7 @@ plot_perc <- function(enr_df, facet_var){
     facet_wrap(facet_var, scale = "fixed",
                nrow = length(unique(enr_df[[facet_var]])),
                labeller = labeller(.cols = label_wrap_gen(18))) +
-    expand_limits(x=3) +
+  #  expand_limits(x=3) +
     coord_cartesian(clip = 'off') +
     theme_Publication() +
     theme(plot.margin = unit(c(2,5,1,1), "lines"),
