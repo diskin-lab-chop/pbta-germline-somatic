@@ -130,8 +130,8 @@ perc_plot <- cpg_enr_all %>%
 
 # Merge plots and write to output
 
-tiff(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.tiff"),
-     width = 9, height = 8, units = "in", res = 300)
+pdf(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.pdf"),
+     width = 9, height = 8)
 
 ggarrange(pval_plot, enr_plot, perc_plot,
           nrow = 1, widths = c(1.75,1.5,1.5))
@@ -260,7 +260,7 @@ for (i in 1:length(gnomad_list)){
   ggarrange(pval_plot, enr_plot, perc_plot,
             nrow = 1, widths = c(1.5,1.25,1.5))
   
-  ggsave(file.path(plot_dir, glue::glue("sig-{names(gnomad_list)[i]}-enrichment-PBTA-vs-control.tiff")),
-       width = 8, height = 2.5 + ((length(sig_pathways_both)-1) * 1.5), units = "in")
+  ggsave(file.path(plot_dir, glue::glue("sig-{names(gnomad_list)[i]}-enrichment-PBTA-vs-control.pdf")),
+       width = 8, height = 2.5 + ((length(sig_pathways_both)-1) * 1.5))
   
 }
