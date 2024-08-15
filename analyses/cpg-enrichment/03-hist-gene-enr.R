@@ -233,7 +233,7 @@ for (group in plot_groups) {
   ggarrange(pval_plot, enr_plot, perc_plot,
             nrow = 1, widths = c(1.75,1.5,1.5))
   
-  ggsave(file.path(plot_dir, glue::glue("sig-{group}-CPG-enrichment-PBTA-vs-control.tiff")),
-         width = 9, height = 2.5 +((n_sig - 1) * 1.5), units = "in")
+  ggsave(file.path(plot_dir, glue::glue("sig-{group}-CPG-enrichment-PBTA-vs-control.pdf")),
+         width = 9, height = 2.5 +((n_sig - 1) * 1.5))
 
 }
