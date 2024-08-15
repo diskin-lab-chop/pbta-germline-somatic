@@ -60,7 +60,7 @@ proteo_zscore_file <- file.path(input_dir, "cptac-hope-cpg-proteomics-zscores.ts
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 ```
 
-load hist and plp variant-somatic alterations merged files
+load hist and plp variant-somatic alterations merged files; load TMB and define mutation status
 ```{r}
 hist <- read_tsv(hist_file)
 
