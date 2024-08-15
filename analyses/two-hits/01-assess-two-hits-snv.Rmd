@@ -156,7 +156,7 @@ germline_sv <- read_tsv(plp_sv_file) %>%
 
 # two hit CPG matches
 germline_sv_somatic_gene_matches <- germline_sv %>%
-  inner_join(onco_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
+  inner_join(lof_hits_subset, by = c("Matched_Norm_Sample_Barcode", "Hugo_Symbol")) %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-two-gene-hits.tsv"))
 ```
 
