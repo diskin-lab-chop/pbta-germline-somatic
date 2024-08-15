@@ -27,6 +27,7 @@ library(maftools)
 # define directories 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 analysis_dir <- file.path(root_dir, "analyses", "two-hits")
+input_dir <- file.path(analysis_dir, "input")
 results_dir <- file.path(analysis_dir, "results")
 data_dir <- file.path(root_dir, "data")
 plot_dir <- file.path(analysis_dir, "plots")
@@ -163,6 +164,9 @@ germline_sv_somatic_gene_matches <- germline_sv %>%
 Create lollipop plots of germline variants + somatic mutations. First, modify germline variant df to be compatible with maf columns:
 
 ```{r}
+# Load amino acid abbreviation key
+aa_key <- read_tsv(file.path(input_dir, "aa_symbol_key.tsv"))
+
 germ_maf <- germline_somatic_gene_matches %>%
   dplyr::select(-HGVSc, -HGVSp, -Variant_Classification) %>%
   # rename columns to match maf columns
@@ -188,26 +192,16 @@ germ_maf <- germline_somatic_gene_matches %>%
     nchar(alt) < nchar(Reference_Allele) ~ "DEL",
     nchar(alt) > nchar(Reference_Allele) ~ "INS"
   )) %>%
-  # Replace AA symbols with one-letter symbols
-  dplyr::mutate(HGVSp_Short = str_replace(HGVSp_Short, "Leu", "L"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Val", "V"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Arg", "R"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Ser", "S"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Asn", "N"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Met", "M"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Lys", "K"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Ter", "*"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Gln", "G"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Tyr", "Y"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Phe", "F"),
-                HGVSp_Short = str_replace(HGVSp_Short, "Ala", "A")) %>%
   dplyr::select(Matched_Norm_Sample_Barcode, Hugo_Symbol,
                 Tumor_Sample_Barcode,
                 Chromosome, Start_Position, Variant_Classification,
                 Reference_Allele, HGVSc, HGVSp_Short, Variant_Type)
 
 merged_maf <- maf %>%
-  bind_rows(germ_maf)
+  bind_rows(germ_maf) %>%
+  # Replace AA symbols with one-letter symbols
+  dplyr::mutate(HGVSp_Short = reduce2(aa_key$AA_three_letter, aa_key$AA_one_letter,
+                                      .init = HGVSp_Short, str_replace))
 
 write_tsv(merged_maf, file.path(results_dir, "germ-somatic-merged-maf.tsv"))
 ```
