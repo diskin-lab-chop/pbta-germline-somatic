@@ -128,7 +128,7 @@ fusion_enr <- plot_enr(fusions,
                        var2 = "cpg_plp",
                        var1_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
                        var2_names = c("No P/LP", "CPG P/LP"),
-                        padjust = FALSE)
+                        padjust = TRUE)
 
 pdf(file.path(plot_dir, "plp_carrier_fusion_enr_heatmap.pdf"),
     width = 3, height = 4)
@@ -144,7 +144,7 @@ diagnosis_enr <- plot_enr(fusions[!is.na(fusions$diagnosis),],
                        var2 = "cpg_plp",
                        var1_names = unique(fusions$diagnosis[!is.na(fusions$diagnosis)]), 
                        var2_names = c("No P/LP", "CPG P/LP"),
-                       padjust = FALSE)
+                       padjust = TRUE)
 
 pdf(file.path(plot_dir, "plp_carrier_diagnosis_enr_heatmap.pdf"),
     width = 4, height = 4)
@@ -159,7 +159,7 @@ fusion_resection_enr <- plot_enr(fusions[fusions$extent_of_tumor_resection != "N
                        var1 = "extent_of_tumor_resection",
                        var2_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
                        var1_names = unique(fusions$extent_of_tumor_resection[fusions$extent_of_tumor_resection != "Not Reported"]),
-                       padjust = FALSE)
+                       padjust = TRUE)
 
 pdf(file.path(plot_dir, "breakpoint_group_resection_enr_heatmap.pdf"),
     width = 5.5, height = 3)
@@ -174,7 +174,7 @@ fusion_region_enr <- plot_enr(fusions,
                        var1 = "CNS_region",
                        var2_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
                        var1_names = sort(unique(fusions$CNS_region)),
-                       padjust = FALSE)
+                       padjust = TRUE)
 
 pdf(file.path(plot_dir, "breakpoint_group_region_enr_heatmap.pdf"),
     width = 4.5, height = 4)

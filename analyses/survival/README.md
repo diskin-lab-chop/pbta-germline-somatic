@@ -14,6 +14,9 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
 4. `04-run-survival-dna-repair.Rmd` generate and plot survival models by DNA repair P/LP status in pHGGs. 
 5. `05-braf-fusion-breakpoint-dist-survival.Rmd` assesses distribution of BRAF fusion breakpoints among P/LP carriers 
 
+Input files
+1. `lgg-braf-fusion-breakpoint-annotation.tsv`; all BRAF fusion-positive LGG tumors annotated with __KIAA1549::BRAF__ exon breakpoints; pulled from [BRAF fusion analysis module in PBTA-ancestry repository](https://github.com/d3b-center/pbta-ancestry/tree/main/analyses/braf-fusions) 
+2. `pbta-lgg-braf-fusion-mixed-location.tsv`; manually-reviewed CNS locations derived from pathology reports for BRAF-fusion postiive LGGs defined as `CNS_region == "mixed"` in OpenPedCan
 
 ## Directory structure
 ```
@@ -27,9 +30,10 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
 ├── 04-run-survival-dna-repair.Rmd
 ├── 04-run-survival-dna-repair.nb.html
 ├── 05-braf-fusion-breakpoint-dist-survival.Rmd
-
 ├── README.md
 ├── input
+│   ├── lgg-braf-fusion-breakpoint-annotation.tsv
+│   └── pbta-lgg-braf-fusion-mixed-location.tsv
 ├── plots
 │   ├── ATRT/
 │   ├── BRCA_km_survival_hgg.pdf
