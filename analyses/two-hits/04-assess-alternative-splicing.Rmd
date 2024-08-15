@@ -48,8 +48,7 @@ plp_file <- file.path(data_dir,
 plp_lowVAF_file <- file.path(data_dir,
                              "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
 histologies_file <- file.path(data_dir,
@@ -59,10 +58,12 @@ hist_cohort_file <- file.path(root_dir, "analyses",
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-splice_events_file <- file.path(input_dir, "splice_events_germline_pbta_cpgs_only.tsv.gz")
+splice_events_file <- file.path(input_dir, 
+                                "splice_events_germline_pbta_cpgs_only.tsv.gz")
 
 # cpg file
-cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", 
+                      "input", "cpg.txt")
 ```
 
 # Load files
@@ -285,7 +286,7 @@ snv_splice_psi_df %>%
   arrange(abs(min_dist)) %>%
   distinct(chr, start, ref, alt, .keep_all = TRUE) %>%
   
-  ggplot(aes(x = log10(abs(min_dist)), y = abs(PSI_zscore))) +
+  ggplot(aes(x = log10(abs(min_dist) + 1), y = abs(PSI_zscore))) +
   geom_point(colour = "gray50") +
   stat_smooth(method = "lm", 
               formula = y ~ x, 

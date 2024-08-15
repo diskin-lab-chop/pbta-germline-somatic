@@ -143,14 +143,8 @@ subset_expr <- expr[,intersect(hist_cohort$Kids_First_Biospecimen_ID_rna, colnam
 # log2(x + 1) transform the expression matrix
 log_expression <- log2(subset_expr + 1)
 
-# Scale the gene values -- scale() works on the columns, hence the transpose
-z_scored_expression <- scale(t(log_expression),
-                             center = TRUE,
-                             scale = TRUE)
-z_scored_expression <- as.data.frame(z_scored_expression)
-
-z_scored_expression <- z_scored_expression %>%
-  t() %>%
+z_scored_expression <- log_expression %>%
+#  t() %>%
   as.data.frame() %>%
   rownames_to_column("Hugo_Symbol") %>%
   gather(key = "Kids_First_Biospecimen_ID_rna", value = "expr", -Hugo_Symbol) %>%
@@ -160,7 +154,6 @@ z_scored_expression <- z_scored_expression %>%
   dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol) %>%
   dplyr::mutate(expr_zscore = scale(expr)) %>%
   dplyr::mutate(expr_zscore = as.numeric(expr_zscore))
-
 
 write_tsv(z_scored_expression,
           file.path(results_dir, "pbta-germline-gene-expr-zscores.tsv"))
@@ -298,9 +291,9 @@ write_tsv(expr_diff_df,
           file.path(results_dir, "gene-expr-diff-plp-vs-no-plp.tsv"))
 ```
 
-Plot gene expression z-scores of selected CPGs by P/LP status
+Add P/LP status to `z_scored_expression` for plotting
 
-```{r plot expression by P/LP status}
+```{r add P/LP status}
 z_scored_expression <- z_scored_expression %>%
   # Only samples with P/LP variants in genes will be colored by plot group
   dplyr::mutate(plp_group = case_when(
@@ -312,29 +305,9 @@ z_scored_expression <- z_scored_expression %>%
 # define color palette
 plot_group_palette <- z_scored_expression$plot_group_hex
 names(plot_group_palette) <- z_scored_expression$plot_group
-
-# plot 
-z_scored_expression %>%
-  filter(Hugo_Symbol %in% cpgs_test) %>%
-  
-  ggplot(aes(x = is_plp, y = expr_zscore)) + 
-  geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
-  stat_compare_means(method = "wilcox",
-                     comparisons = list(c("Yes", "No")),
-                     method.args = list(alternative = "two.sided")) + 
-  labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
-  ylim(c(-5,8)) +
-  scale_fill_manual(values = plot_group_palette, 
-                     breaks = sort(names(plot_group_palette))) +
-  facet_wrap(~Hugo_Symbol, nrow = 3) + 
-  theme_Publication()
-
-  ggsave(file.path(plot_dir, "cpg-sig-expr-diff-plp-vs-noplp.pdf"),
-                 width = 14, height = 7)
 ```
 
-Plot normalized expression within histologies, for genes that have P/LP variants in >= 3 patients within histology group
+Plot normalized expression within histologies, for genes that have P/LP variants in >= 2 patients within histology group
 
 ```{r plot expr by P/LP status within hist}
 # define group_gene column
@@ -352,7 +325,7 @@ plot_group_gene <- z_scored_expression %>%
 compare_means_result <- z_scored_expression %>%
   dplyr::filter(group_gene %in% plot_group_gene) %>%
   group_by(group_gene) %>%
-  summarize(p_value = wilcox.test(expr_zscore ~ is_plp)$p.value)
+  summarize(p_value = wilcox.test(expr_zscore ~ is_plp, alternative = "two.sided")$p.value)
 
 to_plot <- compare_means_result %>%
   dplyr::filter(p_value < 0.05) %>%
@@ -369,7 +342,7 @@ z_scored_expression %>%
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) + 
     labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
-    ylim(c(-3,5.75)) +
+    ylim(c(-3.5,5.75)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
