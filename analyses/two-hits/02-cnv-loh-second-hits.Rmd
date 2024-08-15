@@ -196,8 +196,10 @@ for (i in 1:nrow(loh)){
   
 }
 
-write_tsv(loh, file.path(results_dir,
-                    "pbta-loh-sig-calculated.tsv"))
+loh %>%
+  arrange(Kids_First_Biospecimen_ID_normal) %>%
+  write_tsv(file.path(results_dir,
+                "pbta-loh-sig-calculated.tsv"))
 ```
 
 Plot tumor VAF vs germline VAF
@@ -253,13 +255,16 @@ Save CNV and LOH scores for all samples to output
 
 germline_somatic_cnvs_loh_gene %>%
   dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  arrange(Kids_First_Biospecimen_ID_normal) %>%
   write_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv"))
 
 germline_somatic_cnvs_loh_gene %>%
   dplyr::filter(!Hugo_Symbol %in% cpgs) %>%
+  arrange(Kids_First_Biospecimen_ID_normal) %>%
   write_tsv(file.path(results_dir, "germline-somatic-cnv-loh-somatic-non-cpgs.tsv"))
 
 germline_sv_somatic_cnvs_loh_gene %>%
+  arrange(Kids_First_Biospecimen_ID_normal) %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv"))
 ```
 
