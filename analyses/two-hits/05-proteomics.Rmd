@@ -30,45 +30,41 @@ if (!dir.exists(results_dir)) {
 
 # set seed to reproduce plots
 set.seed(2023)
-
 ```
 
 Set file paths
 
 ```{r set file paths}
-
-opc_hist_file <- file.path(root_dir, "analyses",
-                           "collapse-tumor-histologies",
-                           "input", "histologies.tsv")
+opc_hist_file <- file.path(data_dir,
+                           "histologies.tsv")
 
 hist_file <- file.path(root_dir, "analyses",
                            "collapse-tumor-histologies", "results", 
                            "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "variant-distribution", "input", 
-                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+plp_file <- file.path(data_dir,
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+
+plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation",
                              "input", "cpg.txt")
 
-cptac_proteo_file <- file.path(input_dir, 
+cptac_proteo_file <- file.path(data_dir, 
                                "cptac-protein-imputed-prot-expression-abundance.tsv.gz")
-hope_proteo_file <- file.path(input_dir,
+hope_proteo_file <- file.path(data_dir,
                               "hope-protein-imputed-prot-expression-abundance.tsv.gz")
-hope_phospho_file <- file.path(input_dir, 
+hope_phospho_file <- file.path(data_dir, 
                                "hope-protein-imputed-phospho-expression-abundance.tsv.gz")
-
 ```
 
 Create proteo and phospoproteo specific histologies files
 
 ```{r}
-
 opc_hist <- read_tsv(opc_hist_file)
 
 opc_hist_proteo <- opc_hist %>%
@@ -88,7 +84,6 @@ opc_hist_phospho <- opc_hist %>%
                 sub_cohort) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_phospho = Kids_First_Biospecimen_ID) %>%
   dplyr::mutate(match_id = str_replace(Kids_First_Biospecimen_ID_phospho, "_PHOS", ""))
-
 ```
 
 Load project-specific histologies file and append proteo and phosphoproteo BS IDs
@@ -103,20 +98,19 @@ hist <- read_tsv(hist_file) %>%
             by = "match_id") %>%
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_proteo) | !is.na(Kids_First_Biospecimen_ID_phospho)) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-proteomics.tsv"))
-
 ```
 
 Load P/LP file and append relevant hist columns
 
 ```{r}
-plp <- read_tsv(plp_file)
+plp <- read_tsv(plp_file) %>%
+  bind_rows(read_tsv(plp_lowVAF_file))
 
 cpgs <- read_lines(cpg_file)
                    
 plp_cpg_proteo <- plp %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal & gene_symbol_vep %in% cpgs) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", "sample_id_tumor", "plot_group", "molecular_subtype")])
-
 ```
 
 ```{r}
@@ -125,13 +119,11 @@ plp_sv <- read_tsv(plp_sv_file)
 plp_sv_cpg_proteo <- plp_sv %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", "sample_id_tumor", "plot_group", "molecular_subtype")])
-
 ```
 
 Load cptac proteomics file. In the event of multiple columns with the same sample ID, calculate abundance averages for sample. 
 
 ```{r}
-
 cptac_proteo <- read_tsv(cptac_proteo_file)
 
 cptac_proteo <-  cptac_proteo %>%
@@ -142,14 +134,11 @@ colnames(cptac_proteo)[2:ncol(cptac_proteo)] <- hist$sample_id_tumor[match(colna
 
 # Filter for samples in germline hist
 cptac_proteo <- cptac_proteo[,grepl("GeneSymbol", colnames(cptac_proteo)) | colnames(cptac_proteo) %in% hist$sample_id_tumor]
-
-
 ```
 
 Load HOPE proteomics file, and resolve duplicates as was done with CPTAC data
 
 ```{r}
-
 hope_proteo <- read_tsv(hope_proteo_file) %>%
   distinct(GeneSymbol, .keep_all = T) %>%
   dplyr::select(-NP_id)
@@ -159,13 +148,11 @@ colnames(hope_proteo)[2:ncol(hope_proteo)] <- hist$sample_id_tumor[match(colname
 
 # filter for sample IDs in germline hist
 hope_proteo <- hope_proteo[,grepl("GeneSymbol", colnames(hope_proteo)) | colnames(hope_proteo) %in% hist$sample_id_tumor]
-
 ```
 
 Merge hope and cptac proteomics data. In cases of duplicated samples, we will determine correlation between hope vs. cptac counts; if results are highly correlated, we will take average of two data sets.  
 
 ```{r}
-
 proteo_mat <- hope_proteo %>%
   left_join(cptac_proteo, by = "GeneSymbol") %>%
   column_to_rownames("GeneSymbol")
@@ -188,7 +175,6 @@ for (sample in duplicated_columns) {
 }
 
 cor_df
-
 ```
 
 HOPE and CPTAC data are highly positively correlated, so we will take average of two runs for each sample
@@ -202,7 +188,6 @@ for (col_name in duplicated_columns) {
 # Remove duplicated columns
 proteo_mat <- proteo_mat %>%
   dplyr::select(-ends_with(c(".x", ".y")))
-
 ```
 
 Calculate protein expression z-scores and save to output
@@ -210,29 +195,23 @@ Calculate protein expression z-scores and save to output
 ```{r}
 log_proteo <- log2(proteo_mat + 1)
 
-# Scale the gene values -- scale() works on the columns, hence the transpose
-z_scored_proteo <- scale(t(log_proteo),
-                            center = TRUE,
-                            scale = TRUE)
-z_scored_proteo <- as.data.frame(z_scored_proteo)
-
 # Convert to gathered data frame and append BS normal ID
-z_scored_proteo <- z_scored_proteo %>%
-  t() %>%
+z_scored_proteo <- log_proteo %>%
   as.data.frame() %>%
   rownames_to_column("GeneSymbol") %>%
-  gather(key = "sample_id_tumor", value = "expr_zscore_proteo", -GeneSymbol) %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor")]) %>%
+  gather(key = "sample_id_tumor", value = "expr_proteo", -GeneSymbol) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor", "plot_group")]) %>%
+  group_by(GeneSymbol, plot_group) %>%
+  dplyr::mutate(expr_zscore_proteo = scale(expr_proteo)) %>%
+  dplyr::mutate(expr_zscore_proteo = as.numeric(expr_zscore_proteo)) %>%
   distinct(sample_id_tumor, GeneSymbol, .keep_all = T) %>%
-#  dplyr::filter(GeneSymbol %in% cpgs) %>%
+  dplyr::filter(GeneSymbol %in% cpgs) %>%
   write_tsv(file.path(results_dir, "cptac-hope-cpg-proteomics-zscores.tsv"))
-
 ```
 
 Load HOPE phosphoproteomics data 
 
 ```{r}
-
 hope_phospho <- read_tsv(hope_phospho_file) %>%
   dplyr::mutate(Gene_Site = glue::glue("{GeneSymbol}:{Site}"))
 
@@ -254,35 +233,29 @@ phospho_mat <- phospho_mat[,!is.na(names(phospho_mat)) & names(phospho_mat) %in%
 Calculate phosphoproteomics z-scores
 
 ```{r}
-
 log_phospho <- log2(phospho_mat + 1)
 
-# Scale the gene values -- scale() works on the columns, hence the transpose
-z_scored_phospho <- scale(t(log_phospho),
-                            center = TRUE,
-                            scale = TRUE)
-z_scored_phospho <- as.data.frame(z_scored_phospho)
-
 # convert to gathered data frame and append normal BS ID
-z_scored_phospho <- z_scored_phospho %>%
-  t() %>%
+z_scored_phospho <- log_phospho %>%
+ # t() %>%
   as.data.frame() %>%
   rownames_to_column("Gene_Site") %>%
-  gather(key = "sample_id_tumor", value = "expr_zscore_phospho", -Gene_Site) %>%
+  gather(key = "sample_id_tumor", value = "expr_phospho", -Gene_Site) %>%
   left_join(hope_phospho[,c("Gene_Site", "GeneSymbol")]) %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor")]) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, sample_id_tumor,
-                GeneSymbol, Gene_Site, expr_zscore_phospho) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor", "plot_group")]) %>%
+  group_by(GeneSymbol, plot_group) %>%
+  dplyr::mutate(expr_zscore_phospho = scale(expr_phospho)) %>%
+  dplyr::mutate(expr_zscore_phospho = as.numeric(expr_zscore_phospho)) %>%
   distinct(sample_id_tumor, Gene_Site, .keep_all = T) %>%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, sample_id_tumor,
+                GeneSymbol, Gene_Site, expr_zscore_phospho) %>%
   dplyr::filter(GeneSymbol %in% cpgs) %>%
   write_tsv(file.path(results_dir, "hope-cpg-phosphoproteomics-zscores.tsv"))
-
 ```
 
 Append protein and phosphoprotein expression z-scores to plp file and save to output
 
 ```{r}
-
 plp_cpg_proteo <- plp_cpg_proteo %>%
   dplyr::rename(GeneSymbol = gene_symbol_vep) %>%
   left_join(z_scored_proteo, by = c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor", "GeneSymbol")) %>%
@@ -297,12 +270,10 @@ plp_cpg_proteo <- plp_cpg_proteo %>%
 
 write_tsv(plp_cpg_proteo,
           file.path(results_dir, "germline-somatic-proteomics-phosphoproteomics-cpgs.tsv"))
-
 ```
 
 
 ```{r}
-
 plp_sv_cpg_proteo <- plp_sv_cpg_proteo %>%
   dplyr::rename(GeneSymbol = Hugo_Symbol_cpg) %>%
   left_join(z_scored_proteo, by = c("Kids_First_Biospecimen_ID_normal", "sample_id_tumor", "GeneSymbol")) %>%
@@ -317,5 +288,10 @@ plp_sv_cpg_proteo <- plp_sv_cpg_proteo %>%
 
 write_tsv(plp_sv_cpg_proteo,
           file.path(results_dir, "germline-sv-somatic-proteomics-phosphoproteomics-cpgs.tsv"))
+```
 
+Print session info
+
+```{r}
+sessionInfo()
 ```
