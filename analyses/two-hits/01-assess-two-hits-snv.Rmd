@@ -231,10 +231,11 @@ for (id in ids){
          width = 6, height = 4)
   
   lollipopPlot(plot_maf, gene = gene, AACol = "HGVSp_Short", 
-               showDomainLabel = FALSE, labPosAngle = 55, 
+               showDomainLabel = FALSE, labPosAngle = 45, 
                labelPos = "all", legendTxtSize = 1, 
                labPosSize = 1.25,
-               pointSize = 2,
+               pointSize = 2.5,
+               repel = TRUE,
                showMutationRate = FALSE,
                collapsePosLabel = TRUE)
   
