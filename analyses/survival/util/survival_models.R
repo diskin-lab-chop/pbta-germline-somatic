@@ -396,7 +396,7 @@ plotKM <- function(model,
     
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
-                        200, 0.15, 
+                        500, 0.15, 
                         label = pvalue_label) +
       theme(legend.text = element_text(size = 16, color = "black")) +
       cowplot::background_grid()
@@ -486,10 +486,10 @@ plotKM <- function(model,
     
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
-                        300, 0.15, 
+                        600, 0.15, 
                         label = os_pvalue_label) +
       ggplot2::annotate("text", 
-                        300, 0.10, 
+                        600, 0.10, 
                         label = efs_pvalue_label) +
       theme(legend.key.size = unit(1, 'cm')) +
       cowplot::background_grid()
