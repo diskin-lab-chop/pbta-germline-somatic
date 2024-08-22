@@ -16,6 +16,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(ggpubr)
   library(ComplexHeatmap)
+  library(colorblindr)
 })
 
 # Set up directories
@@ -387,8 +388,11 @@ Create sample annotation
 plotgroup_palette <- unique(annotation$plot_group_hex)
 names(plotgroup_palette) <- unique(annotation$Histology)
 
+tumor_event_palette <- palette_OkabeIto[4:8]
+names(tumor_event_palette) <- unique(annotation$`Tumor Event`)
+
 ha <- HeatmapAnnotation(name = "annot", df = annotation[,-7],
-                        col = list("Tumor descriptor"= c("Initial CNS Tumor" = "#F0E442",
+                        col = list("Tumor event"= c("Initial CNS Tumor" = "#F0E442",
                                                          "Progressive" = "#56B4E9",
                                                          "Deceased" = "#009E73",
                                                          "Recurrence" = "#E69F00",
@@ -398,6 +402,7 @@ ha <- HeatmapAnnotation(name = "annot", df = annotation[,-7],
                                              "Unknown" = "whitesmoke"),
                                    "Predicted ancestry" = c("AFR" = "#E69F00", "AMR" = "#56B4E9", "EAS"= "#009E73", "EUR" = "#0072B2", "SAS" = "#D55E00"),
                                    "Histology" = plotgroup_palette,
+                                   "Tumor Event" = tumor_event_palette,
                                    "RNA-Seq available" = c("Yes" = "black", "No" = "whitesmoke"),
                                    "Proteomics available" = c("Yes" = "black", "No" = "whitesmoke"),
                                    "Mutation status" = c("Normal" = "whitesmoke",
