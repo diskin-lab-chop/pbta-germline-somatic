@@ -376,7 +376,7 @@ annotation <- hist %>%
   dplyr::rename("Sex" = germline_sex_estimate,
                 "Histology" = plot_group,
                 "Predicted ancestry" = predicted_ancestry,
-                "Tumor descriptor" = tumor_descriptor,
+                "Tumor Event" = tumor_descriptor,
                 "RNA-Seq available" = RNA_data_available,
                 "Proteomics available" = Proteomics_available, 
                 "Mutation status" = tmb_status)
