@@ -44,6 +44,7 @@ RUN R -e "BiocManager::install(version = '3.19')"
 # Install packages
 RUN R -e 'BiocManager::install(c( \
 	"BiocManager", \
+	"biomaRt", \
   "data.table", \
   "ggpubr", \
   "ggthemes", \
