@@ -1,0 +1,319 @@
+---
+title: "DNA methylation: Global methylation"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This script compares mean beta values from DNA methylation arrays (an estimate of relative global DNA methylation levels) between P-LP carriers and non-carriers within histology groups
+
+Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+  library(ggpubr)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "methylation")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# source publication theme
+source(file.path(root_dir, "figures", "theme.R"))
+
+# set seed to reproduce plots
+set.seed(2024)
+```
+
+Set input file paths
+
+```{r}
+plp_file <- file.path(data_dir, 
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_sv_file <- file.path(data_dir, 
+                         "pbta_germline_svs.tsv")
+
+hist_file <- file.path(results_dir, 
+                       "germline-primary-plus-tumor-histologies-methylation.tsv")
+
+methyl_file <- file.path(results_dir, 
+                         "pbta-germline-mean-sample-methyl-beta.tsv")
+
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+
+tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
+```
+
+Wrangle data, add histology annotation to methyl df
+
+```{r}
+hist <- read_tsv(hist_file)
+
+methyl <- read_tsv(methyl_file) %>%
+  left_join(hist %>% dplyr::select("Kids_First_Biospecimen_ID_methyl", 
+                                   "Kids_First_Biospecimen_ID_normal", 
+                                   "Kids_First_Biospecimen_ID_tumor", 
+                                   "plot_group", "plot_group_hex",
+                                   "molecular_subtype"))
+```
+
+Plot mean methylation by histology
+
+```{r}
+plot_group_palette <- methyl$plot_group_hex
+names(plot_group_palette) <- methyl$plot_group
+
+methyl %>%
+  ggplot(aes(x = plot_group, y = mean_beta_value, fill = plot_group)) + 
+  geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+  labs(x = NULL, y = "Mean beta value", fill = "Histology") +
+#  ylim(c(-4, 5)) +
+   scale_fill_manual(values = plot_group_palette, 
+                      breaks = sort(names(plot_group_palette))) +
+  theme_Publication() +
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+ggsave(file.path(plot_dir, "mean-sample-methyl-beta-by-histology.pdf"),
+       width = 8, height = 4, units = "in")
+```
+Load P-LP files and filter for CPGs
+
+```{r}
+cpgs <- read_lines(cpg_file)
+
+# Load abridged P-LP file and append variant coordinates
+germline <- read_tsv(plp_file) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs)
+
+germline_sv <- read_tsv(plp_sv_file) %>%
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+```
+
+Define P-LP carrier status in `methyl`, and plot mean beta values by hist and P-LP carrier status
+
+```{r}
+methyl <- methyl %>%
+  dplyr::mutate(germline_plp = case_when(
+    Kids_First_Biospecimen_ID_normal %in% c(germline$Kids_First_Biospecimen_ID_normal,
+                                            germline_sv$Kids_First_Biospecimen_ID_normal) ~ "Yes",
+    TRUE ~ "No"
+  ))
+
+methyl %>%
+  dplyr::filter(plot_group != "Other CNS embryonal tumor") %>%
+  dplyr::mutate(plot_group = case_when(
+    plot_group == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+    TRUE ~ plot_group
+  )) %>%
+  ggplot(aes(x = germline_plp, y = mean_beta_value)) + 
+  geom_jitter(aes(fill = plot_group), 
+              shape = 21, width = 0.2, 
+              size = 2.5, alpha = 0.85,
+              show.legend = FALSE) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+               show.legend = FALSE) +
+  stat_compare_means(method = "wilcox",
+                     comparisons = list(c("Yes", "No")),
+                     method.args = list(alternative = "two.sided")) +
+  labs(x = NULL, y = "Mean beta value", fill = "Histology") +
+  ylim(c(0,1)) +
+  facet_wrap(~plot_group, nrow = 4,
+              labeller = labeller(plot_group = label_wrap_gen(18))) + 
+   scale_fill_manual(values = plot_group_palette, 
+                      breaks = sort(names(plot_group_palette))) +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "mean-sample-methyl-beta-by-histology-plp.pdf"),
+       width = 7, height = 8, units = "in")
+```
+Extract histology-gene pairs to perform pairwise comparisons of beta values
+
+```{r}
+plp_summary <- germline %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol) %>%
+  bind_rows(germline_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol)) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE) %>%
+  dplyr::mutate(plp = "Yes")
+
+gene_groups <- plp_summary %>%
+  left_join(hist[c("Kids_First_Biospecimen_ID_normal", "plot_group")]) %>%
+  group_by(Hugo_Symbol, plot_group) %>%
+  summarise(n = n()) %>%
+  dplyr::filter(n >= 2) %>%
+  dplyr::mutate(gene_group = glue::glue("{Hugo_Symbol}: {plot_group}"))
+```
+
+Plot mean methylation by histolgy and P-LP carrier status for genes with N>2 in hist group
+
+```{r}
+methyl <- methyl %>%
+  left_join(gene_groups[,c("Hugo_Symbol", "plot_group", "gene_group")],
+            by = "plot_group") %>%
+  left_join(plp_summary, by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol")) %>%
+  dplyr::mutate(plp = case_when(
+    plp == "Yes" ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
+  distinct()
+
+methyl %>%
+  dplyr::filter(!is.na(gene_group)) %>%
+  ggplot(aes(x = plp, y = mean_beta_value)) + 
+  geom_jitter(aes(fill = plot_group), 
+              shape = 21, width = 0.2, 
+              size = 2.5, alpha = 0.85,
+              show.legend = FALSE) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+               show.legend = FALSE) +
+  stat_compare_means(method = "wilcox",
+                     comparisons = list(c("Yes", "No")),
+                     method.args = list(alternative = "two.sided")) +
+  labs(x = NULL, y = "Mean beta value", fill = "Histology") +
+  ylim(c(0.35,0.7)) +
+  facet_wrap(~gene_group, nrow = 4,
+             labeller = labeller(gene_group = label_wrap_gen(18))) + 
+   scale_fill_manual(values = plot_group_palette, 
+                      breaks = sort(names(plot_group_palette))) +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "mean-sample-methyl-beta-by-hist-gene-plp.pdf"),
+       width = 16, height = 10, units = "in")
+```
+
+Plot mean beta values by histology and P-LP status in DNA repair genes and specific DNA repair pathway gene lists
+
+```{r}
+repair_genes <- read_lines(file.path(root_dir, "analyses",
+                                     "dna-repair-variant-summary", "input",
+                                     "Knijnenburg_paper", "dna_repair_all.txt"))
+mmr_genes <- read_lines(file.path(root_dir, "analyses",
+                                     "dna-repair-variant-summary", "input",
+                                     "Knijnenburg_paper", "mismatch_repair.txt"))
+hr_genes <- read_lines(file.path(root_dir, "analyses",
+                                     "dna-repair-variant-summary", "input",
+                                     "Knijnenburg_paper", "homologous_recombination.txt"))
+ber_genes <- read_lines(file.path(root_dir, "analyses",
+                                     "dna-repair-variant-summary", "input",
+                                     "Knijnenburg_paper", "base_excision_repair.txt"))
+ner_genes <- read_lines(file.path(root_dir, "analyses",
+                                     "dna-repair-variant-summary", "input",
+                                     "Knijnenburg_paper", "nucleotide_excision_repair.txt"))
+nhej_genes <- read_lines(file.path(root_dir, "analyses",
+                                     "dna-repair-variant-summary", "input",
+                                     "Knijnenburg_paper", "nonhomologous_end_joining.txt"))
+
+repair_list <- list("DNA repair" = repair_genes, "MMR" = mmr_genes, "HR" = hr_genes,
+                    "BER" = ber_genes, "NER" = ner_genes, "NHEJ" = nhej_genes)
+
+for (each in names(repair_list)){
+  
+  methyl %>%
+    distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
+    dplyr::mutate(repair_plp = case_when(
+      Kids_First_Biospecimen_ID_normal %in% plp_summary$Kids_First_Biospecimen_ID_normal[plp_summary$Hugo_Symbol %in% repair_list[[each]]] ~ "Yes",
+      TRUE ~ "No"
+    )) %>%
+    ggplot(aes(x = repair_plp, y = mean_beta_value)) + 
+    geom_jitter(aes(fill = plot_group), 
+                shape = 21, width = 0.2, 
+                size = 2.5, alpha = 0.85,
+                show.legend = FALSE) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                 show.legend = FALSE) +
+    stat_compare_means(method = "wilcox",
+                       comparisons = list(c("Yes", "No")),
+                       method.args = list(alternative = "two.sided")) +
+    labs(x = glue::glue("{each} gene P/LP variant"), y = "Mean beta value z-score", fill = "Histology") +
+    ylim(c(0.35,.7)) +
+     scale_fill_manual(values = plot_group_palette, 
+                        breaks = sort(names(plot_group_palette))) +
+    facet_wrap(~plot_group, nrow = 4,
+               labeller = labeller(plot_group = label_wrap_gen(18))) +
+    theme_Publication()
+
+ggsave(file.path(plot_dir, 
+                 glue::glue("global-beta-value-{each}-plp-vs-other.pdf")),
+       height = 8, width = 9, units = "in")
+  
+}
+```
+
+
+
+```{r}
+methyl %>%
+  distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
+  dplyr::filter(plot_group == "Other high-grade glioma",
+                grepl("wildtype", molecular_subtype)) %>%
+    dplyr::mutate(MMR_plp = case_when(
+    Kids_First_Biospecimen_ID_normal %in% plp_summary$Kids_First_Biospecimen_ID_normal[plp_summary$Hugo_Symbol %in% mmr_genes] ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
+  ggplot(aes(x = MMR_plp, y = mean_beta_value)) + 
+  geom_jitter(aes(fill = plot_group), shape = 21, 
+              width = 0.2, size = 2.5, alpha = 0.85,
+              show.legend = FALSE) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+               show.legend = FALSE) +
+  stat_compare_means(method = "wilcox",
+                     comparisons = list(c("Yes", "No")),
+                     method.args = list(alternative = "two.sided")) +
+  labs(x = glue::glue("MMR gene P/LP variant"), y = "Mean beta value", fill = "Histology") +
+  ylim(c(0.35,.65)) +
+   scale_fill_manual(values = plot_group_palette, 
+                      breaks = sort(names(plot_group_palette))) +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, 
+                 "global-beta-value-hgg-h3wt-mmr-plp-vs-other.pdf"),
+       height = 4, width = 4, units = "in")
+```
+Determine if tumor mutation burden is correlated with global methylation levels in H3 wildtype HGG
+
+```{r}
+tmb <- read_tsv(tmb_file) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode)
+
+methyl <- methyl %>%
+  left_join(tmb %>% dplyr::select(Kids_First_Biospecimen_ID_tumor,
+                                  tmb)) %>%
+    distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) 
+
+methyl %>%
+  dplyr::filter(plot_group == "Other high-grade glioma",
+                grepl("H3 wildtype", molecular_subtype)) %>%
+  ggplot(aes(x = mean_beta_value, y = log10(tmb))) +
+       geom_point() +
+       stat_smooth(method = "lm", 
+                   formula = y ~ x, 
+                   geom = "smooth", 
+                   colour = "red",
+                   fill = "pink",
+                   linetype="dashed") +
+       labs(x = "Mean methylation beta value",
+            y = "log10-Tumor Mutation Burden") + 
+       stat_cor(method = "pearson",
+                label.x = 0.4, label.y = 4, size = 5) +
+       theme_Publication()
+
+ggsave(file.path(plot_dir, "tmb-vs-mean-beta-methylation-hgg-h3-wt.pdf"),
+       width = 6, height = 5)
+```

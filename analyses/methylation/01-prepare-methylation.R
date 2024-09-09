@@ -55,7 +55,9 @@ hist <- read_tsv(hist_file, guess_max = 10000) %>%
               dplyr::select(match_id, Kids_First_Biospecimen_ID),
             by = "match_id") %>%
   distinct(Kids_First_Biospecimen_ID_tumor, .keep_all = TRUE) %>%
-  dplyr::rename(Kids_First_Biospecimen_ID_methyl = Kids_First_Biospecimen_ID)
+  dplyr::rename(Kids_First_Biospecimen_ID_methyl = Kids_First_Biospecimen_ID) %>%
+  write_tsv(file.path(results_dir,
+                      "germline-primary-plus-tumor-histologies-methylation.tsv"))
 
 # extract methylation BS IDs
 methyl_ids <- hist %>%
