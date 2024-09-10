@@ -1,6 +1,6 @@
-# Perform bedtools intersect on WXS region files and filters WXS sample variants for capture region overlap 
+# Perform bedtools intersect on WXS region files and filters variants for capture region overlap 
 
-This module pads the PMBB BED calling regions and does an intersection of all bed files to get consensus calling regions for WXS samples. The P-LP variants from WXS samples are subsequently filtered for overlap with these consensus calling regions. 
+This module pads the PMBB BED calling regions and does an intersection of all bed files to get consensus calling regions for WXS samples. P-LP variants are subsequently filtered for overlap with these consensus calling regions. 
 
 ## Usage
 
@@ -10,7 +10,7 @@ This module pads the PMBB BED calling regions and does an intersection of all be
 
 1. `01-pad-intersect-beds.sh` pads the pmbb bed file with either 20 or 100 bp and performs an intersection of bed regions across the 4 bed files:
 
-2. `02-filter-variants.Rmd` Performs intersection of WXS sample P-LP variants and consensus calling regions and filters out any non-overlapping variants from P-LP variant file
+2. `02-filter-variants.Rmd` Performs intersection of P-LP variants and consensus calling regions and filters out any non-overlapping variants from P-LP variant file
 
 
 ## Directory Structure
