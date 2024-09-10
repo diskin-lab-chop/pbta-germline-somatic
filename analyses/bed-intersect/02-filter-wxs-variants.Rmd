@@ -1,0 +1,125 @@
+---
+title: "Filter WXS P-LP variants"
+author: Ryan Corbett
+output: html_document
+date: "2024"
+---
+
+This script queries P-LP variants from WXS samples for overlap with exome capture regions, and removes those that fall outside regions.
+
+
+# Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(GenomicRanges)
+  library(IRanges)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "bed-intersect")
+results_dir <- file.path(analysis_dir, "results")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+```
+
+Set file paths
+
+```{r}
+plp_file <- file.path(data_dir, 
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+hist_file <- file.path(data_dir,
+                       "histologies.tsv")
+
+hist_cohort_file <- file.path(root_dir, "analyses",
+                             "collapse-tumor-histologies",
+                             "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+wxs_region_file <- file.path(root_dir, "analyses",
+                             "bed-intersect", "results",
+                             "pmbb_pbta_wxs_intersect.bed")
+```
+
+Wrangle data
+
+```{r}
+hist <- read_tsv(hist_file)
+
+hist_cohort <- read_tsv(hist_cohort_file)
+
+plp <- read_tsv(plp_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)
+```
+
+Filter plp file for WXS samples only
+
+```{r}
+wxs_ids <- hist %>%
+  dplyr::filter(experimental_strategy == "WXS") %>%
+  pull(Kids_First_Biospecimen_ID)
+
+plp_wxs <- plp %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% wxs_ids)
+```
+
+Create GRanges object from P-LP file, using `start` value as start and end
+
+```{r}
+plp_wxs_coords <- plp_wxs %>%
+  dplyr::mutate(end = start) %>%
+  dplyr::select(chr, start, end, gene_symbol_vep)
+
+plp_granges <- makeGRangesFromDataFrame(plp_wxs_coords,
+                                        keep.extra.columns = TRUE)
+```
+
+Load exome capture intersection bed file, and convert to GRanges object
+
+```{r}
+exome_bed <- read_tsv(wxs_region_file,
+                      col_names = c("chr", "start", "end"))
+
+exome_granges <- makeGRangesFromDataFrame(exome_bed)
+```
+
+Find overlaps between P-LP variant coordinates and exome capture regions
+
+```{r}
+plp_exome_intersect <- findOverlaps(plp_granges, exome_granges)
+
+intersect_df <- data.frame(plp_exome_intersect)
+
+head(intersect_df)
+```
+
+The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp_wxs` that overlap with exome capture regions.
+We can extract these row numbers and filter `plp_wxs` on them, removing any variants not overlapping capture regions
+
+```{r}
+to_retain <- intersect_df$queryHits
+
+plp_wxs <- plp_wxs[to_retain,]
+```
+
+Finally, update full P-LP variant df with all WGS-derived P-LP variants and filtered WXS-derived variants
+
+```{r}
+plp_filtered <- plp %>%
+  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+  bind_rows(plp_wxs) %>%
+  write_tsv(file.path(results_dir,
+                      "pbta-merged-plp-variants-autogvp-abridged-exome-filtered.tsv"))
+```
+
+
+```{r}
+sessionInfo()
+```
