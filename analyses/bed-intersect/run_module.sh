@@ -7,4 +7,4 @@ set -o pipefail
 bash 01-run-pad-intersect-beds.sh
 
 # filter WXS P-LP variants
-R -e "rmarkdown::render('02-filter-wxs-variants.Rmd')"
+R -e "rmarkdown::render('02-filter-variants.Rmd')"

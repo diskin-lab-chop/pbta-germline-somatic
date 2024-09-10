@@ -13,7 +13,7 @@
 
 <meta name="date" content="2024-01-01" />
 
-<title>Filter WXS P-LP variants</title>
+<title>Filter P-LP variants</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,15 +350,16 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Filter WXS P-LP variants</h1>
+<h1 class="title toc-ignore">Filter P-LP variants</h1>
 <h4 class="author">Ryan Corbett</h4>
 <h4 class="date">2024</h4>
 
 </div>
 
 
-<p>This script queries P-LP variants from WXS samples for overlap with
-exome capture regions, and removes those that fall outside regions.</p>
+<p>This script queries P-LP variants for overlap with exome capture
+regions, and removes those that fall outside regions to be used for
+gnomAD and PMBB enrichment analyses</p>
 <div id="load-libraries" class="section level1">
 <h1>Load libraries</h1>
 <pre class="r"><code>suppressPackageStartupMessages({
@@ -395,7 +396,7 @@ wxs_region_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 <p>Wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(hist_file)</code></pre>
 <pre><code>## Rows: 47895 Columns: 66
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 ## dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -404,7 +405,7 @@ wxs_region_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hist_cohort &lt;- read_tsv(hist_cohort_file)</code></pre>
 <pre><code>## Rows: 837 Columns: 36
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -414,34 +415,31 @@ wxs_region_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 <pre class="r"><code>plp &lt;- read_tsv(plp_file) %&gt;%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)</code></pre>
 <pre><code>## Rows: 2869 Columns: 23
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<p>Filter plp file for WXS samples only</p>
+<p>Obtain WXS ids to use for filtering later</p>
 <pre class="r"><code>wxs_ids &lt;- hist %&gt;%
   dplyr::filter(experimental_strategy == &quot;WXS&quot;) %&gt;%
-  pull(Kids_First_Biospecimen_ID)
-
-plp_wxs &lt;- plp %&gt;%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% wxs_ids)</code></pre>
+  pull(Kids_First_Biospecimen_ID)</code></pre>
 <p>Create GRanges object from P-LP file, using <code>start</code> value
 as start and end</p>
-<pre class="r"><code>plp_wxs_coords &lt;- plp_wxs %&gt;%
+<pre class="r"><code>plp_coords &lt;- plp %&gt;%
   dplyr::mutate(end = start) %&gt;%
   dplyr::select(chr, start, end, gene_symbol_vep)
 
-plp_granges &lt;- makeGRangesFromDataFrame(plp_wxs_coords,
+plp_granges &lt;- makeGRangesFromDataFrame(plp_coords,
                                         keep.extra.columns = TRUE)</code></pre>
 <p>Load exome capture intersection bed file, and convert to GRanges
 object</p>
 <pre class="r"><code>exome_bed &lt;- read_tsv(wxs_region_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 196796 Columns: 3
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end
@@ -457,54 +455,54 @@ intersect_df &lt;- data.frame(plp_exome_intersect)
 
 head(intersect_df)</code></pre>
 <pre><code>##   queryHits subjectHits
-## 1         1         992
-## 2         2       60784
-## 3         3      191592
-## 4         4      158725
-## 5         5      181585
-## 6         6       37197</code></pre>
+## 1         1        5324
+## 2         2       33144
+## 3         3      122644
+## 4         4      145594
+## 5         5      150749
+## 6         6        7340</code></pre>
 <p>The <code>queryHits</code> column of <code>intersect_df</code> lists
-the row names of P-LP variants in <code>plp_wxs</code> that overlap with
-exome capture regions. We can extract these row numbers and filter
-<code>plp_wxs</code> on them, removing any variants not overlapping
-capture regions</p>
+the row names of P-LP variants in <code>plp</code> that overlap with
+exome capture regions. We can extract these row numbers and get
+corresponding variant ids to use for filtering</p>
 <pre class="r"><code>to_retain &lt;- intersect_df$queryHits
 
-plp_wxs &lt;- plp_wxs[to_retain,]</code></pre>
-<p>Finally, update full P-LP variant df with all WGS-derived P-LP
-variants and filtered WXS-derived variants</p>
-<pre class="r"><code>plp_filtered &lt;- plp %&gt;%
-  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %&gt;%
-  bind_rows(plp_wxs) %&gt;%
-  write_tsv(file.path(results_dir,
-                      &quot;pbta-merged-plp-variants-autogvp-abridged-exome-filtered.tsv&quot;))</code></pre>
+variants_to_rm &lt;- plp[-to_retain,] %&gt;%
+  pull(variant_id)</code></pre>
+<p>We will generate two filtered data frames: 1) P-LP variants excluding
+those that do not overlap exome capture regions (to use for PMBB
+enrichment analyses) 2) P-LP variants excluding only WXS-derived
+variants that do not overlap exome capture regions (for gnomAD
+enrichment analyses)</p>
+<pre class="r"><code>plp_all_exome_filtered &lt;- plp %&gt;%
+  dplyr::filter(!variant_id %in% variants_to_rm) %&gt;%
+  write_tsv(file.path(results_dir, &quot;pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered.tsv&quot;))
+
+plp_wxs_exome_filtered &lt;- plp %&gt;%
+  dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %&gt;%
+  write_tsv(file.path(results_dir, &quot;pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered.tsv&quot;))</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.4.0 (2024-04-24)
-## Platform: x86_64-pc-linux-gnu
-## Running under: Ubuntu 22.04.4 LTS
+## Platform: aarch64-apple-darwin20
+## Running under: macOS Ventura 13.6.2
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
-## time zone: Etc/UTC
-## tzcode source: system (glibc)
+## time zone: America/New_York
+## tzcode source: internal
 ## 
 ## attached base packages:
 ## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] GenomicRanges_1.56.1 GenomeInfoDb_1.40.1  IRanges_2.38.1      
-##  [4] S4Vectors_0.42.1     BiocGenerics_0.50.0  lubridate_1.9.3     
+##  [1] GenomicRanges_1.56.0 GenomeInfoDb_1.40.1  IRanges_2.38.0      
+##  [4] S4Vectors_0.42.0     BiocGenerics_0.50.0  lubridate_1.9.3     
 ##  [7] forcats_1.0.0        stringr_1.5.1        dplyr_1.1.4         
 ## [10] purrr_1.0.2          readr_2.1.5          tidyr_1.3.1         
 ## [13] tibble_3.2.1         ggplot2_3.5.1        tidyverse_2.0.0     
@@ -520,13 +518,13 @@ variants and filtered WXS-derived variants</p>
 ## [22] XVector_0.44.0          bit64_4.0.5             munsell_0.5.1          
 ## [25] withr_3.0.0             cachem_1.1.0            yaml_2.3.8             
 ## [28] parallel_4.4.0          tools_4.4.0             tzdb_0.4.0             
-## [31] colorspace_2.1-0        GenomeInfoDbData_1.2.12 vctrs_0.6.5            
+## [31] colorspace_2.1-1        GenomeInfoDbData_1.2.12 vctrs_0.6.5            
 ## [34] R6_2.5.1                lifecycle_1.0.4         zlibbioc_1.50.0        
 ## [37] bit_4.0.5               vroom_1.6.5             pkgconfig_2.0.3        
 ## [40] pillar_1.9.0            bslib_0.7.0             gtable_0.3.5           
-## [43] glue_1.7.0              xfun_0.44               tidyselect_1.2.1       
-## [46] knitr_1.47              htmltools_0.5.8.1       rmarkdown_2.27         
-## [49] compiler_4.4.0</code></pre>
+## [43] glue_1.7.0              xfun_0.45               tidyselect_1.2.1       
+## [46] rstudioapi_0.16.0       knitr_1.47              htmltools_0.5.8.1      
+## [49] rmarkdown_2.27          compiler_4.4.0</code></pre>
 </div>
 
 

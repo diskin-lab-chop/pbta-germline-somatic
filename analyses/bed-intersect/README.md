@@ -10,15 +10,15 @@ This module pads the PMBB BED calling regions and does an intersection of all be
 
 1. `01-pad-intersect-beds.sh` pads the pmbb bed file with either 20 or 100 bp and performs an intersection of bed regions across the 4 bed files:
 
-2. `02-filter-wxs-variants.Rmd` Performs intersection of WXS sample P-LP variants and consensus calling regions and filters out any non-overlapping variants from P-LP variant file
+2. `02-filter-variants.Rmd` Performs intersection of WXS sample P-LP variants and consensus calling regions and filters out any non-overlapping variants from P-LP variant file
 
 
 ## Directory Structure
 ```
 .
 ├── 01-run-pad-intersect-beds.sh
-├── 02-filter-wxs-variants.Rmd
-├── 02-filter-wxs-variants.html
+├── 02-filter-variants.Rmd
+├── 02-filter-variants.html
 ├── README.md
 ├── input
 │   ├── S07604715_100bp_Padded.bed
@@ -32,7 +32,8 @@ This module pads the PMBB BED calling regions and does an intersection of all be
 │   ├── xgen_plus_spikein.b38.20bp_padded.bed
 │   └── xgen_plus_spikein.b38.bed
 ├── results
-│   ├── pbta-merged-plp-variants-autogvp-abridged-exome-filtered.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered.tsv
 │   └── pmbb_pbta_wxs_intersect.bed
 └── run_module.sh
 ```

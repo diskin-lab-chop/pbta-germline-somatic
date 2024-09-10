@@ -1,11 +1,11 @@
 ---
-title: "Filter WXS P-LP variants"
+title: "Filter P-LP variants"
 author: Ryan Corbett
 output: html_document
 date: "2024"
 ---
 
-This script queries P-LP variants from WXS samples for overlap with exome capture regions, and removes those that fall outside regions.
+This script queries P-LP variants for overlap with exome capture regions, and removes those that fall outside regions to be used for gnomAD and PMBB enrichment analyses
 
 
 # Load libraries
@@ -27,7 +27,6 @@ results_dir <- file.path(analysis_dir, "results")
 if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
-
 ```
 
 Set file paths
@@ -59,25 +58,22 @@ plp <- read_tsv(plp_file) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)
 ```
 
-Filter plp file for WXS samples only
+Obtain WXS ids to use for filtering later
 
 ```{r}
 wxs_ids <- hist %>%
   dplyr::filter(experimental_strategy == "WXS") %>%
   pull(Kids_First_Biospecimen_ID)
-
-plp_wxs <- plp %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% wxs_ids)
 ```
 
 Create GRanges object from P-LP file, using `start` value as start and end
 
 ```{r}
-plp_wxs_coords <- plp_wxs %>%
+plp_coords <- plp %>%
   dplyr::mutate(end = start) %>%
   dplyr::select(chr, start, end, gene_symbol_vep)
 
-plp_granges <- makeGRangesFromDataFrame(plp_wxs_coords,
+plp_granges <- makeGRangesFromDataFrame(plp_coords,
                                         keep.extra.columns = TRUE)
 ```
 
@@ -100,25 +96,29 @@ intersect_df <- data.frame(plp_exome_intersect)
 head(intersect_df)
 ```
 
-The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp_wxs` that overlap with exome capture regions.
-We can extract these row numbers and filter `plp_wxs` on them, removing any variants not overlapping capture regions
+The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
+We can extract these row numbers and get corresponding variant ids to use for filtering
 
 ```{r}
 to_retain <- intersect_df$queryHits
 
-plp_wxs <- plp_wxs[to_retain,]
+variants_to_rm <- plp[-to_retain,] %>%
+  pull(variant_id)
 ```
 
-Finally, update full P-LP variant df with all WGS-derived P-LP variants and filtered WXS-derived variants
+We will generate two filtered data frames:
+1) P-LP variants excluding those that do not overlap exome capture regions (to use for PMBB enrichment analyses)
+2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
 
 ```{r}
-plp_filtered <- plp %>%
-  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
-  bind_rows(plp_wxs) %>%
-  write_tsv(file.path(results_dir,
-                      "pbta-merged-plp-variants-autogvp-abridged-exome-filtered.tsv"))
-```
+plp_all_exome_filtered <- plp %>%
+  dplyr::filter(!variant_id %in% variants_to_rm) %>%
+  write_tsv(file.path(results_dir, "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered.tsv"))
 
+plp_wxs_exome_filtered <- plp %>%
+  dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+  write_tsv(file.path(results_dir, "pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered.tsv"))
+```
 
 ```{r}
 sessionInfo()
