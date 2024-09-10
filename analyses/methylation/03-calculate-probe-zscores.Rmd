@@ -1,0 +1,262 @@
+---
+title: "DNA methylation: probe methylation"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This script compares DNA methylation probe z-scores in patients with vs. without germline pathogenic/likely pathogenic (P/LP) variants in PBTA germline cohort. 
+
+# Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+  library(ggpubr)
+  library(ggrepel)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "methylation")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# source publication theme
+source(file.path(root_dir, "figures", "theme.R"))
+
+# set seed to reproduce plots
+set.seed(2024)
+```
+
+Set input file paths
+```{r}
+plp_file <- file.path(data_dir, 
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_lowVAF_file <- file.path(data_dir, 
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+
+plp_sv_file <- file.path(data_dir,
+                         "pbta_germline_svs.tsv")
+
+hist_cohort_file <- file.path(results_dir, 
+                              "germline-primary-plus-tumor-histologies-methylation.tsv")
+
+methyl_file <- file.path(results_dir, "cpg-methyl-beta-values.rds")
+methyl_annot_file <- file.path(results_dir, "annot-with-canonical.tsv")
+
+# cpg file
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+```
+
+# Load files
+
+```{r load files}
+hist <- read_tsv(hist_cohort_file)
+
+# CPGs
+cpgs <- read_lines(cpg_file)
+```
+
+Read in germline plp files
+
+```{r format germline data}
+# Load abridged P-LP file and append variant coordinates
+germline <- read_tsv(plp_file) %>%
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) 
+
+germline_sv <- read_tsv(plp_sv_file) %>%
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+```
+
+Append additional sample metadata (methylation sample id, histology & subtype) to plp dfs
+
+```{r}
+germline <- germline %>%
+  filter(Hugo_Symbol %in% cpgs) %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
+                    "Kids_First_Biospecimen_ID_methyl", "plot_group", "molecular_subtype")]) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
+                Kids_First_Biospecimen_ID_methyl, 
+                plot_group, molecular_subtype,
+                Hugo_Symbol, autogvp_call, autogvp_call_reason,
+                chr, start, ref, alt,
+                HGVSc, HGVSp) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_methyl, Hugo_Symbol, start, .keep_all = T)
+
+germline_sv <- germline_sv %>%
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
+                    "Kids_First_Biospecimen_ID_methyl", "plot_group", "molecular_subtype")]) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
+                Kids_First_Biospecimen_ID_methyl, 
+                plot_group, molecular_subtype,
+                Hugo_Symbol,
+                Chromosome, Start, End, Length,
+                Type, Classification) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_methyl, Hugo_Symbol, .keep_all = T)
+```
+
+Load in methyl beta values and annotation files
+
+```{r}
+cpg_methyl <- readRDS(methyl_file)
+
+methyl_annot <- read_tsv(methyl_annot_file) %>%
+  dplyr::rename(Hugo_Symbol = Gene_symbol) %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  distinct(Probe_ID, Hugo_Symbol, .keep_all = TRUE)
+```
+Append probe metadata and sample histology group to methylation df
+
+```{r}
+methyl_df <- cpg_methyl %>%
+  dplyr::filter(Gene_symbol %in% c(germline$Hugo_Symbol, germline_sv$Hugo_Symbol)) %>%
+  left_join(methyl_annot %>% dplyr::select(Chromosome, Location, Probe_ID, 
+                                           transcript_id, canonical)) %>%
+  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_methyl, 
+                                   plot_group)) %>%
+  dplyr::rename(Hugo_Symbol = Gene_symbol) %>%
+  distinct(Probe_ID, Kids_First_Biospecimen_ID_methyl, .keep_all = TRUE)
+```
+
+Create df and calculate probe beta value z-scores in P-LP carriers relative to 1) other samples in same histology group and 2) all other samples
+
+```{r}
+methyl_beta_diff_df <- germline %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, 
+                Kids_First_Biospecimen_ID_methyl,
+                plot_group, Hugo_Symbol) %>%
+  # add germline SVs
+  bind_rows(germline_sv %>% 
+              dplyr::select(Kids_First_Biospecimen_ID_normal,
+                            Kids_First_Biospecimen_ID_methyl,
+                            plot_group, Hugo_Symbol)) %>%
+  distinct() %>%
+  # remove cases with no matched methylation sample
+  dplyr::filter(!is.na(Kids_First_Biospecimen_ID_methyl)) %>%
+  left_join(methyl_df %>%
+              select(Probe_ID, Kids_First_Biospecimen_ID_methyl,
+                     Chromosome, Location, Gene_Feature,
+                     Hugo_Symbol, transcript_id, canonical, beta_value)) %>%
+  dplyr::rename(beta_value_sample = beta_value)
+
+# calculate mean probe beta values by histology group
+mean_beta_group_df <- methyl_df %>%
+  group_by(Probe_ID, plot_group) %>%
+  summarise(mean_beta_group = mean(beta_value, na.rm = TRUE),
+            sd_beta_group = sd(beta_value, na.rm = TRUE))
+
+# calculate mean probe z-scores across cohort
+mean_beta_all_df <- methyl_df %>%
+  group_by(Probe_ID) %>%
+  summarise(mean_beta_all = mean(beta_value, na.rm = TRUE),
+            sd_beta_all = sd(beta_value, na.rm = TRUE))
+
+# calculate beta value differences and z-scores relative to histology group and entire cohort
+methyl_beta_diff_df <- methyl_beta_diff_df %>%
+  # join mean and sd beta values
+  left_join(mean_beta_group_df) %>%
+  left_join(mean_beta_all_df) %>%
+  # calculate differences and z-scores
+  dplyr::mutate(beta_diff_group = beta_value_sample - mean_beta_group,
+                beta_diff_all = beta_value_sample - mean_beta_all,
+                sample_beta_zscore_group = (beta_value_sample - mean_beta_group)/sd_beta_group,
+                sample_beta_zscore_all = (beta_value_sample - mean_beta_all)/sd_beta_all) %>%
+  dplyr::select(-sd_beta_group, -sd_beta_all)
+```
+
+Write results to output
+
+```{r}
+write_tsv(methyl_beta_diff_df,
+          file.path(results_dir, "pbta-germline-methylation-beta-zscores.tsv"))
+```
+
+Print table of hypermethylated probe count by feature
+
+```{r}
+n_feat <- methyl_beta_diff_df %>%
+  dplyr::count(Gene_Feature) %>%
+  dplyr::rename("n_feat" = "n") %>%
+  dplyr::mutate(n_total = sum(n_feat))
+
+methyl_beta_diff_df %>%
+  dplyr::filter(sample_beta_zscore_group > 2,
+               beta_diff_group >= .05
+               ) %>%
+  dplyr::count(Gene_Feature) %>%
+  dplyr::mutate(n_diff = sum(n)) %>%
+  left_join(n_feat) %>%
+  dplyr::mutate(enr = round((n/n_diff)/(n_feat/n_total), 2),
+                pvalue = format(phyper(n, n_diff, n_total - n_diff, n_feat,
+                                lower.tail = F), scientific = T))
+```
+
+Print table of hypomethylated probe count by feature 
+
+```{r}
+methyl_beta_diff_df %>%
+  dplyr::filter(sample_beta_zscore_group < -2,
+               beta_diff_group <= -.05
+               ) %>%
+  dplyr::count(Gene_Feature) %>%
+  dplyr::mutate(n_diff = sum(n)) %>%
+  left_join(n_feat) %>%
+  dplyr::mutate(enr = round((n/n_diff)/(n_feat/n_total), 2),
+                pvalue = format(phyper(n, n_diff, n_total - n_diff, n_feat,
+                                lower.tail = F), scientific = T))
+```
+
+Plot number of significantly differentially methylated probes by direction and annotated gene feature
+
+```{r}
+hyper_df <- methyl_beta_diff_df %>%
+ dplyr::filter(sample_beta_zscore_group > 2,
+               beta_diff_group >= .05) %>%
+  dplyr::mutate(Gene_Feature = case_when(
+    grepl("UTR", Gene_Feature) ~ "UTR",
+    TRUE ~ Gene_Feature
+  )) %>%
+  dplyr::count(Gene_Feature) %>%
+  dplyr::mutate(`Probe Group` = "P/LP hypermethylated")
+
+hypo_df <- methyl_beta_diff_df %>%
+ dplyr::filter(sample_beta_zscore_group < -2,
+               beta_diff_group <= -.05) %>%
+  dplyr::mutate(Gene_Feature = case_when(
+    grepl("UTR", Gene_Feature) ~ "UTR",
+    TRUE ~ Gene_Feature
+  )) %>%
+  dplyr::count(Gene_Feature) %>%
+  dplyr::mutate(`Probe Group` = "P/LP hypomethylated")
+
+plot_df <- hyper_df %>%
+  bind_rows(hypo_df)
+
+plot_df %>%
+  ggplot(aes(x = Gene_Feature, y = n, fill = `Probe Group`)) +
+  geom_bar(stat="identity", position = "dodge", color = "black") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  labs(y = "Count", x = "Gene Feature") + 
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "plp-diff-probes-by-feature.tiff"),
+          width = 6, height = 3, units = "in")
+```
+
+
+```{r}
+sessionInfo()
+```
