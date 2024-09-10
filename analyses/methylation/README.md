@@ -8,7 +8,7 @@ This module processes DNA methylation array data and tests for differential meth
 
 ## Folder content 
 
-1. `01-prepare_methylation.Rmd` Calculate global and mean promoter and gene body methylation rates in CPGs, and extract all CPG beta values.
+1. `01-prepare_methylation.R` Calculate global and mean promoter and gene body methylation rates in CPGs, and extract all CPG beta values.
 
 ## Directory structure
 

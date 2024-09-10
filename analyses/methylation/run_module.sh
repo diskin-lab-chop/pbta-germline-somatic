@@ -3,5 +3,5 @@
 set -e
 set -o pipefail
 
-# Format survival data
-Rscript --vanilla 01-prepare_survival.R
+# Format methylation data
+Rscript --vanilla 01-prepare-methylation.R
