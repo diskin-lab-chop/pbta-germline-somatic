@@ -252,7 +252,7 @@ plot_df %>%
   labs(y = "Count", x = "Gene Feature") + 
   theme_Publication()
 
-ggsave(file.path(plot_dir, "plp-diff-probes-by-feature.tiff"),
+ggsave(file.path(plot_dir, "plp-diff-probes-by-feature.pdf"),
           width = 6, height = 3, units = "in")
 ```
 
