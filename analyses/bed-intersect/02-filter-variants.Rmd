@@ -131,6 +131,18 @@ for (i in 1:length(exome_granges_list)){
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv")))
   
+  # write variants that were excluded to output
+  
+  plp_all_exome_filtered <- plp %>%
+    dplyr::filter(variant_id %in% variants_to_rm) %>%
+    write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-excluded-{padding[i]}.tsv")))
+
+  plp_wxs_exome_filtered <- plp %>%
+    dplyr::filter(variant_id %in% variants_to_rm & Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+    write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-excluded-{padding[i]}.tsv")))
+  
 }
 ```
 
