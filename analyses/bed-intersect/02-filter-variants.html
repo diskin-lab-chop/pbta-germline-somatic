@@ -390,13 +390,17 @@ hist_cohort_file &lt;- file.path(root_dir, &quot;analyses&quot;,
                              &quot;collapse-tumor-histologies&quot;,
                              &quot;results&quot;, &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-wxs_region_file &lt;- file.path(root_dir, &quot;analyses&quot;,
+wxs_region_20bp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
                              &quot;bed-intersect&quot;, &quot;results&quot;,
-                             &quot;pmbb_pbta_wxs_intersect.bed&quot;)</code></pre>
+                             &quot;pmbb_pbta_wxs_intersect.20bp_padded.bed&quot;)
+
+wxs_region_100bp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
+                             &quot;bed-intersect&quot;, &quot;results&quot;,
+                             &quot;pmbb_pbta_wxs_intersect.100bp_padded.bed&quot;)</code></pre>
 <p>Wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(hist_file)</code></pre>
 <pre><code>## Rows: 47895 Columns: 66
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 ## dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -405,7 +409,7 @@ wxs_region_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hist_cohort &lt;- read_tsv(hist_cohort_file)</code></pre>
 <pre><code>## Rows: 837 Columns: 36
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -415,7 +419,7 @@ wxs_region_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 <pre class="r"><code>plp &lt;- read_tsv(plp_file) %&gt;%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)</code></pre>
 <pre><code>## Rows: 2869 Columns: 23
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
@@ -436,73 +440,92 @@ plp_granges &lt;- makeGRangesFromDataFrame(plp_coords,
                                         keep.extra.columns = TRUE)</code></pre>
 <p>Load exome capture intersection bed file, and convert to GRanges
 object</p>
-<pre class="r"><code>exome_bed &lt;- read_tsv(wxs_region_file,
+<pre class="r"><code>exome_20bp_bed &lt;- read_tsv(wxs_region_20bp_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 196796 Columns: 3
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>exome_granges &lt;- makeGRangesFromDataFrame(exome_bed)</code></pre>
+<pre class="r"><code>exome_20bp_granges &lt;- makeGRangesFromDataFrame(exome_20bp_bed)
+
+exome_100bp_bed &lt;- read_tsv(wxs_region_100bp_file,
+                      col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
+<pre><code>## Rows: 174466 Columns: 3
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;\t&quot;
+## chr (1): chr
+## dbl (2): start, end
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>exome_100bp_granges &lt;- makeGRangesFromDataFrame(exome_100bp_bed)</code></pre>
 <p>Find overlaps between P-LP variant coordinates and exome capture
 regions</p>
-<pre class="r"><code>plp_exome_intersect &lt;- findOverlaps(plp_granges, exome_granges)
+<pre class="r"><code>exome_granges_list &lt;- list(exome_20bp_granges, 
+                           exome_100bp_granges)
 
-intersect_df &lt;- data.frame(plp_exome_intersect)
+padding &lt;- c(&quot;20bp_padded&quot;, &quot;100bp_padded&quot;)
 
-head(intersect_df)</code></pre>
-<pre><code>##   queryHits subjectHits
-## 1         1        5324
-## 2         2       33144
-## 3         3      122644
-## 4         4      145594
-## 5         5      150749
-## 6         6        7340</code></pre>
-<p>The <code>queryHits</code> column of <code>intersect_df</code> lists
-the row names of P-LP variants in <code>plp</code> that overlap with
-exome capture regions. We can extract these row numbers and get
-corresponding variant ids to use for filtering</p>
-<pre class="r"><code>to_retain &lt;- intersect_df$queryHits
+for (i in 1:length(exome_granges_list)){
+  
+  plp_exome_intersect &lt;- findOverlaps(plp_granges, exome_granges_list[[i]])
 
-variants_to_rm &lt;- plp[-to_retain,] %&gt;%
-  pull(variant_id)</code></pre>
-<p>We will generate two filtered data frames: 1) P-LP variants excluding
-those that do not overlap exome capture regions (to use for PMBB
-enrichment analyses) 2) P-LP variants excluding only WXS-derived
-variants that do not overlap exome capture regions (for gnomAD
-enrichment analyses)</p>
-<pre class="r"><code>plp_all_exome_filtered &lt;- plp %&gt;%
-  dplyr::filter(!variant_id %in% variants_to_rm) %&gt;%
-  write_tsv(file.path(results_dir, &quot;pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered.tsv&quot;))
+  intersect_df &lt;- data.frame(plp_exome_intersect)
+  
+  # The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
+  # We can extract these row numbers and get corresponding variant ids to use for filtering
+  
+  to_retain &lt;- intersect_df$queryHits
 
-plp_wxs_exome_filtered &lt;- plp %&gt;%
-  dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %&gt;%
-  write_tsv(file.path(results_dir, &quot;pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered.tsv&quot;))</code></pre>
+  variants_to_rm &lt;- plp[-to_retain,] %&gt;%
+    pull(variant_id)
+  
+  #   We will generate two filtered data frames:
+  # 1) P-LP variants excluding those that do not overlap exome capture regions (to use for PMBB enrichment analyses)
+  # 2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
+  
+  plp_all_exome_filtered &lt;- plp %&gt;%
+    dplyr::filter(!variant_id %in% variants_to_rm) %&gt;%
+    write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-{padding[i]}.tsv&quot;)))
+
+  plp_wxs_exome_filtered &lt;- plp %&gt;%
+    dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %&gt;%
+    write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv&quot;)))
+  
+}</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.4.0 (2024-04-24)
-## Platform: aarch64-apple-darwin20
-## Running under: macOS Ventura 13.6.2
+## Platform: x86_64-pc-linux-gnu
+## Running under: Ubuntu 22.04.4 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
-## LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
-## time zone: America/New_York
-## tzcode source: internal
+## time zone: Etc/UTC
+## tzcode source: system (glibc)
 ## 
 ## attached base packages:
 ## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] GenomicRanges_1.56.0 GenomeInfoDb_1.40.1  IRanges_2.38.0      
-##  [4] S4Vectors_0.42.0     BiocGenerics_0.50.0  lubridate_1.9.3     
+##  [1] GenomicRanges_1.56.1 GenomeInfoDb_1.40.1  IRanges_2.38.1      
+##  [4] S4Vectors_0.42.1     BiocGenerics_0.50.0  lubridate_1.9.3     
 ##  [7] forcats_1.0.0        stringr_1.5.1        dplyr_1.1.4         
 ## [10] purrr_1.0.2          readr_2.1.5          tidyr_1.3.1         
 ## [13] tibble_3.2.1         ggplot2_3.5.1        tidyverse_2.0.0     
@@ -518,13 +541,13 @@ plp_wxs_exome_filtered &lt;- plp %&gt;%
 ## [22] XVector_0.44.0          bit64_4.0.5             munsell_0.5.1          
 ## [25] withr_3.0.0             cachem_1.1.0            yaml_2.3.8             
 ## [28] parallel_4.4.0          tools_4.4.0             tzdb_0.4.0             
-## [31] colorspace_2.1-1        GenomeInfoDbData_1.2.12 vctrs_0.6.5            
+## [31] colorspace_2.1-0        GenomeInfoDbData_1.2.12 vctrs_0.6.5            
 ## [34] R6_2.5.1                lifecycle_1.0.4         zlibbioc_1.50.0        
 ## [37] bit_4.0.5               vroom_1.6.5             pkgconfig_2.0.3        
 ## [40] pillar_1.9.0            bslib_0.7.0             gtable_0.3.5           
-## [43] glue_1.7.0              xfun_0.45               tidyselect_1.2.1       
-## [46] rstudioapi_0.16.0       knitr_1.47              htmltools_0.5.8.1      
-## [49] rmarkdown_2.27          compiler_4.4.0</code></pre>
+## [43] glue_1.7.0              xfun_0.44               tidyselect_1.2.1       
+## [46] knitr_1.47              htmltools_0.5.8.1       rmarkdown_2.27         
+## [49] compiler_4.4.0</code></pre>
 </div>
 
 

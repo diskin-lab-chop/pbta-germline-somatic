@@ -42,9 +42,13 @@ hist_cohort_file <- file.path(root_dir, "analyses",
                              "collapse-tumor-histologies",
                              "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-wxs_region_file <- file.path(root_dir, "analyses",
+wxs_region_20bp_file <- file.path(root_dir, "analyses",
                              "bed-intersect", "results",
-                             "pmbb_pbta_wxs_intersect.bed")
+                             "pmbb_pbta_wxs_intersect.20bp_padded.bed")
+
+wxs_region_100bp_file <- file.path(root_dir, "analyses",
+                             "bed-intersect", "results",
+                             "pmbb_pbta_wxs_intersect.100bp_padded.bed")
 ```
 
 Wrangle data
@@ -80,44 +84,54 @@ plp_granges <- makeGRangesFromDataFrame(plp_coords,
 Load exome capture intersection bed file, and convert to GRanges object
 
 ```{r}
-exome_bed <- read_tsv(wxs_region_file,
+exome_20bp_bed <- read_tsv(wxs_region_20bp_file,
                       col_names = c("chr", "start", "end"))
 
-exome_granges <- makeGRangesFromDataFrame(exome_bed)
+exome_20bp_granges <- makeGRangesFromDataFrame(exome_20bp_bed)
+
+exome_100bp_bed <- read_tsv(wxs_region_100bp_file,
+                      col_names = c("chr", "start", "end"))
+
+exome_100bp_granges <- makeGRangesFromDataFrame(exome_100bp_bed)
 ```
 
 Find overlaps between P-LP variant coordinates and exome capture regions
 
 ```{r}
-plp_exome_intersect <- findOverlaps(plp_granges, exome_granges)
+exome_granges_list <- list(exome_20bp_granges, 
+                           exome_100bp_granges)
 
-intersect_df <- data.frame(plp_exome_intersect)
+padding <- c("20bp_padded", "100bp_padded")
 
-head(intersect_df)
-```
+for (i in 1:length(exome_granges_list)){
+  
+  plp_exome_intersect <- findOverlaps(plp_granges, exome_granges_list[[i]])
 
-The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
-We can extract these row numbers and get corresponding variant ids to use for filtering
+  intersect_df <- data.frame(plp_exome_intersect)
+  
+  # The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
+  # We can extract these row numbers and get corresponding variant ids to use for filtering
+  
+  to_retain <- intersect_df$queryHits
 
-```{r}
-to_retain <- intersect_df$queryHits
+  variants_to_rm <- plp[-to_retain,] %>%
+    pull(variant_id)
+  
+  #   We will generate two filtered data frames:
+  # 1) P-LP variants excluding those that do not overlap exome capture regions (to use for PMBB enrichment analyses)
+  # 2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
+  
+  plp_all_exome_filtered <- plp %>%
+    dplyr::filter(!variant_id %in% variants_to_rm) %>%
+    write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-{padding[i]}.tsv")))
 
-variants_to_rm <- plp[-to_retain,] %>%
-  pull(variant_id)
-```
-
-We will generate two filtered data frames:
-1) P-LP variants excluding those that do not overlap exome capture regions (to use for PMBB enrichment analyses)
-2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
-
-```{r}
-plp_all_exome_filtered <- plp %>%
-  dplyr::filter(!variant_id %in% variants_to_rm) %>%
-  write_tsv(file.path(results_dir, "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered.tsv"))
-
-plp_wxs_exome_filtered <- plp %>%
-  dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
-  write_tsv(file.path(results_dir, "pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered.tsv"))
+  plp_wxs_exome_filtered <- plp %>%
+    dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+    write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv")))
+  
+}
 ```
 
 ```{r}
