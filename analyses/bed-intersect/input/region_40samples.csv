@@ -1,0 +1,41 @@
+biospecimen_id,sample_type,experiment_strategy,sample_id,participant_id,sequencing_center,BAIT_SET
+BS_0ZQ4019R,Normal,WXS,7316-8965,PT_M8MDJNZB,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_2B6ZEXAP,Normal,WXS,7316-8029,PT_R5T773FS,NantOmics,xgen-exome-research-panel
+BS_2Q12G53Y,Normal,WXS,7316-8816,PT_83ECX0KT,CHOP DGD,S07604715_Regions
+BS_3XYM6DSZ,Normal,WXS,7316-9212,PT_CQS4V67V,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_40RVSGZF,Normal,WXS,7316-8336,PT_C86SGM7B,CHOP DGD,S07604715_Regions
+BS_46MV2DSY,Normal,WXS,7316-8754,PT_8ATS9ATC,CHOP DGD,S07604715_Regions
+BS_53DMYMNP,Normal,WXS,7316-8939,PT_KX1QQQRC,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_5AJNFDME,Normal,WXS,7316-8658,PT_C71G98K3,CHOP DGD,S07604715_Regions
+BS_5QR4B6MV,Normal,WXS,7316-8815,PT_6PJ126FF,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_63WRZJ06,Normal,WXS,7316-8036,PT_MV5WXTQV,NantOmics,xgen-exome-research-panel
+BS_8BNM6DE1,Normal,WXS,7316-8031,PT_FKCPVY7V,NantOmics,xgen-exome-research-panel
+BS_8JEJCH4Z,Normal,WXS,7316-8826,PT_G395P98S,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_ANZ9H60A,Normal,WXS,7316-9014,PT_6H8X6RZ1,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_APXB3MQ5,Normal,WXS,7316-8033,PT_TVJ5EGMR,NantOmics,xgen-exome-research-panel
+BS_C0EVYPCQ,Normal,WXS,7316-9077,PT_E4TXAYR6,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_CFJYJAA3,Normal,WXS,7316-8030,PT_5R8EWT55,NantOmics,xgen-exome-research-panel
+BS_EGVRA5XW,Normal,WXS,7316-8811,PT_0FGS6YME,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_F4Q2B3XZ,Normal,WXS,7316-8814,PT_T9F17G9F,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_F7G8TA7C,Normal,WXS,7316-9013,PT_5SKQHRC5,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_HA8VYBMA,Normal,WXS,7316-8040,PT_ZTWCA9HX,CHOP DGD,S07604715_Regions
+BS_XV5XFKE8,Normal,WXS,7316-8037,PT_V482NWB8,NantOmics,xgen-exome-research-panel
+BS_KKBNERGA,Normal,WXS,7316-9140,PT_SGJK5KSB,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_KN6FCN12,Normal,WXS,7316-8038,PT_WMWFCG6J,NantOmics,xgen-exome-research-panel
+BS_KWMFKN38,Normal,WXS,7316-8101,PT_3QFBAXAN,CHOP DGD,S07604715_Regions
+BS_NGHQ8CNA,Normal,WXS,7316-8039,PT_YRNATR8Q,NantOmics,xgen-exome-research-panel
+BS_P78BDBZE,Normal,WXS,7316-8032,PT_6VD8J6FB,NantOmics,xgen-exome-research-panel
+BS_P8DERG5N,Normal,WXS,7316-9011,PT_E9PS2A96,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_PJZ7YCFW,Normal,WXS,7316-8034,PT_8HZN8J7C,NantOmics,xgen-exome-research-panel
+BS_Q07P48SY,Normal,WXS,7316-8828,PT_S7JCQ3TH,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_R63R4S9H,Normal,WXS,7316-9055,PT_TWAHK62W,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_RP8JJ88Z,Normal,WXS,7316-8041,PT_0EBP2PBD,CHOP DGD,S07604715_Regions
+BS_RVT7EHNX,Normal,WXS,7316-8035,PT_5K5CZXYB,NantOmics,xgen-exome-research-panel
+BS_S5NZBECP,Normal,WXS,7316-9139,PT_HV1DFFQ1,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_S8A23A9V,Normal,WXS,7316-8042,PT_4B34NTJB,CHOP DGD,S07604715_Regions
+BS_TC9GPSM8,Normal,WXS,7316-9211,PT_D9A6G154,Ashion,ashion_confidential_exome_v2_targets_hg38
+BS_TVXSXJFY,Normal,WXS,7316-8100,PT_8SF8D0M9,CHOP DGD,S07604715_Regions
+BS_VF1R7VC2,Normal,WXS,7316-8716,PT_SW4Q1HZP,CHOP DGD,S07604715_Regions
+BS_WNDCJVC6,Normal,WXS,7316-8377,PT_Z2KHR3GQ,CHOP DGD,S07604715_Regions
+BS_XM3ER1N6,Normal,WXS,7316-8028,PT_G9A050X1,NantOmics,xgen-exome-research-panel
+BS_ZWSDP4RT,Normal,WXS,7316-8964,PT_JJZ5PN64,Ashion,ashion_confidential_exome_v2_targets_hg38
