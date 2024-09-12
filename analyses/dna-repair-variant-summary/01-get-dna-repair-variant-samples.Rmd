@@ -50,9 +50,11 @@ wrangle data
 
 hist <- read_tsv(histologies_file,show_col_types = FALSE)
 
-germline <- read_tsv(plp_file, show_col_types = FALSE) 
+germline <- read_tsv(plp_file, show_col_types = FALSE) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-germline_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+germline_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs <- read_lines(cpg_file)
 

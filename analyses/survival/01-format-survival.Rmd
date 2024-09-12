@@ -63,9 +63,11 @@ Import histologies, plp, and cpg files
 hist <- read_tsv(histologies_file)
 
 plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
-  bind_rows(read_tsv(plp_lowVAF_file))
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs <- read_lines(cpg_file)
 
