@@ -72,21 +72,20 @@ Define plot groups for which survival analyses should be run
 
 ```{r}
 groups <- c("Atypical Teratoid Rhabdoid Tumor",
-            "Choroid plexus tumor",
-            "Craniopharyngioma",
             "DIPG or DMG",
             "Other high-grade glioma",
             "Ependymoma",
             "Low-grade glioma",
             "Medulloblastoma",
             "Meningioma",
-            "Mesenchymal tumor",
             "Mixed neuronal-glial tumor",
             "Neurofibroma plexiform"
             )
 
 # create names vector for output files
-plot_names <- c("ATRT", "CPT", "CRANIO", "DMG", "HGG", "EPN", "LGG", "MB", "MNG", "MES", "GNG-GNT", "NFP")
+plot_names <- c("ATRT", "DMG", "HGG", "EPN",
+                "LGG", "MB", "MNG", "GNG-GNT",
+                "NFP")
 names(plot_names) <- groups
 ```
 
@@ -209,7 +208,7 @@ for (group in groups){
                                                           ifelse(group %in% c("Mixed neuronal-glial tumor", "Ependymom"),
                                                                  "mol_sub_group+cpgPLP_status",
                                                                  ifelse(group %in% c("Choroid plexus tumor", "Mesenchymal tumor",
-                                                                                     "Meningioma"),
+                                                                                     "Meningioma", "Schwannoma"),
                                                                         "extent_of_tumor_resection+cpgPLP_status",
                                                                         "cpgPLP_status"
                                                                         )))))),
@@ -232,7 +231,7 @@ for (group in groups){
                                                           ifelse(group %in% c("Mixed neuronal-glial tumor", "Ependymom"),
                                                                  "mol_sub_group+cpgPLP_status",
                                                                  ifelse(group %in% c("Choroid plexus tumor", "Mesenchymal tumor",
-                                                                                     "Meningioma"),                                                                        
+                                                                                     "Meningioma", "Schwannoma"),                                                                        
                                                                         "extent_of_tumor_resection+cpgPLP_status",
                                                                         "cpgPLP_status"
                                                                         )))))),
