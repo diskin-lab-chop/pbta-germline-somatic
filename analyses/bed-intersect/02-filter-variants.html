@@ -390,17 +390,18 @@ hist_cohort_file &lt;- file.path(root_dir, &quot;analyses&quot;,
                              &quot;collapse-tumor-histologies&quot;,
                              &quot;results&quot;, &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-wxs_region_20bp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
-                             &quot;bed-intersect&quot;, &quot;results&quot;,
+wxs_region_20bp_file &lt;- file.path(results_dir,
                              &quot;pmbb_pbta_wxs_intersect.20bp_padded.bed&quot;)
 
-wxs_region_100bp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
-                             &quot;bed-intersect&quot;, &quot;results&quot;,
-                             &quot;pmbb_pbta_wxs_intersect.100bp_padded.bed&quot;)</code></pre>
+wxs_region_100bp_file &lt;- file.path(results_dir,
+                             &quot;pmbb_pbta_wxs_intersect.100bp_padded.bed&quot;)
+
+pbta_region_file &lt;- file.path(results_dir, 
+                              &quot;pbta_wxs_intersect.bed&quot;)</code></pre>
 <p>Wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(hist_file)</code></pre>
 <pre><code>## Rows: 47895 Columns: 66
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 ## dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -409,7 +410,7 @@ wxs_region_100bp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hist_cohort &lt;- read_tsv(hist_cohort_file)</code></pre>
 <pre><code>## Rows: 837 Columns: 36
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -419,7 +420,7 @@ wxs_region_100bp_file &lt;- file.path(root_dir, &quot;analyses&quot;,
 <pre class="r"><code>plp &lt;- read_tsv(plp_file) %&gt;%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)</code></pre>
 <pre><code>## Rows: 2869 Columns: 23
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
@@ -443,7 +444,7 @@ object</p>
 <pre class="r"><code>exome_20bp_bed &lt;- read_tsv(wxs_region_20bp_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 196796 Columns: 3
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end
@@ -455,7 +456,7 @@ object</p>
 exome_100bp_bed &lt;- read_tsv(wxs_region_100bp_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 174466 Columns: 3
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end
@@ -474,14 +475,14 @@ for (i in 1:length(exome_granges_list)){
   
   plp_exome_intersect &lt;- findOverlaps(plp_granges, exome_granges_list[[i]])
 
-  intersect_df &lt;- data.frame(plp_exome_intersect)
+  pmbb_intersect_df &lt;- data.frame(plp_exome_intersect)
   
-  # The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
+  # The `queryHits` column of `pmbb_intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
   # We can extract these row numbers and get corresponding variant ids to use for filtering
   
-  to_retain &lt;- intersect_df$queryHits
+  to_retain_pmbb &lt;- pmbb_intersect_df$queryHits
 
-  variants_to_rm &lt;- plp[-to_retain,] %&gt;%
+  variants_to_rm &lt;- plp[-to_retain_pmbb,] %&gt;%
     pull(variant_id)
   
   #   We will generate two filtered data frames:
@@ -498,7 +499,52 @@ for (i in 1:length(exome_granges_list)){
     write_tsv(file.path(results_dir, 
                         glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv&quot;)))
   
+  # write variants that were excluded to output
+  
+  plp %&gt;%
+    dplyr::filter(variant_id %in% variants_to_rm) %&gt;%
+    write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-all-exome-excluded-{padding[i]}.tsv&quot;)))
+
+  plp %&gt;%
+    dplyr::filter(variant_id %in% variants_to_rm &amp; Kids_First_Biospecimen_ID_normal %in% wxs_ids) %&gt;%
+    write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-wxs-exome-excluded-{padding[i]}.tsv&quot;)))
+  
 }</code></pre>
+<pre class="r"><code>pbta_exome_bed &lt;- read_tsv(pbta_region_file,
+                      col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
+<pre><code>## Rows: 174453 Columns: 3
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;\t&quot;
+## chr (1): chr
+## dbl (2): start, end
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>pbta_exome_granges &lt;- makeGRangesFromDataFrame(pbta_exome_bed)
+
+plp_exome_intersect &lt;- findOverlaps(plp_granges, pbta_exome_granges)
+
+pbta_intersect_df &lt;- data.frame(plp_exome_intersect)</code></pre>
+<pre class="r"><code>to_retain_gnomad &lt;- pbta_intersect_df$queryHits
+
+variants_to_rm_gnomad &lt;- plp[-to_retain_gnomad,] %&gt;%
+  pull(variant_id)</code></pre>
+<pre class="r"><code>plp_wxs_filtered &lt;- plp %&gt;%
+  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %&gt;%
+  write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv&quot;)))
+
+plp_wxs_filtered &lt;- plp %&gt;%
+  dplyr::filter(!variant_id %in% variants_to_rm_gnomad) %&gt;%
+  write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-pbta-exome-filtered.tsv&quot;)))
+
+plp %&gt;%
+  dplyr::filter(variant_id %in% variants_to_rm_gnomad) %&gt;%
+  write_tsv(file.path(results_dir, 
+                        glue::glue(&quot;pbta-merged-plp-variants-autogvp-abridged-pbta-exome-excluded.tsv&quot;)))</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.4.0 (2024-04-24)
 ## Platform: x86_64-pc-linux-gnu
