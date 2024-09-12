@@ -147,7 +147,7 @@ for (i in 1:length(exome_granges_list)){
 }
 ```
 
-
+Load PBTA exome capture region intersect bed, convert to GRanges, and get overlap with P-LP variants
 
 ```{r}
 pbta_exome_bed <- read_tsv(pbta_region_file,
@@ -160,6 +160,8 @@ plp_exome_intersect <- findOverlaps(plp_granges, pbta_exome_granges)
 pbta_intersect_df <- data.frame(plp_exome_intersect)
 ```
 
+Get list of P-LP variants to exclude
+
 ```{r}
 to_retain_gnomad <- pbta_intersect_df$queryHits
 
@@ -167,6 +169,9 @@ variants_to_rm_gnomad <- plp[-to_retain_gnomad,] %>%
   pull(variant_id)
 ```
 
+Create two output for gnomAD enrichment analyses:
+1) P-LP variants in WGS samples ONLY
+2) P-LP variants in PBTA exome capture regions
 
 ```{r}
 plp_wxs_filtered <- plp %>%
