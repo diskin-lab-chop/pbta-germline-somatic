@@ -17,3 +17,6 @@ Rscript -e "rmarkdown::render('04-run-survival-dna-repair.Rmd')"
 
 # Assess braf fusion breakpoint groups and survival by P/LP carrier status
 Rscript -e "rmarkdown::render('05-braf-fusion-breakpoint-dist-survival.Rmd')"
+
+# Generate survival summary stats plot
+Rscript --vanila 06-survival-summary.R
