@@ -23,3 +23,9 @@ bedtools intersect -a $input_dir/xgen_plus_spikein.b38.100bp_padded.bed -b $inpu
   bedtools intersect -a - -b $input_dir/S07604715_100bp_Padded.bed | \
   sort -k1,1 -k2,2n | \
   bedtools merge > $results_dir/pmbb_pbta_wxs_intersect.100bp_padded.bed
+
+# Intersect PBTA capture region beds
+bedtools intersect -a $input_dir/xgen-exome_hg38_liftover.merged.100bp_padded.bed -b $input_dir/ashion_confidential_exome_v2_targets_hg38_paded100.bed | \
+  bedtools intersect -a - -b $input_dir/S07604715_100bp_Padded.bed | \
+  sort -k1,1 -k2,2n | \
+  bedtools merge > $results_dir/pbta_wxs_intersect.bed
