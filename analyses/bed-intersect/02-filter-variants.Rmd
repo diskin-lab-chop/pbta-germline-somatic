@@ -115,19 +115,19 @@ for (i in 1:length(exome_granges_list)){
   
   to_retain_pmbb <- pmbb_intersect_df$queryHits
 
-  variants_to_rm <- plp[-to_retain_pmbb,] %>%
+  variants_to_rm_pmbb <- plp[-to_retain_pmbb,] %>%
     pull(variant_id)
   
   #   We will generate two filtered data frames:
   # 1) P-LP variants excluding those that do not overlap exome capture regions (to use for PMBB enrichment analyses)
   # 2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
   
-  plp_all_exome_filtered <- plp %>%
+  plp_all_pmbb_exome_filtered <- plp %>%
     dplyr::filter(!variant_id %in% variants_to_rm) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-{padding[i]}.tsv")))
 
-  plp_wxs_exome_filtered <- plp %>%
+  plp_wxs_pmbb_exome_filtered <- plp %>%
     dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv")))
@@ -170,8 +170,8 @@ variants_to_rm_gnomad <- plp[-to_retain_gnomad,] %>%
 ```
 
 Create two output for gnomAD enrichment analyses:
-1) P-LP variants in WGS samples ONLY
-2) P-LP variants in PBTA exome capture regions
+1) P-LP variants in WGS samples ONLY (*no-wxs.tsv)
+2) P-LP variants in PBTA exome capture regions (*pbta-exome-filtered.tsv)
 
 ```{r}
 plp_wxs_filtered <- plp %>%
@@ -179,11 +179,12 @@ plp_wxs_filtered <- plp %>%
   write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv")))
 
-plp_wxs_filtered <- plp %>%
+plp_pbta_exome_filtered <- plp %>%
   dplyr::filter(!variant_id %in% variants_to_rm_gnomad) %>%
   write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-pbta-exome-filtered.tsv")))
 
+# write all variants outside of exome capture regions 
 plp %>%
   dplyr::filter(variant_id %in% variants_to_rm_gnomad) %>%
   write_tsv(file.path(results_dir, 
