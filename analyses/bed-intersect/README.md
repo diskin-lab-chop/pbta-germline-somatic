@@ -36,10 +36,14 @@ This module pads the PMBB BED calling regions and does an intersection of all be
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-excluded-20bp_padded.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-100bp_padded.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-pbta-exome-excluded.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-pbta-exome-filtered.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-wxs-exome-excluded-100bp_padded.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-wxs-exome-excluded-20bp_padded.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-100bp_padded.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-20bp_padded.tsv
+│   ├── pbta_wxs_intersect.bed
 │   ├── pmbb_pbta_wxs_intersect.100bp_padded.bed
 │   └── pmbb_pbta_wxs_intersect.20bp_padded.bed
 └── run_module.sh
