@@ -123,24 +123,24 @@ for (i in 1:length(exome_granges_list)){
   # 2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
   
   plp_all_pmbb_exome_filtered <- plp %>%
-    dplyr::filter(!variant_id %in% variants_to_rm) %>%
+    dplyr::filter(!variant_id %in% variants_to_rm_pmbb) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-{padding[i]}.tsv")))
 
   plp_wxs_pmbb_exome_filtered <- plp %>%
-    dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+    dplyr::filter(!variant_id %in% variants_to_rm_pmbb | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv")))
   
   # write variants that were excluded to output
   
   plp %>%
-    dplyr::filter(variant_id %in% variants_to_rm) %>%
+    dplyr::filter(variant_id %in% variants_to_rm_pmbb) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-excluded-{padding[i]}.tsv")))
 
   plp %>%
-    dplyr::filter(variant_id %in% variants_to_rm & Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+    dplyr::filter(variant_id %in% variants_to_rm_pmbb & Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-excluded-{padding[i]}.tsv")))
   
