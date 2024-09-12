@@ -42,13 +42,14 @@ hist_cohort_file <- file.path(root_dir, "analyses",
                              "collapse-tumor-histologies",
                              "results", "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-wxs_region_20bp_file <- file.path(root_dir, "analyses",
-                             "bed-intersect", "results",
+wxs_region_20bp_file <- file.path(results_dir,
                              "pmbb_pbta_wxs_intersect.20bp_padded.bed")
 
-wxs_region_100bp_file <- file.path(root_dir, "analyses",
-                             "bed-intersect", "results",
+wxs_region_100bp_file <- file.path(results_dir,
                              "pmbb_pbta_wxs_intersect.100bp_padded.bed")
+
+pbta_region_file <- file.path(results_dir, 
+                              "pbta_wxs_intersect.bed")
 ```
 
 Wrangle data
@@ -107,44 +108,89 @@ for (i in 1:length(exome_granges_list)){
   
   plp_exome_intersect <- findOverlaps(plp_granges, exome_granges_list[[i]])
 
-  intersect_df <- data.frame(plp_exome_intersect)
+  pmbb_intersect_df <- data.frame(plp_exome_intersect)
   
-  # The `queryHits` column of `intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
+  # The `queryHits` column of `pmbb_intersect_df` lists the row names of P-LP variants in `plp` that overlap with exome capture regions.
   # We can extract these row numbers and get corresponding variant ids to use for filtering
   
-  to_retain <- intersect_df$queryHits
+  to_retain_pmbb <- pmbb_intersect_df$queryHits
 
-  variants_to_rm <- plp[-to_retain,] %>%
+  variants_to_rm_pmbb <- plp[-to_retain_pmbb,] %>%
     pull(variant_id)
   
   #   We will generate two filtered data frames:
   # 1) P-LP variants excluding those that do not overlap exome capture regions (to use for PMBB enrichment analyses)
   # 2) P-LP variants excluding only WXS-derived variants that do not overlap exome capture regions (for gnomAD enrichment analyses)
   
-  plp_all_exome_filtered <- plp %>%
-    dplyr::filter(!variant_id %in% variants_to_rm) %>%
+  plp_all_pmbb_exome_filtered <- plp %>%
+    dplyr::filter(!variant_id %in% variants_to_rm_pmbb) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-{padding[i]}.tsv")))
 
-  plp_wxs_exome_filtered <- plp %>%
-    dplyr::filter(!variant_id %in% variants_to_rm | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+  plp_wxs_pmbb_exome_filtered <- plp %>%
+    dplyr::filter(!variant_id %in% variants_to_rm_pmbb | !Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-{padding[i]}.tsv")))
   
   # write variants that were excluded to output
   
-  plp_all_exome_filtered <- plp %>%
-    dplyr::filter(variant_id %in% variants_to_rm) %>%
+  plp %>%
+    dplyr::filter(variant_id %in% variants_to_rm_pmbb) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-all-exome-excluded-{padding[i]}.tsv")))
 
-  plp_wxs_exome_filtered <- plp %>%
-    dplyr::filter(variant_id %in% variants_to_rm & Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+  plp %>%
+    dplyr::filter(variant_id %in% variants_to_rm_pmbb & Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
     write_tsv(file.path(results_dir, 
                         glue::glue("pbta-merged-plp-variants-autogvp-abridged-wxs-exome-excluded-{padding[i]}.tsv")))
   
 }
 ```
+
+Load PBTA exome capture region intersect bed, convert to GRanges, and get overlap with P-LP variants
+
+```{r}
+pbta_exome_bed <- read_tsv(pbta_region_file,
+                      col_names = c("chr", "start", "end"))
+
+pbta_exome_granges <- makeGRangesFromDataFrame(pbta_exome_bed)
+
+plp_exome_intersect <- findOverlaps(plp_granges, pbta_exome_granges)
+
+pbta_intersect_df <- data.frame(plp_exome_intersect)
+```
+
+Get list of P-LP variants to exclude
+
+```{r}
+to_retain_gnomad <- pbta_intersect_df$queryHits
+
+variants_to_rm_gnomad <- plp[-to_retain_gnomad,] %>%
+  pull(variant_id)
+```
+
+Create two output for gnomAD enrichment analyses:
+1) P-LP variants in WGS samples ONLY (*no-wxs.tsv)
+2) P-LP variants in PBTA exome capture regions (*pbta-exome-filtered.tsv)
+
+```{r}
+plp_wxs_filtered <- plp %>%
+  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+  write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv")))
+
+plp_pbta_exome_filtered <- plp %>%
+  dplyr::filter(!variant_id %in% variants_to_rm_gnomad) %>%
+  write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-pbta-exome-filtered.tsv")))
+
+# write all variants outside of exome capture regions 
+plp %>%
+  dplyr::filter(variant_id %in% variants_to_rm_gnomad) %>%
+  write_tsv(file.path(results_dir, 
+                        glue::glue("pbta-merged-plp-variants-autogvp-abridged-pbta-exome-excluded.tsv")))
+```
+
 
 ```{r}
 sessionInfo()
