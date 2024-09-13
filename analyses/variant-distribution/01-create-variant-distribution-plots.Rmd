@@ -263,7 +263,7 @@ plp_full %>%
   theme_Publication()
 
 ggsave(file.path(plot_dir, "all-variant-allele-freq-hist.tiff"),
-       width = 4, height = 6)
+       width = 4, height = 5)
 ```
 
 # print session info
