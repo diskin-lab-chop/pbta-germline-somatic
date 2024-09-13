@@ -20,3 +20,6 @@ Rscript -e "rmarkdown::render('05-braf-fusion-breakpoint-dist-survival.Rmd')"
 
 # Generate survival summary stats plot
 Rscript --vanila 06-survival-summary.R
+
+# Assess P-LP carrier distribution across MB molecular and methylation subtypes
+Rscript -e "rmarkdown::render('07-mb-plp-distribution.Rmd')"

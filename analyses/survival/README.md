@@ -29,11 +29,15 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 ├── 05-braf-fusion-breakpoint-dist-survival.Rmd
 ├── 05-braf-fusion-breakpoint-dist-survival.nb.html
 ├── 06-survival-summary.R
+├── 07-mb-plp-distribution.Rmd
+├── 07-mb-plp-distribution.nb.html
 ├── README.md
 ├── input
 │   ├── cbtn-all-survival-09122024.txt
 │   ├── lgg-braf-fusion-breakpoint-annotation.tsv
-│   └── pbta-lgg-braf-fusion-mixed-location.tsv
+│   ├── mb_shh_molecular_subtypes.tsv
+│   ├── pbta-lgg-braf-fusion-mixed-location.tsv
+│   └── progression-metastasis-data.tsv
 ├── plots
 │   ├── ATRT
 │   ├── BRCA_km_survival_hgg.pdf
@@ -56,8 +60,19 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── forest_hgg_int_EFS_subtype_age_repairPLP.pdf
 │   ├── forest_hgg_int_OS_subtype_age_repairPLP.pdf
 │   ├── km_EFS_lgg_braf_fusion_group.pdf
+│   ├── mb_MB, Group3_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_MB, Group4_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_MB, SHH_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_MB, WNT_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_g3_plp_carrier_subtype_enr_heatmap.pdf
+│   ├── mb_g4_plp_carrier_subtype_enr_heatmap.pdf
+│   ├── mb_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_shh_plp_carrier_subtype_enr_heatmap.pdf
+│   ├── mb_shh_plp_carrier_tp53_enr_heatmap.pdf
+│   ├── mb_shh_plp_carrier_type_enr_heatmap.pdf
 │   ├── plp_carrier_diagnosis_enr_heatmap.pdf
 │   ├── plp_carrier_fusion_enr_heatmap.pdf
+│   ├── plp_carrier_mb_subtype_enr_heatmap.pdf
 │   └── survival-hr-plp-vs-wt.pdf
 ├── results
 │   ├── ATRT
@@ -72,11 +87,36 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── NFP
 │   ├── coxph_add_EFS_lgg_braf_fusion_resection_group.RDS
 │   ├── coxph_add_EFS_lgg_braf_fusion_resection_group_plp.RDS
+│   ├── coxph_add_EFS_mb_Group3_resection_metastasis_plp.RDS
+│   ├── coxph_add_EFS_mb_Group4_resection_metastasis_plp.RDS
+│   ├── coxph_add_EFS_mb_MB,-Group4_resection_metastasis_plp.RDS
+│   ├── coxph_add_EFS_mb_MB,-Group4_resection_metastasus_plp.RDS
+│   ├── coxph_add_EFS_mb_SHH_resection_metastasis_plp.RDS
+│   ├── coxph_add_EFS_mb_WNT_resection_metastasis_plp.RDS
+│   ├── coxph_add_EFS_mb_g3_methyl_subtype.RDS
+│   ├── coxph_add_EFS_mb_g4_methyl_subtype.RDS
+│   ├── coxph_add_EFS_mb_resection_subtype_metastasis.RDS
+│   ├── coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS
+│   ├── coxph_add_EFS_mb_shh_tp53_plp.RDS
+│   ├── coxph_add_EFS_mb_shh_type.RDS
+│   ├── coxph_add_EFS_mb_subtype_metastasis_plp.RDS
+│   ├── coxph_add_OS_mb_Group3_resection_metastasis_plp.RDS
+│   ├── coxph_add_OS_mb_Group4_resection_metastasis_plp.RDS
+│   ├── coxph_add_OS_mb_SHH_resection_metastasis_plp.RDS
+│   ├── coxph_add_OS_mb_WNT_resection_metastasis_plp.RDS
+│   ├── coxph_add_OS_mb_g3_methyl_subtype.RDS
+│   ├── coxph_add_OS_mb_g4_methyl_subtype.RDS
+│   ├── coxph_add_OS_mb_resection_subtype_metastasis.RDS
+│   ├── coxph_add_OS_mb_resection_subtype_metastasis_plp.RDS
+│   ├── coxph_add_OS_mb_shh_tp53_plp.RDS
+│   ├── coxph_add_OS_mb_shh_type.RDS
+│   ├── coxph_add_OS_mb_subtype_metastasis_plp.RDS
 │   ├── coxph_add_hgg_EFS_subtype_age_repairPLP.RDS
 │   ├── coxph_add_hgg_OS_subtype_age_repairPLP.RDS
 │   ├── coxph_int_hgg_EFS_subtype_age_repairPLP.RDS
 │   ├── coxph_int_hgg_OS_subtype_age_repairPLP.RDS
 │   ├── germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv
+│   ├── mb-histologies-plus-shh-methyl-subtypes-metastsis.tsv
 │   ├── median-survival-by-ancestry-cancer-group.tsv
 │   └── subtypes-for-survival.tsv
 ├── run_module.sh
