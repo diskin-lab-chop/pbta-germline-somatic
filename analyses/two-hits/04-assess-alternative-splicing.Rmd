@@ -373,7 +373,7 @@ plp_splice_candidates %>%
                   max.overlaps = 14) +
   scale_fill_manual(values = plot_group_palette, 
                      breaks = sort(names(plot_group_palette))) +
-  labs(y = NULL, x = "delta PSI (sample-group") +
+  labs(y = NULL, x = "delta PSI (sample-group)") +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "germline_plp_alternative_splicing_diff_plot.pdf"),
