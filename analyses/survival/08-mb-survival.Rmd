@@ -1,0 +1,248 @@
+---
+title: "Assess P/LP carrier status among MB cohort and associations with survival"
+output: 
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+author: Ryan Corbett
+date: 2024
+params:
+  plot_ci: TRUE
+---
+
+**Purpose:** 
+
+Assess survival in medulloblastoma cohort by CPG P-LP status, methylation subtypes, and metastasis status
+
+## Setup
+
+#### Packages and functions
+
+Load packages and set directory paths
+```{r load packages, warning=FALSE}
+library(tidyverse)
+library(survival)
+library(ggpubr)
+library(ggplot2)
+library(circlize)
+library(ComplexHeatmap)
+
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "survival")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
+
+# If the input and results directories do not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+source(file.path(analysis_dir, "util",
+                 "survival_models.R"))
+source(file.path(root_dir, "analyses", 
+                  "demo-clin-stats", "util",
+                 "heatmap_function.R"))
+```
+
+Set file paths
+
+```{r set paths}
+mb_hist_file <- file.path(results_dir, 
+                          "mb-histologies-plus-shh-methyl-subtypes-metastsis.tsv")
+```
+
+Wrangle data
+
+```{r}
+mb_hist <- read_tsv(mb_hist_file) %>%
+  dplyr::mutate(metastasis = fct_relevel(metastasis, 
+                                         c("No metastasis", "Metastasis"))) %>%
+  dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
+                                      c("No P-LP", "CPG P-LP"))) %>%
+  dplyr::mutate(shh_type = fct_relevel(shh_type,
+                                       "MB, child-adult SHH", "MB, infant SHH"))
+```
+
+Generate OS and EFS coxph models, adding covariates for metastasis status
+
+```{r}
+add_mb_efs_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
+                                "extent_of_tumor_resection+molecular_subtype+metastasis+cpg_plp",
+                                file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS"),
+                                "multivariate",
+                                years_col = "EFS_years",
+                                status_col = "EFS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS")))
+
+ggsave(file.path(plot_dir, "forest_EFS_mb_resection_subtype_metastasis_plp.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
+```{r}
+add_mb_os_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
+                                "extent_of_tumor_resection+molecular_subtype+metastasis+cpg_plp",
+                                file.path(results_dir, "coxph_add_OS_mb_resection_subtype_metastasis_plp.RDS"),
+                                "multivariate",
+                                years_col = "OS_years",
+                                status_col = "OS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_add_OS_mb_resection_subtype_metastasis_plp.RDS")))
+
+ggsave(file.path(plot_dir, "forest_OS_mb_resection_subtype_metastasis_plp.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
+Generate OS and EFS survival models by molecular subtype, including covariates for extent of tumor resection, metastasis, and cpg P-LP status
+
+```{r}
+subtypes <- unique(mb_hist$molecular_subtype[!grepl("classified", mb_hist$molecular_subtype)])
+
+for (subtype in subtypes){
+  
+  abbrev <- str_replace(subtype, "MB, ", "")
+  
+  add_mb_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
+                                "extent_of_tumor_resection+metastasis+cpg_plp",
+                                file.path(results_dir, glue::glue("coxph_add_EFS_mb_{abbrev}_resection_metastasis_plp.RDS")),
+                                "multivariate",
+                                years_col = "EFS_years",
+                                status_col = "EFS_status")
+  
+  plotForest(readRDS(file.path(results_dir, glue::glue("coxph_add_EFS_mb_{abbrev}_resection_metastasis_plp.RDS"))))
+
+  ggsave(file.path(plot_dir, glue::glue("forest_EFS_mb_{abbrev}_resection_subtype_metastasis.pdf")),
+         width = 7, height = 3, units = "in")
+  
+  if (subtype != "MB, WNT"){
+  
+    add_mb_os_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
+                                "extent_of_tumor_resection+metastasis+cpg_plp",
+                                file.path(results_dir, glue::glue("coxph_add_OS_mb_{abbrev}_resection_metastasis_plp.RDS")),
+                                "multivariate",
+                                years_col = "OS_years",
+                                status_col = "OS_status")
+    
+    plotForest(readRDS(file.path(results_dir, glue::glue("coxph_add_OS_mb_{abbrev}_resection_metastasis_plp.RDS"))))
+  
+    ggsave(file.path(plot_dir, glue::glue("forest_OS_mb_{abbrev}_resection_subtype_metastasis.pdf")),
+           width = 7, height = 3, units = "in")
+    
+  }
+  
+}
+```
+Plot KM survival curves for MB SHH, stratified by infant vs child/adult type 
+
+```{r}
+kap_shh_type_os <- survival_analysis(
+  metadata  = mb_hist[!is.na(mb_hist$shh_type),],
+  ind_var = "shh_type",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
+  days_col = "OS_days",
+  status_col = "OS_status"
+)
+
+kap_shh_type_efs <- survival_analysis(
+  metadata  = mb_hist[!is.na(mb_hist$shh_type),],
+  ind_var = "shh_type",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
+  days_col = "EFS_days",
+  status_col = "EFS_status"
+)
+
+km_shh_type_plot <- plotKM(model = list(kap_shh_type_os,
+                                      kap_shh_type_efs),
+                  variable = "shh_type",
+                  combined = T, 
+                  title = "MB, SHH")
+km_shh_type_plot
+
+ggsave(file.path(plot_dir, "km_OS_mb_shh_subtype.pdf"),
+       width = 9, height = 5)
+```
+Plot KM survival curves for MB, Group 4 cohort by methylation subtype
+
+```{r}
+kap_g4_os <- survival_analysis(
+  metadata  = mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
+  ind_var = "dkfz_v12_methylation_subclass",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
+  days_col = "OS_days",
+  status_col = "OS_status"
+)
+
+kap_g4_efs <- survival_analysis(
+  metadata  = mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
+  ind_var = "dkfz_v12_methylation_subclass",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Biospecimen_ID_normal", 
+  days_col = "EFS_days",
+  status_col = "EFS_status"
+)
+
+km_g4_plot <- plotKM(model = list(kap_g4_os,
+                                      kap_g4_efs),
+                  variable = "dkfz_v12_methylation_subclass",
+                  combined = T, 
+                  title = "MB, Group4")
+km_g4_plot
+
+ggsave(file.path(plot_dir, "km_mb_g4_subtype.pdf"),
+       width = 8, height = 5.5)
+```
+Plot MB Group 4 EFS coxph model including methylation subclass as a covariate
+
+```{r}
+add_mb_g4_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp",
+                                file.path(results_dir, "coxph_add_EFS_mb_g4_methyl_subtype.RDS"),
+                                "multivariate",
+                                years_col = "EFS_years",
+                                status_col = "EFS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_mb_g4_methyl_subtype.RDS")))
+
+ggsave(file.path(plot_dir, "forest_EFS_mb_g4_resection_methyl_subtype.pdf"),
+       width = 7, height = 3, units = "in")
+```
+Plot MB Group 3 EFS coxph model including methylation subtype as covariate
+
+```{r}
+add_mb_g3_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp",
+                                file.path(results_dir, "coxph_add_EFS_mb_g3_resection_methyl_subtype.RDS"),
+                                "multivariate",
+                                years_col = "EFS_years",
+                                status_col = "EFS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_mb_g3_resection_methyl_subtype.RDS")))
+
+ggsave(file.path(plot_dir, "forest_EFS_mb_g3_resection_methyl_subtype.pdf"),
+       width = 7, height = 3, units = "in")
+```
+Plot MB Group 3 OS coxph model including methylation subtype as covariate
+
+```{r}
+add_mb_g3_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp",
+                                file.path(results_dir, "coxph_add_OS_mb_g3_resection_methyl_subtype.RDS"),
+                                "multivariate",
+                                years_col = "OS_years",
+                                status_col = "OS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_add_OS_mb_g3_resection_methyl_subtype.RDS")))
+
+ggsave(file.path(plot_dir, "forest_OS_mb_g3_resection_methyl_subtype.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
+```{r}
+sessionInfo()
+```
