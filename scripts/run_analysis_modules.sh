@@ -50,9 +50,9 @@ cd ${analyses_dir}/predisposition-variants
 bash run_module.sh
 
 # Run enrichment analysis module
-echo "Run cpg-enrichment"
-cd ${analyses_dir}/cpg-enrichment
-bash run_module.sh
+# echo "Run cpg-enrichment"
+# cd ${analyses_dir}/cpg-enrichment
+# bash run_module.sh
 
 # Run oncokb annotation analysis module
 echo "Run oncokb-annotation"
