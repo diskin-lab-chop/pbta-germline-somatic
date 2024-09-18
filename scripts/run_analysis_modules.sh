@@ -22,7 +22,7 @@ analyses_dir="$BASEDIR/analyses"
 # Run collapse-tumor-histologies analysis module
 echo "Run collapse-tumor-histologies"
 cd ${analyses_dir}/collapse-tumor-histologies
-Rscript 01-collapse-tumor-histologies.R
+bash run_module.sh
 
 # Run bed-intersect analysis module
 echo "Run bed-intersect"

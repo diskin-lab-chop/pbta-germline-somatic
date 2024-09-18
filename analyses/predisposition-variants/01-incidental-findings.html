@@ -459,14 +459,16 @@ predispositions_file &lt;- file.path(input_dir, &quot;predisposition-syndromes.t
 <p>Read in histologies, germline PLP, and predispositions file</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) 
 
-plp &lt;- read_tsv(plp_file, show_col_types = FALSE)
+plp &lt;- read_tsv(plp_file, show_col_types = FALSE) %&gt;%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
+plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE) %&gt;%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 predispositions &lt;- read_tsv(predispositions_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 28 Columns: 2
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -491,11 +493,11 @@ histologies file:</p>
 ##                                                      Neurofibromatosis, Type 2 (NF-2) 
 ##                                                                                     7 
 ##                                                                       None documented 
-##                                                                                   761 
+##                                                                                   755 
 ##                                                                          Not Reported 
 ##                                                                                     8 
 ##                                                        Other inherited conditions NOS 
-##                                                                                    11 
+##                                                                                    10 
 ##                                                               Schwannomatosis (LZTR1) 
 ##                                                                                     1 
 ##                                                       Tuberous Sclerosis (TSC1, TSC2) 

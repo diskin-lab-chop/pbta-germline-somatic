@@ -459,9 +459,11 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <p>wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE)
 
-germline &lt;- read_tsv(plp_file, show_col_types = FALSE) 
+germline &lt;- read_tsv(plp_file, show_col_types = FALSE) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
+germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs &lt;- read_lines(cpg_file)</code></pre>
 <p>Using DNA repair gene lists obtained from Knijnenburg et al. and

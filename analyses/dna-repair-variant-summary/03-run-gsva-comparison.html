@@ -460,7 +460,7 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 Filter histologies file for high-grade glioma only</p>
 <pre class="r"><code>hist_pbta &lt;- read_tsv(pbta_histologies_file) </code></pre>
 <pre><code>## Rows: 47895 Columns: 66
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 ## dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -477,8 +477,8 @@ Filter histologies file for high-grade glioma only</p>
               dplyr::filter(experimental_strategy == &quot;RNA-Seq&quot;) %&gt;%
               dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %&gt;%
               dplyr::select(match_id, Kids_First_Biospecimen_ID_rna))</code></pre>
-<pre><code>## Rows: 837 Columns: 36
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<pre><code>## Rows: 830 Columns: 36
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -489,7 +489,7 @@ Filter histologies file for high-grade glioma only</p>
 ## Joining with `by = join_by(match_id)`</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -500,7 +500,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score
@@ -933,10 +933,10 @@ if (repair_gene_source[i] == &quot;Knijnenburg_repair_genes&quot;){
 ## [25] jquerylib_0.1.4   cachem_1.1.0      abind_1.4-5       tidyselect_1.2.1 
 ## [29] digest_0.6.35     stringi_1.8.4     labeling_0.4.3    rprojroot_2.0.4  
 ## [33] fastmap_1.2.0     colorspace_2.1-0  cli_3.6.2         magrittr_2.0.3   
-## [37] utf8_1.2.4        broom_1.0.5       withr_3.0.0       scales_1.3.0     
-## [41] backports_1.4.1   bit64_4.0.5       timechange_0.3.0  rmarkdown_2.27   
+## [37] utf8_1.2.4        broom_1.0.6       withr_3.0.0       scales_1.3.0     
+## [41] backports_1.5.0   bit64_4.0.5       timechange_0.3.0  rmarkdown_2.27   
 ## [45] bit_4.0.5         ggsignif_0.6.4    ragg_1.3.2        hms_1.1.3        
-## [49] evaluate_0.23     knitr_1.47        rlang_1.1.3       glue_1.7.0       
+## [49] evaluate_0.24.0   knitr_1.47        rlang_1.1.4       glue_1.7.0       
 ## [53] vroom_1.6.5       jsonlite_1.8.8    R6_2.5.1          systemfonts_1.1.0</code></pre>
 
 
