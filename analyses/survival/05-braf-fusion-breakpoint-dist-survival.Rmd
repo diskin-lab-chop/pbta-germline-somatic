@@ -127,8 +127,7 @@ fusion_enr <- plot_enr(fusions,
                        var1 = "breakpoint_group", 
                        var2 = "cpg_plp",
                        var1_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
-                       var2_names = c("No P/LP", "CPG P/LP"),
-                        padjust = TRUE)
+                       var2_names = c("No P/LP", "CPG P/LP"))
 
 pdf(file.path(plot_dir, "plp_carrier_fusion_enr_heatmap.pdf"),
     width = 3, height = 4)
@@ -143,8 +142,7 @@ diagnosis_enr <- plot_enr(fusions[!is.na(fusions$diagnosis),],
                        var1 = "diagnosis", 
                        var2 = "cpg_plp",
                        var1_names = unique(fusions$diagnosis[!is.na(fusions$diagnosis)]), 
-                       var2_names = c("No P/LP", "CPG P/LP"),
-                       padjust = TRUE)
+                       var2_names = c("No P/LP", "CPG P/LP"))
 
 pdf(file.path(plot_dir, "plp_carrier_diagnosis_enr_heatmap.pdf"),
     width = 4, height = 4)
