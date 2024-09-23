@@ -40,12 +40,10 @@ Set paths for:
 histologies_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies",
                               "results","germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "variant-distribution", "input", 
-                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+plp_file <- file.path(data_dir, 
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
 tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
@@ -57,23 +55,21 @@ maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results", "snv
 Read in histologies, germline PLP, and tmb file. Subset histologies file to include only HGG tumors
 
 ```{r read files}
-
 hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
-  # filter(grepl("DIPG or DMG|Other high-grade glioma", plot_group))
   filter(grepl("Other high-grade glioma", plot_group),
          grepl("wildtype", molecular_subtype))
 
+plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp <- read_tsv(plp_file, show_col_types = FALSE)
-
-plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 tmb <- read_tsv(tmb_file,show_col_types = FALSE) %>%
   dplyr::rename("Kids_First_Biospecimen_ID" = "Tumor_Sample_Barcode")
 
 maf <- data.table::fread(maf_file, data.table = F) %>%
   filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor)
-
 ```
 
 

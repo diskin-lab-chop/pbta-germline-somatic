@@ -16,12 +16,13 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(ggpubr)
   library(ComplexHeatmap)
+  library(colorblindr)
 })
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 
-data_dir <- file.path(root_dir, "data/v6")
+data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "oncoprint")
 input_dir <- file.path(root_dir, "analyses", "two-hits", "results")
 results_dir <- file.path(analysis_dir, "results")
@@ -53,27 +54,37 @@ cnv_xy_file <- file.path(data_dir, "consensus_seg_annotated_cn_x_and_y.tsv.gz")
 
 loh_gene_file <- file.path(data_dir, "pbta-all-gene-loh.tsv.gz")
 
-expr_zscore_file <- file.path(input_dir, "pbta-germline-838-gene-expr-zscores.tsv")
+expr_zscore_file <- file.path(input_dir, "pbta-germline-gene-expr-zscores.tsv")
 
 proteo_zscore_file <- file.path(input_dir, "cptac-hope-cpg-proteomics-zscores.tsv")
+
+tmb_file <- file.path(data_dir, "snv-mutation-tmb-coding.tsv")
 ```
 
-load hist and plp variant-somatic alterations merged files
+load hist and plp variant-somatic alterations merged files; load TMB and define mutation status
 ```{r}
 hist <- read_tsv(hist_file)
 
 plp <- read_tsv(plp_file)
 
 plp_sv <- read_tsv(plp_sv_file)
+
+tmb <- read_tsv(tmb_file) %>%
+  dplyr::mutate(tmb_status = case_when(
+    tmb >= 100 ~ "Ultra-hypermutant",
+    tmb >= 10 ~ "Hypermutant",
+    TRUE ~ "Normal"
+  )) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode)
 ```
 
 Define all unique P/LP cases in which a somatic alteration was observed in each data modality
 ```{r}
 all_cases <- plp %>%
-  dplyr::filter(!is.na(HGVSc_tumor) | CNV_status_somatic %in% c("gain", "loss") | abs(loh_score) > 0.25 | gene_LOH > 0.25 | abs(expr_zscore) > 2 | abs(expr_zscore_proteo) >2) %>%
+  dplyr::filter(!is.na(HGVSc_tumor) | CNV_status_somatic %in% c("gain", "loss") | (loh_OR > 1 & loh_pvalue < 0.05) | gene_LOH > 0.2 | abs(expr_zscore) > 2 | abs(expr_zscore_proteo) > 2) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol) %>%
   bind_rows(plp_sv %>% 
-              dplyr::filter(!is.na(HGVSc_tumor) | CNV_status_somatic %in% c("gain", "loss") | gene_LOH > 0.25 | abs(expr_zscore) > 2 | abs(expr_zscore_proteo) >2) %>%
+              dplyr::filter(!is.na(HGVSc_tumor) | CNV_status_somatic %in% c("gain", "loss") | gene_LOH > 0.2 | abs(expr_zscore) > 2 | abs(expr_zscore_proteo) > 2) %>%
               dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol)) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = TRUE)
 ```
@@ -93,8 +104,10 @@ all_cases <- all_cases %>%
 Read in full somatic alterations file
 ```{r}
 maf_onco <- read_tsv(maf_file) %>%
-  dplyr::filter(ONCOGENIC %in% c("Oncogenic", "Likely Oncogenic")) %>%
-  dplyr::filter(Hugo_Symbol %in% all_cases$Hugo_Symbol)
+  filter(ONCOGENIC %in% c("Likely Oncogenic", "Oncogenic", "Resistance") |
+           Variant_Classification %in% c("Frame_Shift_Del", "Frame_Shift_Ins",
+                                         "Missense_Mutation", "Nonsense_Mutation",
+                                         "Splice_Site", "Translation_Start_Site"))
 
 cnv_auto <- read_tsv(cnv_auto_file)
 
@@ -198,7 +211,7 @@ for (sample in unique(alteration_df$Kids_First_Biospecimen_ID_normal)){
     # determine if LOH present (for germline variants ONLY)
     if (alteration_df$Germline[alteration_df$Kids_First_Biospecimen_ID_normal == sample & alteration_df$Hugo_Symbol == gene] == "GER"){
       
-          if (sum(plp$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp$Hugo_Symbol == gene & ((abs(plp$loh_score) > 0.25 & !is.na(plp$loh_score)) | (plp$gene_LOH > 0.25 & !is.na(plp$gene_LOH)))) > 0 | sum(plp_sv$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp_sv$Hugo_Symbol == gene & plp_sv$gene_LOH > 0.25 & !is.na(plp_sv$gene_LOH)) > 0){
+          if (sum(plp$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp$Hugo_Symbol == gene & ((plp$loh_OR > 1 & plp$loh_pvalue < 0.05 & !is.na(plp$loh_score)) | (plp$gene_LOH > 0.2 & !is.na(plp$gene_LOH)))) > 0 | sum(plp_sv$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp_sv$Hugo_Symbol == gene & plp_sv$gene_LOH > 0.2 & !is.na(plp_sv$gene_LOH)) > 0){
       
       alteration_df$LOH[alteration_df$Kids_First_Biospecimen_ID_normal == sample & alteration_df$Hugo_Symbol == gene] <- "LOH"
       
@@ -270,7 +283,7 @@ Create alteration list to define how alterations are displayed
 ```{r}
 retain_samples <- apply(alteration_mat, 1, function(x) sum(grepl("GER", x) & (!grepl(";;;;;", x) | grepl("PLOS|PGAI", x))) > 0)
 
-alteration_mat <- alteration_mat[retain,]
+alteration_mat <- alteration_mat[retain_samples,]
 
 retain_genes <- apply(alteration_mat, 2, function(x) sum(grepl("GER", x)) > 0)
 
@@ -355,14 +368,19 @@ annotation <- hist %>%
     TRUE ~ "No"
   )) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% rownames(alteration_mat)) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, germline_sex_estimate, predicted_ancestry, tumor_descriptor, plot_group, RNA_data_available, Proteomics_available, plot_group_hex) %>%
+  left_join(tmb %>% dplyr::select(Kids_First_Biospecimen_ID_tumor, tmb_status)) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, germline_sex_estimate, 
+                predicted_ancestry, tumor_descriptor, plot_group, 
+                RNA_data_available, Proteomics_available, plot_group_hex, 
+                tmb_status) %>%
   column_to_rownames("Kids_First_Biospecimen_ID_normal") %>%
   dplyr::rename("Sex" = germline_sex_estimate,
                 "Histology" = plot_group,
                 "Predicted ancestry" = predicted_ancestry,
-                "Tumor descriptor" = tumor_descriptor,
+                "Tumor Event" = tumor_descriptor,
                 "RNA-Seq available" = RNA_data_available,
-                "Proteomics available" = Proteomics_available)
+                "Proteomics available" = Proteomics_available, 
+                "Mutation status" = tmb_status)
 ```
 
 Create sample annotation
@@ -370,18 +388,26 @@ Create sample annotation
 plotgroup_palette <- unique(annotation$plot_group_hex)
 names(plotgroup_palette) <- unique(annotation$Histology)
 
+tumor_event_palette <- palette_OkabeIto[4:8]
+names(tumor_event_palette) <- unique(annotation$`Tumor Event`)
+
 ha <- HeatmapAnnotation(name = "annot", df = annotation[,-7],
-                        col = list("Tumor descriptor"= c("Initial CNS Tumor" = "#F0E442",
+                        col = list("Tumor event"= c("Initial CNS Tumor" = "#F0E442",
                                                          "Progressive" = "#56B4E9",
                                                          "Deceased" = "#009E73",
                                                          "Recurrence" = "#E69F00",
                                                          "Second Malignancy" = "#0072B2"),
                                    "Sex" = c("Male" = "#56B4E9",
-                                             "Female" = "#CC79A7"),
+                                             "Female" = "#CC79A7",
+                                             "Unknown" = "whitesmoke"),
                                    "Predicted ancestry" = c("AFR" = "#E69F00", "AMR" = "#56B4E9", "EAS"= "#009E73", "EUR" = "#0072B2", "SAS" = "#D55E00"),
                                    "Histology" = plotgroup_palette,
+                                   "Tumor Event" = tumor_event_palette,
                                    "RNA-Seq available" = c("Yes" = "black", "No" = "whitesmoke"),
-                                   "Proteomics available" = c("Yes" = "black", "No" = "whitesmoke")),
+                                   "Proteomics available" = c("Yes" = "black", "No" = "whitesmoke"),
+                                   "Mutation status" = c("Normal" = "whitesmoke",
+                                               "Hypermutant" = "orange",
+                                               "Ultra-hypermutant" = "red")),
                         show_annotation_name = TRUE,
                         gp = gpar(fontsize= 0.1), 
                         simple_anno_size = unit(4, "mm"), annotation_name_side = "left",
@@ -393,6 +419,7 @@ ht_opt$HEATMAP_LEGEND_PADDING = unit(0.5, "cm")
 ```
 
 Generate oncoprint
+
 ```{r}
 ht=oncoPrint(t(alteration_mat), get_type = function(x)strsplit(x, ";")[[1]],
              alter_fun = alter_fun, col = col, show_column_names =FALSE,
@@ -401,7 +428,7 @@ ht=oncoPrint(t(alteration_mat), get_type = function(x)strsplit(x, ";")[[1]],
              alter_fun_is_vectorized = FALSE,
              column_names_side = "top",
              column_order = unique(all_cases$Kids_First_Biospecimen_ID_normal),
-             row_order = gene_ct$Hugo_Symbol,
+             row_order = as.character(gene_ct$Hugo_Symbol),
              top_annotation = ha,
              right_annotation = NULL,
              #  bottom_annotation = ha1,

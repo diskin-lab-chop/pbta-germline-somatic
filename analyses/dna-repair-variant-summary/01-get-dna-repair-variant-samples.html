@@ -449,21 +449,21 @@ source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pr
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                      &quot;variant-distribution&quot;, &quot;input&quot;, 
-                      &quot;pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv&quot;)
+plp_file &lt;- file.path(data_dir, 
+                      &quot;pbta-merged-plp-variants-autogvp-abridged.tsv&quot;)
 
-plp_sv_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
-                         &quot;germline-sv&quot;, &quot;input&quot;, 
+plp_sv_file &lt;- file.path(data_dir,
                          &quot;pbta_germline_svs.tsv&quot;)
 
 cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation&quot;, &quot;input&quot;, &quot;cpg.txt&quot;)</code></pre>
 <p>wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE)
 
-germline &lt;- read_tsv(plp_file, show_col_types = FALSE) 
+germline &lt;- read_tsv(plp_file, show_col_types = FALSE) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE)
+germline_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs &lt;- read_lines(cpg_file)</code></pre>
 <p>Using DNA repair gene lists obtained from Knijnenburg et al. and
@@ -717,11 +717,13 @@ for (i in 1:length(repair_gene_source)){
 
 }</code></pre>
 <pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.</code></pre>
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 <pre><code>## Warning: Using one column matrices in `filter()` was deprecated in dplyr 1.1.0.
 ## ℹ Please use one dimensional logical vectors instead.
-## ℹ The deprecated feature was likely used in the dplyr package.
-##   Please report the issue at &lt;https://github.com/tidyverse/dplyr/issues&gt;.</code></pre>
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 
 
 
