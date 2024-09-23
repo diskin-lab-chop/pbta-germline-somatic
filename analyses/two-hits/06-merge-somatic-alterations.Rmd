@@ -12,16 +12,13 @@ This script compares genes expression z-scores in patients with vs. without germ
 # Load libraries
 ```{r load libraries, set up directories}
 suppressPackageStartupMessages({
-  library(ggplot2)
   library(tidyverse)
-  library(ggpubr)
-  library(ComplexHeatmap)
 })
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 
-data_dir <- file.path(root_dir, "data/v6")
+data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "two-hits")
 results_dir <- file.path(analysis_dir, "results")
 
@@ -34,11 +31,13 @@ if (!dir.exists(results_dir)) {
 Set input file paths
 ```{r}
 plp_file <- file.path(data_dir, 
-                      "pbta_germline_plp_calls_autogvp_abridged_11062023.tsv")
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir, 
                          "pbta_germline_svs.tsv")
+
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -69,27 +68,24 @@ sv_proteo_file <- file.path(results_dir, "germline-sv-somatic-proteomics-phospho
 
 read in autogvp plp output and plp svs, filter gnomad non-pass
 ```{r}
+hist <- read_tsv(hist_file)
+
 cpgs <- read_lines(cpg_file)
 
 plp <- read_tsv(plp_file) %>%
-  dplyr::filter(gene_symbol_vep %in% cpgs)
- 
-# remove gnomad non-PASS filter variants
-to_rm <- plp %>%
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::filter(gene_symbol_vep %in% cpgs) %>%
-  dplyr::filter(rs_id %in% c("rs200962248", "rs1296066077", "rs1205853831") |
-                start == 10087255)
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 plp_sv <- read_tsv(plp_sv_file) %>%
-  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 rna_specimens <- read_tsv(indepedent_specimens_rna)
 ```
 
 Define all unique SNV/INDEL P/LP cases in which a somatic alteration was observed in each data modality
 ```{r}
-hist <- read_tsv(hist_file)
-
 snv_hits_snv <- read_tsv(onco_snv_file) %>%
   dplyr::filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
@@ -101,19 +97,17 @@ snv_hits_snv <- read_tsv(onco_snv_file) %>%
                 Variant_Classification, ONCOGENIC)
 
 cnv_loh_snv <- read_tsv(cnv_loh_file) %>%
-  dplyr::filter(!glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}") %in% to_rm,
-                Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-                Hugo_Symbol, start, CNV_status_somatic, proband_germline_vaf, proband_tumor_vaf, loh_score, gene_LOH)
+                Hugo_Symbol, start, CNV_status_somatic, proband_germline_vaf, proband_tumor_vaf,
+                loh_score, loh_OR, loh_pvalue, gene_LOH)
 
 expression_snv <- read_tsv(expr_file) %>%
-  dplyr::filter(!glue::glue("{Kids_First_Biospecimen_ID_normal}:{Hugo_Symbol}") %in% to_rm,
-                Kids_First_Biospecimen_ID_rna %in% rna_specimens$Kids_First_Biospecimen_ID) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_rna %in% rna_specimens$Kids_First_Biospecimen_ID) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna,
                 Hugo_Symbol, start, expr_zscore)
 
 proteomics_snv <- read_tsv(proteo_file) %>%
-  dplyr::filter(!glue::glue("{Kids_First_Biospecimen_ID_normal}:{GeneSymbol}") %in% to_rm) %>%
   dplyr::rename(Hugo_Symbol = GeneSymbol) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, sample_id_tumor,
                 Hugo_Symbol, start, expr_zscore_proteo) %>%

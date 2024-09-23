@@ -50,9 +50,11 @@ Read in histologies, germline PLP, and predispositions file
 ```{r read files}
 hist <- read_tsv(histologies_file,show_col_types = FALSE) 
 
-plp <- read_tsv(plp_file, show_col_types = FALSE)
+plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 predispositions <- read_tsv(predispositions_file) %>%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)

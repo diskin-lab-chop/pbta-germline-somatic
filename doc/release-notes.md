@@ -12,6 +12,8 @@ Additional files:
 - `hope-protein-imputed-prot-expression-abundance.tsv.gz`
 - `independent-specimens.methyl.primary-plus.tsv`
 - `independent-specimens.methyl.primary.tsv`
+- `infinium.gencode.v39.probe.annotations.tsv.gz`
+- `methyl-beta-values.rds`
 - `pbta_germline_svs.tsv`
 - `pbta-merged-plp-variants-autogvp-abridged.tsv`
 - `pbta-merged-plp-variants-autogvp-full.tsv`
@@ -40,6 +42,8 @@ v7
 ├── independent-specimens.wgswxs.primary.tsv
 ├── independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv
 ├── independent-specimens.wgswxspanel.primary-plus.prefer.wxs.tsv
+├── infinium.gencode.v39.probe.annotations.tsv.gz
+├── methyl-beta-values.rds
 ├── pbta-all-gene-loh.tsv.gz
 ├── pbta-cnv-consensus-gistic.zip
 ├── pbta-cnv-consensus.seg.gz
