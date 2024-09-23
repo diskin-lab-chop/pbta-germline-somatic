@@ -239,3 +239,7 @@ for (group in plot_groups) {
          width = 10, height = 2.5 +((n_sig - 1) * 1.1))
 
 }
+
+
+write_tsv(hist_cpg_enr_all,
+          file.path(results_dir, "hist-gene-plp-enr-pbta-vs-pmbb-gnomad.tsv"))
