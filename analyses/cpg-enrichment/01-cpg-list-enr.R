@@ -20,6 +20,7 @@ root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "cpg-enrichment")
 input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
 plot_dir <- file.path(analysis_dir, "plots")
 
 source(file.path(root_dir, "figures", "theme.R"))

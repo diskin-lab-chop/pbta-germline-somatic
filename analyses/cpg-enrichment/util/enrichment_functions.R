@@ -41,7 +41,7 @@ plot_pvalue <- function(enr_df, facet_var,
     mutate(p = -log10(p)) %>%
     ggplot(aes(x = p, y = factor(cohort))) +
     geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
-    labs(x = "-log10(p)", y = "") + 
+    labs(x = "-log10(p)\n", y = "") + 
     geom_vline(xintercept = -log10(0.05/ntests), linetype = "dashed") + 
     xlim(0, NA) + 
     facet_wrap(facet_var, scale = "fixed",
@@ -74,7 +74,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
                  show.legend = FALSE) + 
       geom_errorbar(aes(xmin = log10(ci.int1), xmax = log10(ci.int2)), width = 0.2, 
                     show.legend = FALSE, color = "#00A087FF") +
-      labs(x = "log10-Odds Ratio (95% CI)", y = NULL) + 
+      labs(x = "log10-Odds Ratio\n(95% CI)", y = NULL) + 
       geom_vline(xintercept = 0, linetype = "dashed") +
       scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                                 "PMBB" = "")) +
@@ -103,7 +103,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
                  show.legend = FALSE) + 
       geom_errorbar(aes(xmin = ci.int1, xmax = ci.int2), width = 0.2, 
                     show.legend = FALSE, color = "#00A087FF") +
-      labs(x = "Odds Ratio (95% CI)", y = NULL) + 
+      labs(x = "Odds Ratio (95% CI)\n", y = NULL) + 
       geom_vline(xintercept = 1, linetype = "dashed") +
       scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                                 "PMBB" = "")) +
@@ -133,7 +133,7 @@ plot_perc <- function(enr_df, facet_var){
     geom_bar(stat = "identity", color = "black",
              show.legend = TRUE, fill = "#00A087FF") + 
     geom_text(x = x_pos, hjust = 0, size = 4, fontface = 2) +
-    labs(x = "% Cohort P/LP", y = NULL, fill = NULL) + 
+    labs(x = "% Cohort P/LP\n", y = NULL, fill = NULL) + 
     scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
                               "PMBB" = NULL)) +
     guides(fill = guide_legend(nrow = 1)) +
