@@ -28,6 +28,7 @@ All files in `input/` directory were generated outside of this github repository
 ├── 01-cpg-list-enr.R
 ├── 02-gene-pathway-enrichment.R
 ├── README.md
+├── Rplots.pdf
 ├── input
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_pmbb_enrichment.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv
@@ -39,8 +40,13 @@ All files in `input/` directory were generated outside of this github repository
 │   └── pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv
 ├── plots
 │   ├── all-CPG-enrichment-PBTA-vs-control.pdf
-│   └── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.pdf
+│   └── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.pdf
 ├── results
+│   ├── cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv
+│   └── hist-cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv
 ├── run_module.sh
 └── util
     └── enrichment_functions.R
