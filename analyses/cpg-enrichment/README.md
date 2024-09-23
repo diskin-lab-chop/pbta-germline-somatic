@@ -11,6 +11,9 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 1. `01-cpg-list-enr.R` plots CPG P-LP carrier enrichment in entire PBTA cohort and individual plot groups relative to tumor-free control cohorts
 
 2. `02-gene-pathway-enrichment.R` plots gene- and pathway-level P-LP carrier enrichment in PBTA cohort relative to tumor-free control cohorts
+
+3. `03-hist-gene-enr.R` plots gene-level P-LP carrier enrichment by histology cohort relative to tumor-free control cohorts
+
 ### Input files
 
 All files in `input/` directory were generated outside of this github repository, and utilize PBTA P-LP variant files to calculate enrichment of P-LP variants in the PBTA cohort relative to PMBB and gnomAD tumor-free control cohorts in the following gene lists:
@@ -20,8 +23,6 @@ All files in `input/` directory were generated outside of this github repository
 3. KEGG pathway gene sets
 4. DNA repair pathway gene lists as reported in [Knijnenburg et al. 2018](https://www.cell.com/cell-reports/pdf/S2211-1247(18)30437-6.pdf)
 
-3. `03-hist-gene-enr.R` plots gene-level P-LP carrier enrichment by histology cohort relative to tumor-free control cohorts
-
 ##Analysis module directory structure
 
 ```
@@ -30,7 +31,6 @@ All files in `input/` directory were generated outside of this github repository
 ├── 02-gene-pathway-enrichment.R
 ├── 03-hist-gene-enr.R
 ├── README.md
-├── Rplots.pdf
 ├── input
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_pmbb_enrichment.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv
@@ -41,21 +41,24 @@ All files in `input/` directory were generated outside of this github repository
 │   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv
 │   └── pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv
 ├── plots
-│   ├── all-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── hist-all-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Atypical Teratoid Rhabdoid Tumor-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Choroid plexus tumor-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Low-grade glioma-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Medulloblastoma-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Meningioma-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Mixed neuronal-glial tumor-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Neurofibroma plexiform-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Non-neoplastic tumor-CPG-enrichment-PBTA-vs-control.tiff
-│   ├── sig-Other high-grade glioma-CPG-enrichment-PBTA-vs-control.tiff
-│   └── sig-Pineoblastoma-CPG-enrichment-PBTA-vs-control.tiff
+│   ├── all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Atypical Teratoid Rhabdoid Tumor-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Choroid plexus tumor-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Low-grade glioma-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Medulloblastoma-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Meningioma-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Mixed neuronal-glial tumor-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Neurofibroma plexiform-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Non-neoplastic tumor-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Other high-grade glioma-CPG-enrichment-PBTA-vs-control.pdf
+│   └── sig-Pineoblastoma-CPG-enrichment-PBTA-vs-control.pdf
+├── results
+│   ├── cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv
+│   └── hist-cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv
 ├── run_module.sh
 └── util
     └── enrichment_functions.R
