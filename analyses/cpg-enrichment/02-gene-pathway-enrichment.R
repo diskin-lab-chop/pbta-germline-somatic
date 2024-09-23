@@ -30,25 +30,31 @@ source(file.path(analysis_dir, "util", "enrichment_functions.R"))
 # Set enrichment file paths
 
 cpg_enr_gnomad_file <- file.path(input_dir, 
-                                 "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_cpg_gnomAD_enrichment.tsv")
+                                 "pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv")
 cpg_enr_pmbb_file <- file.path(input_dir,
-                               "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_cpg_PMBB_enrichment.tsv")
+                               "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv")
 
 pathway_enr_gnomad_file <- file.path(input_dir, 
-                                     "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_kegg_gnomAD_enrichment.tsv")
+                                     "pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv")
 pathway_enr_pmbb_file <- file.path(input_dir, 
-                                   "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_kegg_PMBB_enrichment.tsv")
+                                   "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_pmbb_enrichment.tsv")
 
 repair_enr_gnomad_file <- file.path(input_dir, 
-                                    "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_Knijnenburg_gnomAD_enrichment.tsv")
+                                    "pbta-merged-plp-variants-autogvp-abridged-no-wxs_dna_repair_pathway_gnomad_enrichment.tsv")
 repair_enr_pmbb_file <- file.path(input_dir, 
-                                  "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_Knijnenburg_PMBB_enrichment.tsv")
+                                  "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv")
 
 cbtn_histologies_file <- file.path(root_dir, "analyses", 
                                    "collapse-tumor-histologies", "results", 
                                    "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
-plp_file <- file.path(data_dir, 
-                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_all_exome_file <- file.path(root_dir, "analyses",
+                                "bed-intersect", "results", 
+                                "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded.tsv")
+
+plp_no_wxs_file <- file.path(root_dir, "analyses",
+                             "bed-intersect", "results", 
+                             "pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv")
 
 # Read in hist, plp, and enrichment by CPG files
 
@@ -59,7 +65,7 @@ hist <- read_tsv(cbtn_histologies_file)
 
 # Create 'dummy' data frame with PBTA enrichment values to use as reference in plots
 
-cpg_enr_pbta <- cpg_enr_gnomad %>%
+cpg_enr_pbta <- cpg_enr_pmbb %>%
   dplyr::select(gene_symbol_vep, count_with_plp_case, count_without_plp_case, 
                 OR, p, ci.int1, ci.int2, padj) %>%
   mutate(cohort = "PBTA",
@@ -131,10 +137,10 @@ perc_plot <- cpg_enr_all %>%
 # Merge plots and write to output
 
 pdf(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control.pdf"),
-     width = 9, height = 8)
+     width = 9, height = 6)
 
 ggarrange(pval_plot, enr_plot, perc_plot,
-          nrow = 1, widths = c(1.75,1.5,1.5))
+          nrow = 1, widths = c(2,1.25,1.75))
 
 dev.off()
 
@@ -182,7 +188,7 @@ for (i in 1:length(gnomad_list)){
   enr_pmbb <- pmbb_list[[i]]
 
   # create dummy df of PBTA enrichment for plotting
-  pathway_enr_pbta <- enr_gnomad %>%
+  pathway_enr_pbta <- enr_pmbb %>%
     dplyr::select(pathway_name, count_with_plp_case, count_without_plp_case, 
                   OR, p, ci.int1, ci.int2, padj) %>%
     mutate(cohort = "PBTA",
@@ -258,9 +264,9 @@ for (i in 1:length(gnomad_list)){
   # Merge plots and write to output
 
   ggarrange(pval_plot, enr_plot, perc_plot,
-            nrow = 1, widths = c(1.5,1.25,1.5))
+            nrow = 1, widths = c(2.5,1.25,1.65))
   
   ggsave(file.path(plot_dir, glue::glue("sig-{names(gnomad_list)[i]}-enrichment-PBTA-vs-control.pdf")),
-       width = 8, height = 2.5 + ((length(sig_pathways_both)-1) * 1.5))
+       width = 10, height = 2.5 + ((length(sig_pathways_both)-1) * 1.15))
   
 }

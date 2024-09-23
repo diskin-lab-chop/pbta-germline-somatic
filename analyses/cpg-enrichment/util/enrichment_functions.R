@@ -103,7 +103,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
                  show.legend = FALSE) + 
       geom_errorbar(aes(xmin = ci.int1, xmax = ci.int2), width = 0.2, 
                     show.legend = FALSE, color = "#00A087FF") +
-      labs(x = "Odds Ratio (95% CI)\n", y = NULL) + 
+      labs(x = "Odds Ratio\n(95% CI)", y = NULL) + 
       geom_vline(xintercept = 1, linetype = "dashed") +
       scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
                                 "PMBB" = "")) +
