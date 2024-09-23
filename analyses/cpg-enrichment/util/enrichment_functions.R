@@ -46,9 +46,11 @@ plot_pvalue <- function(enr_df, facet_var,
     xlim(0, NA) + 
     facet_wrap(facet_var, scale = "fixed",
                nrow = length(unique(enr_df[[facet_var]])),
-               labeller = labeller(.cols = label_wrap_gen(18))) +  
+               labeller = labeller(.cols = label_wrap_gen(14)),
+               strip.position = "left") +
     theme_Publication() +
-    theme(plot.margin = unit(c(2,1,1,0), "lines")) +
+    theme(plot.margin = unit(c(2,1,1,0), "lines"),
+          strip.text.y.left = element_text(angle = 0)) +
     theme(strip.placement = "outside")
   
   return(pval_plot)
@@ -78,10 +80,13 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
                                 "PMBB" = "")) +
       facet_wrap(facet_var, scale = "fixed",
                  nrow = length(unique(enr_df[[facet_var]])),
-                 labeller = labeller(.cols = label_wrap_gen(18))) +  
+                 labeller = labeller(.cols = label_wrap_gen(18)),
+                 strip.position = "left") +
       expand_limits(y=0) +
       theme_Publication() +
-      theme(plot.margin = unit(c(2,0.5,1,0.25), "lines")) +
+      theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"),
+            strip.background = element_blank(),
+            strip.text.y = element_blank()) +
       theme(strip.placement = "outside")
   
   } else {
@@ -104,10 +109,13 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
                                 "PMBB" = "")) +
       facet_wrap(facet_var, scale = "fixed",
                  nrow = length(unique(enr_df[[facet_var]])),
-                 labeller = labeller(.cols = label_wrap_gen(18))) +  
+                 labeller = labeller(.cols = label_wrap_gen(18)),
+                 strip.position = "left") +
       expand_limits(y=0) +
       theme_Publication() +
-      theme(plot.margin = unit(c(2,0.5,1,0.25), "lines")) +
+      theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"),
+            strip.background = element_blank(),
+            strip.text.y = element_blank()) +
       theme(strip.placement = "outside")
   }
   
@@ -131,12 +139,15 @@ plot_perc <- function(enr_df, facet_var){
     guides(fill = guide_legend(nrow = 1)) +
     facet_wrap(facet_var, scale = "fixed",
                nrow = length(unique(enr_df[[facet_var]])),
-               labeller = labeller(.cols = label_wrap_gen(18))) +
+               labeller = labeller(.cols = label_wrap_gen(18)),
+               strip.position = "left") +
   #  expand_limits(x=3) +
     coord_cartesian(clip = 'off') +
     theme_Publication() +
     theme(plot.margin = unit(c(2,5,1,1), "lines"),
-          legend.position = c(0.5, 1.07)) +
+          legend.position = c(0.5, 1.07),
+          strip.background = element_blank(),
+          strip.text.y = element_blank()) +
     theme(strip.placement = "outside")
   
   return(perc_plot)

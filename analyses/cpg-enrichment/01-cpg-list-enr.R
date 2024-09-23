@@ -16,7 +16,6 @@ library(tidytext)
 # Set directory path
 
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "cpg-enrichment")
@@ -60,15 +59,15 @@ all_cpg_enr_pmbb <- read_tsv(all_cpg_enr_pmbb_file) %>%
 # Reformat enrichment results for plotting
 
 # create pbta enrichment results df with empty values
-all_cpg_enr_pbta <- all_cpg_enr_gnomad %>%
+all_cpg_enr_pbta <- all_cpg_enr_pmbb %>%
   dplyr::select(pathway_name, count_with_plp_case, count_without_plp_case, 
                 OR, p, ci.int1, ci.int2, padj) %>%
   mutate(cohort = "PBTA",
-         OR = NA,
-         p = NA,
-         ci.int1 = NA, 
-         ci.int2 = NA,
-         padj = NA) %>%
+         OR = NA_integer_,
+         p = NA_integer_,
+         ci.int1 = NA_integer_, 
+         ci.int2 = NA_integer_,
+         padj = NA_integer_) %>%
   dplyr::rename("n_plp" = "count_with_plp_case", 
                 "n_no_plp" = "count_without_plp_case")
 
@@ -115,12 +114,15 @@ perc_plot <- plot_perc(cpg_enr_all,
 # Merge plots and write to output
 
 pdf(file.path(plot_dir, "all-CPG-enrichment-PBTA-vs-control.pdf"),
-     width = 8, height = 2.5)
+     width = 9, height = 2)
 
 ggarrange(pval_plot, enr_plot, perc_plot,
-          nrow = 1, widths = c(1.5,1.25,1.5))
+          nrow = 1, widths = c(2,1,1.4))
 
 dev.off()
+
+write_tsv(cpg_enr_all, 
+          file.path(results_dir, "cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv"))
 
 ## CPG enrichment by plot group
 
@@ -167,10 +169,10 @@ hist_cpg_enr_gnomad <- all_cpg_enr_gnomad %>%
                 total_cohort_size_control, count_without_plp_control) %>%
   left_join(hist_plp_ct_gnomad) %>%
   dplyr::filter(!is.na(plot_group)) %>%
-  dplyr::mutate(p = 0,
-                OR = 0,
-                ci.int1 = 0,
-                ci.int2 = 0)
+  dplyr::mutate(p = NA_integer_,
+                OR = NA_integer_,
+                ci.int1 = NA_integer_,
+                ci.int2 = NA_integer_)
 
 hist_cpg_enr_gnomad <- calculate_enrichment(hist_cpg_enr_gnomad)
 
@@ -202,10 +204,10 @@ hist_cpg_enr_pmbb <- all_cpg_enr_pmbb %>%
                 total_cohort_size_control, count_without_plp_control) %>%
   left_join(hist_plp_ct_pmbb) %>%
   dplyr::filter(!is.na(plot_group)) %>%
-  dplyr::mutate(p = 0,
-                OR = 0,
-                ci.int1 = 0,
-                ci.int2 = 0)
+  dplyr::mutate(p = NA_integer_,
+                OR = NA_integer_,
+                ci.int1 = NA_integer_,
+                ci.int2 = NA_integer_)
 
 hist_cpg_enr_pmbb <- calculate_enrichment(hist_cpg_enr_pmbb)
 
@@ -215,11 +217,11 @@ hist_cpg_enr_pbta <- hist_cpg_enr_pmbb %>%
   dplyr::select(pathway_name, plot_group, count_with_plp_case, count_without_plp_case, 
                 OR, p, ci.int1, ci.int2, padj) %>%
   mutate(cohort = "PBTA",
-         OR = NA,
-         p = NA,
-         ci.int1 = NA, 
-         ci.int2 = NA,
-         padj = NA) %>%
+         OR = NA_integer_,
+         p = NA_integer_,
+         ci.int1 = NA_integer_, 
+         ci.int2 = NA_integer_,
+         padj = NA_integer_) %>%
   dplyr::rename("n_plp" = "count_with_plp_case", 
                 "n_no_plp" = "count_without_plp_case")
 
@@ -267,8 +269,11 @@ hist_perc_plot <- plot_perc(hist_cpg_enr_all,
 # Merge plots and write to output
   
 ggarrange(hist_pval_plot, hist_enr_plot, hist_perc_plot,
-          nrow = 1, widths = c(1.7,1.25,1.65))
+          nrow = 1, widths = c(2.5,1.25,1.65))
 
 ggsave(file.path(plot_dir, glue::glue("hist-all-CPG-enrichment-PBTA-vs-control.pdf")),
-       width = 8, height = 22)
+       width = 10, height = 18)
+
+write_tsv(hist_cpg_enr_all, 
+          file.path(results_dir, "hist-cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv"))
   
