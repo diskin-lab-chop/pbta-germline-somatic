@@ -1,6 +1,6 @@
 # Plot PBTA CPG PLP enrichment by plot group
 # Ryan Corbett
-# F2024
+# 2024
 
 # Load libraries
 
@@ -29,15 +29,23 @@ source(file.path(analysis_dir, "util", "enrichment_functions.R"))
 # Set file file paths
 
 cpg_enr_gnomad_file <- file.path(input_dir, 
-                                 "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_cpg_gnomAD_enrichment.tsv")
+                                 "pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv")
 cpg_enr_pmbb_file <- file.path(input_dir, 
-                               "pbta-germline-837-plp-variants-nonpass-filtered-plus-reviewed_cpg_PMBB_enrichment.tsv")
+                               "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv")
+
+opc_hist_file <- file.path(data_dir, 
+                           "histologies.tsv")
 
 cbtn_histologies_file <- file.path(root_dir, "analyses", 
                                    "collapse-tumor-histologies", "results", 
                                    "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
-plp_file <- file.path(data_dir, 
-                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+plp_all_exome_file <- file.path(root_dir, "analyses",
+                                "bed-intersect", "results", 
+                                "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded.tsv")
+
+plp_no_wxs_file <- file.path(root_dir, "analyses",
+                             "bed-intersect", "results", 
+                             "pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv")
 
 # Read in hist, plp, and enrichment by CPG files
 
@@ -55,109 +63,105 @@ hist <- read_tsv(cbtn_histologies_file) %>%
     TRUE ~ plot_group
   ))
 
-# get plot groups counts
-hist_cts <- hist %>%
+## Calculate gnomad enrichment
+
+# extract all WXS IDs, to be filtered for gnomad enrichment
+wxs_ids <- read_tsv(opc_hist_file) %>%
+  dplyr::filter(experimental_strategy == "WXS") %>%
+  pull(Kids_First_Biospecimen_ID)
+
+#obtain sample counts per plot group for gnomad comparison; here, we will filter out WXS samples
+hist_cts_gnomad <- hist %>%
+  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
   count(plot_group) %>%
   dplyr::rename(total_cohort_size_case = n)
 
-# Read in autogvp results and filter out intronic NF1 plp variants
-plp <- read_tsv(plp_file) %>%
+# Load autogvp output for gnomad comparison 
+plp_gnomad <- read_tsv(plp_no_wxs_file) %>%
+  dplyr::filter(gene_symbol_vep %in% cpgs) %>%
   distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, .keep_all = TRUE) %>%
-  dplyr::filter(gene_symbol_vep %in% cpgs,
-                !grepl("Koczkowska", autogvp_call_reason)) %>%
   left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, plot_group))
 
-# Obtain P-LP carrier counts by plot group
-hist_plp_ct <- plp %>%
+# Obtain P-LP carrier count by CPG and plot group
+hist_plp_ct_gnomad <- plp_gnomad %>%
   count(gene_symbol_vep, plot_group) %>%
   dplyr::filter(n > 1) %>%
   dplyr::rename(count_with_plp_case = n) %>%
-  left_join(hist_cts) %>%
+  right_join(hist_cts_gnomad) %>%
   dplyr::mutate(count_without_plp_case = total_cohort_size_case - count_with_plp_case)
   
-# Calculate plot-group level P-LP carrier enrichment relative to gnomAD
+# Calculate plot-group level P-LP carrier enrichment relative to gnomAD for each CPG 
 hist_cpg_enr_gnomad <- cpg_enr_gnomad %>%
   dplyr::filter(!is.na(gene_symbol_vep)) %>%
   dplyr::select(gene_symbol_vep, count_with_plp_control,
                 total_cohort_size_control, count_without_plp_control) %>%
-  left_join(hist_plp_ct) %>%
+  left_join(hist_plp_ct_gnomad) %>%
   dplyr::filter(!is.na(plot_group)) %>%
-  dplyr::mutate(p = 0,
-                OR = 0,
-                ci.int1 = 0,
-                ci.int2 = 0)
+  dplyr::mutate(p = NA_integer_,
+                OR = NA_integer_,
+                ci.int1 = NA_integer_,
+                ci.int2 = NA_integer_)
 
-for (i in 1:nrow(hist_cpg_enr_gnomad)){
-  
-  fisher_test <- fisher.test(matrix(c(hist_cpg_enr_gnomad$count_with_plp_case[i],
-                                      hist_cpg_enr_gnomad$count_without_plp_case[i],
-                                      hist_cpg_enr_gnomad$count_with_plp_control[i],
-                                      hist_cpg_enr_gnomad$count_without_plp_control[i]),
-                                    2, 2))
-  
-  hist_cpg_enr_gnomad$OR[i] = fisher_test$estimate
-  hist_cpg_enr_gnomad$p[i] = fisher_test$p.value
-  hist_cpg_enr_gnomad$ci.int1[i] = fisher_test$conf.int[1]
-  hist_cpg_enr_gnomad$ci.int2[i] = fisher_test$conf.int[2]
-  
-}
+hist_cpg_enr_gnomad <- calculate_enrichment(hist_cpg_enr_gnomad)
 
 # multiple test correction 
-
 hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
   group_by(plot_group) %>%
   dplyr::mutate(padj = p.adjust(p, method = "bonferroni"))
 
 # Repeat enrichment calculations for PMBB controls
+hist_cts_pmbb <- hist %>%
+  count(plot_group) %>%
+  dplyr::rename(total_cohort_size_case = n)
 
+# Load P-LP variants within PBTA exome capture regions
+plp_pmbb <- read_tsv(plp_all_exome_file) %>%
+  dplyr::filter(gene_symbol_vep %in% cpgs) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, .keep_all = TRUE) %>%
+  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, plot_group))
+
+# Obtain P-LP carrier count by plot group
+hist_plp_ct_pmbb <- plp_pmbb %>%
+  count(gene_symbol_vep, plot_group) %>%
+  dplyr::filter(n > 1) %>%
+  dplyr::rename(count_with_plp_case = n) %>%
+  right_join(hist_cts_pmbb) %>%
+  dplyr::mutate(count_without_plp_case = total_cohort_size_case - count_with_plp_case)
+
+
+# calculate PBTA enrichment for P-LP variants by gene and plot group from PMBB controls
 hist_cpg_enr_pmbb <- cpg_enr_pmbb %>%
   dplyr::filter(!is.na(gene_symbol_vep)) %>%
   dplyr::select(gene_symbol_vep, count_with_plp_control,
                 total_cohort_size_control, count_without_plp_control) %>%
-  left_join(hist_plp_ct) %>%
+  left_join(hist_plp_ct_pmbb) %>%
   dplyr::filter(!is.na(plot_group)) %>%
-  dplyr::mutate(p = 0,
-                OR = 0,
-                ci.int1 = 0,
-                ci.int2 = 0)
+  dplyr::mutate(p = NA_integer_,
+                OR = NA_integer_,
+                ci.int1 = NA_integer_,
+                ci.int2 = NA_integer_)
 
-for (i in 1:nrow(hist_cpg_enr_gnomad)){
-  
-  fisher_test <- fisher.test(matrix(c(hist_cpg_enr_pmbb$count_with_plp_case[i],
-                                      hist_cpg_enr_pmbb$count_without_plp_case[i],
-                                      hist_cpg_enr_pmbb$count_with_plp_control[i],
-                                      hist_cpg_enr_pmbb$count_without_plp_control[i]),
-                                    2, 2))
-  
-  hist_cpg_enr_pmbb$OR[i] = fisher_test$estimate
-  hist_cpg_enr_pmbb$p[i] = fisher_test$p.value
-  hist_cpg_enr_pmbb$ci.int1[i] = fisher_test$conf.int[1]
-  hist_cpg_enr_pmbb$ci.int2[i] = fisher_test$conf.int[2]
-  
-}
+hist_cpg_enr_pmbb <- calculate_enrichment(hist_cpg_enr_pmbb)
 
 # mulitiple test correction
-
 hist_cpg_enr_pmbb <- hist_cpg_enr_pmbb %>%
   group_by(plot_group) %>%
   dplyr::mutate(padj = p.adjust(p, method = "bonferroni"))
 
-# Create 'dummy' data frame with CBTN enrichment values to use as reference in plots
-
-hist_cpg_enr_pbta <- hist_cpg_enr_gnomad %>%
+# Create 'dummy' data frame with PBTA enrichment values to use as reference in plots
+hist_cpg_enr_pbta <- hist_cpg_enr_pmbb %>%
   dplyr::select(gene_symbol_vep, plot_group, count_with_plp_case, count_without_plp_case, 
                 OR, p, ci.int1, ci.int2, padj) %>%
   mutate(cohort = "PBTA",
-         OR = NA,
-         p = NA,
-         ci.int1 = NA, 
-         ci.int2 = NA,
-         padj = NA) %>%
+         OR = NA_integer_,
+         p = NA_integer_,
+         ci.int1 = NA_integer_, 
+         ci.int2 = NA_integer_,
+         padj = NA_integer_) %>%
   dplyr::rename("n_plp" = "count_with_plp_case", 
                 "n_no_plp" = "count_without_plp_case")
 
-# subset gnomAD and PMBB enrichment results for merging
-
+# format gnomAD and PMBB enrichment results for merging
 hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
   dplyr::select(gene_symbol_vep, plot_group, count_with_plp_control, count_without_plp_control, 
                 OR, p, ci.int1, ci.int2, padj) %>%
@@ -173,18 +177,16 @@ hist_cpg_enr_pmbb <- hist_cpg_enr_pmbb %>%
                 "n_no_plp" = "count_without_plp_control")
 
 # merge enrichment results and calculate percent of patients with CPG PLP
-
 hist_cpg_enr_all <- hist_cpg_enr_pbta %>%
   bind_rows(hist_cpg_enr_gnomad, hist_cpg_enr_pmbb) %>%
   mutate(perc_plp = n_plp/(n_plp + n_no_plp) * 100,
          fraction = paste(round(n_plp,0), round(n_plp+n_no_plp,0), sep = "/")) %>%
   arrange(desc(-log10(p))) %>%
   mutate(cohort = factor(cohort, c("gnomAD", "PMBB", "PBTA")),
-         hist_gene = glue::glue("{gene_symbol_vep}:{plot_group}"),
+         hist_gene = glue::glue("{plot_group}: {gene_symbol_vep}"),
          hist_gene = factor(hist_gene, unique(hist_gene)),)
 
 # pull significnalty enriched CPGs relative to gnomAD and PMBB cohorts, and obtain those common to both sets
-
 sig_hist_cpgs_gnomad <- hist_cpg_enr_all %>%
   filter(cohort == "gnomAD" & padj < 0.05 & padj > 0) %>%
   pull(hist_gene)
@@ -231,9 +233,9 @@ for (group in plot_groups) {
   # Merge plots and write to output
 
   ggarrange(pval_plot, enr_plot, perc_plot,
-            nrow = 1, widths = c(1.75,1.5,1.5))
+            nrow = 1, widths = c(2.5,1.25,1.65))
   
   ggsave(file.path(plot_dir, glue::glue("sig-{group}-CPG-enrichment-PBTA-vs-control.pdf")),
-         width = 9, height = 2.5 +((n_sig - 1) * 1.5))
+         width = 10, height = 2.5 +((n_sig - 1) * 1.1))
 
 }
