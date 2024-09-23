@@ -1,4 +1,28 @@
 
+calculate_enrichment <- function(df) {
+  
+  for (j in 1:nrow(df)){
+    
+    fisher_test <- fisher.test(matrix(c(df$count_with_plp_case[j],
+                                        df$count_without_plp_case[j],
+                                        df$count_with_plp_control[j],
+                                        df$count_without_plp_control[j]),
+                                      2, 2))
+    
+    df$OR[j] = fisher_test$estimate
+    df$p[j] = fisher_test$p.value
+    df$ci.int1[j] = fisher_test$conf.int[1]
+    df$ci.int2[j] = fisher_test$conf.int[2]
+    
+  }
+  
+  # Correct for multiple tests
+  df <- df %>%
+    dplyr::mutate(padj = p.adjust(p, method = "bonferroni"))
+  
+  return(df)
+  
+}
 
 
 plot_pvalue <- function(enr_df, facet_var,
