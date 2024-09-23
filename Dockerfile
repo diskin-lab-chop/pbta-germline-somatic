@@ -30,9 +30,14 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
    default-jdk \
    libxt6
    
-# cmakeis needed for ggpubr to install
+# cmake is needed for ggpubr to install
 RUN apt-get -y --no-install-recommends install \
     cmake
+
+# add bedtools
+RUN apt-get install -y bedtools && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the Bioconductor repository as the primary repository
 RUN R -e "options(repos = BiocManager::repositories())"
@@ -44,6 +49,7 @@ RUN R -e "BiocManager::install(version = '3.19')"
 # Install packages
 RUN R -e 'BiocManager::install(c( \
 	"BiocManager", \
+	"biomaRt", \
   "data.table", \
   "ggpubr", \
   "ggthemes", \

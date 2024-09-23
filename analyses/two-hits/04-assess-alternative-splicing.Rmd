@@ -10,6 +10,7 @@ author: Ryan Corbett
 This script compares identifies tumor differential splicing events in patients and cancer predisposition genes harboring a germline P/LP variant. 
 
 # Load libraries
+
 ```{r load libraries, set up directories}
 suppressPackageStartupMessages({
   library(ggplot2)
@@ -17,6 +18,7 @@ suppressPackageStartupMessages({
   library(vroom)
   library(circlize)
   library(ggpubr)
+  library(ggrepel)
 })
 
 # Set up directories
@@ -35,50 +37,60 @@ if (!dir.exists(results_dir)) {
 
 # Call plotting theme
 source(file.path(root_dir, "figures", "theme.R"))
-
 ```
 
 Set input file paths
+
 ```{r}
+plp_file <- file.path(data_dir, 
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
-plp_file <- file.path(root_dir, "analyses", 
-                      "variant-distribution", "input", 
-                      "pbta_germline_plp_calls_autogvp_abridged_gnomad_popmax.tsv")
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
-plp_sv_file <- file.path(root_dir, "analyses", 
-                         "germline-sv", "input", 
+plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
-hist_file <- file.path(root_dir, "analyses", "collapse-tumor-histologies", "results",
-                                  "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+histologies_file <- file.path(data_dir,
+                              "histologies.tsv")
 
-rna_specimens_file <- file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")
+hist_cohort_file <- file.path(root_dir, "analyses", 
+                              "collapse-tumor-histologies", "results", 
+                              "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-splice_events_file <- file.path(input_dir, "splice_events_germline_pbta_cpgs_only.tsv.gz")
+splice_events_file <- file.path(input_dir, 
+                                "splice_events_germline_pbta_cpgs_only.tsv.gz")
 
 # cpg file
-cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
-
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", 
+                      "input", "cpg.txt")
 ```
 
 # Load files
+
 ```{r load files}
+opc_hist <- read_tsv(histologies_file)
+
+hist <- read_tsv(hist_cohort_file) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID = Kids_First_Biospecimen_ID_tumor) %>%
+  left_join(opc_hist %>% dplyr::select(Kids_First_Biospecimen_ID,
+                                   match_id)) %>%
+  left_join(opc_hist %>% dplyr::filter(experimental_strategy == "RNA-Seq") %>%
+              dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
+              dplyr::select(match_id, Kids_First_Biospecimen_ID_rna))
+
 # Full P-LP results
 plp <- read_tsv(plp_file) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 plp_sv <- read_tsv(plp_sv_file) %>%
-  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
-
-rna_specimens <- read_tsv(rna_specimens_file) %>%
-  dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID)
-
-#plp_full <- read_tsv(plp_full_file)
-hist <- read_tsv(hist_file) %>%
-  left_join(rna_specimens[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_rna")])
 
 splice_events <- vroom(splice_events_file) %>%
   dplyr::filter(sample_id %in% hist$Kids_First_Biospecimen_ID_rna,
@@ -97,12 +109,15 @@ splice_events <- vroom(splice_events_file) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = sample_id,
                 Hugo_Symbol = geneSymbol)
 
+hist <- hist %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_rna %in% splice_events$Kids_First_Biospecimen_ID_rna) %>%
+  distinct(match_id, .keep_all = TRUE)
 ```
 
 
 Define CPGs with P/LP variants in cohort, and splicing cases to query
-```{r}
 
+```{r}
 cpgs_test <- plp %>%
     filter(Hugo_Symbol %in% cpgs) %>%
   dplyr::select(Hugo_Symbol) %>%
@@ -112,7 +127,6 @@ cpgs_test <- plp %>%
 
 #Define splicing cases 
 splicing_cases <- c("A3SS", "A5SS", "RI", "SE")
-
 ```
 
 Identify splicing event PSI z-scores as follows: 
@@ -123,7 +137,6 @@ Identify splicing event PSI z-scores as follows:
 5) Extract sample PSI and z-score, and calculate mean PSI for rest of histology group and PSI difference (sample - other)
 6) Append statistics to data frame 
 ```{r}
-
 splice_psi_df <- tibble(
   Hugo_Symbol = character(),
   Kids_First_Biospecimen_ID_rna = character(),
@@ -138,119 +151,10 @@ splice_psi_df <- tibble(
   sample_PSI_zscore_group = numeric(),
   sample_PSI_zscore_all = numeric()
 )
-
-# system.time(
-# 
-# # Loop through CPGs
-# for (cpg in cpgs_test){
-#   
-#   # extract normal bs ids with P/LP variant in cpg
-#   plp_bs_ids <- plp %>%
-#     dplyr::filter(Hugo_Symbol == cpg) %>%
-#     dplyr::select(Kids_First_Biospecimen_ID_normal) %>%
-#     bind_rows(plp_sv %>%
-#                 dplyr::filter(Hugo_Symbol == cpg) %>%
-#                 dplyr::select(Kids_First_Biospecimen_ID_normal)) %>%
-#     pull(Kids_First_Biospecimen_ID_normal) 
-#   
-#   # extract corresponding RNA bs ids for pts with plp variant in cpg
-#   plp_rna_ids <- hist %>%
-#     dplyr::filter(Kids_First_Biospecimen_ID_normal %in% plp_bs_ids & !is.na(Kids_First_Biospecimen_ID_rna)) %>%
-#     pull(Kids_First_Biospecimen_ID_rna)
-#   
-#   for (id in plp_rna_ids){
-#     
-#     # identify histology group
-#     group <- hist$plot_group[hist$Kids_First_Biospecimen_ID_rna == id & !is.na(hist$Kids_First_Biospecimen_ID_rna)]
-#     
-#     # extract BS ids of other pts in histology group
-#     other_group_ids <- hist %>%
-#       dplyr::filter(Kids_First_Biospecimen_ID_rna != id & plot_group == group) %>%
-#       pull(Kids_First_Biospecimen_ID_rna)
-# 
-#     other_ids <- hist %>%
-#       dplyr::filter(Kids_First_Biospecimen_ID_rna != id) %>%
-#       pull(Kids_First_Biospecimen_ID_rna)
-#     
-#     # Loop through splice cases
-#      for (case in splicing_cases){
-#     
-#        # Identify all splicing regions
-#       cpg_splice_events <- splice_events %>%
-#         dplyr::filter(geneSymbol == cpg & splicing_case == case) %>%
-#       
-#       # define splice case-dependent exon/intron coordinates
-#         dplyr::mutate(region = case_when(
-#           case %in% c("A3SS", "A5SS") ~ glue::glue("{longExonStart_0base}:{longExonEnd}:{shortES}:{shortEE}:{flankingES}:{flankingEE}"),
-#           case == "MXE" ~ glue::glue("{`1stExonStart_0base`}:{`1stExonEnd`}:{`2ndExonStart_0base`}:{`2ndExonEnd`}"),
-#           case == "RI" ~ glue::glue("{riExonStart_0base}:{riExonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}"),
-#           case == "SE" ~ glue::glue("{exonStart_0base}:{exonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}")
-#         ))
-#       
-#       # extract unique regions
-#       regions <- unique(cpg_splice_events$region)
-#       
-#       # loop through regions 
-#       for (reg in regions){
-#         
-#         # calculate PSI z-scores for event
-#         cpg_splice_events_reg <- cpg_splice_events %>%
-#           dplyr::filter(region == reg & sample_id %in% c(id, other_group_ids, other_ids)) %>%
-#           dplyr::mutate(psi_z_score_group = ((IncLevel1 - mean(IncLevel1[sample_id %in% c(id, other_group_ids)])) / sd(IncLevel1[sample_id %in% c(id, other_group_ids)]))) %>%
-#           dplyr::mutate(psi_z_score_all = ((IncLevel1 - mean(IncLevel1[sample_id %in% c(id, other_ids)])) / sd(IncLevel1[sample_id %in% c(id, other_ids)])))
-#         
-#         # If PSI exists for sample, calculate stats
-#         if (length(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$sample_id == id]) > 0){
-#           
-#           sample_psi <- cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$sample_id == id]
-#           # Get mean PSI for all other pts in group
-#           mean_psi_group <- round(mean(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$sample_id %in% other_group_ids]), 3)
-#           
-#           mean_psi_all <- round(mean(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$sample_id %in% other_ids]), 3)
-#         
-#           mean_psi_diff_group <- round(sample_psi - mean_psi_group, 3)
-#           
-#           mean_psi_diff_all <- round(sample_psi - mean_psi_all, 3)
-#           
-#           sample_psi_zscore_group <- round(cpg_splice_events_reg$psi_z_score_group[cpg_splice_events_reg$sample_id == id], 3)
-#           
-#           sample_psi_zscore_all <- round(cpg_splice_events_reg$psi_z_score_all[cpg_splice_events_reg$sample_id == id], 3)
-#           
-#           # Create df row to append to `splice_psi_df`
-#           df <- tibble(
-#             Hugo_Symbol = cpg,
-#             sample_id = id,
-#             plot_group = group,
-#             splicing_case = case,
-#             exon_region = reg,
-#             PSI_sample = sample_psi,
-#             PSI_other_group = mean_psi_group,
-#             PSI_other_all = mean_psi_all,
-#             PSI_diff_group = mean_psi_diff_group,            
-#             PSI_diff_all = mean_psi_diff_all,
-#             sample_PSI_zscore_group = sample_psi_zscore_group,
-#             sample_PSI_zscore_all = sample_psi_zscore_all
-#           )
-#         
-#           # append results to `splice_psi_df`
-#           splice_psi_df <- splice_psi_df %>%
-#             bind_rows(df)
-#           
-#         }
-#         
-#       }
-#       
-#     }
-#     
-#   }
-#   
-# }
-
 ```
 
 
 ```{r}
-
 plp_rna_df <- plp %>%
   dplyr::filter(Hugo_Symbol %in% cpgs) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, start) %>%
@@ -263,8 +167,16 @@ plp_rna_df <- plp %>%
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_rna)) %>%
   left_join(splice_events, by = c("Kids_First_Biospecimen_ID_rna", "Hugo_Symbol")) %>%
   distinct(Kids_First_Biospecimen_ID_rna, Hugo_Symbol, splicing_case, region, .keep_all = TRUE) %>%
-  dplyr::mutate(region_start = as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[1]))),
-                region_end = as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[2])))) %>%
+  dplyr::mutate(region_start = case_when(
+    splicing_case == "RI" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[4]))),
+    splicing_case == "A5SS" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[3]))),
+    TRUE ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[1])))
+    )) %>%
+  dplyr::mutate(region_end = case_when(
+    splicing_case == "RI" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[6]))),
+    splicing_case == "A3SS" ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[3]))),
+    TRUE ~ as.numeric(unlist(lapply(strsplit(region, ":"), function(x) x[2])))
+    )) %>%
   dplyr::mutate(start_dist = abs(start - region_start),
                 end_dist = abs(start - region_end)) %>%
   transform(min_dist = pmin(start_dist, end_dist)) %>%
@@ -273,7 +185,6 @@ plp_rna_df <- plp %>%
 
 splice_events <- splice_events %>%
   dplyr::filter(region %in% plp_rna_df$region)
-
 
 system.time(
 
@@ -346,10 +257,10 @@ system.time(
   }
 
 )
-
 ```
 
 Add normal BS ID and variant distance to splice region start/end, and plot PSI difference against variant distaince
+
 ```{r}
 splice_psi_df <- splice_psi_df %>%
   dplyr::mutate(sample_PSI_zscore = case_when(
@@ -366,16 +277,6 @@ snv_splice_psi_df <- splice_psi_df %>%
   dplyr::mutate(start_dist = start - region_start,
                 end_dist = start - region_end)
 
-sv_splice_psi_df <- splice_psi_df %>%
-  left_join(plp_sv[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", "Chromosome", "Start", "End")]) %>%
-  dplyr::filter(!is.na(Start)) %>%
-  dplyr::mutate(region_start = as.numeric(unlist(lapply(strsplit(exon_region, ":"), function(x) x[[1]]))),
-                region_end = as.numeric(unlist(lapply(strsplit(exon_region, ":"), function(x) x[[2]])))) %>%
-  dplyr::mutate(start_start_dist = Start - region_start,
-                start_end_dist = Start - region_end,
-                end_start_dist = End - region_start,
-                end_end_dist = End - region_end)
-
 # plot PSI diff against variant distance
 snv_splice_psi_df %>%
   dplyr::mutate(PSI_zscore = case_when(
@@ -383,14 +284,11 @@ snv_splice_psi_df %>%
     !is.na(sample_PSI_zscore_all) ~ sample_PSI_zscore_all
   )) %>%
   transform(min_dist = pmin(start_dist, end_dist)) %>%
- # dplyr::filter(abs(PSI_zscore) < 10) %>%
   arrange(abs(min_dist)) %>%
   distinct(chr, start, ref, alt, .keep_all = TRUE) %>%
   
-  
-  ggplot(aes(x = log10(abs(min_dist)), y = abs(PSI_zscore))) +
+  ggplot(aes(x = log10(abs(min_dist) + 1), y = abs(PSI_zscore))) +
   geom_point(colour = "gray50") +
- # scale_x_continuous(breaks = c(0, 100000, 200000)) +
   stat_smooth(method = "lm", 
               formula = y ~ x, 
               geom = "smooth", 
@@ -406,12 +304,11 @@ snv_splice_psi_df %>%
 
 ggsave(file.path(plot_dir, "PSI-diff-by-variant-dist.pdf"),
        width = 9, height = 6)
-
 ```
 
 Format data frame and write to output
-```{r}
 
+```{r}
 snv_splice_psi_df <- snv_splice_psi_df %>%
   dplyr::rename(plp_variant_position = start) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna, 
@@ -425,31 +322,67 @@ snv_splice_psi_df <- snv_splice_psi_df %>%
 
 write_tsv(snv_splice_psi_df, 
           file.path(results_dir, "splicing_events_plp_variants.tsv"))
-
 ```
 
 Identify candidate variants associated with differential splicing. These are defined as P/LP variants within 250bp of splice region, where associated splice region has |sample PSI z-score| > 2 
 
 ```{r}
+expr <- read_tsv(file.path(results_dir, "pbta-germline-gene-expr-zscores.tsv"),
+                 show_col_types = FALSE)
 
 plp_splice_candidates <- snv_splice_psi_df %>%
-  dplyr::filter(abs(sample_PSI_zscore) > 1.5 & (abs(start_dist) < 250 | abs(end_dist) < 250)) %>%
+  dplyr::filter(abs(round(sample_PSI_zscore, 1)) >= 2 & (abs(start_dist) < 250 | abs(end_dist) < 250)) %>%
   # order by z-score 
   dplyr::arrange(-abs(sample_PSI_zscore)) %>%
   # retain only one splice event per splice region
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, region_start, .keep_all = T) %>%
   dplyr::arrange(Hugo_Symbol) %>%
-  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "molecular_subtype")])
+  left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "molecular_subtype")]) %>%
+  left_join(expr %>% dplyr::select(Kids_First_Biospecimen_ID_rna, 
+                                   Hugo_Symbol, expr_zscore))
 
 write_tsv(plp_splice_candidates,
           file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
+```
 
+
+```{r}
+plot_group_palette <- unique(hist$plot_group_hex)
+names(plot_group_palette) <- unique(hist$plot_group)
+
+plp_splice_candidates %>%
+  dplyr::filter(abs(PSI_diff_group) > 0.05) %>%
+  left_join(hist %>% distinct(plot_group, .keep_all = TRUE) %>%
+              dplyr::select(plot_group, plot_group_hex)) %>%
+  
+  ggplot(aes(x = PSI_diff_group, y = splicing_case, 
+             label = Hugo_Symbol)) + 
+  geom_jitter(aes(fill = plot_group),
+              shape = 21, width = 0,
+              height = 0, 
+              size = 3, alpha = 0.8,
+              show.legend = FALSE) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray60") + 
+  geom_label_repel(aes(label = Hugo_Symbol),
+                  size = 3,
+                  box.padding   = 0.3, 
+                  label.padding = 0.1,
+                  point.padding = 0.25,
+                  segment.color = 'grey50',
+                  min.segment.length = 0.1,
+                  max.overlaps = 14) +
+  scale_fill_manual(values = plot_group_palette, 
+                     breaks = sort(names(plot_group_palette))) +
+  labs(y = NULL, x = "delta PSI (sample-group") +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "germline_plp_alternative_splicing_diff_plot.pdf"),
+       width = 4.5, height = 3)
 ```
 
 Determine if splice region variants exhibit differential proximal exon skipping relative to non-splice region variants
 
 ```{r}
-
 proximal_se <- snv_splice_psi_df %>%
   dplyr::filter(splicing_case == "SE") %>%
   dplyr::mutate(min_dist = pmin(abs(start_dist), abs(end_dist))) %>%
@@ -475,7 +408,6 @@ proximal_se %>%
                      comparisons = list(c("Yes", "No")),
                      method.args = list(alternative = "two.sided")) + 
   labs(x = "Splice P/LP variant", y = "Proximal Exon PSI z-score", fill = "Histology") +
-#  ylim(c(-5,8)) +
    scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
   theme_Publication()
@@ -483,12 +415,9 @@ proximal_se %>%
 ggsave(file.path(plot_dir,
        "skipped-exon-psi-splice-plp-vs-nonsplice.pdf"),
        width = 7, height = 4)
-
 ```
 Print session info 
 
 ```{r}
-
 sessionInfo()
-
 ```
