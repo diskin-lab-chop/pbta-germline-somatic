@@ -367,13 +367,11 @@ maf <- read_tsv(file.path(root_dir, "analyses", "oncokb-annotation", "results", 
                                          "Splice_Site", "Translation_Start_Site"))
 
 loh <- read_tsv(file.path(results_dir, "germline-somatic-cnv-loh-cpgs.tsv")) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID,
-                loh_OR > 1,
-                loh_pvalue < 0.05)
+  dplyr::filter(loh_status != "No LOH" & proband_tumor_vaf > 0.25)
 
 loh_sv <- read_tsv(file.path(results_dir, "germline-sv-somatic-cnv-loh-somatic-cpgs.tsv")) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist_cohort$Kids_First_Biospecimen_ID,
-                gene_LOH > 0.2)
+                loh_status == "LOH")
 
 # append matched tumor genomic ID to z_scored_expression
 z_scored_expression <- z_scored_expression %>%
