@@ -52,8 +52,6 @@ maf_file <- file.path(root_dir, "analyses", "oncokb-annotation", "results",
 cnv_auto_file <- file.path(data_dir, "consensus_seg_annotated_cn_autosomes.tsv.gz")
 cnv_xy_file <- file.path(data_dir, "consensus_seg_annotated_cn_x_and_y.tsv.gz")
 
-loh_gene_file <- file.path(data_dir, "pbta-all-gene-loh.tsv.gz")
-
 expr_zscore_file <- file.path(input_dir, "pbta-germline-gene-expr-zscores.tsv")
 
 proteo_zscore_file <- file.path(input_dir, "cptac-hope-cpg-proteomics-zscores.tsv")
@@ -122,12 +120,6 @@ cnv <- cnv_auto %>%
          "CNV_status_somatic" = status) %>%
   dplyr::select(Hugo_Symbol, Kids_First_Biospecimen_ID_tumor,
          CNV_status_somatic, ploidy)
-
-loh_gene <- read_tsv(loh_gene_file) %>%
-  dplyr::filter(Hugo_Symbol %in% all_cases$Hugo_Symbol) %>%
-  dplyr::rename(gene_LOH = LOH_score) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
-         gene_LOH)
 
 expr <- read_tsv(expr_zscore_file)
 
@@ -211,7 +203,7 @@ for (sample in unique(alteration_df$Kids_First_Biospecimen_ID_normal)){
     # determine if LOH present (for germline variants ONLY)
     if (alteration_df$Germline[alteration_df$Kids_First_Biospecimen_ID_normal == sample & alteration_df$Hugo_Symbol == gene] == "GER"){
       
-          if (sum(plp$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp$Hugo_Symbol == gene & ((plp$loh_OR > 1 & plp$loh_pvalue < 0.05 & !is.na(plp$loh_score)) | (plp$gene_LOH > 0.2 & !is.na(plp$gene_LOH)))) > 0 | sum(plp_sv$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp_sv$Hugo_Symbol == gene & plp_sv$gene_LOH > 0.2 & !is.na(plp_sv$gene_LOH)) > 0){
+          if (sum(plp$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp$Hugo_Symbol == gene & ((plp$loh_status != "No LOH" & !is.na(plp$loh_status) & plp$proband_tumor_vaf > 0.25) | (plp$gene_LOH >= 0.25 & !is.na(plp$gene_LOH)))) > 0 | sum(plp_sv$Kids_First_Biospecimen_ID_tumor %in% sample_tumor & plp_sv$Hugo_Symbol == gene & plp_sv$loh_status == "LOH") > 0){
       
       alteration_df$LOH[alteration_df$Kids_First_Biospecimen_ID_normal == sample & alteration_df$Hugo_Symbol == gene] <- "LOH"
       
@@ -419,7 +411,6 @@ ht_opt$HEATMAP_LEGEND_PADDING = unit(0.5, "cm")
 ```
 
 Generate oncoprint
-
 ```{r}
 ht=oncoPrint(t(alteration_mat), get_type = function(x)strsplit(x, ";")[[1]],
              alter_fun = alter_fun, col = col, show_column_names =FALSE,
