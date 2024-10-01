@@ -74,7 +74,7 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 Wrangle data
 
 ```{r}
-hist <- read_tsv(histologies_file, guess_max = 10000)
+hist <- read_tsv(histologies_file, guess_max = 100000)
 
 cpgs <- read_lines(cpg_file)
 
