@@ -2896,68 +2896,15 @@ subtypes among germline P-LP carriers</p>
 <p>Load packages and set directory paths</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoibGlicmFyeSh0aWR5dmVyc2UpIn0= -->
-<pre class="r"><code>library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuNCAgICAg4pyUIHJlYWRyICAgICAyLjEuNVxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMVxu4pyUIGdncGxvdDIgICAzLjUuMSAgICAg4pyUIHRpYmJsZSAgICAzLjIuMVxu4pyUIGx1YnJpZGF0ZSAxLjkuMyAgICAg4pyUIHRpZHlyICAgICAxLjMuMVxu4pyUIHB1cnJyICAgICAxLjAuMiAgICAgXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbuKEuSBVc2UgdGhlIGNvbmZsaWN0ZWQgcGFja2FnZSAoPGh0dHA6Ly9jb25mbGljdGVkLnItbGliLm9yZy8+KSB0byBmb3JjZSBhbGwgY29uZmxpY3RzIHRvIGJlY29tZSBlcnJvcnNcbiJ9 -->
-<pre><code>── Attaching core tidyverse packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkoc3Vydml2YWwpIiwibGlicmFyeShnZ3B1YnIpIiwibGlicmFyeShnZ3Bsb3QyKSIsImxpYnJhcnkoY2lyY2xpemUpIl19 -->
-<pre class="r"><code>library(survival)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHN1cnZpdmFsKVxubGlicmFyeShnZ3B1YnIpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KGNpcmNsaXplKVxubGlicmFyeShDb21wbGV4SGVhdG1hcClcblxucm9vdF9kaXIgPC0gcnByb2pyb290OjpmaW5kX3Jvb3QocnByb2pyb290OjpoYXNfZGlyKFwiLmdpdFwiKSlcblxuZGF0YV9kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImRhdGFcIilcbmFuYWx5c2lzX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiYW5hbHlzZXNcIiwgXCJzdXJ2aXZhbFwiKVxuaW5wdXRfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwiaW5wdXRcIilcbnJlc3VsdHNfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwicmVzdWx0c1wiKVxucGxvdF9kaXIgPC0gZmlsZS5wYXRoKGFuYWx5c2lzX2RpciwgXCJwbG90c1wiKVxuXG4jIElmIHRoZSBpbnB1dCBhbmQgcmVzdWx0cyBkaXJlY3RvcmllcyBkbyBub3QgZXhpc3QsIGNyZWF0ZSBpdFxuaWYgKCFkaXIuZXhpc3RzKHJlc3VsdHNfZGlyKSkge1xuICBkaXIuY3JlYXRlKHJlc3VsdHNfZGlyLCByZWN1cnNpdmUgPSBUUlVFKVxufVxuXG5zb3VyY2UoZmlsZS5wYXRoKGFuYWx5c2lzX2RpciwgXCJ1dGlsXCIsXG4gICAgICAgICAgICAgICAgIFwic3Vydml2YWxfbW9kZWxzLlJcIikpXG5zb3VyY2UoZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFxuICAgICAgICAgICAgICAgICAgXCJkZW1vLWNsaW4tc3RhdHNcIiwgXCJ1dGlsXCIsXG4gICAgICAgICAgICAgICAgIFwiaGVhdG1hcF9mdW5jdGlvbi5SXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>library(tidyverse)
+library(survival)
 library(ggpubr)
 library(ggplot2)
-library(circlize)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuY2lyY2xpemUgdmVyc2lvbiAwLjQuMTZcbkNSQU4gcGFnZTogaHR0cHM6Ly9jcmFuLnItcHJvamVjdC5vcmcvcGFja2FnZT1jaXJjbGl6ZVxuR2l0aHViIHBhZ2U6IGh0dHBzOi8vZ2l0aHViLmNvbS9qb2tlcmdvby9jaXJjbGl6ZVxuRG9jdW1lbnRhdGlvbjogaHR0cHM6Ly9qb2tlcmdvby5naXRodWIuaW8vY2lyY2xpemVfYm9vay9ib29rL1xuXG5JZiB5b3UgdXNlIGl0IGluIHB1Ymxpc2hlZCByZXNlYXJjaCwgcGxlYXNlIGNpdGU6XG5HdSwgWi4gY2lyY2xpemUgaW1wbGVtZW50cyBhbmQgZW5oYW5jZXMgY2lyY3VsYXIgdmlzdWFsaXphdGlvblxuICBpbiBSLiBCaW9pbmZvcm1hdGljcyAyMDE0LlxuXG5UaGlzIG1lc3NhZ2UgY2FuIGJlIHN1cHByZXNzZWQgYnk6XG4gIHN1cHByZXNzUGFja2FnZVN0YXJ0dXBNZXNzYWdlcyhsaWJyYXJ5KGNpcmNsaXplKSlcbj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbiJ9 -->
-<pre><code>========================================
-circlize version 0.4.16
-CRAN page: https://cran.r-project.org/package=circlize
-Github page: https://github.com/jokergoo/circlize
-Documentation: https://jokergoo.github.io/circlize_book/book/
+library(circlize)
+library(ComplexHeatmap)
 
-If you use it in published research, please cite:
-Gu, Z. circlize implements and enhances circular visualization
-  in R. Bioinformatics 2014.
-
-This message can be suppressed by:
-  suppressPackageStartupMessages(library(circlize))
-========================================</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjoibGlicmFyeShDb21wbGV4SGVhdG1hcCkifQ== -->
-<pre class="r"><code>library(ComplexHeatmap)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBncmlkXG49PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5Db21wbGV4SGVhdG1hcCB2ZXJzaW9uIDIuMjAuMFxuQmlvY29uZHVjdG9yIHBhZ2U6IGh0dHA6Ly9iaW9jb25kdWN0b3Iub3JnL3BhY2thZ2VzL0NvbXBsZXhIZWF0bWFwL1xuR2l0aHViIHBhZ2U6IGh0dHBzOi8vZ2l0aHViLmNvbS9qb2tlcmdvby9Db21wbGV4SGVhdG1hcFxuRG9jdW1lbnRhdGlvbjogaHR0cDovL2pva2VyZ29vLmdpdGh1Yi5pby9Db21wbGV4SGVhdG1hcC1yZWZlcmVuY2VcblxuSWYgeW91IHVzZSBpdCBpbiBwdWJsaXNoZWQgcmVzZWFyY2gsIHBsZWFzZSBjaXRlIGVpdGhlciBvbmU6XG4tIEd1LCBaLiBDb21wbGV4IEhlYXRtYXAgVmlzdWFsaXphdGlvbi4gaU1ldGEgMjAyMi5cbi0gR3UsIFouIENvbXBsZXggaGVhdG1hcHMgcmV2ZWFsIHBhdHRlcm5zIGFuZCBjb3JyZWxhdGlvbnMgaW4gbXVsdGlkaW1lbnNpb25hbCBcbiAgICBnZW5vbWljIGRhdGEuIEJpb2luZm9ybWF0aWNzIDIwMTYuXG5cblxuVGhlIG5ldyBJbnRlcmFjdGl2ZUNvbXBsZXhIZWF0bWFwIHBhY2thZ2UgY2FuIGRpcmVjdGx5IGV4cG9ydCBzdGF0aWMgXG5jb21wbGV4IGhlYXRtYXBzIGludG8gYW4gaW50ZXJhY3RpdmUgU2hpbnkgYXBwIHdpdGggemVybyBlZmZvcnQuIEhhdmUgYSB0cnkhXG5cblRoaXMgbWVzc2FnZSBjYW4gYmUgc3VwcHJlc3NlZCBieTpcbiAgc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKGxpYnJhcnkoQ29tcGxleEhlYXRtYXApKVxuPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuIn0= -->
-<pre><code>Loading required package: grid
-========================================
-ComplexHeatmap version 2.20.0
-Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
-Github page: https://github.com/jokergoo/ComplexHeatmap
-Documentation: http://jokergoo.github.io/ComplexHeatmap-reference
-
-If you use it in published research, please cite either one:
-- Gu, Z. Complex Heatmap Visualization. iMeta 2022.
-- Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional 
-    genomic data. Bioinformatics 2016.
-
-
-The new InteractiveComplexHeatmap package can directly export static 
-complex heatmaps into an interactive Shiny app with zero effort. Have a try!
-
-This message can be suppressed by:
-  suppressPackageStartupMessages(library(ComplexHeatmap))
-========================================</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjpbInJvb3RfZGlyIDwtIHJwcm9qcm9vdDo6ZmluZF9yb290KHJwcm9qcm9vdDo6aGFzX2RpcihcIi5naXRcIikpIiwiIiwiZGF0YV9kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImRhdGFcIikiLCJhbmFseXNpc19kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFwic3Vydml2YWxcIikiLCJpbnB1dF9kaXIgPC0gZmlsZS5wYXRoKGFuYWx5c2lzX2RpciwgXCJpbnB1dFwiKSIsInJlc3VsdHNfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwicmVzdWx0c1wiKSIsInBsb3RfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwicGxvdHNcIikiLCIiLCIjIElmIHRoZSBpbnB1dCBhbmQgcmVzdWx0cyBkaXJlY3RvcmllcyBkbyBub3QgZXhpc3QsIGNyZWF0ZSBpdCIsImlmICghZGlyLmV4aXN0cyhyZXN1bHRzX2RpcikpIHtcbiAgZGlyLmNyZWF0ZShyZXN1bHRzX2RpciwgcmVjdXJzaXZlID0gVFJVRSlcbn0iLCIiLCJzb3VyY2UoZmlsZS5wYXRoKGFuYWx5c2lzX2RpciwgXCJ1dGlsXCIsXG4gICAgICAgICAgICAgICAgIFwic3Vydml2YWxfbW9kZWxzLlJcIikpIl19 -->
-<pre class="r"><code>root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
+root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
 
 data_dir &lt;- file.path(root_dir, &quot;data&quot;)
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;survival&quot;)
@@ -2971,18 +2918,8 @@ if (!dir.exists(results_dir)) {
 }
 
 source(file.path(analysis_dir, &quot;util&quot;,
-                 &quot;survival_models.R&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTogJ3N1cnZtaW5lcidcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20gJ3BhY2thZ2U6c3Vydml2YWwnOlxuXG4gICAgbXllbG9tYVxuIn0= -->
-<pre><code>
-Attaching package: &#39;survminer&#39;
-
-The following object is masked from &#39;package:survival&#39;:
-
-    myeloma</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjoic291cmNlKGZpbGUucGF0aChyb290X2RpciwgXCJhbmFseXNlc1wiLCBcbiAgICAgICAgICAgICAgICAgIFwiZGVtby1jbGluLXN0YXRzXCIsIFwidXRpbFwiLFxuICAgICAgICAgICAgICAgICBcImhlYXRtYXBfZnVuY3Rpb24uUlwiKSkifQ== -->
-<pre class="r"><code>source(file.path(root_dir, &quot;analyses&quot;, 
+                 &quot;survival_models.R&quot;))
+source(file.path(root_dir, &quot;analyses&quot;, 
                   &quot;demo-clin-stats&quot;, &quot;util&quot;,
                  &quot;heatmap_function.R&quot;))</code></pre>
 <!-- rnb-source-end -->
@@ -2991,7 +2928,7 @@ The following object is masked from &#39;package:survival&#39;:
 <p>Set file paths</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImhpc3RvbG9naWVzX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJzdXJ2aXZhbFwiLCBcInJlc3VsdHNcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcImdlcm1saW5lLXByaW1hcnktcGx1cy10dW1vci1oaXN0b2xvZ2llcy1wbG90LWdyb3Vwcy1jbGluLW1ldGEtc3VidHlwZS50c3ZcIikiLCIiLCJvcGNfaGlzdF9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgXCJoaXN0b2xvZ2llcy50c3ZcIikiLCIiLCJwbHBfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFxuICAgICAgICAgICAgICAgICAgICAgIFwicGJ0YS1tZXJnZWQtcGxwLXZhcmlhbnRzLWF1dG9ndnAtYWJyaWRnZWQudHN2XCIpIiwiIiwicGxwX2xvd1ZBRl9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgXG4gICAgICAgICAgICAgICAgICAgICAgIFwicGJ0YS1tZXJnZWQtcGxwLXZhcmlhbnRzLWF1dG9ndnAtYWJyaWRnZWQtbG93VkFGLWNwZ3MudHN2XCIpIiwiIiwicGxwX3N2X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLFxuICAgICAgICAgICAgICAgICAgICAgICAgIFwicGJ0YV9nZXJtbGluZV9zdnMudHN2XCIpIiwiIiwibWJfc2hoX2ZpbGUgPC0gZmlsZS5wYXRoKGlucHV0X2RpcixcbiAgICAgICAgICAgICAgICAgICAgICAgICBcIm1iX3NoaF9tb2xlY3VsYXJfc3VidHlwZXMudHN2XCIpIiwiIiwiY3BnX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFwib25jb2tiLWFubm90YXRpb25cIiwgXCJpbnB1dFwiLCBcImNwZy50eHRcIikiXX0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGlzdG9sb2dpZXNfZmlsZSA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiYW5hbHlzZXNcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcInN1cnZpdmFsXCIsIFwicmVzdWx0c1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZ2VybWxpbmUtcHJpbWFyeS1wbHVzLXR1bW9yLWhpc3RvbG9naWVzLXBsb3QtZ3JvdXBzLWNsaW4tbWV0YS1zdWJ0eXBlLnRzdlwiKVxuXG5vcGNfaGlzdF9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgXCJoaXN0b2xvZ2llcy50c3ZcIilcblxucGxwX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcbiAgICAgICAgICAgICAgICAgICAgICBcInBidGEtbWVyZ2VkLXBscC12YXJpYW50cy1hdXRvZ3ZwLWFicmlkZ2VkLnRzdlwiKVxuXG5wbHBfbG93VkFGX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcbiAgICAgICAgICAgICAgICAgICAgICAgXCJwYnRhLW1lcmdlZC1wbHAtdmFyaWFudHMtYXV0b2d2cC1hYnJpZGdlZC1sb3dWQUYtY3Bncy50c3ZcIilcblxucGxwX3N2X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLFxuICAgICAgICAgICAgICAgICAgICAgICAgIFwicGJ0YV9nZXJtbGluZV9zdnMudHN2XCIpXG5cbm1iX3NoaF9maWxlIDwtIGZpbGUucGF0aChpbnB1dF9kaXIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgXCJtYl9zaGhfbW9sZWN1bGFyX3N1YnR5cGVzLnRzdlwiKVxuXG5jcGdfZmlsZSA8LSBmaWxlLnBhdGgocm9vdF9kaXIsIFwiYW5hbHlzZXNcIiwgXCJvbmNva2ItYW5ub3RhdGlvblwiLCBcImlucHV0XCIsIFwiY3BnLnR4dFwiKVxuYGBgIn0= -->
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, 
                               &quot;survival&quot;, &quot;results&quot;, 
                               &quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv&quot;)
@@ -3014,80 +2951,71 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Wranlge data</p>
+<p>Wrangle data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiaGlzdCA8LSByZWFkX3RzdihoaXN0b2xvZ2llc19maWxlLCBndWVzc19tYXggPSAxMDAwMCkifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGlzdCA8LSByZWFkX3RzdihoaXN0b2xvZ2llc19maWxlLCBndWVzc19tYXggPSAxMDAwMClcbmBgYCJ9 -->
 <pre class="r"><code>hist &lt;- read_tsv(histologies_file, guess_max = 10000)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogODMwIENvbHVtbnM6IDQyXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoMzApOiBLaWRzX0ZpcnN0X1BhcnRpY2lwYW50X0lELCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgc2FtcGwuLi5cbmRibCAoMTIpOiBicm9hZF9oaXN0b2xvZ3lfb3JkZXIsIGFnZV9hdF9kaWFnbm9zaXNfZGF5cywgYWdlX2xhc3RfdXBkYXRlX2RheXMuLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
-<pre><code>Rows: 830 Columns: 42
-── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<!-- rnb-output-begin eyJkYXRhIjoiUm93czogODMwIENvbHVtbnM6IDQy4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDMwKTogS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIHNhbXBsZV9pZF9ub3JtYWwsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIHNhbXBsZV9pZF90dW1vciwgdHVtb3JfZGVzY3JpcHRvciwgcGF0aG9sb2d5X2RpYWdub3NpcywgcGF0aG9sb2d5X2ZyZWVfdGV4dF9kaWFnbm9zaXMsIGJyb2FkX2hpc3RvbG9neSwgY2FuY2VyLi4uXG5kYmwgKDEyKTogYnJvYWRfaGlzdG9sb2d5X29yZGVyLCBhZ2VfYXRfZGlhZ25vc2lzX2RheXMsIGFnZV9sYXN0X3VwZGF0ZV9kYXlzLCBQQzEsIFBDMiwgUEMzLCBQQzQsIFBDNSwgT1NfZGF5cywgRUZTX2RheXMsIE9TX3llYXJzLCBFRlNfeWVhcnNcbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
+<pre><code>Rows: 830 Columns: 42── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
-chr (30): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
-dbl (12): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
-
+chr (30): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, Kids_First_Biospecimen_ID_tumor, sample_id_tumor, tumor_descriptor, pathology_diagnosis, pathology_free_text_diagnosis, broad_histology, cancer...
+dbl (12): broad_histology_order, age_at_diagnosis_days, age_last_update_days, PC1, PC2, PC3, PC4, PC5, OS_days, EFS_days, OS_years, EFS_years
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjpbImNwZ3MgPC0gcmVhZF9saW5lcyhjcGdfZmlsZSkiLCIiLCJwbHAgPC0gcmVhZF90c3YocGxwX2ZpbGUpICU+JVxuICBiaW5kX3Jvd3MocmVhZF90c3YocGxwX2xvd1ZBRl9maWxlKSkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoZ2VuZV9zeW1ib2xfdmVwICVpbiUgY3BncykiXX0= -->
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3BncyA8LSByZWFkX2xpbmVzKGNwZ19maWxlKVxuXG5wbHAgPC0gcmVhZF90c3YocGxwX2ZpbGUpICU+JVxuICBiaW5kX3Jvd3MocmVhZF90c3YocGxwX2xvd1ZBRl9maWxlKSkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoZ2VuZV9zeW1ib2xfdmVwICVpbiUgY3BncylcbmBgYCJ9 -->
 <pre class="r"><code>cpgs &lt;- read_lines(cpg_file)
 
 plp &lt;- read_tsv(plp_file) %&gt;%
   bind_rows(read_tsv(plp_lowVAF_file)) %&gt;%
   dplyr::filter(gene_symbol_vep %in% cpgs)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjg2OSBDb2x1bW5zOiAyM1xu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDE5KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG5Sb3dzOiAxMCBDb2x1bW5zOiAyNFxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIwKTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
-<pre><code>Rows: 2869 Columns: 23
-── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjg2OSBDb2x1bW5zOiAyM+KUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICgxOSk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBjaHIsIHJlZiwgYWx0LCB2YXJpYW50X2lkcywgZ2VuZV9zeW1ib2xfdmVwLCB2YXJpYW50X2NsYXNzaWZpY2F0aW9uX3ZlcCwgSEdWU2csIEhHVlNjLCBIR1ZTcCwgYXV0b2d2cF9jYWxsLCBhdXRvZ3ZwX2NhbGxfcmVhc29uLCBjbGludmFyX2NsaW5zaWdfYXV0b2d2cCwgY2xpbnZhcl9yZXZpZXdfc3RhdHVzX2F1dG9ndnAsIGNsaS4uLlxuZGJsICAoNCk6IHN0YXJ0LCBjbGludmFyX3N0YXJzLCBjbGludmFyX3ZhcmlhbnRfaWQsIGdub21hZF8zXzFfMV9BRl9ub25fY2FuY2VyX3BvcG1heFxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5Sb3dzOiAxMCBDb2x1bW5zOiAyNOKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICgyMCk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBjaHIsIHJlZiwgYWx0LCB2YXJpYW50X2lkcywgZ2VuZV9zeW1ib2xfdmVwLCB2YXJpYW50X2NsYXNzaWZpY2F0aW9uX3ZlcCwgSEdWU2csIEhHVlNjLCBIR1ZTcCwgYXV0b2d2cF9jYWxsLCBhdXRvZ3ZwX2NhbGxfcmVhc29uLCBjbGludmFyX2NsaW5zaWdfYXV0b2d2cCwgY2xpbnZhcl9yZXZpZXdfc3RhdHVzX2F1dG9ndnAsIGNsaS4uLlxuZGJsICAoNCk6IHN0YXJ0LCBjbGludmFyX3N0YXJzLCBjbGludmFyX3ZhcmlhbnRfaWQsIGdub21hZF8zXzFfMV9BRl9ub25fY2FuY2VyX3BvcG1heFxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Rows: 2869 Columns: 23── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
-chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
-dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
-
+chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene_symbol_vep, variant_classification_vep, HGVSg, HGVSc, HGVSp, autogvp_call, autogvp_call_reason, clinvar_clinsig_autogvp, clinvar_review_status_autogvp, cli...
+dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer_popmax
 ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 10 Columns: 24
-── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.Rows: 10 Columns: 24── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
-chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
-dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
-
+chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene_symbol_vep, variant_classification_vep, HGVSg, HGVSc, HGVSp, autogvp_call, autogvp_call_reason, clinvar_clinsig_autogvp, clinvar_review_status_autogvp, cli...
+dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer_popmax
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjoicGxwX3N2IDwtIHJlYWRfdHN2KHBscF9zdl9maWxlKSJ9 -->
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxwX3N2IDwtIHJlYWRfdHN2KHBscF9zdl9maWxlKVxuYGBgIn0= -->
 <pre class="r"><code>plp_sv &lt;- read_tsv(plp_sv_file)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMTggQ29sdW1uczogMTBcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg3KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIENocm9tb3NvbWUsIFR5cGUsIENsYXNzaWZpY2F0aW9uLC4uLlxuZGJsICgzKTogU3RhcnQsIEVuZCwgTGVuZ3RoXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
-<pre><code>Rows: 18 Columns: 10
-── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMTggQ29sdW1uczogMTDilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoNyk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBDaHJvbW9zb21lLCBUeXBlLCBDbGFzc2lmaWNhdGlvbiwgQ2FsbGVyLCBIdWdvX1N5bWJvbF9hbGwsIEh1Z29fU3ltYm9sX2NwZ1xuZGJsICgzKTogU3RhcnQsIEVuZCwgTGVuZ3RoXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
+<pre><code>Rows: 18 Columns: 10── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
-chr (7): Kids_First_Biospecimen_ID_normal, Chromosome, Type, Classification,...
+chr (7): Kids_First_Biospecimen_ID_normal, Chromosome, Type, Classification, Caller, Hugo_Symbol_all, Hugo_Symbol_cpg
 dbl (3): Start, End, Length
-
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-message-end -->
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Obtain all BS IDs of P/LP carriers with medulloblastoma</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInBscF9pZHMgPC0gdW5pcXVlKGMocGxwJEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLFxuICAgICAgICAgICAgICAgICAgICBwbHBfc3YkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpKSIsIiIsIm1iX2hpc3QgPC0gaGlzdCAlPiVcbiAgZHBseXI6OmZpbHRlcihwbG90X2dyb3VwID09IFwiTWVkdWxsb2JsYXN0b21hXCIpICU+JVxuICBkcGx5cjo6bXV0YXRlKGNwZ19wbHAgPSBjYXNlX3doZW4oXG4gICAgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgJWluJSBwbHBfaWRzIH4gXCJDUEcgUC1MUFwiLFxuICAgIFRSVUUgfiBcIk5vIFAtTFBcIlxuICApKSAlPiVcbiAgZHBseXI6Om11dGF0ZShjcGdfcGxwID0gZmN0X3JlbGV2ZWwoY3BnX3BscCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYyhcIk5vIFAtTFBcIiwgXCJDUEcgUC1MUFwiKSkpICU+JVxuICAjIGNvcnJlY3QgdGhyZWUgc2FtcGxlcyBpbmNvcnJlY2x0eSBsYWJlbGVkIGFzIGhhdmluZyBvbmx5IGJpb3BzaWVzOyBhY3R1YWxseSB1bmRlcndlc3QgcGFydGlhbCByZXNlY3Rpb25cbiAgZHBseXI6Om11dGF0ZShleHRlbnRfb2ZfdHVtb3JfcmVzZWN0aW9uID0gY2FzZV93aGVuKFxuICAgIGV4dGVudF9vZl90dW1vcl9yZXNlY3Rpb24gPT0gXCJCaW9wc3kgb25seVwiIH4gXCJQYXJ0aWFsIHJlc2VjdGlvblwiLFxuICAgIFRSVUUgfiBleHRlbnRfb2ZfdHVtb3JfcmVzZWN0aW9uXG4gICkpIl19 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxwX2lkcyA8LSB1bmlxdWUoYyhwbHAkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsXG4gICAgICAgICAgICAgICAgICAgIHBscF9zdiRLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCkpXG5cbm1iX2hpc3QgPC0gaGlzdCAlPiVcbiAgZHBseXI6OmZpbHRlcihwbG90X2dyb3VwID09IFxcTWVkdWxsb2JsYXN0b21hXFwpICU+JVxuICBkcGx5cjo6bXV0YXRlKGNwZ19wbHAgPSBjYXNlX3doZW4oXG4gICAgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgJWluJSBwbHBfaWRzIH4gXFxDUEcgUC1MUFxcLFxuICAgIFRSVUUgfiBcXE5vIFAtTFBcXFxuICApKSAlPiVcbiAgZHBseXI6Om11dGF0ZShjcGdfcGxwID0gZmN0X3JlbGV2ZWwoY3BnX3BscCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYyhcXE5vIFAtTFBcXCwgXFxDUEcgUC1MUFxcKSkpICU+JVxuICAjIGNvcnJlY3QgdGhyZWUgc2FtcGxlcyBpbmNvcnJlY2x0eSBsYWJlbGVkIGFzIGhhdmluZyBvbmx5IGJpb3BzaWVzOyBhY3R1YWxseSB1bmRlcndlc3QgcGFydGlhbCByZXNlY3Rpb25cbiAgZHBseXI6Om11dGF0ZShleHRlbnRfb2ZfdHVtb3JfcmVzZWN0aW9uID0gY2FzZV93aGVuKFxuICAgIGV4dGVudF9vZl90dW1vcl9yZXNlY3Rpb24gPT0gXFxCaW9wc3kgb25seVxcIH4gXFxQYXJ0aWFsIHJlc2VjdGlvblxcLFxuICAgIFRSVUUgfiBleHRlbnRfb2ZfdHVtb3JfcmVzZWN0aW9uXG4gICkpXG5gYGAifQ== -->
 <pre class="r"><code>plp_ids &lt;- unique(c(plp$Kids_First_Biospecimen_ID_normal,
                     plp_sv$Kids_First_Biospecimen_ID_normal))
 
 mb_hist &lt;- hist %&gt;%
-  dplyr::filter(plot_group == &quot;Medulloblastoma&quot;) %&gt;%
+  dplyr::filter(plot_group == \Medulloblastoma\) %&gt;%
   dplyr::mutate(cpg_plp = case_when(
-    Kids_First_Biospecimen_ID_normal %in% plp_ids ~ &quot;CPG P-LP&quot;,
-    TRUE ~ &quot;No P-LP&quot;
+    Kids_First_Biospecimen_ID_normal %in% plp_ids ~ \CPG P-LP\,
+    TRUE ~ \No P-LP\
   )) %&gt;%
   dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
-                                      c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;))) %&gt;%
+                                      c(\No P-LP\, \CPG P-LP\))) %&gt;%
   # correct three samples incorreclty labeled as having only biopsies; actually underwest partial resection
   dplyr::mutate(extent_of_tumor_resection = case_when(
-    extent_of_tumor_resection == &quot;Biopsy only&quot; ~ &quot;Partial resection&quot;,
+    extent_of_tumor_resection == \Biopsy only\ ~ \Partial resection\,
     TRUE ~ extent_of_tumor_resection
   ))</code></pre>
 <!-- rnb-source-end -->
@@ -3096,18 +3024,8 @@ mb_hist &lt;- hist %&gt;%
 <p>Determine if molecular subtypes are enriched among P-LP carriers</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInN1YnR5cGVfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSAhPSBcIk1CLCBUbyBiZSBjbGFzc2lmaWVkXCIsXSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSBcIm1vbGVjdWxhcl9zdWJ0eXBlXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gXCJjcGdfcGxwXCIsXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZVttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlICE9IFwiTUIsIFRvIGJlIGNsYXNzaWZpZWRcIl0pLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMl9uYW1lcyA9IGMoXCJObyBQLUxQXCIsIFwiQ1BHIFAtTFBcIiksXG4gICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpIiwiIiwicGRmKGZpbGUucGF0aChwbG90X2RpciwgXCJwbHBfY2Fycmllcl9tYl9zdWJ0eXBlX2Vucl9oZWF0bWFwLnBkZlwiKSxcbiAgICB3aWR0aCA9IDMsIGhlaWdodCA9IDQpIiwiZHJhdyhzdWJ0eXBlX2VucikiLCJkZXYub2ZmKCkiXX0= -->
-<pre class="r"><code>subtype_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype != &quot;MB, To be classified&quot;,], 
-                       var1 = &quot;molecular_subtype&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
-                       var1_names = unique(mb_hist$molecular_subtype[mb_hist$molecular_subtype != &quot;MB, To be classified&quot;]), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
-                        padjust = FALSE)
-
-pdf(file.path(plot_dir, &quot;plp_carrier_mb_subtype_enr_heatmap.pdf&quot;),
-    width = 3, height = 4)
-draw(subtype_enr)
-dev.off()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VidHlwZV9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlICE9IFxcTUJcbmBgYCJ9 -->
+<pre class="r"><code>subtype_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype != \MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoicG5nIFxuICAyIFxuIn0= -->
 <pre><code>png 
@@ -3119,53 +3037,19 @@ dev.off()</code></pre>
 <code>mb_hist</code></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoib3BjX2hpc3QgPC0gcmVhZF90c3Yob3BjX2hpc3RfZmlsZSkifQ== -->
-<pre class="r"><code>opc_hist &lt;- read_tsv(opc_hist_file)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNDc4OTUgQ29sdW1uczogNjZcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg0NSk6IEtpZHNfRmlyc3RfUGFydGljaXBhbnRfSUQsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIHNhbXBsZV9pZCwgYS4uLlxuZGJsICgyMSk6IGNlbGxfbGluZV9wYXNzYWdlLCBPU19kYXlzLCBFRlNfZGF5cywgYWdlX2F0X2RpYWdub3Npc19kYXlzLCBhZ2VfYS4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
-<pre><code>Rows: 47895 Columns: 66
-── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Delimiter: &quot;\t&quot;
-chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
-dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjoic2hoX3N1YnR5cGVzIDwtIHJlYWRfdHN2KG1iX3NoaF9maWxlKSAlPiVcbiAgZHBseXI6OnJlbmFtZShzaGhfc3VidHlwZSA9IG1vbGVjdWxhcl9zdWJ0eXBlKSJ9 -->
-<pre class="r"><code>shh_subtypes &lt;- read_tsv(mb_shh_file) %&gt;%
-  dplyr::rename(shh_subtype = molecular_subtype)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjY1IENvbHVtbnM6IDhcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg4KTogS2lkc19GaXJzdF9QYXJ0aWNpcGFudF9JRCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRCwgbWF0Y2hfaWQsIHNhbS4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
-<pre><code>Rows: 265 Columns: 8
-── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Delimiter: &quot;\t&quot;
-chr (8): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, match_id, sam...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjoibWV0YXN0YXNpc19wdHMgPC0gcmVhZF90c3YoZmlsZS5wYXRoKGlucHV0X2RpcixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcInByb2dyZXNzaW9uLW1ldGFzdGFzaXMtZGF0YS50c3ZcIikpICU+JVxuICBkcGx5cjo6ZmlsdGVyKG1ldGFzdGFzaXMgPT0gXCJZZXNcIikgJT4lXG4gIGRpc3RpbmN0KGNidG5fc3ViamVjdF9pZCkgJT4lXG4gIGRwbHlyOjpyZW5hbWUoY29ob3J0X3BhcnRpY2lwYW50X2lkID0gY2J0bl9zdWJqZWN0X2lkKSAlPiVcbiAgcHVsbChjb2hvcnRfcGFydGljaXBhbnRfaWQpIn0= -->
-<pre class="r"><code>metastasis_pts &lt;- read_tsv(file.path(input_dir,
-                                     &quot;progression-metastasis-data.tsv&quot;)) %&gt;%
-  dplyr::filter(metastasis == &quot;Yes&quot;) %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3BjX2hpc3QgPC0gcmVhZF90c3Yob3BjX2hpc3RfZmlsZSlcbnNoaF9zdWJ0eXBlcyA8LSByZWFkX3RzdihtYl9zaGhfZmlsZSkgJT4lXG4gIGRwbHlyOjpyZW5hbWUoc2hoX3N1YnR5cGUgPSBtb2xlY3VsYXJfc3VidHlwZSlcbm1ldGFzdGFzaXNfcHRzIDwtIHJlYWRfdHN2KGZpbGUucGF0aChpbnB1dF9kaXIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXFxwcm9ncmVzc2lvbi1tZXRhc3Rhc2lzLWRhdGEudHN2XFwpKSAlPiVcbiAgZHBseXI6OmZpbHRlcihtZXRhc3Rhc2lzID09IFxcWWVzXFwpICU+JVxuICBkaXN0aW5jdChjYnRuX3N1YmplY3RfaWQpICU+JVxuICBkcGx5cjo6cmVuYW1lKGNvaG9ydF9wYXJ0aWNpcGFudF9pZCA9IGNidG5fc3ViamVjdF9pZCkgJT4lXG4gIHB1bGwoY29ob3J0X3BhcnRpY2lwYW50X2lkKVxuIyBleHRyYWN0IG1ldGh5bGF0aW9uIEJTIElEcyBmcm9tIG9wY19oaXN0XG5vcGNfbWV0aHlsX2RmIDwtIG9wY19oaXN0ICU+JVxuICBkcGx5cjo6ZmlsdGVyKGV4cGVyaW1lbnRhbF9zdHJhdGVneSA9PSBcXE1ldGh5bGF0aW9uXFwpICU+JVxuICBkcGx5cjo6ZmlsdGVyKGRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzX3Njb3JlID49IDAuNykgJT4lXG4gIGRwbHlyOjpzZWxlY3QobWF0Y2hfaWQsIGRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzKVxuICBcbm1iX2hpc3QgPC0gbWJfaGlzdCAlPiVcbiAgIyBqb2luIG1hdGNoIGFuZCBwYXJ0aWNpcGFudCBJRHMgXG4gIGxlZnRfam9pbihvcGNfaGlzdCAlPiUgXG4gICAgICAgICAgICAgIGRwbHlyOjpyZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQpICU+JVxuICAgICAgICAgICAgICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIG1hdGNoX2lkLCBjb2hvcnRfcGFydGljaXBhbnRfaWQpKSAlPiVcbiAgIyBqb2luIG1ldGh5bGF0aW9uIElEc1xuICBsZWZ0X2pvaW4ob3BjX21ldGh5bF9kZikgJT4lXG4gICMgSm9pbiBTSEggc3VidHlwZSBhbmQgVFA1MyBzdGF0dXNcbiAgbGVmdF9qb2luKHNoaF9zdWJ0eXBlcyAlPiUgZHBseXI6OnNlbGVjdChtYXRjaF9pZCwgc2hoX3N1YnR5cGUsIHRwNTNfc3RhdHVzKSkgJT4lXG4gIGRwbHlyOjptdXRhdGUodHA1M19zdGF0dXMgPSBmY3RfcmVsZXZlbCh0cDUzX3N0YXR1cyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmV2KHNvcnQodW5pcXVlKHRwNTNfc3RhdHVzKSkpKSkgJT4lXG4gICMgQWRkIG1ldGFzdGF0aXMgeWVzL25vXG4gIGRwbHlyOjptdXRhdGUobWV0YXN0YXNpcyA9IGNhc2Vfd2hlbihcbiAgICBjb2hvcnRfcGFydGljaXBhbnRfaWQgJWluJSBtZXRhc3Rhc2lzX3B0cyB+IFxcTWV0YXN0YXNpc1xcLFxuICAgIFRSVUUgfiBcXE5vIG1ldGFzdGFzaXNcXFxuICApKSAlPiVcbiAgZGlzdGluY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIC5rZWVwX2FsbCA9IFRSVUUpXG5gYGAifQ== -->
+<pre class="r"><code>opc_hist &lt;- read_tsv(opc_hist_file)
+shh_subtypes &lt;- read_tsv(mb_shh_file) %&gt;%
+  dplyr::rename(shh_subtype = molecular_subtype)
+metastasis_pts &lt;- read_tsv(file.path(input_dir,
+                                     \progression-metastasis-data.tsv\)) %&gt;%
+  dplyr::filter(metastasis == \Yes\) %&gt;%
   distinct(cbtn_subject_id) %&gt;%
   dplyr::rename(cohort_participant_id = cbtn_subject_id) %&gt;%
-  pull(cohort_participant_id)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuUm93czogMjUzODkgQ29sdW1uczogN1xu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uXG7ilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgRGVsaW1pdGVyOiBcIlxcdFwiIGNoclxuKDYpOiBjYnRuX3N1YmplY3RfaWQsIGNidG5fc3BlY2ltZW5fZ3JvdXBfaWQsIG1ldGFzdGFzaXMsIG1ldGFzdGFzaXNfbG9jLi4uIGxnbCAoMSk6IC4uLjZcbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS4g4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbuKAoiBgYCAtPiBgLi4uNmBcbiJ9 -->
-<pre><code>New names:
-Rows: 25389 Columns: 7
-── Column specification
-──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Delimiter: &quot;\t&quot; chr
-(6): cbtn_subject_id, cbtn_specimen_group_id, metastasis, metastasis_loc... lgl (1): ...6
-ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-• `` -&gt; `...6`</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgZXh0cmFjdCBtZXRoeWxhdGlvbiBCUyBJRHMgZnJvbSBvcGNfaGlzdCIsIm9wY19tZXRoeWxfZGYgPC0gb3BjX2hpc3QgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoZXhwZXJpbWVudGFsX3N0cmF0ZWd5ID09IFwiTWV0aHlsYXRpb25cIikgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3Nfc2NvcmUgPj0gMC43KSAlPiVcbiAgZHBseXI6OnNlbGVjdChtYXRjaF9pZCwgZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3MpIiwiICAiLCJtYl9oaXN0IDwtIG1iX2hpc3QgJT4lXG4gICMgam9pbiBtYXRjaCBhbmQgcGFydGljaXBhbnQgSURzIFxuICBsZWZ0X2pvaW4ob3BjX2hpc3QgJT4lIFxuICAgICAgICAgICAgICBkcGx5cjo6cmVuYW1lKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEKSAlPiVcbiAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLCBtYXRjaF9pZCwgY29ob3J0X3BhcnRpY2lwYW50X2lkKSkgJT4lXG4gICMgam9pbiBtZXRoeWxhdGlvbiBJRHNcbiAgbGVmdF9qb2luKG9wY19tZXRoeWxfZGYpICU+JVxuICAjIEpvaW4gU0hIIHN1YnR5cGUgYW5kIFRQNTMgc3RhdHVzXG4gIGxlZnRfam9pbihzaGhfc3VidHlwZXMgJT4lIGRwbHlyOjpzZWxlY3QobWF0Y2hfaWQsIHNoaF9zdWJ0eXBlLCB0cDUzX3N0YXR1cykpICU+JVxuICBkcGx5cjo6bXV0YXRlKHRwNTNfc3RhdHVzID0gZmN0X3JlbGV2ZWwodHA1M19zdGF0dXMsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldihzb3J0KHVuaXF1ZSh0cDUzX3N0YXR1cykpKSkpICU+JVxuICAjIEFkZCBtZXRhc3RhdGlzIHllcy9ub1xuICBkcGx5cjo6bXV0YXRlKG1ldGFzdGFzaXMgPSBjYXNlX3doZW4oXG4gICAgY29ob3J0X3BhcnRpY2lwYW50X2lkICVpbiUgbWV0YXN0YXNpc19wdHMgfiBcIk1ldGFzdGFzaXNcIixcbiAgICBUUlVFIH4gXCJObyBtZXRhc3Rhc2lzXCJcbiAgKSkgJT4lXG4gIGRpc3RpbmN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCAua2VlcF9hbGwgPSBUUlVFKSJdfQ== -->
-<pre class="r"><code># extract methylation BS IDs from opc_hist
+  pull(cohort_participant_id)
+# extract methylation BS IDs from opc_hist
 opc_methyl_df &lt;- opc_hist %&gt;%
-  dplyr::filter(experimental_strategy == &quot;Methylation&quot;) %&gt;%
+  dplyr::filter(experimental_strategy == \Methylation\) %&gt;%
   dplyr::filter(dkfz_v12_methylation_subclass_score &gt;= 0.7) %&gt;%
   dplyr::select(match_id, dkfz_v12_methylation_subclass)
   
@@ -3182,34 +3066,19 @@ mb_hist &lt;- mb_hist %&gt;%
                                          rev(sort(unique(tp53_status))))) %&gt;%
   # Add metastatis yes/no
   dplyr::mutate(metastasis = case_when(
-    cohort_participant_id %in% metastasis_pts ~ &quot;Metastasis&quot;,
-    TRUE ~ &quot;No metastasis&quot;
+    cohort_participant_id %in% metastasis_pts ~ \Metastasis\,
+    TRUE ~ \No metastasis\
   )) %&gt;%
   distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vciwgY29ob3J0X3BhcnRpY2lwYW50X2lkKWBcbkpvaW5pbmcgd2l0aCBgYnkgPSBqb2luX2J5KG1hdGNoX2lkKWBcbkpvaW5pbmcgd2l0aCBgYnkgPSBqb2luX2J5KG1hdGNoX2lkKWBcbiJ9 -->
-<pre><code>Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor, cohort_participant_id)`
-Joining with `by = join_by(match_id)`
-Joining with `by = join_by(match_id)`</code></pre>
-<!-- rnb-message-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Assess MB, Group 3 methylation subtype distribution by P-LP carrier
 status</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImczX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlID09IFwiTUIsIEdyb3VwM1wiICYgZ3JlcGwoXCJHMzRcIiwgbWJfaGlzdCRka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcyksXSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSBcImRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gXCJjcGdfcGxwXCIsXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSBjKFwiTUJfRzM0X0lJXCIsIFwiTUJfRzM0X0lJSVwiLCBcIk1CX0czNF9JVlwiKSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKFwiTm8gUC1MUFwiLCBcIkNQRyBQLUxQXCIpLFxuICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpIiwiIiwicGRmKGZpbGUucGF0aChwbG90X2RpciwgXCJtYl9nM19wbHBfY2Fycmllcl9zdWJ0eXBlX2Vucl9oZWF0bWFwLnBkZlwiKSxcbiAgICB3aWR0aCA9IDMsIGhlaWdodCA9IDMpIiwiZHJhdyhnM19wbHBfZW5yKSIsImRldi5vZmYoKSJdfQ== -->
-<pre class="r"><code>g3_plp_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype == &quot;MB, Group3&quot; &amp; grepl(&quot;G34&quot;, mb_hist$dkfz_v12_methylation_subclass),], 
-                       var1 = &quot;dkfz_v12_methylation_subclass&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
-                       var1_names = c(&quot;MB_G34_II&quot;, &quot;MB_G34_III&quot;, &quot;MB_G34_IV&quot;), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
-                       padjust = FALSE)
-
-pdf(file.path(plot_dir, &quot;mb_g3_plp_carrier_subtype_enr_heatmap.pdf&quot;),
-    width = 3, height = 3)
-draw(g3_plp_enr)
-dev.off()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZzNfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0W21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gXFxNQlxuYGBgIn0= -->
+<pre class="r"><code>g3_plp_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype == \MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoicG5nIFxuICAyIFxuIn0= -->
 <pre><code>png 
@@ -3221,18 +3090,8 @@ dev.off()</code></pre>
 status</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImc0X3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlID09IFwiTUIsIEdyb3VwNFwiICYgZ3JlcGwoXCJHMzRcIiwgbWJfaGlzdCRka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcyksXSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSBcImRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gXCJjcGdfcGxwXCIsXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSBjKFwiTUJfRzM0X1ZcIiwgXCJNQl9HMzRfVklcIiwgXCJNQl9HMzRfVklJXCIsIFwiTUJfRzM0X1ZJSUlcIiksIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYyhcIk5vIFAtTFBcIiwgXCJDUEcgUC1MUFwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKSIsIiIsInBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFwibWJfZzRfcGxwX2NhcnJpZXJfc3VidHlwZV9lbnJfaGVhdG1hcC5wZGZcIiksXG4gICAgd2lkdGggPSAzLCBoZWlnaHQgPSAzKSIsImRyYXcoZzRfcGxwX2VucikiLCJkZXYub2ZmKCkiXX0= -->
-<pre class="r"><code>g4_plp_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype == &quot;MB, Group4&quot; &amp; grepl(&quot;G34&quot;, mb_hist$dkfz_v12_methylation_subclass),], 
-                       var1 = &quot;dkfz_v12_methylation_subclass&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
-                       var1_names = c(&quot;MB_G34_V&quot;, &quot;MB_G34_VI&quot;, &quot;MB_G34_VII&quot;, &quot;MB_G34_VIII&quot;), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
-                       padjust = FALSE)
-
-pdf(file.path(plot_dir, &quot;mb_g4_plp_carrier_subtype_enr_heatmap.pdf&quot;),
-    width = 3, height = 3)
-draw(g4_plp_enr)
-dev.off()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZzRfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0W21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gXFxNQlxuYGBgIn0= -->
+<pre class="r"><code>g4_plp_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype == \MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoicG5nIFxuICAyIFxuIn0= -->
 <pre><code>png 
@@ -3243,15 +3102,15 @@ dev.off()</code></pre>
 <p>Assess MB, SHH subtype distribution by P-LP carrier status</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInNoaF9wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpLF0sIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gXCJzaGhfc3VidHlwZVwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9IFwiY3BnX3BscFwiLFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3Qkc2hoX3N1YnR5cGVbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpXSksIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYyhcIk5vIFAtTFBcIiwgXCJDUEcgUC1MUFwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKSIsIiIsInBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFwibWJfc2hoX3BscF9jYXJyaWVyX3N1YnR5cGVfZW5yX2hlYXRtYXAucGRmXCIpLFxuICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAzKSIsImRyYXcoc2hoX3BscF9lbnIpIiwiZGV2Lm9mZigpICJdfQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2hoX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFshaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSksXSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSBcXHNoaF9zdWJ0eXBlXFwsIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gXFxjcGdfcGxwXFwsXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCRzaGhfc3VidHlwZVshaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSldKSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKFxcTm8gUC1MUFxcLCBcXENQRyBQLUxQXFwpLFxuICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpXG5cbnBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFxcbWJfc2hoX3BscF9jYXJyaWVyX3N1YnR5cGVfZW5yX2hlYXRtYXAucGRmXFwpLFxuICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAzKVxuZHJhdyhzaGhfcGxwX2VucilcbmRldi5vZmYoKSBcbmBgYCJ9 -->
 <pre class="r"><code>shh_plp_enr &lt;- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),], 
-                       var1 = &quot;shh_subtype&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
+                       var1 = \shh_subtype\, 
+                       var2 = \cpg_plp\,
                        var1_names = unique(mb_hist$shh_subtype[!is.na(mb_hist$shh_subtype)]), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
+                       var2_names = c(\No P-LP\, \CPG P-LP\),
                        padjust = FALSE)
 
-pdf(file.path(plot_dir, &quot;mb_shh_plp_carrier_subtype_enr_heatmap.pdf&quot;),
+pdf(file.path(plot_dir, \mb_shh_plp_carrier_subtype_enr_heatmap.pdf\),
     width = 3.5, height = 3)
 draw(shh_plp_enr)
 dev.off() </code></pre>
@@ -3265,25 +3124,10 @@ dev.off() </code></pre>
 <p>Group SHH subtypes into infant-type and child/adult-type SHH</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIm1iX2hpc3QgPC0gbWJfaGlzdCAlPiVcbiAgZHBseXI6Om11dGF0ZShzaGhfdHlwZSA9IGNhc2Vfd2hlbihcbiAgICBzaGhfc3VidHlwZSAlaW4lIGMoXCJNQiwgU0hIIGdhbW1hXCIsIFwiTUIsIFNISCBiZXRhXCIpIH4gXCJNQiwgaW5mYW50IFNISFwiLFxuICAgIHNoaF9zdWJ0eXBlICVpbiUgYyhcIk1CLCBTSEggYWxwaGFcIiwgXCJNQiwgU0hIIGRlbHRhXCIpIH4gXCJNQiwgY2hpbGQtYWR1bHQgU0hIXCIsXG4gICAgVFJVRSB+IE5BX2NoYXJhY3Rlcl9cbiAgKSkiLCIiLCJzaGhfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0WyFpcy5uYShtYl9oaXN0JHNoaF9zdWJ0eXBlKSxdLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9IFwic2hoX3R5cGVcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSBcImNwZ19wbHBcIixcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IHVuaXF1ZShtYl9oaXN0JHNoaF90eXBlWyFpcy5uYShtYl9oaXN0JHNoaF90eXBlKV0pLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMl9uYW1lcyA9IGMoXCJObyBQLUxQXCIsIFwiQ1BHIFAtTFBcIiksXG4gICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkiLCIiLCJwZGYoZmlsZS5wYXRoKHBsb3RfZGlyLCBcIm1iX3NoaF9wbHBfY2Fycmllcl90eXBlX2Vucl9oZWF0bWFwLnBkZlwiKSxcbiAgICB3aWR0aCA9IDMuNSwgaGVpZ2h0ID0gMykiLCJkcmF3KHNoaF9wbHBfZW5yKSIsImRldi5vZmYoKSAiXX0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWJfaGlzdCA8LSBtYl9oaXN0ICU+JVxuICBkcGx5cjo6bXV0YXRlKHNoaF90eXBlID0gY2FzZV93aGVuKFxuICAgIHNoaF9zdWJ0eXBlICVpbiUgYyhcXE1CXG5gYGAifQ== -->
 <pre class="r"><code>mb_hist &lt;- mb_hist %&gt;%
   dplyr::mutate(shh_type = case_when(
-    shh_subtype %in% c(&quot;MB, SHH gamma&quot;, &quot;MB, SHH beta&quot;) ~ &quot;MB, infant SHH&quot;,
-    shh_subtype %in% c(&quot;MB, SHH alpha&quot;, &quot;MB, SHH delta&quot;) ~ &quot;MB, child-adult SHH&quot;,
-    TRUE ~ NA_character_
-  ))
-
-shh_plp_enr &lt;- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),], 
-                       var1 = &quot;shh_type&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
-                       var1_names = unique(mb_hist$shh_type[!is.na(mb_hist$shh_type)]), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
-                       padjust = FALSE)
-
-pdf(file.path(plot_dir, &quot;mb_shh_plp_carrier_type_enr_heatmap.pdf&quot;),
-    width = 3.5, height = 3)
-draw(shh_plp_enr)
-dev.off() </code></pre>
+    shh_subtype %in% c(\MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoicG5nIFxuICAyIFxuIn0= -->
 <pre><code>png 
@@ -3295,15 +3139,15 @@ dev.off() </code></pre>
 by P-LP carrier status</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInNoaF90cDUzX3N0YXR1c19wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpLF0sIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gXCJ0cDUzX3N0YXR1c1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9IFwiY3BnX3BscFwiLFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3QkdHA1M19zdGF0dXNbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpXSksIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYyhcIk5vIFAtTFBcIiwgXCJDUEcgUC1MUFwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKSIsIiIsInBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFwibWJfc2hoX3BscF9jYXJyaWVyX3RwNTNfZW5yX2hlYXRtYXAucGRmXCIpLFxuICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAzKSIsImRyYXcoc2hoX3RwNTNfc3RhdHVzX3BscF9lbnIpIiwiZGV2Lm9mZigpIl19 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2hoX3RwNTNfc3RhdHVzX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFshaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSksXSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSBcXHRwNTNfc3RhdHVzXFwsIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gXFxjcGdfcGxwXFwsXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCR0cDUzX3N0YXR1c1shaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSldKSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKFxcTm8gUC1MUFxcLCBcXENQRyBQLUxQXFwpLFxuICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpXG5cbnBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFxcbWJfc2hoX3BscF9jYXJyaWVyX3RwNTNfZW5yX2hlYXRtYXAucGRmXFwpLFxuICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAzKVxuZHJhdyhzaGhfdHA1M19zdGF0dXNfcGxwX2VucilcbmRldi5vZmYoKVxuYGBgIn0= -->
 <pre class="r"><code>shh_tp53_status_plp_enr &lt;- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),], 
-                       var1 = &quot;tp53_status&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
+                       var1 = \tp53_status\, 
+                       var2 = \cpg_plp\,
                        var1_names = unique(mb_hist$tp53_status[!is.na(mb_hist$shh_subtype)]), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
+                       var2_names = c(\No P-LP\, \CPG P-LP\),
                        padjust = FALSE)
 
-pdf(file.path(plot_dir, &quot;mb_shh_plp_carrier_tp53_enr_heatmap.pdf&quot;),
+pdf(file.path(plot_dir, \mb_shh_plp_carrier_tp53_enr_heatmap.pdf\),
     width = 3.5, height = 3)
 draw(shh_tp53_status_plp_enr)
 dev.off()</code></pre>
@@ -3317,15 +3161,15 @@ dev.off()</code></pre>
 <p>Assess frequency of metastasis by P-LP carrier status</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIm1iX21ldGFzdGFzaXNfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9IFwibWV0YXN0YXNpc1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9IFwiY3BnX3BscFwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3QkbWV0YXN0YXNpcyksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYyhcIk5vIFAtTFBcIiwgXCJDUEcgUC1MUFwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKSIsIiIsInBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFwibWJfcGxwX2NhcnJpZXJfbWV0YXN0YXNpc19lbnJfaGVhdG1hcC5wZGZcIiksXG4gICAgd2lkdGggPSAzLjUsIGhlaWdodCA9IDMpIiwiZHJhdyhtYl9tZXRhc3Rhc2lzX3BscF9lbnIpIiwiZGV2Lm9mZigpIl19 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWJfbWV0YXN0YXNpc19wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3QsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gXFxtZXRhc3Rhc2lzXFwsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gXFxjcGdfcGxwXFwsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCRtZXRhc3Rhc2lzKSwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKFxcTm8gUC1MUFxcLCBcXENQRyBQLUxQXFwpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpXG5cbnBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFxcbWJfcGxwX2NhcnJpZXJfbWV0YXN0YXNpc19lbnJfaGVhdG1hcC5wZGZcXCksXG4gICAgd2lkdGggPSAzLjUsIGhlaWdodCA9IDMpXG5kcmF3KG1iX21ldGFzdGFzaXNfcGxwX2VucilcbmRldi5vZmYoKVxuYGBgIn0= -->
 <pre class="r"><code>mb_metastasis_plp_enr &lt;- plot_enr(mb_hist, 
-                                   var1 = &quot;metastasis&quot;, 
-                                   var2 = &quot;cpg_plp&quot;,
+                                   var1 = \metastasis\, 
+                                   var2 = \cpg_plp\,
                                    var1_names = unique(mb_hist$metastasis), 
-                                   var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
+                                   var2_names = c(\No P-LP\, \CPG P-LP\),
                                    padjust = FALSE)
 
-pdf(file.path(plot_dir, &quot;mb_plp_carrier_metastasis_enr_heatmap.pdf&quot;),
+pdf(file.path(plot_dir, \mb_plp_carrier_metastasis_enr_heatmap.pdf\),
     width = 3.5, height = 3)
 draw(mb_metastasis_plp_enr)
 dev.off()</code></pre>
@@ -3339,22 +3183,22 @@ dev.off()</code></pre>
 <p>Repeat for each molecular subtype</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInN1YnR5cGVzIDwtIHNvcnQodW5pcXVlKG1iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGVbIWdyZXBsKFwiY2xhc3NpZmllZFwiLCBtYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlKV0pKSIsIiIsInBkZihOVUxMKSIsIiIsImZvciAoc3VidHlwZSBpbiBzdWJ0eXBlcyl7XG4gIFxuICBtYl9zdWJ0eXBlX21ldGFzdGFzaXNfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0W21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gc3VidHlwZSxdLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9IFwibWV0YXN0YXNpc1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9IFwiY3BnX3BscFwiLFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gc29ydCh1bmlxdWUobWJfaGlzdCRtZXRhc3Rhc2lzW21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gc3VidHlwZV0pKSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKFwiTm8gUC1MUFwiLCBcIkNQRyBQLUxQXCIpLFxuICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpXG5cbiAgcGRmKGZpbGUucGF0aChwbG90X2RpciwgXG4gICAgICAgICAgICAgICAgZ2x1ZTo6Z2x1ZShcIm1iX3tzdWJ0eXBlfV9wbHBfY2Fycmllcl9tZXRhc3Rhc2lzX2Vucl9oZWF0bWFwLnBkZlwiKSksXG4gICAgICB3aWR0aCA9IDMuNSwgaGVpZ2h0ID0gMi41KVxuICBcbiAgZHJhdyhtYl9zdWJ0eXBlX21ldGFzdGFzaXNfcGxwX2VucilcbiAgXG4gIGRldi5vZmYoKVxuICBcbn0iXX0= -->
-<pre class="r"><code>subtypes &lt;- sort(unique(mb_hist$molecular_subtype[!grepl(&quot;classified&quot;, mb_hist$molecular_subtype)]))
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VidHlwZXMgPC0gc29ydCh1bmlxdWUobWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZVshZ3JlcGwoXFxjbGFzc2lmaWVkXFwsIG1iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUpXSkpXG5cbnBkZihOVUxMKVxuXG5mb3IgKHN1YnR5cGUgaW4gc3VidHlwZXMpe1xuICBcbiAgbWJfc3VidHlwZV9tZXRhc3Rhc2lzX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlID09IHN1YnR5cGUsXSwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSBcXG1ldGFzdGFzaXNcXCwgXG4gICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSBcXGNwZ19wbHBcXCxcbiAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IHNvcnQodW5pcXVlKG1iX2hpc3QkbWV0YXN0YXNpc1ttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlID09IHN1YnR5cGVdKSksIFxuICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYyhcXE5vIFAtTFBcXCwgXFxDUEcgUC1MUFxcKSxcbiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKVxuXG4gIHBkZihmaWxlLnBhdGgocGxvdF9kaXIsIFxuICAgICAgICAgICAgICAgIGdsdWU6OmdsdWUoXFxtYl97c3VidHlwZX1fcGxwX2NhcnJpZXJfbWV0YXN0YXNpc19lbnJfaGVhdG1hcC5wZGZcXCkpLFxuICAgICAgd2lkdGggPSAzLjUsIGhlaWdodCA9IDIuNSlcbiAgXG4gIGRyYXcobWJfc3VidHlwZV9tZXRhc3Rhc2lzX3BscF9lbnIpXG4gIFxuICBkZXYub2ZmKClcbiAgXG59XG5gYGAifQ== -->
+<pre class="r"><code>subtypes &lt;- sort(unique(mb_hist$molecular_subtype[!grepl(\classified\, mb_hist$molecular_subtype)]))
 
 pdf(NULL)
 
 for (subtype in subtypes){
   
   mb_subtype_metastasis_plp_enr &lt;- plot_enr(mb_hist[mb_hist$molecular_subtype == subtype,], 
-                       var1 = &quot;metastasis&quot;, 
-                       var2 = &quot;cpg_plp&quot;,
+                       var1 = \metastasis\, 
+                       var2 = \cpg_plp\,
                        var1_names = sort(unique(mb_hist$metastasis[mb_hist$molecular_subtype == subtype])), 
-                       var2_names = c(&quot;No P-LP&quot;, &quot;CPG P-LP&quot;),
+                       var2_names = c(\No P-LP\, \CPG P-LP\),
                        padjust = FALSE)
 
   pdf(file.path(plot_dir, 
-                glue::glue(&quot;mb_{subtype}_plp_carrier_metastasis_enr_heatmap.pdf&quot;)),
+                glue::glue(\mb_{subtype}_plp_carrier_metastasis_enr_heatmap.pdf\)),
       width = 3.5, height = 2.5)
   
   draw(mb_subtype_metastasis_plp_enr)
@@ -3368,9 +3212,9 @@ for (subtype in subtypes){
 <p>Save mb_hist to output</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoid3JpdGVfdHN2KG1iX2hpc3QsXG4gICAgICAgICAgZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcIm1iLWhpc3RvbG9naWVzLXBsdXMtc2hoLW1ldGh5bC1zdWJ0eXBlcy1tZXRhc3RzaXMudHN2XCIpKSJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3JpdGVfdHN2KG1iX2hpc3QsXG4gICAgICAgICAgZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcXG1iLWhpc3RvbG9naWVzLXBsdXMtc2hoLW1ldGh5bC1zdWJ0eXBlcy1tZXRhc3RzaXMudHN2XFwpKVxuYGBgIn0= -->
 <pre class="r"><code>write_tsv(mb_hist,
-          file.path(results_dir, &quot;mb-histologies-plus-shh-methyl-subtypes-metastsis.tsv&quot;))</code></pre>
+          file.path(results_dir, \mb-histologies-plus-shh-methyl-subtypes-metastsis.tsv\))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3378,7 +3222,7 @@ for (subtype in subtypes){
 info</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoicGxwX21iIDwtIHBscCAlPiVcbiAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCAlaW4lIG1iX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JVxuICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBnZW5lX3N5bWJvbF92ZXApICU+JVxuICBkcGx5cjo6cmVuYW1lKEh1Z29fU3ltYm9sID0gZ2VuZV9zeW1ib2xfdmVwKSAlPiVcbiAgYmluZF9yb3dzKHBscF9zdiAlPiVcbiAgICAgICAgICAgICAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCAlaW4lIG1iX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JVxuICAgICAgICAgICAgICBkcGx5cjo6cmVuYW1lKEh1Z29fU3ltYm9sID0gSHVnb19TeW1ib2xfY3BnKSAlPiVcbiAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgSHVnb19TeW1ib2wpKSAlPiVcbiAgZGlzdGluY3QoKSAlPiVcbiAgbGVmdF9qb2luKG1iX2hpc3QgJT4lIGRwbHlyOjpzZWxlY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1vbGVjdWxhcl9zdWJ0eXBlLCBzaGhfc3VidHlwZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3MsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1ldGFzdGFzaXMpKSJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxwX21iIDwtIHBscCAlPiVcbiAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCAlaW4lIG1iX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JVxuICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBnZW5lX3N5bWJvbF92ZXApICU+JVxuICBkcGx5cjo6cmVuYW1lKEh1Z29fU3ltYm9sID0gZ2VuZV9zeW1ib2xfdmVwKSAlPiVcbiAgYmluZF9yb3dzKHBscF9zdiAlPiVcbiAgICAgICAgICAgICAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCAlaW4lIG1iX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JVxuICAgICAgICAgICAgICBkcGx5cjo6cmVuYW1lKEh1Z29fU3ltYm9sID0gSHVnb19TeW1ib2xfY3BnKSAlPiVcbiAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgSHVnb19TeW1ib2wpKSAlPiVcbiAgZGlzdGluY3QoKSAlPiVcbiAgbGVmdF9qb2luKG1iX2hpc3QgJT4lIGRwbHlyOjpzZWxlY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1vbGVjdWxhcl9zdWJ0eXBlLCBzaGhfc3VidHlwZSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3MsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1ldGFzdGFzaXMpKVxuYGBgIn0= -->
 <pre class="r"><code>plp_mb &lt;- plp %&gt;%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% mb_hist$Kids_First_Biospecimen_ID_normal) %&gt;%
   dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep) %&gt;%
@@ -3393,17 +3237,13 @@ info</p>
                                       dkfz_v12_methylation_subclass,
                                       metastasis))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpYFxuIn0= -->
-<pre><code>Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<!-- rnb-message-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Print distribution of P-LP variants by gene and subtype in MB SHH</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoidGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSBcIk1CLCBTSEhcIl0sXG4gICAgICBwbHBfbWIkc2hoX3N1YnR5cGVbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09IFwiTUIsIFNISFwiXSkifQ== -->
-<pre class="r"><code>table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == &quot;MB, SHH&quot;],
-      plp_mb$shh_subtype[plp_mb$molecular_subtype == &quot;MB, SHH&quot;])</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSBcXE1CXG5gYGAifQ== -->
+<pre class="r"><code>table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == \MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICBcbiAgICAgICAgIE1CLCBTSEggYmV0YSBNQiwgU0hIIGRlbHRhIE1CLCBTSEggZ2FtbWFcbiAgRUROUkIgICAgICAgICAgICAgMSAgICAgICAgICAgICAwICAgICAgICAgICAgIDBcbiAgR0JBICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAwICAgICAgICAgICAgIDBcbiAgR0pCMiAgICAgICAgICAgICAgMSAgICAgICAgICAgICAwICAgICAgICAgICAgIDBcbiAgR05BUyAgICAgICAgICAgICAgMSAgICAgICAgICAgICAwICAgICAgICAgICAgIDBcbiAgTVNIMyAgICAgICAgICAgICAgMCAgICAgICAgICAgICAwICAgICAgICAgICAgIDFcbiAgTVNINiAgICAgICAgICAgICAgMCAgICAgICAgICAgICAwICAgICAgICAgICAgIDFcbiAgTVVUWUggICAgICAgICAgICAgMCAgICAgICAgICAgICAwICAgICAgICAgICAgIDFcbiAgUFRDSDEgICAgICAgICAgICAgMSAgICAgICAgICAgICAwICAgICAgICAgICAgIDJcbiAgUkFENTFEICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICAgICAgICAgIDBcbiAgU1VGVSAgICAgICAgICAgICAgMSAgICAgICAgICAgICAwICAgICAgICAgICAgIDJcbiJ9 -->
 <pre><code>        
@@ -3425,9 +3265,8 @@ info</p>
 in MB Group 3</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoidGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSBcIk1CLCBHcm91cDNcIl0sXG4gICAgICBwbHBfbWIkZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3NbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09IFwiTUIsIEdyb3VwM1wiXSkifQ== -->
-<pre class="r"><code>table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == &quot;MB, Group3&quot;],
-      plp_mb$dkfz_v12_methylation_subclass[plp_mb$molecular_subtype == &quot;MB, Group3&quot;])</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSBcXE1CXG5gYGAifQ== -->
+<pre class="r"><code>table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == \MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIFxuICAgICAgICBNQl9HMzRfSUkgTUJfRzM0X0lJSSBNQl9HMzRfSVZcbiAgQVBDICAgICAgICAgICAwICAgICAgICAgIDAgICAgICAgICAxXG4gIEREWDQxICAgICAgICAgMCAgICAgICAgICAwICAgICAgICAgMFxuICBGQUggICAgICAgICAgIDAgICAgICAgICAgMCAgICAgICAgIDFcbiAgRkFOQ0EgICAgICAgICAwICAgICAgICAgIDEgICAgICAgICAwXG4gIEZHRlIxICAgICAgICAgMSAgICAgICAgICAwICAgICAgICAgMFxuICBHSkIyICAgICAgICAgIDAgICAgICAgICAgMCAgICAgICAgIDBcbiAgUFRFTiAgICAgICAgICAwICAgICAgICAgIDEgICAgICAgICAwXG4gIFJBRDUwICAgICAgICAgMCAgICAgICAgICAwICAgICAgICAgMFxuIn0= -->
 <pre><code>       
@@ -3447,9 +3286,8 @@ in MB Group 3</p>
 in MB Group 4</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoidGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSBcIk1CLCBHcm91cDRcIl0sXG4gICAgICBwbHBfbWIkZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3NbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09IFwiTUIsIEdyb3VwNFwiXSkifQ== -->
-<pre class="r"><code>table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == &quot;MB, Group4&quot;],
-      plp_mb$dkfz_v12_methylation_subclass[plp_mb$molecular_subtype == &quot;MB, Group4&quot;])</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSBcXE1CXG5gYGAifQ== -->
+<pre class="r"><code>table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == \MB</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICBcbiAgICAgICAgIE1CX0czNF9WSUkgTUJfRzM0X1ZJSUlcbiAgQUtUMSAgICAgICAgICAgIDAgICAgICAgICAgIDFcbiAgQ09MN0ExICAgICAgICAgIDEgICAgICAgICAgIDBcbiAgQ1JFQkJQICAgICAgICAgIDEgICAgICAgICAgIDBcbiAgRVJDQzIgICAgICAgICAgIDAgICAgICAgICAgIDBcbiAgRVpIMiAgICAgICAgICAgIDAgICAgICAgICAgIDFcbiAgRkFOQ0EgICAgICAgICAgIDAgICAgICAgICAgIDFcbiAgRkFOQ0MgICAgICAgICAgIDAgICAgICAgICAgIDFcbiAgR0pCMiAgICAgICAgICAgIDEgICAgICAgICAgIDBcbiAgUE1TMiAgICAgICAgICAgIDEgICAgICAgICAgIDBcbiJ9 -->
 <pre><code>        
@@ -3468,7 +3306,7 @@ in MB Group 4</p>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoidGFibGUocGxwX21iJEh1Z29fU3ltYm9sLFxuICAgICAgcGxwX21iJG1ldGFzdGFzaXMpIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUocGxwX21iJEh1Z29fU3ltYm9sLFxuICAgICAgcGxwX21iJG1ldGFzdGFzaXMpXG5gYGAifQ== -->
 <pre class="r"><code>table(plp_mb$Hugo_Symbol,
       plp_mb$metastasis)</code></pre>
 <!-- rnb-source-end -->
@@ -3504,7 +3342,7 @@ in MB Group 4</p>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoic2Vzc2lvbkluZm8oKSJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2Vzc2lvbkluZm8oKVxuYGBgIn0= -->
 <pre class="r"><code>sessionInfo()</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiUiB2ZXJzaW9uIDQuNC4wICgyMDI0LTA0LTI0KVxuUGxhdGZvcm06IHg4Nl82NC1wYy1saW51eC1nbnVcblJ1bm5pbmcgdW5kZXI6IFVidW50dSAyMi4wNC40IExUU1xuXG5NYXRyaXggcHJvZHVjdHM6IGRlZmF1bHRcbkJMQVM6ICAgL3Vzci9saWIveDg2XzY0LWxpbnV4LWdudS9vcGVuYmxhcy1wdGhyZWFkL2xpYmJsYXMuc28uMyBcbkxBUEFDSzogL3Vzci9saWIveDg2XzY0LWxpbnV4LWdudS9vcGVuYmxhcy1wdGhyZWFkL2xpYm9wZW5ibGFzcC1yMC4zLjIwLnNvOyAgTEFQQUNLIHZlcnNpb24gMy4xMC4wXG5cbmxvY2FsZTpcbiBbMV0gTENfQ1RZUEU9ZW5fVVMuVVRGLTggICAgICAgTENfTlVNRVJJQz1DICAgICAgICAgICAgICBcbiBbM10gTENfVElNRT1lbl9VUy5VVEYtOCAgICAgICAgTENfQ09MTEFURT1lbl9VUy5VVEYtOCAgICBcbiBbNV0gTENfTU9ORVRBUlk9ZW5fVVMuVVRGLTggICAgTENfTUVTU0FHRVM9ZW5fVVMuVVRGLTggICBcbiBbN10gTENfUEFQRVI9ZW5fVVMuVVRGLTggICAgICAgTENfTkFNRT1DICAgICAgICAgICAgICAgICBcbiBbOV0gTENfQUREUkVTUz1DICAgICAgICAgICAgICAgTENfVEVMRVBIT05FPUMgICAgICAgICAgICBcblsxMV0gTENfTUVBU1VSRU1FTlQ9ZW5fVVMuVVRGLTggTENfSURFTlRJRklDQVRJT049QyAgICAgICBcblxudGltZSB6b25lOiBFdGMvVVRDXG50emNvZGUgc291cmNlOiBzeXN0ZW0gKGdsaWJjKVxuXG5hdHRhY2hlZCBiYXNlIHBhY2thZ2VzOlxuWzFdIGdyaWQgICAgICBzdGF0cyAgICAgZ3JhcGhpY3MgIGdyRGV2aWNlcyB1dGlscyAgICAgZGF0YXNldHMgIG1ldGhvZHMgIFxuWzhdIGJhc2UgICAgIFxuXG5vdGhlciBhdHRhY2hlZCBwYWNrYWdlczpcbiBbMV0gcGF0Y2h3b3JrXzEuMi4wICAgICAgIHN1cnZtaW5lcl8wLjQuOSAgICAgICBDb21wbGV4SGVhdG1hcF8yLjIwLjBcbiBbNF0gY2lyY2xpemVfMC40LjE2ICAgICAgIGdncHVicl8wLjYuMCAgICAgICAgICBzdXJ2aXZhbF8zLjctMCAgICAgICBcbiBbN10gbHVicmlkYXRlXzEuOS4zICAgICAgIGZvcmNhdHNfMS4wLjAgICAgICAgICBzdHJpbmdyXzEuNS4xICAgICAgICBcblsxMF0gZHBseXJfMS4xLjQgICAgICAgICAgIHB1cnJyXzEuMC4yICAgICAgICAgICByZWFkcl8yLjEuNSAgICAgICAgICBcblsxM10gdGlkeXJfMS4zLjEgICAgICAgICAgIHRpYmJsZV8zLjIuMSAgICAgICAgICBnZ3Bsb3QyXzMuNS4xICAgICAgICBcblsxNl0gdGlkeXZlcnNlXzIuMC4wICAgICAgXG5cbmxvYWRlZCB2aWEgYSBuYW1lc3BhY2UgKGFuZCBub3QgYXR0YWNoZWQpOlxuIFsxXSB0aWR5c2VsZWN0XzEuMi4xICAgIGZhc3RtYXBfMS4yLjAgICAgICAgZGlnZXN0XzAuNi4zNSAgICAgIFxuIFs0XSB0aW1lY2hhbmdlXzAuMy4wICAgIGxpZmVjeWNsZV8xLjAuNCAgICAgY2x1c3Rlcl8yLjEuNiAgICAgIFxuIFs3XSBtYWdyaXR0cl8yLjAuMyAgICAgIGNvbXBpbGVyXzQuNC4wICAgICAgcmxhbmdfMS4xLjQgICAgICAgIFxuWzEwXSBzYXNzXzAuNC45ICAgICAgICAgIHRvb2xzXzQuNC4wICAgICAgICAgdXRmOF8xLjIuNCAgICAgICAgIFxuWzEzXSB5YW1sXzIuMy44ICAgICAgICAgIGRhdGEudGFibGVfMS4xNS40ICAga25pdHJfMS40NyAgICAgICAgIFxuWzE2XSBnZ3NpZ25pZl8wLjYuNCAgICAgIGJpdF80LjAuNSAgICAgICAgICAgUkNvbG9yQnJld2VyXzEuMS0zIFxuWzE5XSBhYmluZF8xLjQtNSAgICAgICAgIHdpdGhyXzMuMC4wICAgICAgICAgQmlvY0dlbmVyaWNzXzAuNTAuMFxuWzIyXSBzdGF0czRfNC40LjAgICAgICAgIGZhbnNpXzEuMC42ICAgICAgICAgeHRhYmxlXzEuOC00ICAgICAgIFxuWzI1XSBjb2xvcnNwYWNlXzIuMS0wICAgIHNjYWxlc18xLjMuMCAgICAgICAgaXRlcmF0b3JzXzEuMC4xNCAgIFxuWzI4XSBjbGlfMy42LjIgICAgICAgICAgIHJtYXJrZG93bl8yLjI3ICAgICAgY3JheW9uXzEuNS4yICAgICAgIFxuWzMxXSBnZW5lcmljc18wLjEuMyAgICAgIGttLmNpXzAuNS02ICAgICAgICAgdHpkYl8wLjQuMCAgICAgICAgIFxuWzM0XSByanNvbl8wLjIuMjEgICAgICAgIGNhY2hlbV8xLjEuMCAgICAgICAgc3BsaW5lc180LjQuMCAgICAgIFxuWzM3XSBwYXJhbGxlbF80LjQuMCAgICAgIHN1cnZNaXNjXzAuNS42ICAgICAgbWF0cml4U3RhdHNfMS4zLjAgIFxuWzQwXSB2Y3Ryc18wLjYuNSAgICAgICAgIE1hdHJpeF8xLjctMCAgICAgICAganNvbmxpdGVfMS44LjggICAgIFxuWzQzXSBjYXJEYXRhXzMuMC01ICAgICAgIGNhcl8zLjEtMiAgICAgICAgICAgSVJhbmdlc18yLjM4LjEgICAgIFxuWzQ2XSBobXNfMS4xLjMgICAgICAgICAgIEdldG9wdExvbmdfMS4wLjUgICAgUzRWZWN0b3JzXzAuNDIuMSAgIFxuWzQ5XSBiaXQ2NF80LjAuNSAgICAgICAgIHJzdGF0aXhfMC43LjIgICAgICAgY2x1ZV8wLjMtNjUgICAgICAgIFxuWzUyXSBtYWdpY2tfMi44LjMgICAgICAgIGZvcmVhY2hfMS41LjIgICAgICAganF1ZXJ5bGliXzAuMS40ICAgIFxuWzU1XSBnbHVlXzEuNy4wICAgICAgICAgIGNvZGV0b29sc18wLjItMjAgICAgc3RyaW5naV8xLjguNCAgICAgIFxuWzU4XSBzaGFwZV8xLjQuNi4xICAgICAgIGd0YWJsZV8wLjMuNSAgICAgICAgbXVuc2VsbF8wLjUuMSAgICAgIFxuWzYxXSBwaWxsYXJfMS45LjAgICAgICAgIGh0bWx0b29sc18wLjUuOC4xICAgUjZfMi41LjEgICAgICAgICAgIFxuWzY0XSBLTXN1cnZfMC4xLTUgICAgICAgIGRvUGFyYWxsZWxfMS4wLjE3ICAgcnByb2pyb290XzIuMC40ICAgIFxuWzY3XSB2cm9vbV8xLjYuNSAgICAgICAgIGV2YWx1YXRlXzAuMjQuMCAgICAgbGF0dGljZV8wLjIyLTYgICAgIFxuWzcwXSBwbmdfMC4xLTggICAgICAgICAgIGJhY2twb3J0c18xLjUuMCAgICAgYnJvb21fMS4wLjYgICAgICAgIFxuWzczXSBic2xpYl8wLjcuMCAgICAgICAgIFJjcHBfMS4wLjEyICAgICAgICAgZ3JpZEV4dHJhXzIuMyAgICAgIFxuWzc2XSB4ZnVuXzAuNDQgICAgICAgICAgIHpvb18xLjgtMTIgICAgICAgICAgcGtnY29uZmlnXzIuMC4zICAgIFxuWzc5XSBHbG9iYWxPcHRpb25zXzAuMS4yXG4ifQ== -->
@@ -3572,7 +3410,7 @@ loaded via a namespace (and not attached):
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXNzZXNzIFAtTFAgY2FycmllciBzdGF0dXMgYW1vbmcgTUIgY29ob3J0IGFuZCBhc3NvY2lhdGlvbnMgd2l0aCBzdXJ2aXZhbCIKb3V0cHV0OiAKICBodG1sX25vdGVib29rOgogICAgdG9jOiBUUlVFCiAgICB0b2NfZmxvYXQ6IFRSVUUKYXV0aG9yOiBSeWFuIENvcmJldHQKZGF0ZTogMjAyNApwYXJhbXM6CiAgcGxvdF9jaTogVFJVRQotLS0KCioqUHVycG9zZToqKiAKCkFzc2VzcyBkaXN0cmlidXRpb24gb2YgbWVkdWxsb2JsYXN0b21hIG1vbGVjdWxhciBhbmQgbWV0aHlsYXRpb24gc3VidHlwZXMgYW1vbmcgZ2VybWxpbmUgUC1MUCBjYXJyaWVycwoKIyMgU2V0dXAKCiMjIyMgUGFja2FnZXMgYW5kIGZ1bmN0aW9ucwoKTG9hZCBwYWNrYWdlcyBhbmQgc2V0IGRpcmVjdG9yeSBwYXRocwpgYGB7ciBsb2FkIHBhY2thZ2VzLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShzdXJ2aXZhbCkKbGlicmFyeShnZ3B1YnIpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShjaXJjbGl6ZSkKbGlicmFyeShDb21wbGV4SGVhdG1hcCkKCnJvb3RfZGlyIDwtIHJwcm9qcm9vdDo6ZmluZF9yb290KHJwcm9qcm9vdDo6aGFzX2RpcigiLmdpdCIpKQoKZGF0YV9kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiZGF0YSIpCmFuYWx5c2lzX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsICJhbmFseXNlcyIsICJzdXJ2aXZhbCIpCmlucHV0X2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAiaW5wdXQiKQpyZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAicmVzdWx0cyIpCnBsb3RfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsICJwbG90cyIpCgojIElmIHRoZSBpbnB1dCBhbmQgcmVzdWx0cyBkaXJlY3RvcmllcyBkbyBub3QgZXhpc3QsIGNyZWF0ZSBpdAppZiAoIWRpci5leGlzdHMocmVzdWx0c19kaXIpKSB7CiAgZGlyLmNyZWF0ZShyZXN1bHRzX2RpciwgcmVjdXJzaXZlID0gVFJVRSkKfQoKc291cmNlKGZpbGUucGF0aChhbmFseXNpc19kaXIsICJ1dGlsIiwKICAgICAgICAgICAgICAgICAic3Vydml2YWxfbW9kZWxzLlIiKSkKc291cmNlKGZpbGUucGF0aChyb290X2RpciwgImFuYWx5c2VzIiwgCiAgICAgICAgICAgICAgICAgICJkZW1vLWNsaW4tc3RhdHMiLCAidXRpbCIsCiAgICAgICAgICAgICAgICAgImhlYXRtYXBfZnVuY3Rpb24uUiIpKQpgYGAKClNldCBmaWxlIHBhdGhzCgpgYGB7ciBzZXQgcGF0aHN9Cmhpc3RvbG9naWVzX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiYW5hbHlzZXMiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInN1cnZpdmFsIiwgInJlc3VsdHMiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImdlcm1saW5lLXByaW1hcnktcGx1cy10dW1vci1oaXN0b2xvZ2llcy1wbG90LWdyb3Vwcy1jbGluLW1ldGEtc3VidHlwZS50c3YiKQoKb3BjX2hpc3RfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsICJoaXN0b2xvZ2llcy50c3YiKQoKcGxwX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAKICAgICAgICAgICAgICAgICAgICAgICJwYnRhLW1lcmdlZC1wbHAtdmFyaWFudHMtYXV0b2d2cC1hYnJpZGdlZC50c3YiKQoKcGxwX2xvd1ZBRl9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgCiAgICAgICAgICAgICAgICAgICAgICAgInBidGEtbWVyZ2VkLXBscC12YXJpYW50cy1hdXRvZ3ZwLWFicmlkZ2VkLWxvd1ZBRi1jcGdzLnRzdiIpCgpwbHBfc3ZfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAicGJ0YV9nZXJtbGluZV9zdnMudHN2IikKCm1iX3NoaF9maWxlIDwtIGZpbGUucGF0aChpbnB1dF9kaXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAibWJfc2hoX21vbGVjdWxhcl9zdWJ0eXBlcy50c3YiKQoKY3BnX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiYW5hbHlzZXMiLCAib25jb2tiLWFubm90YXRpb24iLCAiaW5wdXQiLCAiY3BnLnR4dCIpCmBgYAoKV3JhbmxnZSBkYXRhCgpgYGB7cn0KaGlzdCA8LSByZWFkX3RzdihoaXN0b2xvZ2llc19maWxlLCBndWVzc19tYXggPSAxMDAwMCkKCmNwZ3MgPC0gcmVhZF9saW5lcyhjcGdfZmlsZSkKCnBscCA8LSByZWFkX3RzdihwbHBfZmlsZSkgJT4lCiAgYmluZF9yb3dzKHJlYWRfdHN2KHBscF9sb3dWQUZfZmlsZSkpICU+JQogIGRwbHlyOjpmaWx0ZXIoZ2VuZV9zeW1ib2xfdmVwICVpbiUgY3BncykKCnBscF9zdiA8LSByZWFkX3RzdihwbHBfc3ZfZmlsZSkKYGBgCgpPYnRhaW4gYWxsIEJTIElEcyBvZiBQL0xQIGNhcnJpZXJzIHdpdGggbWVkdWxsb2JsYXN0b21hCgpgYGB7cn0KcGxwX2lkcyA8LSB1bmlxdWUoYyhwbHAkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsCiAgICAgICAgICAgICAgICAgICAgcGxwX3N2JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSkKCm1iX2hpc3QgPC0gaGlzdCAlPiUKICBkcGx5cjo6ZmlsdGVyKHBsb3RfZ3JvdXAgPT0gIk1lZHVsbG9ibGFzdG9tYSIpICU+JQogIGRwbHlyOjptdXRhdGUoY3BnX3BscCA9IGNhc2Vfd2hlbigKICAgIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsICVpbiUgcGxwX2lkcyB+ICJDUEcgUC1MUCIsCiAgICBUUlVFIH4gIk5vIFAtTFAiCiAgKSkgJT4lCiAgZHBseXI6Om11dGF0ZShjcGdfcGxwID0gZmN0X3JlbGV2ZWwoY3BnX3BscCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIikpKSAlPiUKICAjIGNvcnJlY3QgdGhyZWUgc2FtcGxlcyBpbmNvcnJlY2x0eSBsYWJlbGVkIGFzIGhhdmluZyBvbmx5IGJpb3BzaWVzOyBhY3R1YWxseSB1bmRlcndlc3QgcGFydGlhbCByZXNlY3Rpb24KICBkcGx5cjo6bXV0YXRlKGV4dGVudF9vZl90dW1vcl9yZXNlY3Rpb24gPSBjYXNlX3doZW4oCiAgICBleHRlbnRfb2ZfdHVtb3JfcmVzZWN0aW9uID09ICJCaW9wc3kgb25seSIgfiAiUGFydGlhbCByZXNlY3Rpb24iLAogICAgVFJVRSB+IGV4dGVudF9vZl90dW1vcl9yZXNlY3Rpb24KICApKQpgYGAKCkRldGVybWluZSBpZiBtb2xlY3VsYXIgc3VidHlwZXMgYXJlIGVucmljaGVkIGFtb25nIFAtTFAgY2FycmllcnMKCmBgYHtyfQpzdWJ0eXBlX2VuciA8LSBwbG90X2VucihtYl9oaXN0W21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgIT0gIk1CLCBUbyBiZSBjbGFzc2lmaWVkIixdLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gIm1vbGVjdWxhcl9zdWJ0eXBlIiwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9ICJjcGdfcGxwIiwKICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGVbbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSAhPSAiTUIsIFRvIGJlIGNsYXNzaWZpZWQiXSksIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIiksCiAgICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCnBkZihmaWxlLnBhdGgocGxvdF9kaXIsICJwbHBfY2Fycmllcl9tYl9zdWJ0eXBlX2Vucl9oZWF0bWFwLnBkZiIpLAogICAgd2lkdGggPSAzLCBoZWlnaHQgPSA0KQpkcmF3KHN1YnR5cGVfZW5yKQpkZXYub2ZmKCkKYGBgCgpMb2FkIG1ldGh5bGF0aW9uIHN1YnR5cGUgYW5kIG1ldGFzdGFzaXMgZGF0YSwgYW5kIGFwcGVuZCB0byBgbWJfaGlzdGAKCmBgYHtyfQpvcGNfaGlzdCA8LSByZWFkX3RzdihvcGNfaGlzdF9maWxlKQoKc2hoX3N1YnR5cGVzIDwtIHJlYWRfdHN2KG1iX3NoaF9maWxlKSAlPiUKICBkcGx5cjo6cmVuYW1lKHNoaF9zdWJ0eXBlID0gbW9sZWN1bGFyX3N1YnR5cGUpCgptZXRhc3Rhc2lzX3B0cyA8LSByZWFkX3RzdihmaWxlLnBhdGgoaW5wdXRfZGlyLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInByb2dyZXNzaW9uLW1ldGFzdGFzaXMtZGF0YS50c3YiKSkgJT4lCiAgZHBseXI6OmZpbHRlcihtZXRhc3Rhc2lzID09ICJZZXMiKSAlPiUKICBkaXN0aW5jdChjYnRuX3N1YmplY3RfaWQpICU+JQogIGRwbHlyOjpyZW5hbWUoY29ob3J0X3BhcnRpY2lwYW50X2lkID0gY2J0bl9zdWJqZWN0X2lkKSAlPiUKICBwdWxsKGNvaG9ydF9wYXJ0aWNpcGFudF9pZCkKCiMgZXh0cmFjdCBtZXRoeWxhdGlvbiBCUyBJRHMgZnJvbSBvcGNfaGlzdApvcGNfbWV0aHlsX2RmIDwtIG9wY19oaXN0ICU+JQogIGRwbHlyOjpmaWx0ZXIoZXhwZXJpbWVudGFsX3N0cmF0ZWd5ID09ICJNZXRoeWxhdGlvbiIpICU+JQogIGRwbHlyOjpmaWx0ZXIoZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3Nfc2NvcmUgPj0gMC43KSAlPiUKICBkcGx5cjo6c2VsZWN0KG1hdGNoX2lkLCBka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcykKICAKbWJfaGlzdCA8LSBtYl9oaXN0ICU+JQogICMgam9pbiBtYXRjaCBhbmQgcGFydGljaXBhbnQgSURzIAogIGxlZnRfam9pbihvcGNfaGlzdCAlPiUgCiAgICAgICAgICAgICAgZHBseXI6OnJlbmFtZShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yID0gS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRCkgJT4lCiAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLCBtYXRjaF9pZCwgY29ob3J0X3BhcnRpY2lwYW50X2lkKSkgJT4lCiAgIyBqb2luIG1ldGh5bGF0aW9uIElEcwogIGxlZnRfam9pbihvcGNfbWV0aHlsX2RmKSAlPiUKICAjIEpvaW4gU0hIIHN1YnR5cGUgYW5kIFRQNTMgc3RhdHVzCiAgbGVmdF9qb2luKHNoaF9zdWJ0eXBlcyAlPiUgZHBseXI6OnNlbGVjdChtYXRjaF9pZCwgc2hoX3N1YnR5cGUsIHRwNTNfc3RhdHVzKSkgJT4lCiAgZHBseXI6Om11dGF0ZSh0cDUzX3N0YXR1cyA9IGZjdF9yZWxldmVsKHRwNTNfc3RhdHVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldihzb3J0KHVuaXF1ZSh0cDUzX3N0YXR1cykpKSkpICU+JQogICMgQWRkIG1ldGFzdGF0aXMgeWVzL25vCiAgZHBseXI6Om11dGF0ZShtZXRhc3Rhc2lzID0gY2FzZV93aGVuKAogICAgY29ob3J0X3BhcnRpY2lwYW50X2lkICVpbiUgbWV0YXN0YXNpc19wdHMgfiAiTWV0YXN0YXNpcyIsCiAgICBUUlVFIH4gIk5vIG1ldGFzdGFzaXMiCiAgKSkgJT4lCiAgZGlzdGluY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIC5rZWVwX2FsbCA9IFRSVUUpCmBgYAoKQXNzZXNzIE1CLCBHcm91cCAzIG1ldGh5bGF0aW9uIHN1YnR5cGUgZGlzdHJpYnV0aW9uIGJ5IFAtTFAgY2FycmllciBzdGF0dXMKCmBgYHtyfQpnM19wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIEdyb3VwMyIgJiBncmVwbCgiRzM0IiwgbWJfaGlzdCRka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcyksXSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9ICJka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcyIsIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSAiY3BnX3BscCIsCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IGMoIk1CX0czNF9JSSIsICJNQl9HMzRfSUlJIiwgIk1CX0czNF9JViIpLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYygiTm8gUC1MUCIsICJDUEcgUC1MUCIpLAogICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCnBkZihmaWxlLnBhdGgocGxvdF9kaXIsICJtYl9nM19wbHBfY2Fycmllcl9zdWJ0eXBlX2Vucl9oZWF0bWFwLnBkZiIpLAogICAgd2lkdGggPSAzLCBoZWlnaHQgPSAzKQpkcmF3KGczX3BscF9lbnIpCmRldi5vZmYoKQpgYGAKCkFzc2VzcyBNQiwgR3JvdXAgNCBtZXRoeWxhdGlvbiBzdWJ0eXBlIGRpc3RyaWJ1dGlvbiBieSBQLUxQIGNhcnJpZXIgc3RhdHVzCgpgYGB7cn0KZzRfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0W21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gIk1CLCBHcm91cDQiICYgZ3JlcGwoIkczNCIsIG1iX2hpc3QkZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3MpLF0sIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSAiZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3MiLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gImNwZ19wbHAiLAogICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSBjKCJNQl9HMzRfViIsICJNQl9HMzRfVkkiLCAiTUJfRzM0X1ZJSSIsICJNQl9HMzRfVklJSSIpLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYygiTm8gUC1MUCIsICJDUEcgUC1MUCIpLAogICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCnBkZihmaWxlLnBhdGgocGxvdF9kaXIsICJtYl9nNF9wbHBfY2Fycmllcl9zdWJ0eXBlX2Vucl9oZWF0bWFwLnBkZiIpLAogICAgd2lkdGggPSAzLCBoZWlnaHQgPSAzKQpkcmF3KGc0X3BscF9lbnIpCmRldi5vZmYoKQpgYGAKCkFzc2VzcyBNQiwgU0hIICBzdWJ0eXBlIGRpc3RyaWJ1dGlvbiBieSBQLUxQIGNhcnJpZXIgc3RhdHVzCgpgYGB7cn0Kc2hoX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFshaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSksXSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9ICJzaGhfc3VidHlwZSIsIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSAiY3BnX3BscCIsCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IHVuaXF1ZShtYl9oaXN0JHNoaF9zdWJ0eXBlWyFpcy5uYShtYl9oaXN0JHNoaF9zdWJ0eXBlKV0pLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYygiTm8gUC1MUCIsICJDUEcgUC1MUCIpLAogICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCnBkZihmaWxlLnBhdGgocGxvdF9kaXIsICJtYl9zaGhfcGxwX2NhcnJpZXJfc3VidHlwZV9lbnJfaGVhdG1hcC5wZGYiKSwKICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAzKQpkcmF3KHNoaF9wbHBfZW5yKQpkZXYub2ZmKCkgCmBgYAoKR3JvdXAgU0hIIHN1YnR5cGVzIGludG8gaW5mYW50LXR5cGUgYW5kIGNoaWxkL2FkdWx0LXR5cGUgU0hICgpgYGB7cn0KbWJfaGlzdCA8LSBtYl9oaXN0ICU+JQogIGRwbHlyOjptdXRhdGUoc2hoX3R5cGUgPSBjYXNlX3doZW4oCiAgICBzaGhfc3VidHlwZSAlaW4lIGMoIk1CLCBTSEggZ2FtbWEiLCAiTUIsIFNISCBiZXRhIikgfiAiTUIsIGluZmFudCBTSEgiLAogICAgc2hoX3N1YnR5cGUgJWluJSBjKCJNQiwgU0hIIGFscGhhIiwgIk1CLCBTSEggZGVsdGEiKSB+ICJNQiwgY2hpbGQtYWR1bHQgU0hIIiwKICAgIFRSVUUgfiBOQV9jaGFyYWN0ZXJfCiAgKSkKCnNoaF9wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpLF0sIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSAic2hoX3R5cGUiLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gImNwZ19wbHAiLAogICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCRzaGhfdHlwZVshaXMubmEobWJfaGlzdCRzaGhfdHlwZSldKSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMl9uYW1lcyA9IGMoIk5vIFAtTFAiLCAiQ1BHIFAtTFAiKSwKICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpCgpwZGYoZmlsZS5wYXRoKHBsb3RfZGlyLCAibWJfc2hoX3BscF9jYXJyaWVyX3R5cGVfZW5yX2hlYXRtYXAucGRmIiksCiAgICB3aWR0aCA9IDMuNSwgaGVpZ2h0ID0gMykKZHJhdyhzaGhfcGxwX2VucikKZGV2Lm9mZigpIAoKYGBgCgpXaXRoaW4gU0hIIHN1YnR5cGUgY29ob3J0LCBhc3Nlc3MgVFA1MyBtdXRhdGlvbiBzdGF0dXMgZGlzdHJpYnV0aW9uIGJ5IFAtTFAgY2FycmllciBzdGF0dXMKCmBgYHtyfQpzaGhfdHA1M19zdGF0dXNfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0WyFpcy5uYShtYl9oaXN0JHNoaF9zdWJ0eXBlKSxdLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gInRwNTNfc3RhdHVzIiwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9ICJjcGdfcGxwIiwKICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3QkdHA1M19zdGF0dXNbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpXSksIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIiksCiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKQoKcGRmKGZpbGUucGF0aChwbG90X2RpciwgIm1iX3NoaF9wbHBfY2Fycmllcl90cDUzX2Vucl9oZWF0bWFwLnBkZiIpLAogICAgd2lkdGggPSAzLjUsIGhlaWdodCA9IDMpCmRyYXcoc2hoX3RwNTNfc3RhdHVzX3BscF9lbnIpCmRldi5vZmYoKQpgYGAKCkFzc2VzcyBmcmVxdWVuY3kgb2YgbWV0YXN0YXNpcyBieSBQLUxQIGNhcnJpZXIgc3RhdHVzCgpgYGB7cn0KbWJfbWV0YXN0YXNpc19wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3QsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSAibWV0YXN0YXNpcyIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSAiY3BnX3BscCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IHVuaXF1ZShtYl9oaXN0JG1ldGFzdGFzaXMpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYygiTm8gUC1MUCIsICJDUEcgUC1MUCIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCnBkZihmaWxlLnBhdGgocGxvdF9kaXIsICJtYl9wbHBfY2Fycmllcl9tZXRhc3Rhc2lzX2Vucl9oZWF0bWFwLnBkZiIpLAogICAgd2lkdGggPSAzLjUsIGhlaWdodCA9IDMpCmRyYXcobWJfbWV0YXN0YXNpc19wbHBfZW5yKQpkZXYub2ZmKCkKYGBgCgpSZXBlYXQgZm9yIGVhY2ggbW9sZWN1bGFyIHN1YnR5cGUKCmBgYHtyfQpzdWJ0eXBlcyA8LSBzb3J0KHVuaXF1ZShtYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlWyFncmVwbCgiY2xhc3NpZmllZCIsIG1iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUpXSkpCgpwZGYoTlVMTCkKCmZvciAoc3VidHlwZSBpbiBzdWJ0eXBlcyl7CiAgCiAgbWJfc3VidHlwZV9tZXRhc3Rhc2lzX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlID09IHN1YnR5cGUsXSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9ICJtZXRhc3Rhc2lzIiwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9ICJjcGdfcGxwIiwKICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gc29ydCh1bmlxdWUobWJfaGlzdCRtZXRhc3Rhc2lzW21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gc3VidHlwZV0pKSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMl9uYW1lcyA9IGMoIk5vIFAtTFAiLCAiQ1BHIFAtTFAiKSwKICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpCgogIHBkZihmaWxlLnBhdGgocGxvdF9kaXIsIAogICAgICAgICAgICAgICAgZ2x1ZTo6Z2x1ZSgibWJfe3N1YnR5cGV9X3BscF9jYXJyaWVyX21ldGFzdGFzaXNfZW5yX2hlYXRtYXAucGRmIikpLAogICAgICB3aWR0aCA9IDMuNSwgaGVpZ2h0ID0gMi41KQogIAogIGRyYXcobWJfc3VidHlwZV9tZXRhc3Rhc2lzX3BscF9lbnIpCiAgCiAgZGV2Lm9mZigpCiAgCn0KYGBgCgpTYXZlIG1iX2hpc3QgdG8gb3V0cHV0CgpgYGB7cn0Kd3JpdGVfdHN2KG1iX2hpc3QsCiAgICAgICAgICBmaWxlLnBhdGgocmVzdWx0c19kaXIsICJtYi1oaXN0b2xvZ2llcy1wbHVzLXNoaC1tZXRoeWwtc3VidHlwZXMtbWV0YXN0c2lzLnRzdiIpKQpgYGAKCkV4dHJhY3QgYWxsIFAtTFAgdmFyaWFudHMgaW4gcGF0aWVudHMgd2l0aCBNQiwgYW5kIGFwcGVuZCBzdWJ0eXBlIGluZm8KCmBgYHtyfQpwbHBfbWIgPC0gcGxwICU+JQogIGRwbHlyOjpmaWx0ZXIoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgJWluJSBtYl9oaXN0JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSAlPiUKICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBnZW5lX3N5bWJvbF92ZXApICU+JQogIGRwbHlyOjpyZW5hbWUoSHVnb19TeW1ib2wgPSBnZW5lX3N5bWJvbF92ZXApICU+JQogIGJpbmRfcm93cyhwbHBfc3YgJT4lCiAgICAgICAgICAgICAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCAlaW4lIG1iX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JQogICAgICAgICAgICAgIGRwbHlyOjpyZW5hbWUoSHVnb19TeW1ib2wgPSBIdWdvX1N5bWJvbF9jcGcpICU+JQogICAgICAgICAgICAgIGRwbHlyOjpzZWxlY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIEh1Z29fU3ltYm9sKSkgJT4lCiAgZGlzdGluY3QoKSAlPiUKICBsZWZ0X2pvaW4obWJfaGlzdCAlPiUgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtb2xlY3VsYXJfc3VidHlwZSwgc2hoX3N1YnR5cGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3MsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWV0YXN0YXNpcykpCmBgYAoKUHJpbnQgZGlzdHJpYnV0aW9uIG9mIFAtTFAgdmFyaWFudHMgYnkgZ2VuZSBhbmQgc3VidHlwZSBpbiBNQiBTSEggCgpgYGB7cn0KdGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIFNISCJdLAogICAgICBwbHBfbWIkc2hoX3N1YnR5cGVbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09ICJNQiwgU0hIIl0pCmBgYAoKUHJpbnQgZGlzdHJpYnV0aW9uIG9mIFAtTFAgdmFyaWFudHMgYnkgZ2VuZSBhbmQgbWV0aHlsYXRpb24gc3VidHlwZSBpbiBNQiBHcm91cCAzIAoKYGBge3J9CnRhYmxlKHBscF9tYiRIdWdvX1N5bWJvbFtwbHBfbWIkbW9sZWN1bGFyX3N1YnR5cGUgPT0gIk1CLCBHcm91cDMiXSwKICAgICAgcGxwX21iJGRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIEdyb3VwMyJdKQpgYGAKClByaW50IGRpc3RyaWJ1dGlvbiBvZiBQLUxQIHZhcmlhbnRzIGJ5IGdlbmUgYW5kIG1ldGh5bGF0aW9uIHN1YnR5cGUgaW4gTUIgR3JvdXAgNAoKYGBge3J9CnRhYmxlKHBscF9tYiRIdWdvX1N5bWJvbFtwbHBfbWIkbW9sZWN1bGFyX3N1YnR5cGUgPT0gIk1CLCBHcm91cDQiXSwKICAgICAgcGxwX21iJGRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIEdyb3VwNCJdKQpgYGAKCgpgYGB7cn0KdGFibGUocGxwX21iJEh1Z29fU3ltYm9sLAogICAgICBwbHBfbWIkbWV0YXN0YXNpcykKYGBgCgpgYGB7cn0Kc2Vzc2lvbkluZm8oKQpgYGA=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXNzZXNzIFAtTFAgY2FycmllciBzdGF0dXMgYW1vbmcgTUIgY29ob3J0IGFuZCBhc3NvY2lhdGlvbnMgd2l0aCBzdXJ2aXZhbCIKb3V0cHV0OiAKICBodG1sX25vdGVib29rOgogICAgdG9jOiBUUlVFCiAgICB0b2NfZmxvYXQ6IFRSVUUKYXV0aG9yOiBSeWFuIENvcmJldHQKZGF0ZTogMjAyNApwYXJhbXM6CiAgcGxvdF9jaTogVFJVRQotLS0KCioqUHVycG9zZToqKiAKCkFzc2VzcyBkaXN0cmlidXRpb24gb2YgbWVkdWxsb2JsYXN0b21hIG1vbGVjdWxhciBhbmQgbWV0aHlsYXRpb24gc3VidHlwZXMgYW1vbmcgZ2VybWxpbmUgUC1MUCBjYXJyaWVycwoKIyMgU2V0dXAKCiMjIyMgUGFja2FnZXMgYW5kIGZ1bmN0aW9ucwoKTG9hZCBwYWNrYWdlcyBhbmQgc2V0IGRpcmVjdG9yeSBwYXRocwpgYGB7ciBsb2FkIHBhY2thZ2VzLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShzdXJ2aXZhbCkKbGlicmFyeShnZ3B1YnIpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShjaXJjbGl6ZSkKbGlicmFyeShDb21wbGV4SGVhdG1hcCkKCnJvb3RfZGlyIDwtIHJwcm9qcm9vdDo6ZmluZF9yb290KHJwcm9qcm9vdDo6aGFzX2RpcigiLmdpdCIpKQoKZGF0YV9kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiZGF0YSIpCmFuYWx5c2lzX2RpciA8LSBmaWxlLnBhdGgocm9vdF9kaXIsICJhbmFseXNlcyIsICJzdXJ2aXZhbCIpCmlucHV0X2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAiaW5wdXQiKQpyZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCAicmVzdWx0cyIpCnBsb3RfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsICJwbG90cyIpCgojIElmIHRoZSBpbnB1dCBhbmQgcmVzdWx0cyBkaXJlY3RvcmllcyBkbyBub3QgZXhpc3QsIGNyZWF0ZSBpdAppZiAoIWRpci5leGlzdHMocmVzdWx0c19kaXIpKSB7CiAgZGlyLmNyZWF0ZShyZXN1bHRzX2RpciwgcmVjdXJzaXZlID0gVFJVRSkKfQoKc291cmNlKGZpbGUucGF0aChhbmFseXNpc19kaXIsICJ1dGlsIiwKICAgICAgICAgICAgICAgICAic3Vydml2YWxfbW9kZWxzLlIiKSkKc291cmNlKGZpbGUucGF0aChyb290X2RpciwgImFuYWx5c2VzIiwgCiAgICAgICAgICAgICAgICAgICJkZW1vLWNsaW4tc3RhdHMiLCAidXRpbCIsCiAgICAgICAgICAgICAgICAgImhlYXRtYXBfZnVuY3Rpb24uUiIpKQpgYGAKClNldCBmaWxlIHBhdGhzCgpgYGB7ciBzZXQgcGF0aHN9Cmhpc3RvbG9naWVzX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiYW5hbHlzZXMiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInN1cnZpdmFsIiwgInJlc3VsdHMiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImdlcm1saW5lLXByaW1hcnktcGx1cy10dW1vci1oaXN0b2xvZ2llcy1wbG90LWdyb3Vwcy1jbGluLW1ldGEtc3VidHlwZS50c3YiKQoKb3BjX2hpc3RfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsICJoaXN0b2xvZ2llcy50c3YiKQoKcGxwX2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCAKICAgICAgICAgICAgICAgICAgICAgICJwYnRhLW1lcmdlZC1wbHAtdmFyaWFudHMtYXV0b2d2cC1hYnJpZGdlZC50c3YiKQoKcGxwX2xvd1ZBRl9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgCiAgICAgICAgICAgICAgICAgICAgICAgInBidGEtbWVyZ2VkLXBscC12YXJpYW50cy1hdXRvZ3ZwLWFicmlkZ2VkLWxvd1ZBRi1jcGdzLnRzdiIpCgpwbHBfc3ZfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAicGJ0YV9nZXJtbGluZV9zdnMudHN2IikKCm1iX3NoaF9maWxlIDwtIGZpbGUucGF0aChpbnB1dF9kaXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAibWJfc2hoX21vbGVjdWxhcl9zdWJ0eXBlcy50c3YiKQoKY3BnX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCAiYW5hbHlzZXMiLCAib25jb2tiLWFubm90YXRpb24iLCAiaW5wdXQiLCAiY3BnLnR4dCIpCmBgYAoKV3JhbmdsZSBkYXRhCgpgYGB7cn0KaGlzdCA8LSByZWFkX3RzdihoaXN0b2xvZ2llc19maWxlLCBndWVzc19tYXggPSAxMDAwMCkKCmNwZ3MgPC0gcmVhZF9saW5lcyhjcGdfZmlsZSkKCnBscCA8LSByZWFkX3RzdihwbHBfZmlsZSkgJT4lCiAgYmluZF9yb3dzKHJlYWRfdHN2KHBscF9sb3dWQUZfZmlsZSkpICU+JQogIGRwbHlyOjpmaWx0ZXIoZ2VuZV9zeW1ib2xfdmVwICVpbiUgY3BncykKCnBscF9zdiA8LSByZWFkX3RzdihwbHBfc3ZfZmlsZSkKYGBgCgpPYnRhaW4gYWxsIEJTIElEcyBvZiBQL0xQIGNhcnJpZXJzIHdpdGggbWVkdWxsb2JsYXN0b21hCgpgYGB7cn0KcGxwX2lkcyA8LSB1bmlxdWUoYyhwbHAkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsCiAgICAgICAgICAgICAgICAgICAgcGxwX3N2JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSkKCm1iX2hpc3QgPC0gaGlzdCAlPiUKICBkcGx5cjo6ZmlsdGVyKHBsb3RfZ3JvdXAgPT0gIk1lZHVsbG9ibGFzdG9tYSIpICU+JQogIGRwbHlyOjptdXRhdGUoY3BnX3BscCA9IGNhc2Vfd2hlbigKICAgIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsICVpbiUgcGxwX2lkcyB+ICJDUEcgUC1MUCIsCiAgICBUUlVFIH4gIk5vIFAtTFAiCiAgKSkgJT4lCiAgZHBseXI6Om11dGF0ZShjcGdfcGxwID0gZmN0X3JlbGV2ZWwoY3BnX3BscCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIikpKSAlPiUKICAjIGNvcnJlY3QgdGhyZWUgc2FtcGxlcyBpbmNvcnJlY3RseSBsYWJlbGVkIGFzIGhhdmluZyBvbmx5IGJpb3BzaWVzOyBhY3R1YWxseSB1bmRlcndlbnQgcGFydGlhbCByZXNlY3Rpb24KICBkcGx5cjo6bXV0YXRlKGV4dGVudF9vZl90dW1vcl9yZXNlY3Rpb24gPSBjYXNlX3doZW4oCiAgICBzYW1wbGVfaWRfdHVtb3IgJWluJSBjKCI3MzE2LTM1MTAiLCAiNzMxNi0zNTc2IiwgIjczMTYtMTQiKSB+ICJQYXJ0aWFsIHJlc2VjdGlvbiIsCiAgICBUUlVFIH4gZXh0ZW50X29mX3R1bW9yX3Jlc2VjdGlvbgogICkpCmBgYAoKRGV0ZXJtaW5lIGlmIG1vbGVjdWxhciBzdWJ0eXBlcyBhcmUgZW5yaWNoZWQgYW1vbmcgUC1MUCBjYXJyaWVycwoKYGBge3J9CnN1YnR5cGVfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSAhPSAiTUIsIFRvIGJlIGNsYXNzaWZpZWQiLF0sIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSAibW9sZWN1bGFyX3N1YnR5cGUiLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gImNwZ19wbHAiLAogICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZVttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlICE9ICJNQiwgVG8gYmUgY2xhc3NpZmllZCJdKSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMl9uYW1lcyA9IGMoIk5vIFAtTFAiLCAiQ1BHIFAtTFAiKSwKICAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKQoKcGRmKGZpbGUucGF0aChwbG90X2RpciwgInBscF9jYXJyaWVyX21iX3N1YnR5cGVfZW5yX2hlYXRtYXAucGRmIiksCiAgICB3aWR0aCA9IDMsIGhlaWdodCA9IDQpCmRyYXcoc3VidHlwZV9lbnIpCmRldi5vZmYoKQpgYGAKCkxvYWQgbWV0aHlsYXRpb24gc3VidHlwZSBhbmQgbWV0YXN0YXNpcyBkYXRhLCBhbmQgYXBwZW5kIHRvIGBtYl9oaXN0YAoKYGBge3J9Cm9wY19oaXN0IDwtIHJlYWRfdHN2KG9wY19oaXN0X2ZpbGUpCgpzaGhfc3VidHlwZXMgPC0gcmVhZF90c3YobWJfc2hoX2ZpbGUpICU+JQogIGRwbHlyOjpyZW5hbWUoc2hoX3N1YnR5cGUgPSBtb2xlY3VsYXJfc3VidHlwZSkKCm1ldGFzdGFzaXNfcHRzIDwtIHJlYWRfdHN2KGZpbGUucGF0aChpbnB1dF9kaXIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAicHJvZ3Jlc3Npb24tbWV0YXN0YXNpcy1kYXRhLnRzdiIpKSAlPiUKICBkcGx5cjo6ZmlsdGVyKG1ldGFzdGFzaXMgPT0gIlllcyIpICU+JQogIGRpc3RpbmN0KGNidG5fc3ViamVjdF9pZCkgJT4lCiAgZHBseXI6OnJlbmFtZShjb2hvcnRfcGFydGljaXBhbnRfaWQgPSBjYnRuX3N1YmplY3RfaWQpICU+JQogIHB1bGwoY29ob3J0X3BhcnRpY2lwYW50X2lkKQoKIyBleHRyYWN0IG1ldGh5bGF0aW9uIEJTIElEcyBmcm9tIG9wY19oaXN0Cm9wY19tZXRoeWxfZGYgPC0gb3BjX2hpc3QgJT4lCiAgZHBseXI6OmZpbHRlcihleHBlcmltZW50YWxfc3RyYXRlZ3kgPT0gIk1ldGh5bGF0aW9uIikgJT4lCiAgZHBseXI6OmZpbHRlcihka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzc19zY29yZSA+PSAwLjcpICU+JQogIGRwbHlyOjpzZWxlY3QobWF0Y2hfaWQsIGRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzKQogIAptYl9oaXN0IDwtIG1iX2hpc3QgJT4lCiAgIyBqb2luIG1hdGNoIGFuZCBwYXJ0aWNpcGFudCBJRHMgCiAgbGVmdF9qb2luKG9wY19oaXN0ICU+JSAKICAgICAgICAgICAgICBkcGx5cjo6cmVuYW1lKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEKSAlPiUKICAgICAgICAgICAgICBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsIG1hdGNoX2lkLCBjb2hvcnRfcGFydGljaXBhbnRfaWQpKSAlPiUKICAjIGpvaW4gbWV0aHlsYXRpb24gSURzCiAgbGVmdF9qb2luKG9wY19tZXRoeWxfZGYpICU+JQogICMgSm9pbiBTSEggc3VidHlwZSBhbmQgVFA1MyBzdGF0dXMKICBsZWZ0X2pvaW4oc2hoX3N1YnR5cGVzICU+JSBkcGx5cjo6c2VsZWN0KG1hdGNoX2lkLCBzaGhfc3VidHlwZSwgdHA1M19zdGF0dXMpKSAlPiUKICBkcGx5cjo6bXV0YXRlKHRwNTNfc3RhdHVzID0gZmN0X3JlbGV2ZWwodHA1M19zdGF0dXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmV2KHNvcnQodW5pcXVlKHRwNTNfc3RhdHVzKSkpKSkgJT4lCiAgIyBBZGQgbWV0YXN0YXRpcyB5ZXMvbm8KICBkcGx5cjo6bXV0YXRlKG1ldGFzdGFzaXMgPSBjYXNlX3doZW4oCiAgICBjb2hvcnRfcGFydGljaXBhbnRfaWQgJWluJSBtZXRhc3Rhc2lzX3B0cyB+ICJNZXRhc3Rhc2lzIiwKICAgIFRSVUUgfiAiTm8gbWV0YXN0YXNpcyIKICApKSAlPiUKICBkaXN0aW5jdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgLmtlZXBfYWxsID0gVFJVRSkKYGBgCgpBc3Nlc3MgTUIsIEdyb3VwIDMgbWV0aHlsYXRpb24gc3VidHlwZSBkaXN0cmlidXRpb24gYnkgUC1MUCBjYXJyaWVyIHN0YXR1cwoKYGBge3J9CmczX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFttYl9oaXN0JG1vbGVjdWxhcl9zdWJ0eXBlID09ICJNQiwgR3JvdXAzIiAmIGdyZXBsKCJHMzQiLCBtYl9oaXN0JGRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzKSxdLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gImRrZnpfdjEyX21ldGh5bGF0aW9uX3N1YmNsYXNzIiwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9ICJjcGdfcGxwIiwKICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gYygiTUJfRzM0X0lJIiwgIk1CX0czNF9JSUkiLCAiTUJfRzM0X0lWIiksIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIiksCiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKQoKcGRmKGZpbGUucGF0aChwbG90X2RpciwgIm1iX2czX3BscF9jYXJyaWVyX3N1YnR5cGVfZW5yX2hlYXRtYXAucGRmIiksCiAgICB3aWR0aCA9IDMsIGhlaWdodCA9IDMpCmRyYXcoZzNfcGxwX2VucikKZGV2Lm9mZigpCmBgYAoKQXNzZXNzIE1CLCBHcm91cCA0IG1ldGh5bGF0aW9uIHN1YnR5cGUgZGlzdHJpYnV0aW9uIGJ5IFAtTFAgY2FycmllciBzdGF0dXMKCmBgYHtyfQpnNF9wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIEdyb3VwNCIgJiBncmVwbCgiRzM0IiwgbWJfaGlzdCRka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcyksXSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9ICJka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcyIsIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSAiY3BnX3BscCIsCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IGMoIk1CX0czNF9WIiwgIk1CX0czNF9WSSIsICJNQl9HMzRfVklJIiwgIk1CX0czNF9WSUlJIiksIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIiksCiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKQoKcGRmKGZpbGUucGF0aChwbG90X2RpciwgIm1iX2c0X3BscF9jYXJyaWVyX3N1YnR5cGVfZW5yX2hlYXRtYXAucGRmIiksCiAgICB3aWR0aCA9IDMsIGhlaWdodCA9IDMpCmRyYXcoZzRfcGxwX2VucikKZGV2Lm9mZigpCmBgYAoKQXNzZXNzIE1CLCBTSEggIHN1YnR5cGUgZGlzdHJpYnV0aW9uIGJ5IFAtTFAgY2FycmllciBzdGF0dXMKCmBgYHtyfQpzaGhfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0WyFpcy5uYShtYl9oaXN0JHNoaF9zdWJ0eXBlKSxdLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gInNoaF9zdWJ0eXBlIiwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9ICJjcGdfcGxwIiwKICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3Qkc2hoX3N1YnR5cGVbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpXSksIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIiksCiAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKQoKcGRmKGZpbGUucGF0aChwbG90X2RpciwgIm1iX3NoaF9wbHBfY2Fycmllcl9zdWJ0eXBlX2Vucl9oZWF0bWFwLnBkZiIpLAogICAgd2lkdGggPSAzLjUsIGhlaWdodCA9IDMpCmRyYXcoc2hoX3BscF9lbnIpCmRldi5vZmYoKSAKYGBgCgpHcm91cCBTSEggc3VidHlwZXMgaW50byBpbmZhbnQtdHlwZSBhbmQgY2hpbGQvYWR1bHQtdHlwZSBTSEgKCmBgYHtyfQptYl9oaXN0IDwtIG1iX2hpc3QgJT4lCiAgZHBseXI6Om11dGF0ZShzaGhfdHlwZSA9IGNhc2Vfd2hlbigKICAgIHNoaF9zdWJ0eXBlICVpbiUgYygiTUIsIFNISCBnYW1tYSIsICJNQiwgU0hIIGJldGEiKSB+ICJNQiwgaW5mYW50IFNISCIsCiAgICBzaGhfc3VidHlwZSAlaW4lIGMoIk1CLCBTSEggYWxwaGEiLCAiTUIsIFNISCBkZWx0YSIpIH4gIk1CLCBjaGlsZC1hZHVsdCBTSEgiLAogICAgVFJVRSB+IE5BX2NoYXJhY3Rlcl8KICApKQoKc2hoX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdFshaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSksXSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9ICJzaGhfdHlwZSIsIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjIgPSAiY3BnX3BscCIsCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMV9uYW1lcyA9IHVuaXF1ZShtYl9oaXN0JHNoaF90eXBlWyFpcy5uYShtYl9oaXN0JHNoaF90eXBlKV0pLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYygiTm8gUC1MUCIsICJDUEcgUC1MUCIpLAogICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCnBkZihmaWxlLnBhdGgocGxvdF9kaXIsICJtYl9zaGhfcGxwX2NhcnJpZXJfdHlwZV9lbnJfaGVhdG1hcC5wZGYiKSwKICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAzKQpkcmF3KHNoaF9wbHBfZW5yKQpkZXYub2ZmKCkgCgpgYGAKCldpdGhpbiBTSEggc3VidHlwZSBjb2hvcnQsIGFzc2VzcyBUUDUzIG11dGF0aW9uIHN0YXR1cyBkaXN0cmlidXRpb24gYnkgUC1MUCBjYXJyaWVyIHN0YXR1cwoKYGBge3J9CnNoaF90cDUzX3N0YXR1c19wbHBfZW5yIDwtIHBsb3RfZW5yKG1iX2hpc3RbIWlzLm5hKG1iX2hpc3Qkc2hoX3N1YnR5cGUpLF0sIAogICAgICAgICAgICAgICAgICAgICAgIHZhcjEgPSAidHA1M19zdGF0dXMiLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gImNwZ19wbHAiLAogICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSB1bmlxdWUobWJfaGlzdCR0cDUzX3N0YXR1c1shaXMubmEobWJfaGlzdCRzaGhfc3VidHlwZSldKSwgCiAgICAgICAgICAgICAgICAgICAgICAgdmFyMl9uYW1lcyA9IGMoIk5vIFAtTFAiLCAiQ1BHIFAtTFAiKSwKICAgICAgICAgICAgICAgICAgICAgICBwYWRqdXN0ID0gRkFMU0UpCgpwZGYoZmlsZS5wYXRoKHBsb3RfZGlyLCAibWJfc2hoX3BscF9jYXJyaWVyX3RwNTNfZW5yX2hlYXRtYXAucGRmIiksCiAgICB3aWR0aCA9IDMuNSwgaGVpZ2h0ID0gMykKZHJhdyhzaGhfdHA1M19zdGF0dXNfcGxwX2VucikKZGV2Lm9mZigpCmBgYAoKQXNzZXNzIGZyZXF1ZW5jeSBvZiBtZXRhc3Rhc2lzIGJ5IFAtTFAgY2FycmllciBzdGF0dXMKCmBgYHtyfQptYl9tZXRhc3Rhc2lzX3BscF9lbnIgPC0gcGxvdF9lbnIobWJfaGlzdCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFyMSA9ICJtZXRhc3Rhc2lzIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFyMiA9ICJjcGdfcGxwIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YXIxX25hbWVzID0gdW5pcXVlKG1iX2hpc3QkbWV0YXN0YXNpcyksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhcjJfbmFtZXMgPSBjKCJObyBQLUxQIiwgIkNQRyBQLUxQIiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGFkanVzdCA9IEZBTFNFKQoKcGRmKGZpbGUucGF0aChwbG90X2RpciwgIm1iX3BscF9jYXJyaWVyX21ldGFzdGFzaXNfZW5yX2hlYXRtYXAucGRmIiksCiAgICB3aWR0aCA9IDMuNSwgaGVpZ2h0ID0gMykKZHJhdyhtYl9tZXRhc3Rhc2lzX3BscF9lbnIpCmRldi5vZmYoKQpgYGAKClJlcGVhdCBmb3IgZWFjaCBtb2xlY3VsYXIgc3VidHlwZQoKYGBge3J9CnN1YnR5cGVzIDwtIHNvcnQodW5pcXVlKG1iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGVbIWdyZXBsKCJjbGFzc2lmaWVkIiwgbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSldKSkKCnBkZihOVUxMKQoKZm9yIChzdWJ0eXBlIGluIHN1YnR5cGVzKXsKICAKICBtYl9zdWJ0eXBlX21ldGFzdGFzaXNfcGxwX2VuciA8LSBwbG90X2VucihtYl9oaXN0W21iX2hpc3QkbW9sZWN1bGFyX3N1YnR5cGUgPT0gc3VidHlwZSxdLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIxID0gIm1ldGFzdGFzaXMiLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyID0gImNwZ19wbHAiLAogICAgICAgICAgICAgICAgICAgICAgIHZhcjFfbmFtZXMgPSBzb3J0KHVuaXF1ZShtYl9oaXN0JG1ldGFzdGFzaXNbbWJfaGlzdCRtb2xlY3VsYXJfc3VidHlwZSA9PSBzdWJ0eXBlXSkpLCAKICAgICAgICAgICAgICAgICAgICAgICB2YXIyX25hbWVzID0gYygiTm8gUC1MUCIsICJDUEcgUC1MUCIpLAogICAgICAgICAgICAgICAgICAgICAgIHBhZGp1c3QgPSBGQUxTRSkKCiAgcGRmKGZpbGUucGF0aChwbG90X2RpciwgCiAgICAgICAgICAgICAgICBnbHVlOjpnbHVlKCJtYl97c3VidHlwZX1fcGxwX2NhcnJpZXJfbWV0YXN0YXNpc19lbnJfaGVhdG1hcC5wZGYiKSksCiAgICAgIHdpZHRoID0gMy41LCBoZWlnaHQgPSAyLjUpCiAgCiAgZHJhdyhtYl9zdWJ0eXBlX21ldGFzdGFzaXNfcGxwX2VucikKICAKICBkZXYub2ZmKCkKICAKfQpgYGAKClNhdmUgbWJfaGlzdCB0byBvdXRwdXQKCmBgYHtyfQp3cml0ZV90c3YobWJfaGlzdCwKICAgICAgICAgIGZpbGUucGF0aChyZXN1bHRzX2RpciwgIm1iLWhpc3RvbG9naWVzLXBsdXMtc2hoLW1ldGh5bC1zdWJ0eXBlcy1tZXRhc3RzaXMudHN2IikpCmBgYAoKRXh0cmFjdCBhbGwgUC1MUCB2YXJpYW50cyBpbiBwYXRpZW50cyB3aXRoIE1CLCBhbmQgYXBwZW5kIHN1YnR5cGUgaW5mbwoKYGBge3J9CnBscF9tYiA8LSBwbHAgJT4lCiAgZHBseXI6OmZpbHRlcihLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCAlaW4lIG1iX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JQogIGRwbHlyOjpzZWxlY3QoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGdlbmVfc3ltYm9sX3ZlcCkgJT4lCiAgZHBseXI6OnJlbmFtZShIdWdvX1N5bWJvbCA9IGdlbmVfc3ltYm9sX3ZlcCkgJT4lCiAgYmluZF9yb3dzKHBscF9zdiAlPiUKICAgICAgICAgICAgICBkcGx5cjo6ZmlsdGVyKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsICVpbiUgbWJfaGlzdCRLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCkgJT4lCiAgICAgICAgICAgICAgZHBseXI6OnJlbmFtZShIdWdvX1N5bWJvbCA9IEh1Z29fU3ltYm9sX2NwZykgJT4lCiAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgSHVnb19TeW1ib2wpKSAlPiUKICBkaXN0aW5jdCgpICU+JQogIGxlZnRfam9pbihtYl9oaXN0ICU+JSBkcGx5cjo6c2VsZWN0KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1vbGVjdWxhcl9zdWJ0eXBlLCBzaGhfc3VidHlwZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBka2Z6X3YxMl9tZXRoeWxhdGlvbl9zdWJjbGFzcywKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtZXRhc3Rhc2lzKSkKYGBgCgpQcmludCBkaXN0cmlidXRpb24gb2YgUC1MUCB2YXJpYW50cyBieSBnZW5lIGFuZCBzdWJ0eXBlIGluIE1CIFNISCAKCmBgYHtyfQp0YWJsZShwbHBfbWIkSHVnb19TeW1ib2xbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09ICJNQiwgU0hIIl0sCiAgICAgIHBscF9tYiRzaGhfc3VidHlwZVtwbHBfbWIkbW9sZWN1bGFyX3N1YnR5cGUgPT0gIk1CLCBTSEgiXSkKYGBgCgpQcmludCBkaXN0cmlidXRpb24gb2YgUC1MUCB2YXJpYW50cyBieSBnZW5lIGFuZCBtZXRoeWxhdGlvbiBzdWJ0eXBlIGluIE1CIEdyb3VwIDMgCgpgYGB7cn0KdGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIEdyb3VwMyJdLAogICAgICBwbHBfbWIkZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3NbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09ICJNQiwgR3JvdXAzIl0pCmBgYAoKUHJpbnQgZGlzdHJpYnV0aW9uIG9mIFAtTFAgdmFyaWFudHMgYnkgZ2VuZSBhbmQgbWV0aHlsYXRpb24gc3VidHlwZSBpbiBNQiBHcm91cCA0CgpgYGB7cn0KdGFibGUocGxwX21iJEh1Z29fU3ltYm9sW3BscF9tYiRtb2xlY3VsYXJfc3VidHlwZSA9PSAiTUIsIEdyb3VwNCJdLAogICAgICBwbHBfbWIkZGtmel92MTJfbWV0aHlsYXRpb25fc3ViY2xhc3NbcGxwX21iJG1vbGVjdWxhcl9zdWJ0eXBlID09ICJNQiwgR3JvdXA0Il0pCmBgYAoKCmBgYHtyfQp0YWJsZShwbHBfbWIkSHVnb19TeW1ib2wsCiAgICAgIHBscF9tYiRtZXRhc3Rhc2lzKQpgYGAKCmBgYHtyfQpzZXNzaW9uSW5mbygpCmBgYA==</div>
 
 
 </div>

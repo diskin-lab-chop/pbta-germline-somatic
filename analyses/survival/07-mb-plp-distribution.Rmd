@@ -71,7 +71,7 @@ mb_shh_file <- file.path(input_dir,
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 ```
 
-Wranlge data
+Wrangle data
 
 ```{r}
 hist <- read_tsv(histologies_file, guess_max = 10000)
@@ -99,9 +99,9 @@ mb_hist <- hist %>%
   )) %>%
   dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
                                       c("No P-LP", "CPG P-LP"))) %>%
-  # correct three samples incorreclty labeled as having only biopsies; actually underwest partial resection
+  # correct three samples incorrectly labeled as having only biopsies; actually underwent partial resection
   dplyr::mutate(extent_of_tumor_resection = case_when(
-    extent_of_tumor_resection == "Biopsy only" ~ "Partial resection",
+    sample_id_tumor %in% c("7316-3510", "7316-3576", "7316-14") ~ "Partial resection",
     TRUE ~ extent_of_tumor_resection
   ))
 ```
