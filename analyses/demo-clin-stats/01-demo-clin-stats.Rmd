@@ -410,15 +410,18 @@ For tumors categorized into "Other tumor" or "Other CNS embryonal tumor" plot_gr
 other_groups <- hist %>%
   dplyr::filter(plot_group %in% c("Other tumor", "Other CNS embryonal tumor")) %>%
   count(cancer_group) %>%
-  dplyr::filter(n >= 5, !is.na(cancer_group)) %>%
+  dplyr::filter(n >= 2,
+                !is.na(cancer_group),
+                !cancer_group %in% c("Other tumor")) %>%
   pull(cancer_group)
 
 other_hist <- hist %>%
   dplyr::filter(plot_group %in% c("Other tumor", "Other CNS embryonal tumor"))
 
-other_group_enr <- plp_enrichment(other_hist[other_hist$cancer_group != "Other tumor",], "cancer_group")
+other_group_enr <- plp_enrichment(other_hist, "cancer_group")
 
 other_group_enr <- other_group_enr %>%
+  dplyr::filter(cancer_group %in% other_groups) %>%
   dplyr::mutate(cancer_group = glue::glue("{cancer_group} (N={cpgPLP+no_cpgPLP})")) %>%
   write_tsv(file.path(results_dir, "plp-carrier-subtype-counts.tsv"))
 
@@ -439,7 +442,7 @@ other_group_enr_plot <- other_group_enr %>%
   theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
 
 pdf(file.path(plot_dir, "other_group_plp_carrier_enr.pdf"),
-    width = 6, height = 5)
+    width = 6, height = 4)
 other_group_enr_plot
 dev.off()
 ```
