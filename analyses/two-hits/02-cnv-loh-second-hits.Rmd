@@ -195,13 +195,14 @@ for (i in 1:nrow(loh)){
 }
 ```
 
-
+Load CNVkit data and add to LOH df
 ```{r}
 cnvkit <- read_tsv(cnvkit_file) %>%
   dplyr::filter(ID %in% hist$Kids_First_Biospecimen_ID_tumor)
 
 loh <- add_cnvkit(loh, cnvkit)
 
+# add LOH_status column indicating LOH as measured by VAF or CNVKit
 loh <- loh %>%
   dplyr::mutate(loh_status = case_when(
     loh_pvalue < 0.05 & (proband_tumor_vaf >= 0.75 | proband_tumor_vaf < 0.25) ~ "LOH-VAF", 
