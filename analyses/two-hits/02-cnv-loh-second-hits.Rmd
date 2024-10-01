@@ -234,7 +234,7 @@ germline_somatic_cnvs_loh <- germline_somatic_cnvs %>%
   left_join(loh[,c("Kids_First_Biospecimen_ID_tumor", 
                    "chr", "start", "proband_germline_vaf", "proband_tumor_vaf", 
                    "loh_score", "loh_OR", "loh_pvalue", "cnvkit_log2", "cnvkit_cn",
-                   "cnvkit_cn1", "cnvkit_cn2")], 
+                   "cnvkit_cn1", "cnvkit_cn2", "loh_status")], 
             by = c("Kids_First_Biospecimen_ID_tumor", "chr", "start")) %>%
   distinct()
 ```
@@ -259,6 +259,12 @@ germline_sv_somatic_cnvs_loh_gene <- germline_sv_somatic_cnvs %>%
 
 germline_sv_somatic_cnvs_loh_gene <- add_cnvkit(germline_sv_somatic_cnvs_loh_gene,
                                                 cnvkit)
+
+germline_sv_somatic_cnvs_loh_gene <- germline_sv_somatic_cnvs_loh_gene %>%
+  dplyr::mutate(loh_status = case_when(
+    gene_LOH >= 0.25 | (cnvkit_cn2 == 0 & cnvkit_cn1 != 0) ~ "LOH",
+    TRUE ~ "No LOH"
+  ))
 ```
 
 Save CNV and LOH scores for all samples to output
