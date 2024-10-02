@@ -23,3 +23,6 @@ Rscript --vanila 06-survival-summary.R
 
 # Assess P-LP carrier distribution across MB molecular and methylation subtypes
 Rscript -e "rmarkdown::render('07-mb-plp-distribution.Rmd')"
+
+# Assess P-LP carrier distribution across MB molecular and methylation subtypes
+Rscript -e "rmarkdown::render('08-mb-survival.Rmd')"

@@ -14,6 +14,8 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 4. `04-run-survival-dna-repair.Rmd` generate and plot survival models by DNA repair P/LP status in pHGGs. 
 5. `05-braf-fusion-breakpoint-dist-survival.Rmd` assesses distribution of BRAF fusion breakpoints among P/LP carriers 
 6. `06-survival-summary.R` plots P-LP carrier OS and EFS hazard ratios for each histologya and molecular subtype cohort
+7. `07-mb-plp-distribution.Rmd` assessees distribution of P-LP carriers across MB molecular and methylation subtypes
+8. `08-mb-survival.Rmd` assesses survival in MB cohort by molecular and methylation subtypes and metastasis status
 
 ## Directory structure
 ```
@@ -31,6 +33,8 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 ├── 06-survival-summary.R
 ├── 07-mb-plp-distribution.Rmd
 ├── 07-mb-plp-distribution.nb.html
+├── 08-mb-survival.Rmd
+├── 08-mb-survival.nb.html
 ├── README.md
 ├── input
 │   ├── cbtn-all-survival-09122024.txt
@@ -55,11 +59,25 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── breakpoint_group_resection_enr_heatmap.pdf
 │   ├── forest_EFS_lgg_braf_fusion_resection_group.pdf
 │   ├── forest_EFS_lgg_braf_fusion_resection_group_plp.pdf
+│   ├── forest_EFS_mb_Group3_resection_subtype_metastasis.pdf
+│   ├── forest_EFS_mb_Group4_resection_subtype_metastasis.pdf
+│   ├── forest_EFS_mb_SHH_resection_subtype_metastasis.pdf
+│   ├── forest_EFS_mb_WNT_resection_subtype_metastasis.pdf
+│   ├── forest_EFS_mb_g3_resection_methyl_subtype.pdf
+│   ├── forest_EFS_mb_g4_resection_methyl_subtype.pdf
+│   ├── forest_EFS_mb_resection_subtype_metastasis_plp.pdf
+│   ├── forest_OS_mb_Group3_resection_subtype_metastasis.pdf
+│   ├── forest_OS_mb_Group4_resection_subtype_metastasis.pdf
+│   ├── forest_OS_mb_SHH_resection_subtype_metastasis.pdf
+│   ├── forest_OS_mb_g3_resection_methyl_subtype.pdf
+│   ├── forest_OS_mb_resection_subtype_metastasis_plp.pdf
 │   ├── forest_hgg_add_EFS_subtype_age_repairPLP.pdf
 │   ├── forest_hgg_add_OS_subtype_age_repairPLP.pdf
 │   ├── forest_hgg_int_EFS_subtype_age_repairPLP.pdf
 │   ├── forest_hgg_int_OS_subtype_age_repairPLP.pdf
 │   ├── km_EFS_lgg_braf_fusion_group.pdf
+│   ├── km_OS_mb_shh_subtype.pdf
+│   ├── km_mb_g4_subtype.pdf
 │   ├── mb_MB, Group3_plp_carrier_metastasis_enr_heatmap.pdf
 │   ├── mb_MB, Group4_plp_carrier_metastasis_enr_heatmap.pdf
 │   ├── mb_MB, SHH_plp_carrier_metastasis_enr_heatmap.pdf
@@ -89,28 +107,16 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── coxph_add_EFS_lgg_braf_fusion_resection_group_plp.RDS
 │   ├── coxph_add_EFS_mb_Group3_resection_metastasis_plp.RDS
 │   ├── coxph_add_EFS_mb_Group4_resection_metastasis_plp.RDS
-│   ├── coxph_add_EFS_mb_MB,-Group4_resection_metastasis_plp.RDS
-│   ├── coxph_add_EFS_mb_MB,-Group4_resection_metastasus_plp.RDS
 │   ├── coxph_add_EFS_mb_SHH_resection_metastasis_plp.RDS
 │   ├── coxph_add_EFS_mb_WNT_resection_metastasis_plp.RDS
-│   ├── coxph_add_EFS_mb_g3_methyl_subtype.RDS
+│   ├── coxph_add_EFS_mb_g3_resection_methyl_subtype.RDS
 │   ├── coxph_add_EFS_mb_g4_methyl_subtype.RDS
-│   ├── coxph_add_EFS_mb_resection_subtype_metastasis.RDS
 │   ├── coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS
-│   ├── coxph_add_EFS_mb_shh_tp53_plp.RDS
-│   ├── coxph_add_EFS_mb_shh_type.RDS
-│   ├── coxph_add_EFS_mb_subtype_metastasis_plp.RDS
 │   ├── coxph_add_OS_mb_Group3_resection_metastasis_plp.RDS
 │   ├── coxph_add_OS_mb_Group4_resection_metastasis_plp.RDS
 │   ├── coxph_add_OS_mb_SHH_resection_metastasis_plp.RDS
-│   ├── coxph_add_OS_mb_WNT_resection_metastasis_plp.RDS
-│   ├── coxph_add_OS_mb_g3_methyl_subtype.RDS
-│   ├── coxph_add_OS_mb_g4_methyl_subtype.RDS
-│   ├── coxph_add_OS_mb_resection_subtype_metastasis.RDS
+│   ├── coxph_add_OS_mb_g3_resection_methyl_subtype.RDS
 │   ├── coxph_add_OS_mb_resection_subtype_metastasis_plp.RDS
-│   ├── coxph_add_OS_mb_shh_tp53_plp.RDS
-│   ├── coxph_add_OS_mb_shh_type.RDS
-│   ├── coxph_add_OS_mb_subtype_metastasis_plp.RDS
 │   ├── coxph_add_hgg_EFS_subtype_age_repairPLP.RDS
 │   ├── coxph_add_hgg_OS_subtype_age_repairPLP.RDS
 │   ├── coxph_int_hgg_EFS_subtype_age_repairPLP.RDS
