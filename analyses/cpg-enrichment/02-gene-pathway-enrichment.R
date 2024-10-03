@@ -22,6 +22,7 @@ setwd(root_dir)
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "cpg-enrichment")
 input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
 plot_dir <- file.path(analysis_dir, "plots")
 
 source(file.path(root_dir, "figures", "theme.R"))
@@ -30,17 +31,17 @@ source(file.path(analysis_dir, "util", "enrichment_functions.R"))
 # Set enrichment file paths
 
 cpg_enr_gnomad_file <- file.path(input_dir, 
-                                 "pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv")
+                                 "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_gnomad_enrichment.tsv")
 cpg_enr_pmbb_file <- file.path(input_dir,
                                "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv")
 
 pathway_enr_gnomad_file <- file.path(input_dir, 
-                                     "pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv")
+                                     "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_gnomad_enrichment.tsv")
 pathway_enr_pmbb_file <- file.path(input_dir, 
                                    "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_pmbb_enrichment.tsv")
 
 repair_enr_gnomad_file <- file.path(input_dir, 
-                                    "pbta-merged-plp-variants-autogvp-abridged-no-wxs_dna_repair_pathway_gnomad_enrichment.tsv")
+                                    "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_gnomad_enrichment.tsv")
 repair_enr_pmbb_file <- file.path(input_dir, 
                                   "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv")
 
@@ -151,6 +152,7 @@ dev.off()
 
 repair_enr_gnomad <- read_tsv(repair_enr_gnomad_file) %>%
   dplyr::mutate(pathway_name = case_when(
+    grepl("Knijnenburg", pathway_name) ~ "All DNA Repair",
     pathway_name == "Mismatch Repair (MMR)" ~ "Mismatch Repair",
     pathway_name == "Others" ~ "Other DNA Repair",
     TRUE ~ pathway_name
@@ -158,6 +160,7 @@ repair_enr_gnomad <- read_tsv(repair_enr_gnomad_file) %>%
 
 repair_enr_pmbb <- read_tsv(repair_enr_pmbb_file) %>%
   dplyr::mutate(pathway_name = case_when(
+    grepl("Knijnenburg", pathway_name) ~ "All DNA Repair",
     pathway_name == "Mismatch Repair (MMR)" ~ "Mismatch Repair",
     pathway_name == "Others" ~ "Other DNA Repair",
     TRUE ~ pathway_name
@@ -172,7 +175,6 @@ pathway_enr_pmbb <- read_tsv(pathway_enr_pmbb_file) %>%
   dplyr::mutate(pathway_name = str_split(pathway_name, " -", simplify = TRUE)[,1])
 
 # add KEGG pathway and DNA repair pathway results to df lists
-
 gnomad_list = list(pathway_enr_gnomad,
                    repair_enr_gnomad)
 names(gnomad_list) <- c("KEGG_pathways", "Knijnenburg_repair_pathways")
@@ -181,7 +183,6 @@ pmbb_list = list(pathway_enr_pmbb,
                  repair_enr_pmbb)
 
 # Loop through enr df list
-
 for (i in 1:length(gnomad_list)){
   
   enr_gnomad <- gnomad_list[[i]]
@@ -192,16 +193,15 @@ for (i in 1:length(gnomad_list)){
     dplyr::select(pathway_name, count_with_plp_case, count_without_plp_case, 
                   OR, p, ci.int1, ci.int2, padj) %>%
     mutate(cohort = "PBTA",
-           OR = NA,
-           p = NA,
-           ci.int1 = NA, 
-           ci.int2 = NA,
-           padj = NA) %>%
+           OR = NA_integer_,
+           p = NA_integer_,
+           ci.int1 = NA_integer_, 
+           ci.int2 = NA_integer_,
+           padj = NA_integer_) %>%
     dplyr::rename("n_plp" = "count_with_plp_case", 
                   "n_no_plp" = "count_without_plp_case")
 
   # subset gnomAD and PMBB enrichment results for merging
-  
   pathway_enr_gnomad <- enr_gnomad %>%
     dplyr::select(pathway_name, count_with_plp_control, count_without_plp_control, 
                   OR, p, ci.int1, ci.int2, padj) %>%
@@ -216,8 +216,7 @@ for (i in 1:length(gnomad_list)){
     dplyr::rename("n_plp" = "count_with_plp_control", 
                   "n_no_plp" = "count_without_plp_control")
 
-# merge enrichment results and calculate percent of patients with CPG PLP
-
+  # merge enrichment results and calculate percent of patients with CPG PLP
   pathway_enr_all <- pathway_enr_pbta %>%
     bind_rows(pathway_enr_gnomad, pathway_enr_pmbb) %>%
     mutate(perc_plp = n_plp/(n_plp + n_no_plp) * 100,
@@ -227,7 +226,6 @@ for (i in 1:length(gnomad_list)){
            pathway_name = factor(pathway_name, unique(pathway_name)))
 
   # pull significantly enriched CPGs relative to gnomAD and PMBB cohorts, and obtain those common to both sets
-  
   sig_pathways_gnomad <- pathway_enr_all %>%
     filter(cohort == "gnomAD" & padj < 0.05 & padj > 0) %>%
     pull(pathway_name)
@@ -239,34 +237,32 @@ for (i in 1:length(gnomad_list)){
   sig_pathways_both <- intersect(sig_pathways_gnomad, sig_pathways_pmbb)
   
   # filter out cancer pathways 
-  
   sig_pathways_both <- sig_pathways_both[!grepl("cancer|carcinoma|leukemia|Melanoma|carcinogenesis|Glioma", sig_pathways_both)]
 
   # Create enrichment FDR plot of sig enriched pathways
-  
   pval_plot <- pathway_enr_all %>%
     plot_pvalue(., facet_var = "pathway_name",
                 to_retain = sig_pathways_both)
   
   # Create Odds Ratio plot of sig enriched pathways
-
   enr_plot <- pathway_enr_all %>%
     filter(pathway_name %in% sig_pathways_both) %>%
     plot_enr(., facet_var = "pathway_name",
              log_scale = FALSE)
   
   # Create % patients with PLP plot of sig enriched pathways
-
   perc_plot <- pathway_enr_all %>%
     filter(pathway_name %in% sig_pathways_both) %>%
     plot_perc(., facet_var = "pathway_name")
 
   # Merge plots and write to output
-
   ggarrange(pval_plot, enr_plot, perc_plot,
             nrow = 1, widths = c(2.5,1.25,1.65))
   
   ggsave(file.path(plot_dir, glue::glue("sig-{names(gnomad_list)[i]}-enrichment-PBTA-vs-control.pdf")),
        width = 10, height = 2.5 + ((length(sig_pathways_both)-1) * 1.15))
+  
+  write_tsv(pathway_enr_all,
+            file.path(results_dir, glue::glue("{names(gnomad_list)[i]}-enrichment-pbta-vs-pmbb-gnomad.tsv")))
   
 }

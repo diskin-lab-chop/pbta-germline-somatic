@@ -23,6 +23,8 @@ All files in `input/` directory were generated outside of this github repository
 3. KEGG pathway gene sets
 4. DNA repair pathway gene lists as reported in [Knijnenburg et al. 2018](https://www.cell.com/cell-reports/pdf/S2211-1247(18)30437-6.pdf)
 
+P-LP carrier counts in the PMBB cohort were pre-calculated at the gene and pathway level, counting each individual only once if multiple P-LP variants were found in the same individual. gnomAD data is not available at the individual level, so control cohort variant counts were calculated using variant allele frequencies. 
+
 ##Analysis module directory structure
 
 ```
