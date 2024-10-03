@@ -1,30 +1,46 @@
 # Assess germline PLP variant enrichment in OpenPBTA germline cohort
 
-This module calculates enrichment of P-LP variants in cancer predisposition genes within PBTA germline cohort relative to two cancer-free control cohorts (Penn Med Biobank and gnomAD), and plots significant results. 
+This module calculates enrichment of P-LP variants in cancer predisposition genes within PBTA germline cohort relative to two cancer-free control cohorts (Penn Med Biobank [PMBB] and gnomAD), and plots significant results. 
 
 ## Usage
 
-`Rscript -e "rmarkdown::render('01-run-enrichment.Rmd', clean = TRUE)"`
-`Rscript 02-plot-enrichment.R`
+`bash run_module.sh`
 
 ## Folder content 
 
-1. `01-run-enrichment.Rmd` runs Fishers exact tests on all cancer predisposition genes to calculate enrichment of P-LP variants in PBTA germline cohort relative to PMBB and gnomAD. Enrichment is also calculated for genes within tumor histologies (i.e., plot groups). 
+1. `01-cpg-list-enr.R` plots CPG P-LP carrier enrichment in entire PBTA cohort and individual plot groups relative to tumor-free control cohorts
 
-2. `02-plot-enrichment.R` plots significant enrichment results
+### Input files
 
-3. `input/` directory contains the following files: 
-  - `PBTA-CPG-PLP-enrichment-PMBB.tsv`; contains counts of P-LP variants in the PMBB cohort for each CPG
-  - `PBTA-CPG-PLP-enrichment-gnomAD.tsv`; contains counts of P-LP variants in the gnomAD cohort for each CPG
+All files in `input/` directory were generated outside of this github repository, and utilize PBTA P-LP variant files to calculate enrichment of P-LP variants in the PBTA cohort relative to PMBB and gnomAD tumor-free control cohorts in the following gene lists:
 
-4. `results/` directory contains the following files: 
-  - `PBTA-cpg-plp-enrichment-PMBB.tsv`; enrichment in PBTA vs. PMBB 
-  - `PBTA-cpg-plp-enrichment-by-plotGroup-PMBB.tsv`; enrichment in PBTA plot groups vs. PMBB 
-  - `PBTA-cpg-plp-enrichment-by-plotGroup-gnomAD.tsv`; enrichment in PBTA plot groups vs. gnomAD 
-  - `PBTA-cpg-plp-enrichment-gnomAD.tsv`; enrichment in PBTA vs. gnomAD 
-  - `cpg-plp-enrichment-merged.tsv`; merged enrichment results (all cohort)
-  - `plot-group-cpg-plp-enrichment-merged.tsv`; merged enrichment results 
-  
-5. `plots/` directory contains the following files: 
-  - `sig-CPG-enrichment-PBTA-vs-control.tiff`; plots of significant enrichments across cohort
-  - `sig-hist-CPG-enrichment-PBTA-vs-control.png` plots of significant enrichments within cohort tumor histologies
+1. All cancer predisposition genes (CPGs)
+2. Individual CPGs ()
+3. KEGG pathway gene sets
+4. DNA repair pathway gene lists as reported in [Knijnenburg et al. 2018](https://www.cell.com/cell-reports/pdf/S2211-1247(18)30437-6.pdf)
+
+P-LP carrier counts in the PMBB cohort were pre-calculated at the gene and pathway level, counting each individual only once if multiple P-LP variants were found in the same individual. gnomAD data is not available at the individual level, so control cohort variant counts were calculated using variant allele frequencies. 
+
+##Analysis module directory structure
+
+```
+.
+├── 01-cpg-list-enr.R
+├── README.md
+├── input
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_pmbb_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_pmbb_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_cpg_pathway_gnomad_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_dna_repair_pathway_gnomad_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv
+│   └── pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv
+├── plots
+│   ├── all-CPG-enrichment-PBTA-vs-control.pdf
+│   └── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+├── results
+├── run_module.sh
+└── util
+    └── enrichment_functions.R
+```
