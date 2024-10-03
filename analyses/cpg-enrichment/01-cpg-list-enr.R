@@ -28,7 +28,7 @@ source(file.path(analysis_dir, "util", "enrichment_functions.R"))
 
 # Set file paths
 
-all_cpg_enr_gnomad_file <- file.path(input_dir, "pbta-merged-plp-variants-autogvp-abridged-no-wxs_cpg_pathway_gnomad_enrichment.tsv")
+all_cpg_enr_gnomad_file <- file.path(input_dir, "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_gnomad_enrichment.tsv")
 all_cpg_enr_pmbb_file <- file.path(input_dir, "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_pmbb_enrichment.tsv")
 
 opc_hist_file <- file.path(data_dir, 
@@ -41,10 +41,6 @@ cbtn_histologies_file <- file.path(root_dir, "analyses",
 plp_all_exome_file <- file.path(root_dir, "analyses",
                                 "bed-intersect", "results", 
                                 "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded.tsv")
-
-plp_no_wxs_file <- file.path(root_dir, "analyses",
-                                "bed-intersect", "results", 
-                                "pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", 
                       "oncokb-annotation", 
@@ -114,6 +110,8 @@ perc_plot <- plot_perc(cpg_enr_all,
 
 # Merge plots and write to output
 
+pdf(NULL)
+
 pdf(file.path(plot_dir, "all-CPG-enrichment-PBTA-vs-control.pdf"),
      width = 9, height = 2)
 
@@ -127,18 +125,10 @@ write_tsv(cpg_enr_all,
 
 ## CPG enrichment by plot group
 
-## gnomad enrichment
-
-# extract all WXS IDs, to be filtered for gnomad enrichment
-wxs_ids <- read_tsv(opc_hist_file) %>%
-  dplyr::filter(experimental_strategy == "WXS") %>%
-  pull(Kids_First_Biospecimen_ID)
-
-# Load histologies file and obtain sample counts per plot group for gnomad comparison
+# Load histologies file and obtain sample counts per plot group 
 hist <- read_tsv(cbtn_histologies_file)
 
-hist_cts_gnomad <- hist %>%
-  dplyr::filter(!Kids_First_Biospecimen_ID_normal %in% wxs_ids) %>%
+hist_cts <- hist %>%
   count(plot_group) %>%
   dplyr::rename(total_cohort_size_case = n)
 
@@ -147,16 +137,16 @@ hist_cts_gnomad <- hist %>%
 cpgs <- read_lines(cpg_file)
 
 # Load autogvp output for gnomad comparison 
-plp_gnomad <- read_tsv(plp_no_wxs_file) %>%
+plp <- read_tsv(plp_all_exome_file) %>%
   dplyr::filter(gene_symbol_vep %in% cpgs) %>%
   distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
   left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, plot_group))
 
 # Obtain P-LP carrier count by plot group
-hist_plp_ct_gnomad <- plp_gnomad %>%
+hist_plp_ct <- plp %>%
   count(plot_group) %>%
   dplyr::rename(count_with_plp_case = n) %>%
-  right_join(hist_cts_gnomad) %>%
+  right_join(hist_cts) %>%
   dplyr::mutate(count_with_plp_case = case_when(
     is.na(count_with_plp_case) ~ 0,
     TRUE ~ count_with_plp_case
@@ -168,7 +158,7 @@ hist_plp_ct_gnomad <- plp_gnomad %>%
 hist_cpg_enr_gnomad <- all_cpg_enr_gnomad %>%
   dplyr::select(pathway_name, count_with_plp_control,
                 total_cohort_size_control, count_without_plp_control) %>%
-  left_join(hist_plp_ct_gnomad) %>%
+  left_join(hist_plp_ct) %>%
   dplyr::filter(!is.na(plot_group)) %>%
   dplyr::mutate(p = NA_integer_,
                 OR = NA_integer_,
@@ -178,32 +168,10 @@ hist_cpg_enr_gnomad <- all_cpg_enr_gnomad %>%
 hist_cpg_enr_gnomad <- calculate_enrichment(hist_cpg_enr_gnomad)
 
 # Repeat enrichment calculations relative to PMBB cohort
-
-hist_cts_pmbb <- hist %>%
-  count(plot_group) %>%
-  dplyr::rename(total_cohort_size_case = n)
-
-plp_pmbb <- read_tsv(plp_all_exome_file) %>%
-  dplyr::filter(gene_symbol_vep %in% cpgs) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
-  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, plot_group))
-
-# Obtain P-LP carrier count by plot group
-hist_plp_ct_pmbb <- plp_pmbb %>%
-  count(plot_group) %>%
-  dplyr::rename(count_with_plp_case = n) %>%
-  right_join(hist_cts_pmbb) %>%
-  dplyr::mutate(count_with_plp_case = case_when(
-    is.na(count_with_plp_case) ~ 0,
-    TRUE ~ count_with_plp_case
-  )) %>%
-  dplyr::mutate(count_without_plp_case = total_cohort_size_case - count_with_plp_case) %>%
-  dplyr::mutate(pathway_name = "Cancer predisposition genes")
-
 hist_cpg_enr_pmbb <- all_cpg_enr_pmbb %>%
   dplyr::select(pathway_name, count_with_plp_control,
                 total_cohort_size_control, count_without_plp_control) %>%
-  left_join(hist_plp_ct_pmbb) %>%
+  left_join(hist_plp_ct) %>%
   dplyr::filter(!is.na(plot_group)) %>%
   dplyr::mutate(p = NA_integer_,
                 OR = NA_integer_,
@@ -211,7 +179,6 @@ hist_cpg_enr_pmbb <- all_cpg_enr_pmbb %>%
                 ci.int2 = NA_integer_)
 
 hist_cpg_enr_pmbb <- calculate_enrichment(hist_cpg_enr_pmbb)
-
 
 # Create empty PBTA enrichment df for plotting
 hist_cpg_enr_pbta <- hist_cpg_enr_pmbb %>%
@@ -227,7 +194,6 @@ hist_cpg_enr_pbta <- hist_cpg_enr_pmbb %>%
                 "n_no_plp" = "count_without_plp_case")
 
 # subset gnomAD and PMBB enrichment results for merging
-
 hist_cpg_enr_gnomad <- hist_cpg_enr_gnomad %>%
   dplyr::select(pathway_name, plot_group, count_with_plp_control, count_without_plp_control, 
                 OR, p, ci.int1, ci.int2, padj) %>%
@@ -268,7 +234,8 @@ hist_perc_plot <- plot_perc(hist_cpg_enr_all,
   
   
 # Merge plots and write to output
-  
+pdf(NULL)
+
 ggarrange(hist_pval_plot, hist_enr_plot, hist_perc_plot,
           nrow = 1, widths = c(2.5,1.25,1.65))
 
