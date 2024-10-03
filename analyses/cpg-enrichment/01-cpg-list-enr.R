@@ -113,7 +113,7 @@ perc_plot <- plot_perc(cpg_enr_all,
 pdf(NULL)
 
 pdf(file.path(plot_dir, "all-CPG-enrichment-PBTA-vs-control.pdf"),
-     width = 9, height = 2)
+     width = 9, height = 2.5)
 
 ggarrange(pval_plot, enr_plot, perc_plot,
           nrow = 1, widths = c(2,1,1.4))
