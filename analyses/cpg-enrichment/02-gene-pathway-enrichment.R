@@ -31,17 +31,17 @@ source(file.path(analysis_dir, "util", "enrichment_functions.R"))
 # Set enrichment file paths
 
 cpg_enr_gnomad_file <- file.path(input_dir, 
-                                 "pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv")
+                                 "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_gnomad_enrichment.tsv")
 cpg_enr_pmbb_file <- file.path(input_dir,
                                "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv")
 
 pathway_enr_gnomad_file <- file.path(input_dir, 
-                                     "pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv")
+                                     "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_gnomad_enrichment.tsv")
 pathway_enr_pmbb_file <- file.path(input_dir, 
                                    "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_pmbb_enrichment.tsv")
 
 repair_enr_gnomad_file <- file.path(input_dir, 
-                                    "pbta-merged-plp-variants-autogvp-abridged-no-wxs_dna_repair_pathway_gnomad_enrichment.tsv")
+                                    "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_gnomad_enrichment.tsv")
 repair_enr_pmbb_file <- file.path(input_dir, 
                                   "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv")
 
