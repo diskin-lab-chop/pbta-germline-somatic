@@ -129,7 +129,7 @@ for (subtype in subtypes){
     plotForest(readRDS(file.path(results_dir, glue::glue("coxph_add_OS_mb_{abbrev}_resection_metastasis_plp.RDS"))))
   
     ggsave(file.path(plot_dir, glue::glue("forest_OS_mb_{abbrev}_resection_subtype_metastasis.pdf")),
-           width = 7, height = 3, units = "in")
+           width = 8, height = 3, units = "in")
     
   }
   
