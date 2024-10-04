@@ -179,9 +179,10 @@ survival_stats <- survival_stats %>%
   dplyr::mutate(group = fct_relevel(group, 
                                     rev(group_order)))
 
+pdf(NULL)
 
 # Plot hazard ratios
-surv_plot <- survival_stats %>%
+survival_stats %>%
   dplyr::mutate(CI_upper = case_when(
     CI_upper > 100 ~ 100,
     TRUE ~ CI_upper
@@ -200,8 +201,6 @@ surv_plot <- survival_stats %>%
   facet_wrap(~type, nrow = 1) +
   theme_Publication() +
   theme(axis.text.x = ggtext::element_markdown())
-
-surv_plot
 
 # save plot
 ggsave(file.path(plot_dir, "survival-hr-plp-vs-wt.pdf"),
