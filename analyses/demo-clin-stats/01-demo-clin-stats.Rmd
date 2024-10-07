@@ -393,7 +393,7 @@ subtype_enr_plot <- subtype_enr %>%
   geom_text(x = log10(subtype_enr$CI_upper)+0.25, hjust = 0, vjust = .5, size = 4, fontface = 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(x = "log10-OR (95% CI)", y = NULL) + 
-  xlim(min(log10(subtype_enr$CI_lower)), max(log10(subtype_enr$CI_upper)) ) +
+  xlim(min(log10(subtype_enr$CI_lower))-0.25, max(log10(subtype_enr$CI_upper))+0.25) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   theme_Publication() +
   theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
@@ -436,7 +436,7 @@ other_group_enr_plot <- other_group_enr %>%
   geom_text(x = log10(other_group_enr$CI_upper)+0.25, hjust = 0, vjust = .5, size = 4, fontface = 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(x = "log10-OR (95% CI)", y = NULL) + 
-  xlim(min(log10(other_group_enr$CI_lower)), max(log10(other_group_enr$CI_upper))) +
+  xlim(min(log10(other_group_enr$CI_lower))-0.25, max(log10(other_group_enr$CI_upper))+0.25) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   theme_Publication() +
   theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
