@@ -178,12 +178,18 @@ hist_plp_cpg <- plp_sv %>%
   full_join(hist_counts %>% distinct(plot_group, .keep_all = TRUE) %>%
               dplyr::select(plot_group, n,
                             plot_group_n)) %>%
+  arrange(plot_group) %>%
   dplyr::mutate(plp_cpg_n = case_when(
     is.na(plp_cpg_n) ~ 0,
     TRUE ~ plp_cpg_n
   )) %>%
   distinct(plot_group, .keep_all = TRUE) %>%
-  mutate(freq = plp_cpg_n/n*100)
+  mutate(freq = plp_cpg_n/n*100) %>%
+  dplyr::mutate(plot_group_n = glue::glue("{plot_group} (n = {plp_cpg_n}/{n})"))
+
+# rename plot group palette colors to match `plot_group_n` in `hist_plp_cpg`
+plot_group_palette <- unique(plot_group_palette)
+names(plot_group_palette) <- hist_plp_cpg$plot_group_n
 
 # create count and freq plots by group
 
