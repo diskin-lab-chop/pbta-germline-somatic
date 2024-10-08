@@ -78,6 +78,14 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
   if (log_scale == TRUE){
 
     enr_plot <- enr_df %>% 
+      dplyr::mutate(OR = case_when(
+        is.infinite(OR) ~ 1000,
+        TRUE ~ OR
+      )) %>%
+      dplyr::mutate(ci.int2 = case_when(
+        is.infinite(ci.int2) ~ 10000,
+        TRUE ~ ci.int2
+      )) %>%
       ggplot(aes(x = log10(OR), y = factor(cohort))) +
       geom_point(size = 3, color = "#00A087FF",
                  show.legend = FALSE) + 
