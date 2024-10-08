@@ -30,7 +30,9 @@ hist <- read_tsv(file.path(root_dir,
 cpg <- read_lines(file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt"))
 
 # read in plp file
-plp_all <- read_tsv(file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv")) %>%
+plp_all <- read_tsv(file.path(root_dir, "analyses",
+                             "bed-intersect", "results",
+                             "pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-20bp_padded.tsv")) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # determine whether final call was due to clinvar or intervar
   mutate(final_call_source = case_when(autogvp_call == "Likely_pathogenic" & autogvp_call_reason == "ClinVar" ~ "ClinVar - Likely Pathogenic",
@@ -167,14 +169,27 @@ hist_snv_cpg <- plp_cpg %>%
 
 hist_plp_cpg <- plp_sv %>%
   distinct(Kids_First_Biospecimen_ID_normal, .keep_all = T) %>%
+  dplyr::mutate(plot_group = as.factor(plot_group)) %>%
   count(plot_group) %>%
   bind_rows(hist_snv_cpg) %>%
   group_by(plot_group) %>%
   summarize(n = sum(n)) %>%
   dplyr::rename('plp_cpg_n' = n) %>%
-  left_join(hist_counts[,c("plot_group", "n", "plot_group_n")], by = "plot_group") %>%
+  full_join(hist_counts %>% distinct(plot_group, .keep_all = TRUE) %>%
+              dplyr::select(plot_group, n,
+                            plot_group_n)) %>%
+  arrange(plot_group) %>%
+  dplyr::mutate(plp_cpg_n = case_when(
+    is.na(plp_cpg_n) ~ 0,
+    TRUE ~ plp_cpg_n
+  )) %>%
   distinct(plot_group, .keep_all = TRUE) %>%
-  mutate(freq = plp_cpg_n/n*100)
+  mutate(freq = plp_cpg_n/n*100) %>%
+  dplyr::mutate(plot_group_n = glue::glue("{plot_group} (n = {plp_cpg_n}/{n})"))
+
+# rename plot group palette colors to match `plot_group_n` in `hist_plp_cpg`
+plot_group_palette <- unique(plot_group_palette)
+names(plot_group_palette) <- hist_plp_cpg$plot_group_n
 
 # create count and freq plots by group
 
