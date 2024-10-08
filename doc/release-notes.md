@@ -1,27 +1,18 @@
 # release notes
 
-## current release (v7)
-- Data release data: 2024-05-30
+## current release (v8)
+- Data release data: 2024-10-07
 - OpenPedCan data release date: 2024-03-01 (v15)
 - status: available
 
-Additional files:
-- `cptac-protein-imputed-prot-expression-abundance.tsv.gz`
-- `gene-counts-rsem-expected_count-collapsed.rds`
-- `hope-protein-imputed-phospho-expression-abundance.tsv.gz`
-- `hope-protein-imputed-prot-expression-abundance.tsv.gz`
-- `independent-specimens.methyl.primary-plus.tsv`
-- `independent-specimens.methyl.primary.tsv`
-- `infinium.gencode.v39.probe.annotations.tsv.gz`
-- `methyl-beta-values.rds`
-- `pbta_germline_svs.tsv`
-- `pbta-merged-plp-variants-autogvp-abridged.tsv`
-- `pbta-merged-plp-variants-autogvp-full.tsv`
-- `splice-events-rmats.tsv.gz`
-
+New/Updated files:
+- `cnv-cnvkit-cns.tsv.gz`; these results were produced independently of OPC
+- `pbta-all-gene-loh.tsv.gz`; updated to include matched tumors in X01
+- `pbta-plp-all-loh.tsv`; updated to include matched tumors in X01
 
 ```
-v7
+v8
+├── cnv-cnvkit-cns.tsv.gz
 ├── consensus_seg_annotated_cn_autosomes.tsv.gz
 ├── consensus_seg_annotated_cn_x_and_y.tsv.gz
 ├── consensus_seg_with_status.tsv
@@ -42,8 +33,6 @@ v7
 ├── independent-specimens.wgswxs.primary.tsv
 ├── independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv
 ├── independent-specimens.wgswxspanel.primary-plus.prefer.wxs.tsv
-├── infinium.gencode.v39.probe.annotations.tsv.gz
-├── methyl-beta-values.rds
 ├── pbta-all-gene-loh.tsv.gz
 ├── pbta-cnv-consensus-gistic.zip
 ├── pbta-cnv-consensus.seg.gz
