@@ -158,12 +158,18 @@ repair_enr_pmbb <- read_tsv(repair_enr_pmbb_file) %>%
     TRUE ~ pathway_name
   ))
 
+blacklisted_pathways <- read_lines(file.path(input_dir, "blacklisted-pathways.txt"))
+
 pathway_enr_gnomad <- read_tsv(pathway_enr_gnomad_file) %>%
-  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_REFERENCE_|KEGG_MEDICUS_PATHOGEN_|KEGG_MEDICUS_VARIANT_|KEGG_", "")) %>%
+  dplyr::filter(!pathway_name %in% c(blacklisted_pathways)) %>%
+  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_PATHOGEN_|KEGG_MEDICUS_VARIANT_|KEGG_", "")) %>%
+  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_REFERENCE_", "KEGG MEDICUS")) %>%
   dplyr::mutate(pathway_name = str_replace_all(pathway_name, "_", " "))
 
 pathway_enr_pmbb <- read_tsv(pathway_enr_pmbb_file) %>%
-  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_REFERENCE_|KEGG_MEDICUS_PATHOGEN_|KEGG_MEDICUS_VARIANT_|KEGG_", "")) %>%
+  dplyr::filter(!pathway_name %in% c(blacklisted_pathways)) %>%
+  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_PATHOGEN_|KEGG_MEDICUS_VARIANT_|KEGG_", "")) %>%
+  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_REFERENCE_", "KEGG MEDICUS")) %>%
   dplyr::mutate(pathway_name = str_replace_all(pathway_name, "_", " "))
 
 # add KEGG pathway and DNA repair pathway results to df lists
