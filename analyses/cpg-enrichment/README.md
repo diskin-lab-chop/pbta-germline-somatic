@@ -12,6 +12,8 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 
 2. `02-gene-pathway-enrichment.R` plots gene- and pathway-level P-LP carrier enrichment in PBTA cohort relative to tumor-free control cohorts. KEGG pathways were pulled from MSigDB v2024.1.
 
+3. `03-hist-gene-enr.R` plots gene-level P-LP carrier enrichment by histology cohort relative to tumor-free control cohorts
+
 
 ### Input files
 
@@ -30,6 +32,7 @@ P-LP carrier counts in the PMBB cohort were pre-calculated at the gene and pathw
 .
 ├── 01-cpg-list-enr.R
 ├── 02-gene-pathway-enrichment.R
+├── 03-hist-gene-enr.R
 ├── README.md
 ├── input
 │   ├── blacklisted-pathways.txt
@@ -44,9 +47,19 @@ P-LP carrier counts in the PMBB cohort were pre-calculated at the gene and pathw
 ├── plots
 │   ├── all-CPG-enrichment-PBTA-vs-control.pdf
 │   ├── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Atypical Teratoid Rhabdoid Tumor-CPG-enrichment-PBTA-vs-control.pdf
 │   ├── sig-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Choroid plexus tumor-CPG-enrichment-PBTA-vs-control.pdf
 │   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.pdf
-│   └── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Low-grade glioma-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Medulloblastoma-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Meningioma-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Mixed neuronal-glial tumor-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Neurofibroma plexiform-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Non-neoplastic tumor-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-Other high-grade glioma-CPG-enrichment-PBTA-vs-control.pdf
+│   └── sig-Pineoblastoma-CPG-enrichment-PBTA-vs-control.pdf
 ├── results
 │   ├── KEGG_pathways-enrichment-pbta-vs-pmbb-gnomad.tsv
 │   ├── Knijnenburg_repair_pathways-enrichment-pbta-vs-pmbb-gnomad.tsv
