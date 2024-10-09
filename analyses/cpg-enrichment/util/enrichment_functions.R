@@ -96,12 +96,12 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       # Add OR threshold line
       geom_vline(xintercept = 0, linetype = "dashed") +
       # remove y axis labels 
-      scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                                "PMBB" = "")) +
+      scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
+                                "PMBB" = NULL)) +
       # facet wrap by variable, place strips to left
       facet_wrap(facet_var, scale = "fixed",
                  nrow = length(unique(enr_df[[facet_var]])),
-                 labeller = labeller(.cols = label_wrap_gen(18)),
+             #    labeller = labeller(.cols = label_wrap_gen(14)),
                  strip.position = "left") +
       expand_limits(y=0) +
       theme_Publication() +
@@ -131,12 +131,12 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       # Add OR threshold line
       geom_vline(xintercept = 1, linetype = "dashed") +
       # remove y axis labels 
-      scale_y_discrete(labels=c("PBTA" = "", "gnomAD" = "",
-                                "PMBB" = "")) +
+      scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
+                                "PMBB" = NULL)) +
       # facet wrap by variable, place strips to left
       facet_wrap(facet_var, scale = "fixed",
                  nrow = length(unique(enr_df[[facet_var]])),
-                 labeller = labeller(.cols = label_wrap_gen(18)),
+             #    labeller = labeller(.cols = label_wrap_gen(14)),
                  strip.position = "left") +
       expand_limits(y=0) +
       theme_Publication() +
