@@ -50,8 +50,8 @@ plot_pvalue <- function(enr_df, facet_var,
     # log-transform
     mutate(p = -log10(p)) %>%
     
-    ggplot(aes(x = p, y = factor(cohort))) +
-    geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
+    ggplot(aes(x = p, y = factor(cohort), color = factor(cohort))) +
+    geom_point(size = 3, show.legend = FALSE) + 
     labs(x = "-log10(p)\n", y = "") + 
     # add bonferroni-adjusted signicance threshold
     geom_vline(xintercept = -log10(0.05/ntests), linetype = "dashed") + 
@@ -65,7 +65,8 @@ plot_pvalue <- function(enr_df, facet_var,
     # rotate strip text 
     theme(plot.margin = unit(c(2,1,1,0), "lines"),
           strip.text.y.left = element_text(angle = 0)) +
-    theme(strip.placement = "outside")
+    theme(strip.placement = "outside") +
+    scale_color_npg()
   
   return(pval_plot)
   
@@ -86,12 +87,12 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
         is.infinite(ci.int2) ~ 10000,
         TRUE ~ ci.int2
       )) %>%
-      ggplot(aes(x = log10(OR), y = factor(cohort))) +
-      geom_point(size = 3, color = "#00A087FF",
+      ggplot(aes(x = log10(OR), y = factor(cohort), color = factor(cohort))) +
+      geom_point(size = 3, 
                  show.legend = FALSE) + 
       # add log10-transformed confidence intervals
       geom_errorbar(aes(xmin = log10(ci.int1), xmax = log10(ci.int2)), width = 0.2, 
-                    show.legend = FALSE, color = "#00A087FF") +
+                    show.legend = FALSE) +
       labs(x = "log10-Odds Ratio\n(95% CI)", y = NULL) + 
       # Add OR threshold line
       geom_vline(xintercept = 0, linetype = "dashed") +
@@ -109,8 +110,9 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"),
             strip.background = element_blank(),
             strip.text.y = element_blank()) +
-      theme(strip.placement = "outside")
-  
+      theme(strip.placement = "outside") +
+      scale_color_npg()
+    
     # plot raw OR when log10 not specified 
   } else {
     
@@ -122,11 +124,11 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       ))
     
     enr_plot <- enr_df %>% 
-      ggplot(aes(x = OR, y = factor(cohort))) +
-      geom_point(size = 3, color = "#00A087FF",
+      ggplot(aes(x = OR, y = factor(cohort), color = factor(cohort))) +
+      geom_point(size = 3, 
                  show.legend = FALSE) + 
       geom_errorbar(aes(xmin = ci.int1, xmax = ci.int2), width = 0.2, 
-                    show.legend = FALSE, color = "#00A087FF") +
+                    show.legend = FALSE) +
       labs(x = "Odds Ratio (95% CI)\n", y = NULL) + 
       # Add OR threshold line
       geom_vline(xintercept = 1, linetype = "dashed") +
@@ -144,7 +146,8 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"),
             strip.background = element_blank(),
             strip.text.y = element_blank()) +
-      theme(strip.placement = "outside")
+      theme(strip.placement = "outside") +
+      scale_color_npg()
   }
   
   return(enr_plot)
@@ -159,9 +162,9 @@ plot_perc <- function(enr_df, facet_var){
   
   
   perc_plot <- enr_df %>%
-    ggplot(aes(x = perc_plp, y = factor(cohort), label = fraction)) +
+    ggplot(aes(x = perc_plp, y = factor(cohort), label = fraction, fill = factor(cohort))) +
     geom_bar(stat = "identity", color = "black",
-             show.legend = TRUE, fill = "#00A087FF") + 
+             show.legend = FALSE) + 
     # add fractions to the right of plots
     geom_text(x = x_pos, hjust = 0, size = 4, fontface = 2) +
     labs(x = "% Cohort P/LP\n", y = NULL, fill = NULL) + 
@@ -181,7 +184,8 @@ plot_perc <- function(enr_df, facet_var){
           legend.position = c(0.5, 1.07),
           strip.background = element_blank(),
           strip.text.y = element_blank()) +
-    theme(strip.placement = "outside")
+    theme(strip.placement = "outside") +
+    scale_fill_npg()
   
   return(perc_plot)
   
