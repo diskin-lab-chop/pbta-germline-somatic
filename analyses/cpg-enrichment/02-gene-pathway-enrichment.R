@@ -234,9 +234,6 @@ for (i in 1:length(gnomad_list)){
 
   sig_pathways_both <- intersect(sig_pathways_gnomad, sig_pathways_pmbb)
   
-  # filter out cancer pathways 
-  sig_pathways_both <- sig_pathways_both[!grepl("cancer|carcinoma|leukemia|Melanoma|carcinogenesis|Glioma", sig_pathways_both)]
-
   # Create enrichment FDR plot of sig enriched pathways
   pval_plot <- pathway_enr_all %>%
     plot_pvalue(., facet_var = "pathway_name",
