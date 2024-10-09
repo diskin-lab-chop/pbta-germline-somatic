@@ -73,10 +73,10 @@ plot_pvalue <- function(enr_df, facet_var,
 
 # Odds Ratio plot
 plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
-
+  
   # plot log10-transformed OR, when indicated 
   if (log_scale == TRUE){
-
+    
     enr_plot <- enr_df %>% 
       dplyr::mutate(OR = case_when(
         is.infinite(OR) ~ 1000,
@@ -101,7 +101,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       # facet wrap by variable, place strips to left
       facet_wrap(facet_var, scale = "fixed",
                  nrow = length(unique(enr_df[[facet_var]])),
-             #    labeller = labeller(.cols = label_wrap_gen(14)),
+                 #    labeller = labeller(.cols = label_wrap_gen(14)),
                  strip.position = "left") +
       expand_limits(y=0) +
       theme_Publication() +
@@ -110,7 +110,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
             strip.background = element_blank(),
             strip.text.y = element_blank()) +
       theme(strip.placement = "outside")
-  
+    
     # plot raw OR when log10 not specified 
   } else {
     
@@ -136,7 +136,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
       # facet wrap by variable, place strips to left
       facet_wrap(facet_var, scale = "fixed",
                  nrow = length(unique(enr_df[[facet_var]])),
-             #    labeller = labeller(.cols = label_wrap_gen(14)),
+                 #    labeller = labeller(.cols = label_wrap_gen(14)),
                  strip.position = "left") +
       expand_limits(y=0) +
       theme_Publication() +
@@ -173,7 +173,7 @@ plot_perc <- function(enr_df, facet_var){
                nrow = length(unique(enr_df[[facet_var]])),
                labeller = labeller(.cols = label_wrap_gen(18)),
                strip.position = "left") +
-  #  expand_limits(x=3) +
+    #  expand_limits(x=3) +
     coord_cartesian(clip = 'off') +
     theme_Publication() +
     # remove facet strips
