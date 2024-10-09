@@ -10,12 +10,15 @@ This module calculates enrichment of P-LP variants in cancer predisposition gene
 
 1. `01-cpg-list-enr.R` plots CPG P-LP carrier enrichment in entire PBTA cohort and individual plot groups relative to tumor-free control cohorts
 
+2. `02-gene-pathway-enrichment.R` plots gene- and pathway-level P-LP carrier enrichment in PBTA cohort relative to tumor-free control cohorts. KEGG pathways were pulled from MSigDB v2024.1.
+
+
 ### Input files
 
 All files in `input/` directory were generated outside of this github repository, and utilize PBTA P-LP variant files to calculate enrichment of P-LP variants in the PBTA cohort relative to PMBB and gnomAD tumor-free control cohorts in the following gene lists:
 
 1. All cancer predisposition genes (CPGs)
-2. Individual CPGs ()
+2. Individual CPGs
 3. KEGG pathway gene sets
 4. DNA repair pathway gene lists as reported in [Knijnenburg et al. 2018](https://www.cell.com/cell-reports/pdf/S2211-1247(18)30437-6.pdf)
 
@@ -26,20 +29,29 @@ P-LP carrier counts in the PMBB cohort were pre-calculated at the gene and pathw
 ```
 .
 ├── 01-cpg-list-enr.R
+├── 02-gene-pathway-enrichment.R
 ├── README.md
 ├── input
+│   ├── blacklisted-pathways.txt
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_gnomad_enrichment.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_cpg_pathway_pmbb_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_gnomad_enrichment.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_pmbb_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_gnomad_enrichment.tsv
 │   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv
-│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_pmbb_enrichment.tsv
-│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_cpg_pathway_gnomad_enrichment.tsv
-│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_dna_repair_pathway_gnomad_enrichment.tsv
-│   ├── pbta-merged-plp-variants-autogvp-abridged-no-wxs_gene_gnomad_enrichment.tsv
-│   └── pbta-merged-plp-variants-autogvp-abridged-no-wxs_kegg_pathway_gnomad_enrichment.tsv
+│   ├── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_msigdb.v2024.1.Hs.symbols.txt_pmbb_enrichment.tsv
+│   └── pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_msigdb.v2024.1.Hs.symbols_pathway_gnomad_enrichment.tsv
 ├── plots
 │   ├── all-CPG-enrichment-PBTA-vs-control.pdf
-│   └── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── hist-all-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-CPG-enrichment-PBTA-vs-control.pdf
+│   ├── sig-KEGG_pathways-enrichment-PBTA-vs-control.pdf
+│   └── sig-Knijnenburg_repair_pathways-enrichment-PBTA-vs-control.pdf
 ├── results
+│   ├── KEGG_pathways-enrichment-pbta-vs-pmbb-gnomad.tsv
+│   ├── Knijnenburg_repair_pathways-enrichment-pbta-vs-pmbb-gnomad.tsv
+│   ├── cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv
+│   └── hist-cpg-plp-enr-pbta-vs-pmbb-gnomad.tsv
 ├── run_module.sh
 └── util
     └── enrichment_functions.R
