@@ -36,9 +36,9 @@ cpg_enr_pmbb_file <- file.path(input_dir,
                                "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_gene_pmbb_enrichment.tsv")
 
 pathway_enr_gnomad_file <- file.path(input_dir, 
-                                     "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_gnomad_enrichment.tsv")
+                                     "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_msigdb.v2024.1.Hs.symbols_pathway_gnomad_enrichment.tsv")
 pathway_enr_pmbb_file <- file.path(input_dir, 
-                                   "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_pathway_pmbb_enrichment.tsv")
+                                   "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_kegg_msigdb.v2024.1.Hs.symbols.txt_pmbb_enrichment.tsv")
 
 repair_enr_gnomad_file <- file.path(input_dir, 
                                     "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded_dna_repair_pathway_gnomad_enrichment.tsv")
@@ -48,14 +48,6 @@ repair_enr_pmbb_file <- file.path(input_dir,
 cbtn_histologies_file <- file.path(root_dir, "analyses", 
                                    "collapse-tumor-histologies", "results", 
                                    "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
-
-plp_all_exome_file <- file.path(root_dir, "analyses",
-                                "bed-intersect", "results", 
-                                "pbta-merged-plp-variants-autogvp-abridged-all-exome-filtered-20bp_padded.tsv")
-
-plp_no_wxs_file <- file.path(root_dir, "analyses",
-                             "bed-intersect", "results", 
-                             "pbta-merged-plp-variants-autogvp-abridged-no-wxs.tsv")
 
 # Read in hist, plp, and enrichment by CPG files
 
@@ -167,12 +159,12 @@ repair_enr_pmbb <- read_tsv(repair_enr_pmbb_file) %>%
   ))
 
 pathway_enr_gnomad <- read_tsv(pathway_enr_gnomad_file) %>%
-  dplyr::filter(!grepl("multiple species|other", pathway_name)) %>%
-  dplyr::mutate(pathway_name = str_split(pathway_name, " -", simplify = TRUE)[,1])
+  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_REFERENCE_|KEGG_MEDICUS_PATHOGEN_|KEGG_MEDICUS_VARIANT_|KEGG_", "")) %>%
+  dplyr::mutate(pathway_name = str_replace_all(pathway_name, "_", " "))
 
 pathway_enr_pmbb <- read_tsv(pathway_enr_pmbb_file) %>%
-  dplyr::filter(!grepl("multiple species|other", pathway_name)) %>%
-  dplyr::mutate(pathway_name = str_split(pathway_name, " -", simplify = TRUE)[,1])
+  dplyr::mutate(pathway_name = str_replace(pathway_name, "KEGG_MEDICUS_REFERENCE_|KEGG_MEDICUS_PATHOGEN_|KEGG_MEDICUS_VARIANT_|KEGG_", "")) %>%
+  dplyr::mutate(pathway_name = str_replace_all(pathway_name, "_", " "))
 
 # add KEGG pathway and DNA repair pathway results to df lists
 gnomad_list = list(pathway_enr_gnomad,
