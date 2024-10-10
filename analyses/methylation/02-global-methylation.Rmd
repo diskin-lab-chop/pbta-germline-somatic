@@ -286,7 +286,7 @@ ggsave(file.path(plot_dir,
                  "global-beta-value-hgg-h3wt-mmr-plp-vs-other.pdf"),
        height = 4, width = 4, units = "in")
 ```
-Determine if tumor mutation burden is correlated with global methylation levels in H3 wildtype HGG
+Determine if tumor mutation burden is correlated with global methylation levels in H3 wildtype HGG and other HGG
 
 ```{r}
 tmb <- read_tsv(tmb_file) %>%
@@ -302,12 +302,9 @@ methyl %>%
                 grepl("H3 wildtype", molecular_subtype)) %>%
   ggplot(aes(x = mean_beta_value, y = log10(tmb))) +
        geom_point() +
-       stat_smooth(method = "lm", 
-                   formula = y ~ x, 
-                   geom = "smooth", 
-                   colour = "red",
-                   fill = "pink",
-                   linetype="dashed") +
+       stat_smooth(method = "lm", formula = y ~ x, 
+                   geom = "smooth", colour = "red",
+                   fill = "pink", linetype="dashed") +
        labs(x = "Mean methylation beta value",
             y = "log10-Tumor Mutation Burden") + 
        stat_cor(method = "pearson",
@@ -316,4 +313,49 @@ methyl %>%
 
 ggsave(file.path(plot_dir, "tmb-vs-mean-beta-methylation-hgg-h3-wt.pdf"),
        width = 6, height = 5)
+
+methyl %>%
+  dplyr::filter(plot_group == "Other high-grade glioma",
+                !grepl("H3 wildtype", molecular_subtype)) %>%
+  ggplot(aes(x = mean_beta_value, y = log10(tmb))) +
+       geom_point() +
+       stat_smooth(method = "lm", formula = y ~ x, 
+                   geom = "smooth", colour = "red",
+                   fill = "pink", linetype="dashed") +
+       labs(x = "Mean methylation beta value",
+            y = "log10-Tumor Mutation Burden") + 
+       stat_cor(method = "pearson",
+                label.x = 0.4, label.y = 4, size = 5) +
+       theme_Publication()
+
+ggsave(file.path(plot_dir, "tmb-vs-mean-beta-methylation-hgg-h3-mutant.pdf"),
+       width = 6, height = 5)
+```
+Calcualte pearson correlation coefficients between TMB and global methylation in each tumor histology
+
+```{r}
+cor_df <- data.frame(plot_group = unique(methyl$plot_group),
+                     pearson_r = 0,
+                     pearson_p = 0)
+
+for (i in 1:nrow(cor_df)){
+  
+  group = cor_df$plot_group[i]
+  
+  cor_test <- cor.test(log10(methyl$tmb[methyl$plot_group == group]),
+                       methyl$mean_beta_value[methyl$plot_group == group],
+                       method = "pearson")
+  
+  cor_df$pearson_r[i] <- cor_test$estimate
+  cor_df$pearson_p[i] <- cor_test$p.value
+  
+}
+
+write_tsv(cor_df,
+          file.path(results_dir, "tmb-methylation-correlation-by-hist.tsv"))
+```
+
+Print session info
+```{r}
+sessionInfo()
 ```

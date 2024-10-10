@@ -10,12 +10,12 @@ git clone git@github.com:diskin-lab-chop/PBTA-germline.git
 
 2. Pull the docker container:
 ```
-docker pull pgc-images.sbgenomics.com/corbettr/pbta-germline:latest
+docker pull pgc-images.sbgenomics.com/d3b-bixu/pbta-germline:latest
 ```
 
 3. Start the docker container, from the `PBTA-germline` folder, run:
 ```
-docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/PBTA-germline pgc-images.sbgenomics.com/corbettr/pbta-germline:latest
+docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/PBTA-germline pgc-images.sbgenomics.com/d3b-bixu/pbta-germline:latest
 ```
 
 4. To execute shell within the docker image, from the `PBTA-germline` folder, run:

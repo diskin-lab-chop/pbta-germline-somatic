@@ -165,7 +165,7 @@ PT_9HMVHQEH	BS_61C97RSA	7316-22	Male	BS_H2K7XX4X	7316-22	Initial CNS Tumor	Medul
 PT_QTDY0Y9A	BS_61KN2D29	7316-3771	Male	BS_1S5V7WWC	7316-3771	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	diffuse midline glioma	Diffuse midline glioma	Diffuse astrocytic and oligodendroglial tumor	DMG, H3 K28
 PT_3V5GTCJR	BS_63AK4SCF	7316-1646	Female	BS_QZTPJ8YW	7316-1646	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma	Low-grade glioma	Low-grade astrocytic tumor	LGG, KIAA1549-BRAF
 PT_RM5S859Q	BS_63JFFF51	7316-111	Female	BS_R7YMKNJN	7316-111	Initial CNS Tumor	Ependymoma	ependymoma, anaplastic who iii	Ependymoma	Ependymal tumor	EPN, ST ZFTA
-PT_YCMH9SQP	BS_63QHP547	7316-225	Male	BS_A70G7S2W	7316-225	Initial CNS Tumor	Metastatic secondary tumors	metastatic neuroblastoma	Metastatic secondary tumors	Metastatic tumors	NA
+PT_YCMH9SQP	BS_63QHP547	7316-225	Male	NA	NA	NA	NA	NA	NA	NA	NA
 PT_MV5WXTQV	BS_63WRZJ06	7316-8036	Unknown	BS_DD2N8CEX	7316-8036	Initial CNS Tumor	High-grade glioma/astrocytoma (WHO grade III/IV)	High Grade Glioma	High-grade glioma	Diffuse astrocytic and oligodendroglial tumor	HGG, H3 wildtype
 PT_41WETNRC	BS_644F21BX	7316-3065	Female	BS_GFS9JEE6	7316-3065	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	pilocytic astrocytoma with novel fusion kank1-ntrk2 and cdkn2a deletion in the  higher grade area	Low-grade glioma	Low-grade astrocytic tumor	LGG, RTK
 PT_PNED3GG3	BS_6458RHRT	7316-3590	Female	BS_WMEYJGDC	7316-387	Initial CNS Tumor	Craniopharyngioma	craniopharyngioma, adamantinomatous type	Adamantinomatous Craniopharyngioma	Tumors of sellar region	CRANIO, ADAM
@@ -405,7 +405,7 @@ PT_1MW98VR1	BS_FCPCSXCG	7316-2558	Male	BS_007JTNB8	7316-2558	Initial CNS Tumor	E
 PT_DQ3ZCHB6	BS_FD2A9E05	7316-2195	Male	BS_PMSZKZP7	7316-2195	Initial CNS Tumor	Low-grade glioma/astrocytoma (WHO grade I/II)	ganglion cell tumor	Ganglioglioma	Low-grade astrocytic tumor	GNG, MAPK
 PT_04YTK82N	BS_FEYZXWG7	7316-2122	Male	BS_3JE2T7AR	7316-746	Initial CNS Tumor	Medulloblastoma	medulloblastoma, who grade iv	Medulloblastoma	Embryonal tumor	MB, Group3
 PT_2Y3R515E	BS_FF2TWA2W	7316-2693	Male	BS_5RD8KEED	7316-2202	Progressive	Teratoma	mature cystic teratoma	Teratoma	Germ cell tumor	NA
-PT_EV71W1JW	BS_FFGQ61KQ	7316-349	Male	BS_YETTZ1NC	7316-349	Initial CNS Tumor	Metastatic secondary tumors	metastatic secondary tumor	Metastatic secondary tumors	Metastatic tumors	NA
+PT_EV71W1JW	BS_FFGQ61KQ	7316-349	Male	NA	NA	NA	NA	NA	NA	NA	NA
 PT_SZJ7WZZW	BS_FHDR7FJE	7316-467	Male	BS_WP9J88EB	7316-467	Initial CNS Tumor	Medulloblastoma	anaplastic medulloblastoma who grade 4	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_MSBPMJ56	BS_FJ9W9C74	7316-3782	Female	BS_40FX713C	7316-306	Initial CNS Tumor	Medulloblastoma	medulloblastoma	Medulloblastoma	Embryonal tumor	MB, Group4
 PT_ND34A6PR	BS_FNQMY128	7316-122	Female	BS_QMHND3QK	7316-122	Initial CNS Tumor	Atypical Teratoid Rhabdoid Tumor (ATRT)	atypical teratoid rhabdoid tumor (at/rt) who grade iv	Atypical Teratoid Rhabdoid Tumor	Embryonal tumor	ATRT, MYC
