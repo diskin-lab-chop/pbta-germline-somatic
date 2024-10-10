@@ -70,6 +70,7 @@ Read in germline plp files
 ```{r format germline data}
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) 
 
@@ -254,7 +255,7 @@ methyl_enr_df <- hyper_enr_df %>%
   bind_rows(hypo_enr_df) %>%
   dplyr::mutate(p_text = case_when(
     P_Value < 0.01 ~ "*p<0.01",
-    P_Value < 0.05 ~ glue::glue("*p={round(P_Value, 2)}"),
+    P_Value < 0.05 ~ glue::glue("*p={round(P_Value, 3)}"),
     TRUE ~ glue::glue("p={round(P_Value, 2)}")
   )) %>%
   dplyr::mutate(Gene_Feature = factor(Gene_Feature,
