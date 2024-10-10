@@ -87,10 +87,12 @@ Read in germline plp file, and append coordinate and ref/alt allele info
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep) 
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)
 
 germline_sv <- read_tsv(plp_sv_file) %>%
-  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)
 ```
 
 Extract tumor RNA IDs from hist file, and append to `germline`

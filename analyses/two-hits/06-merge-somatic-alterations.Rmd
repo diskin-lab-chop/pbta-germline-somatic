@@ -68,22 +68,24 @@ sv_proteo_file <- file.path(results_dir, "germline-sv-somatic-proteomics-phospho
 
 read in autogvp plp output and plp svs, filter gnomad non-pass
 ```{r}
+hist <- read_tsv(hist_file)
+
 cpgs <- read_lines(cpg_file)
 
 plp <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
-  dplyr::filter(gene_symbol_vep %in% cpgs)
+  dplyr::filter(gene_symbol_vep %in% cpgs) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 plp_sv <- read_tsv(plp_sv_file) %>%
-  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 rna_specimens <- read_tsv(indepedent_specimens_rna)
 ```
 
 Define all unique SNV/INDEL P/LP cases in which a somatic alteration was observed in each data modality
 ```{r}
-hist <- read_tsv(hist_file)
-
 snv_hits_snv <- read_tsv(onco_snv_file) %>%
   dplyr::filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,

@@ -69,18 +69,6 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation",
 # Load files
 
 ```{r load files}
-# Full P-LP results
-plp <- read_tsv(plp_file) %>%
-  bind_rows(read_tsv(plp_lowVAF_file)) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
-
-plp_sv <- read_tsv(plp_sv_file) %>%
-  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
-
-# CPGs
-cpgs <- read_lines(cpg_file)
-
-
 opc_hist <- read_tsv(histologies_file)
 
 hist <- read_tsv(hist_cohort_file) %>%
@@ -90,6 +78,19 @@ hist <- read_tsv(hist_cohort_file) %>%
   left_join(opc_hist %>% dplyr::filter(experimental_strategy == "RNA-Seq") %>%
               dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
               dplyr::select(match_id, Kids_First_Biospecimen_ID_rna))
+
+# Full P-LP results
+plp <- read_tsv(plp_file) %>%
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
+
+plp_sv <- read_tsv(plp_sv_file) %>%
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
+
+# CPGs
+cpgs <- read_lines(cpg_file)
 
 splice_events <- vroom(splice_events_file) %>%
   dplyr::filter(sample_id %in% hist$Kids_First_Biospecimen_ID_rna,

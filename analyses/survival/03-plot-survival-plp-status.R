@@ -25,25 +25,25 @@ subtype_file <- file.path(results_dir, "subtypes-for-survival.tsv")
 
 # Define cancer groups and subtypes for plotting
 groups <- c("Atypical Teratoid Rhabdoid Tumor",
-            "Craniopharyngioma",
-            "Choroid plexus tumor",
-            "DIPG or DMG|Other high-grade glioma",
+            "DIPG or DMG",
+            "Other high-grade glioma",
             "Ependymoma",
             "Low-grade glioma",
             "Medulloblastoma",
             "Meningioma",
-            "Mesenchymal tumor",
             "Mixed neuronal-glial tumor",
             "Neurofibroma plexiform")
 
 
-dir_names <- c("ATRT", "CRANIO", "CPT", "HGG", "EPN", "LGG", "MB", "MNG", "MES", "GNG-GNT", "NFP")
+dir_names <- c("ATRT", "DMG", "HGG", "EPN",
+               "LGG", "MB", "MNG", 
+               "GNG-GNT", "NFP")
 names(dir_names) <- groups
 
 # Define plot titles
-titles <- c("ATRT", "Craniopharyngioma", "Choroid plexus tumor", 
+titles <- c("ATRT", "DMG",
             "HGG", "Ependymoma", "LGG", "Medulloblastoma", 
-            "Meningioma", "Mesenchymal tumor",
+            "Meningioma", 
             "Mixed neuronal-glial tumor", "Neurofibroma Plexiform")
 names(titles) <- groups
 
