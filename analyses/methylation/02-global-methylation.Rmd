@@ -100,6 +100,7 @@ cpgs <- read_lines(cpg_file)
 
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
   dplyr::filter(Hugo_Symbol %in% cpgs)
 
