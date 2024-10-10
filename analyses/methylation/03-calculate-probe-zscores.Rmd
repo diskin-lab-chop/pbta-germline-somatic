@@ -174,7 +174,7 @@ methyl_beta_diff_df <- methyl_beta_diff_df %>%
   )) %>%
   dplyr::mutate(Gene_Feature = case_when(
     grepl("three_prime", Gene_Feature) ~ "3' UTR",
-    grepl("five_prime", Gene_Feature) ~ "5' UTR"
+    grepl("five_prime", Gene_Feature) ~ "5' UTR",
     TRUE ~ Gene_Feature
   ))
 ```
@@ -305,7 +305,7 @@ enr_plot <- methyl_enr_df %>%
 
 ggarrange(n_plot, enr_plot, align = "h",
           common.legend = TRUE,
-          widths = c(1.5, 1))
+          widths = c(1.3, 1))
 
 ggsave(file.path(plot_dir, "plp-diff-probes-by-feature.pdf"),
           width = 6, height = 4, units = "in")
