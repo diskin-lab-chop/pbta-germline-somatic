@@ -65,9 +65,11 @@ hist <- read_tsv(cbtn_histologies_file) %>%
   dplyr::mutate(OS_years = OS_days/365.25,
                 EFS_years = EFS_days/365.25)
 
-all_plp <- read_tsv(all_plp_file)
+all_plp <- read_tsv(all_plp_file) %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp_sv <- read_tsv(plp_sv_file)
+plp_sv <- read_tsv(plp_sv_file) %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs <- read_lines(cpg_file)
 
@@ -80,7 +82,6 @@ Merge sample metadata
 ```{r}
 # Extract BS IDs of samples with CPG PLP variants
 cpg_bs <- all_plp %>%
-  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   filter(gene_symbol_vep %in% cpgs) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal) %>%
   bind_rows(plp_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal)) %>%

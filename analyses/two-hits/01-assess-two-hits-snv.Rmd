@@ -54,15 +54,17 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 ### Load oncokb annotated maf and explore data
 
 ```{r load files}
+integrated_hist <- read_tsv(histologies_file)
+
 germline <- read_tsv(file.path(root_dir, params$germ_in)) %>%
   bind_rows(read_tsv(file.path(data_dir,
                                "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv"))) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% integrated_hist$Kids_First_Biospecimen_ID_normal) %>%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
                 Hugo_Symbol = gene_symbol_vep,
                 HGVSc_germ = HGVSc,
                 HGVSp_germ = HGVSp) 
 
-integrated_hist <- read_tsv(histologies_file)
 opc_hist <- read_tsv(opc_hist_file, guess_max = 3000) %>%
   filter(!is.na(pathology_diagnosis),
          experimental_strategy == "WGS",
@@ -152,8 +154,9 @@ collapsed_germ_som <- collapsed %>%
 
 ```{r}
 germline_sv <- read_tsv(plp_sv_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% integrated_hist$Kids_First_Biospecimen_ID_normal) %>%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
-                Hugo_Symbol = Hugo_Symbol_cpg) 
+                Hugo_Symbol = Hugo_Symbol_cpg)
 
 # two hit CPG matches
 germline_sv_somatic_gene_matches <- germline_sv %>%

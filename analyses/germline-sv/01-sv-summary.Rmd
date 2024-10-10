@@ -45,10 +45,11 @@ cancer_list_file <- file.path(root_dir, "analyses",
 Load data
 
 ```{r}
-# load SV file
-sv_plp <- read_tsv(sv_plp_file)
-
 hist <- read_tsv(hist_file)
+
+# load SV file
+sv_plp <- read_tsv(sv_plp_file) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 ```
 
 Summarize structural variants by gene and sv type (deletion, duplication)

@@ -62,9 +62,9 @@ opc_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000)
   )
 
 # pull tumor BS IDs that are not included in independent specimens
-tumors_to_add <- opc_hist %>%
-  dplyr::filter(Kids_First_Biospecimen_ID %in% c("BS_A70G7S2W", "BS_YETTZ1NC")) %>%
-  dplyr::select(Kids_First_Biospecimen_ID)
+# tumors_to_add <- opc_hist %>%
+#   dplyr::filter(Kids_First_Biospecimen_ID %in% c("BS_A70G7S2W", "BS_YETTZ1NC")) %>%
+#   dplyr::select(Kids_First_Biospecimen_ID)
 
 # select all normal BS_ids of interest
 germline_ids <- read_lines(file.path(input_dir, "samples_of_interest.txt"))
@@ -72,7 +72,7 @@ germline_ids <- read_lines(file.path(input_dir, "samples_of_interest.txt"))
 # add independent specimen file to get primary plus tumor bs ids
 tumor_ids <- read_tsv(file.path(data_dir, "independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv")) %>%
   dplyr::select(Kids_First_Biospecimen_ID) %>%
-  bind_rows(tumors_to_add) %>%
+  # bind_rows(tumors_to_add) %>%
   inner_join(opc_hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID", "sample_id", "tumor_descriptor", "pathology_diagnosis", "pathology_free_text_diagnosis", "cancer_group", "broad_histology", "molecular_subtype")]) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_tumor = Kids_First_Biospecimen_ID,
                 sample_id_tumor = sample_id)
@@ -110,6 +110,8 @@ combined_map <- combined %>%
          broad_histology, cancer_group, plot_group, molecular_subtype, broad_histology_display,
          broad_histology_hex, cancer_group_abbreviation, plot_group_hex, broad_histology_order, 
          oncoprint_group, germline_sex_estimate) %>%
+  # remove patients with no matched tumor, or patients with a metastatic secondary tumor not in CNS
+  dplyr::filter(!is.na(Kids_First_Biospecimen_ID_tumor) & !grepl("neuroblastoma, metastatic|Metastatic secondary", pathology_free_text_diagnosis)) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups.tsv"))
 
 # make sure no duplicate normal ids

@@ -59,9 +59,11 @@ hist <- read_tsv(histologies_file,show_col_types = FALSE) %>%
   filter(grepl("Other high-grade glioma", plot_group),
          grepl("wildtype", molecular_subtype))
 
-plp <- read_tsv(plp_file, show_col_types = FALSE)
+plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 tmb <- read_tsv(tmb_file,show_col_types = FALSE) %>%
   dplyr::rename("Kids_First_Biospecimen_ID" = "Tumor_Sample_Barcode")
