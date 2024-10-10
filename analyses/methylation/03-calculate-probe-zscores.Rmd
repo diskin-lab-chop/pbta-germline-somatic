@@ -61,16 +61,12 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 ```
 
 # Load files
-
 ```{r load files}
 hist <- read_tsv(hist_cohort_file)
-
-# CPGs
 cpgs <- read_lines(cpg_file)
 ```
 
 Read in germline plp files
-
 ```{r format germline data}
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
@@ -82,7 +78,6 @@ germline_sv <- read_tsv(plp_sv_file) %>%
 ```
 
 Append additional sample metadata (methylation sample id, histology & subtype) to plp dfs
-
 ```{r}
 germline <- germline %>%
   filter(Hugo_Symbol %in% cpgs) %>%
@@ -109,7 +104,6 @@ germline_sv <- germline_sv %>%
 ```
 
 Load in methyl beta values and annotation files
-
 ```{r}
 cpg_methyl <- readRDS(methyl_file)
 
@@ -119,7 +113,6 @@ methyl_annot <- read_tsv(methyl_annot_file) %>%
   distinct(Probe_ID, Hugo_Symbol, .keep_all = TRUE)
 ```
 Append probe metadata and sample histology group to methylation df
-
 ```{r}
 methyl_df <- cpg_methyl %>%
   dplyr::filter(Gene_symbol %in% c(germline$Hugo_Symbol, germline_sv$Hugo_Symbol)) %>%
@@ -132,7 +125,6 @@ methyl_df <- cpg_methyl %>%
 ```
 
 Create df and calculate probe beta value z-scores in P-LP carriers relative to 1) other samples in same histology group and 2) all other samples
-
 ```{r}
 methyl_beta_diff_df <- germline %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, 
@@ -174,86 +166,234 @@ methyl_beta_diff_df <- methyl_beta_diff_df %>%
                 beta_diff_all = beta_value_sample - mean_beta_all,
                 sample_beta_zscore_group = (beta_value_sample - mean_beta_group)/sd_beta_group,
                 sample_beta_zscore_all = (beta_value_sample - mean_beta_all)/sd_beta_all) %>%
-  dplyr::select(-sd_beta_group, -sd_beta_all)
+  dplyr::select(-sd_beta_group, -sd_beta_all) %>%
+  dplyr::mutate(methyl_status = case_when(
+    sample_beta_zscore_group >= 1 & beta_diff_group >= 0.05 ~ "hypermethylated",
+    sample_beta_zscore_group < -1 & beta_diff_group < -0.05 ~ "hypomethylated",
+    TRUE ~ "neither"
+  )) %>%
+  dplyr::mutate(Gene_Feature = case_when(
+    grepl("three_prime", Gene_Feature) ~ "3' UTR",
+    grepl("five_prime", Gene_Feature) ~ "5' UTR"
+    TRUE ~ Gene_Feature
+  ))
 ```
 
 Write results to output
-
 ```{r}
 write_tsv(methyl_beta_diff_df,
           file.path(results_dir, "pbta-germline-methylation-beta-zscores.tsv"))
 ```
 
-Print table of hypermethylated probe count by feature
-
+Generate table of hypermethylated probe count and gene feature enrichment
 ```{r}
 n_feat <- methyl_beta_diff_df %>%
   dplyr::count(Gene_Feature) %>%
   dplyr::rename("n_feat" = "n") %>%
   dplyr::mutate(n_total = sum(n_feat))
 
-methyl_beta_diff_df %>%
+hyper_enr_df <- methyl_beta_diff_df %>%
   dplyr::filter(sample_beta_zscore_group > 2,
                beta_diff_group >= .05
                ) %>%
   dplyr::count(Gene_Feature) %>%
   dplyr::mutate(n_diff = sum(n)) %>%
   left_join(n_feat) %>%
-  dplyr::mutate(enr = round((n/n_diff)/(n_feat/n_total), 2),
-                pvalue = format(phyper(n, n_diff, n_total - n_diff, n_feat,
-                                lower.tail = F), scientific = T))
+  rowwise() %>%
+  mutate(
+    Fisher_Test = list(
+      fisher.test(
+        matrix(
+          c(n, n_diff - n,  # Counts of High and the absence of High
+            n_feat - n, n_total - sum(n_feat, n_diff, n)),    # Counts of Low and the absence of Low
+          nrow = 2
+        )
+      )
+    ),
+    OR = Fisher_Test$estimate,
+    P_Value = Fisher_Test$p.value,
+    CI_lower = Fisher_Test$conf.int[1],
+    CI_upper = Fisher_Test$conf.int[2]
+  ) %>%
+  dplyr::select(-Fisher_Test) %>%
+  dplyr::mutate(type = "hypermethylated")
 ```
 
-Print table of hypomethylated probe count by feature 
-
+Generate table of hypomethylated probe count and gene feature enrichment
 ```{r}
-methyl_beta_diff_df %>%
+hypo_enr_df <- methyl_beta_diff_df %>%
   dplyr::filter(sample_beta_zscore_group < -2,
-               beta_diff_group <= -.05
+               beta_diff_group < -.05
                ) %>%
   dplyr::count(Gene_Feature) %>%
   dplyr::mutate(n_diff = sum(n)) %>%
   left_join(n_feat) %>%
-  dplyr::mutate(enr = round((n/n_diff)/(n_feat/n_total), 2),
-                pvalue = format(phyper(n, n_diff, n_total - n_diff, n_feat,
-                                lower.tail = F), scientific = T))
+  rowwise() %>%
+  mutate(
+    Fisher_Test = list(
+      fisher.test(
+        matrix(
+          c(n, n_diff - n,  # Counts of High and the absence of High
+            n_feat - n, n_total - sum(n_feat, n_diff, n)),    # Counts of Low and the absence of Low
+          nrow = 2
+        )
+      )
+    ),
+    OR = Fisher_Test$estimate,
+    P_Value = Fisher_Test$p.value,
+    CI_lower = Fisher_Test$conf.int[1],
+    CI_upper = Fisher_Test$conf.int[2]
+  ) %>%
+  dplyr::select(-Fisher_Test) %>%
+  dplyr::mutate(type = "hypomethylated")
 ```
 
 Plot number of significantly differentially methylated probes by direction and annotated gene feature
-
 ```{r}
-hyper_df <- methyl_beta_diff_df %>%
- dplyr::filter(sample_beta_zscore_group > 2,
-               beta_diff_group >= .05) %>%
-  dplyr::mutate(Gene_Feature = case_when(
-    grepl("UTR", Gene_Feature) ~ "UTR",
-    TRUE ~ Gene_Feature
+methyl_enr_df <- hyper_enr_df %>%
+  bind_rows(hypo_enr_df) %>%
+  dplyr::mutate(p_text = case_when(
+    P_Value < 0.01 ~ "*p<0.01",
+    P_Value < 0.05 ~ glue::glue("*p={round(P_Value, 2)}"),
+    TRUE ~ glue::glue("p={round(P_Value, 2)}")
   )) %>%
-  dplyr::count(Gene_Feature) %>%
-  dplyr::mutate(`Probe Group` = "P/LP hypermethylated")
+  dplyr::mutate(Gene_Feature = factor(Gene_Feature,
+                                           levels = c("promoter", "5' UTR",
+                                             "exon", "intron", 
+                                             "3' UTR"))) %>%
+  arrange(Gene_Feature)
 
-hypo_df <- methyl_beta_diff_df %>%
- dplyr::filter(sample_beta_zscore_group < -2,
-               beta_diff_group <= -.05) %>%
-  dplyr::mutate(Gene_Feature = case_when(
-    grepl("UTR", Gene_Feature) ~ "UTR",
-    TRUE ~ Gene_Feature
-  )) %>%
-  dplyr::count(Gene_Feature) %>%
-  dplyr::mutate(`Probe Group` = "P/LP hypomethylated")
+n_plot <- methyl_enr_df %>%
+  ggplot(aes(x = n, y = type, fill = type)) +
+    geom_bar(stat = "identity", color = "black",
+             show.legend = TRUE) + 
+    labs(x = "N Diff. \nMethylated Probes", y = NULL, fill = NULL) + 
+    guides(fill = guide_legend(nrow = 1)) +
+    facet_wrap(~factor(Gene_Feature), nrow = 5, scale = "fixed",
+               strip.position = "left") +
+    scale_y_discrete(labels=c("hypomethylated" = NULL, 
+                              "hypermethylated" = NULL)) +
+    theme_Publication()  +
+    scale_fill_npg() +
+    theme(plot.margin = unit(c(0,1,1,0), "lines"),
+          legend.position = "top",
+          strip.text.y.left = element_text(angle = 0)) +
+      theme(strip.placement = "outside")
 
-plot_df <- hyper_df %>%
-  bind_rows(hypo_df)
+enr_plot <- methyl_enr_df %>%
+  ggplot(aes(x = log2(OR), y = type,
+             label = p_text, color = type)) +
+  geom_point(size = 3,
+             show.legend = FALSE) + 
+  geom_errorbar(aes(xmin = log2(CI_lower), xmax = log2(CI_upper)), width = 0.2, 
+                show.legend = FALSE) +
+  geom_vline(xintercept = 0, linetype = "dashed") + 
+  geom_text(aes(x = 4), colour = "black", 
+            size = 3, fontface = 1, hjust = 0)  +
+  labs(x = "log2-Odds Ratio\n(95% CI)", y = NULL, fill = NULL) + 
+  xlim(c(-5,6)) +
+  scale_y_discrete(labels=c("hypermethylated" = NULL, 
+                            "hypomethylated" = NULL)) +
+  facet_wrap(~factor(Gene_Feature), nrow = 5, scale = "fixed",
+             strip.position = "left") +
+  theme_Publication() +
+  theme(plot.margin = unit(c(0,1,1,0), "lines"),
+        strip.background = element_blank(),
+        strip.text.y = element_blank(),
+        strip.placement = "outside") +
+  scale_color_npg()
 
-plot_df %>%
-  ggplot(aes(x = Gene_Feature, y = n, fill = `Probe Group`)) +
-  geom_bar(stat="identity", position = "dodge", color = "black") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  labs(y = "Count", x = "Gene Feature") + 
-  theme_Publication()
+ggarrange(n_plot, enr_plot, align = "h",
+          common.legend = TRUE,
+          widths = c(1.5, 1))
 
 ggsave(file.path(plot_dir, "plp-diff-probes-by-feature.pdf"),
-          width = 6, height = 3, units = "in")
+          width = 6, height = 4, units = "in")
+```
+
+Load differential expression results
+```{r}
+diff_expr_snv_df <- read_tsv(file.path(root_dir, "analyses", "two-hits",
+                             "results", "germline-somatic-expr-cpgs.tsv")) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna,
+                Hugo_Symbol, expr_zscore, plot_group_hex)
+
+diff_expr_sv_df <- read_tsv(file.path(root_dir, "analyses", "two-hits",
+                             "results", "germline-sv-somatic-expr-cpgs.tsv")) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna,
+                Hugo_Symbol, expr_zscore, plot_group_hex)
+
+diff_expr_df <- diff_expr_snv_df %>%
+  bind_rows(diff_expr_sv_df) %>%
+  distinct()
+
+methyl_expr_diff_df <- methyl_beta_diff_df %>%
+  left_join(diff_expr_df) %>%
+  write_tsv(file.path(results_dir, 
+                      "pbta-germline-methylation-beta-zscores-plus-expr.tsv"))
+```
+
+Plot expression z-scores by differential methylation status
+```{r}
+#exclude samples with evidence for promoter diff meth in both directions
+hypo_ids <- methyl_expr_diff_df %>%
+  dplyr::filter(Gene_Feature == "promoter",
+                methyl_status == "hypomethylated") %>%
+  distinct(Kids_First_Biospecimen_ID_normal) %>%
+  pull(Kids_First_Biospecimen_ID_normal)
+
+hyper_ids <- methyl_expr_diff_df %>%
+  dplyr::filter(Gene_Feature == "promoter",
+                methyl_status == "hypermethylated") %>%
+  distinct(Kids_First_Biospecimen_ID_normal) %>%
+  pull(Kids_First_Biospecimen_ID_normal)
+
+#extract all samples with promoter hyper and hypomethylation
+hyper_hypo_ids <- hypo_ids[hypo_ids %in% hyper_ids]
+
+methyl_expr_plot_df <- methyl_expr_diff_df %>%
+  dplyr::filter(Gene_Feature == "promoter",
+                !Kids_First_Biospecimen_ID_normal %in% hyper_hypo_ids) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal,
+                Hugo_Symbol, Gene_Feature,
+                beta_diff_group, sample_beta_zscore_group,
+                methyl_status, expr_zscore,
+                plot_group, plot_group_hex) %>%
+  arrange(desc(abs(sample_beta_zscore_group))) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol,
+           .keep_all = TRUE) %>%
+  dplyr::mutate(methyl_group = case_when(
+    methyl_status == "hypomethylated" & sample_beta_zscore_group < -2 ~ "<-2",
+    methyl_status == "hypomethylated" & sample_beta_zscore_group < -1 ~ "[-2, 1)",
+    methyl_status == "hypermethylated" & sample_beta_zscore_group < 2 ~ "[1, 2)",
+    methyl_status == "hypermethylated" ~ ">= 2",
+    TRUE ~ "[-1, 1)"
+  )) %>%
+  dplyr::mutate(methyl_group = fct_relevel(methyl_group,
+                                          c("<-2", "[-2, 1)",
+                                            "[-1, 1)",
+                                            "[1, 2)", ">= 2")))
+
+plot_group_palette <- methyl_expr_plot_df$plot_group_hex
+names(plot_group_palette) <- methyl_expr_plot_df$plot_group
+
+ggplot(methyl_expr_plot_df,
+                    aes(x = factor(methyl_group), y = expr_zscore)) +
+  geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+  stat_compare_means(method = "wilcox",
+                     comparisons = list(c(">= 2", "<-2"),
+                                        c(">= 2", "[-2, 1)"),
+                                        c(">= 2", "[-1, 1)"),
+                                        c(">= 2", "[1, 2)")),
+                     method.args = list(alternative = "two.sided")) +
+  labs(x = "Methyl Probe z-score", y = "TPM z-score", fill = "Histology") +
+   scale_fill_manual(values = plot_group_palette, 
+                      breaks = sort(names(plot_group_palette))) +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "expr-zscore-by-diff-meth.pdf"),
+       width = 7, height = 5)
 ```
 
 
