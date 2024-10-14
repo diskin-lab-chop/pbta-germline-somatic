@@ -292,7 +292,7 @@ enr_plot <- methyl_enr_df %>%
   geom_text(aes(x = 4), colour = "black", 
             size = 3, fontface = 1, hjust = 0)  +
   labs(x = "log2-Odds Ratio\n(95% CI)", y = NULL, fill = NULL) + 
-  xlim(c(-5,6)) +
+  xlim(c(-5,6.25)) +
   scale_y_discrete(labels=c("hypermethylated" = NULL, 
                             "hypomethylated" = NULL)) +
   facet_wrap(~factor(Gene_Feature), nrow = 5, scale = "fixed",
