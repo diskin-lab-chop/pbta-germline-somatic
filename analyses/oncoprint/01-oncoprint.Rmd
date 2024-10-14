@@ -124,8 +124,11 @@ cnv <- cnv_auto %>%
          CNV_status_somatic, ploidy)
 
 loh_gene <- read_tsv(loh_gene_file) %>%
+  dplyr::rename(Hugo_Symbol = gene,
+                Kids_First_Biospecimen_ID_normal = BS_ID,
+                Kids_First_Biospecimen_ID_tumor = BS_ID_tumor) %>%
   dplyr::filter(Hugo_Symbol %in% all_cases$Hugo_Symbol) %>%
-  dplyr::rename(gene_LOH = LOH_score) %>%
+  dplyr::rename(gene_LOH = mean_LOH_score) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
          gene_LOH)
 
