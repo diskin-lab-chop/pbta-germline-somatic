@@ -239,8 +239,11 @@ Load gene LOH data and append to `germline_somatic_cnvs_loh`
 
 ```{r get gene loh data}
 loh_gene <- read_tsv(loh_gene_file) %>%
+  dplyr::rename(Hugo_Symbol = gene,
+                Kids_First_Biospecimen_ID_normal = BS_ID,
+                Kids_First_Biospecimen_ID_tumor = BS_ID_tumor) %>%
   dplyr::filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
-  dplyr::rename(gene_LOH = LOH_score) %>%
+  dplyr::rename(gene_LOH = mean_LOH_score) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol,
          gene_LOH) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor)
