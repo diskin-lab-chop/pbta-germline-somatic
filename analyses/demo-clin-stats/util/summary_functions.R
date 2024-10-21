@@ -79,8 +79,12 @@ plp_enrichment <- function(hist, var){
       TRUE ~ OR
     )) %>%
     dplyr::mutate(CI_upper = case_when(
-      is.infinite(CI_upper) ~ 1000, 
+      is.infinite(CI_upper) ~ 10000, 
       TRUE ~ CI_upper
+    )) %>%
+    dplyr::mutate(CI_lower = case_when(
+      CI_lower == 0 ~ 0.0001, 
+      TRUE ~ CI_lower
     ))
   
   return(enr_df)
