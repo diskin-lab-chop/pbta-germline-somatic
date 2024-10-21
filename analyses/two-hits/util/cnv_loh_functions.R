@@ -13,7 +13,7 @@ add_cnvkit <- function(loh_df, cnvkit_df){
   for (i in 1:nrow(loh_df)){
     
     # extract sample and variant coordinates
-    id <- loh_df$Kisds_First_Biospecimen_ID_tumor[i]
+    id <- loh_df$Kids_First_Biospecimen_ID_tumor[i]
     variant_chr <- loh_df$chr[i]
     variant_start <- loh_df$start[i]
 
