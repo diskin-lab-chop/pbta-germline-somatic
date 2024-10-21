@@ -70,7 +70,7 @@ plp_enrichment <- function(hist, var){
     dplyr::mutate(adjusted_p = p.adjust(P_Value, method = "fdr")) %>%
     arrange(desc(OR)) %>%
     dplyr::mutate(fdr_label = case_when(
-      adjusted_p < 0.05 ~ "**",
+      adjusted_p < 0.05 ~ "*",
       TRUE ~ ""
     )) %>%
     dplyr::mutate(OR = case_when(
