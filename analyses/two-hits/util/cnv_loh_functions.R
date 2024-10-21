@@ -12,15 +12,16 @@ add_cnvkit <- function(loh_df, cnvkit_df){
   # loop through loh_df rows to add cnvkit data
   for (i in 1:nrow(loh_df)){
     
-    # extract sample and gene IDs
+    # extract sample and variant coordinates
     id <- loh_df$Kids_First_Biospecimen_ID_tumor[i]
-    gene_symbol <- loh_df$Hugo_Symbol[i]
-    
-    # subset cnvkit for sample and gene
+    variant_chr <- loh_df$chr[i]
+    variant_start <- loh_df$start[i]
+
+    # subset cnvkit for sample and position
     cnvkit_filtered <- cnvkit_df %>%
       dplyr::filter(ID == id,
-                    grepl(glue::glue(",{gene_symbol},"), gene)) %>%
-      distinct()
+                    chromosome == variant_chr,
+                    variant_start > start & variant_start < end)
     
     # add cnvkit data
     if (nrow(cnvkit_filtered) > 0){
