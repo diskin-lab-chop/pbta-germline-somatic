@@ -40,6 +40,8 @@ if (!dir.exists(results_dir)) {
 
 Set file paths
 ```{r set paths}
+opc_histologies_file <- file.path(data_dir, "histologies.tsv")
+
 histologies_file <- file.path(root_dir, "analyses", 
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -55,17 +57,27 @@ plp_sv_file <- file.path(data_dir,
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
+survival_file <- file.path(input_dir, "cbtn-all-survival-09122024.txt")
+
 output_histology <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 ```
 
 Import histologies, plp, and cpg files
 ```{r read files, echo=FALSE}
-hist <- read_tsv(histologies_file)
+opc_hist <- read_tsv(opc_histologies_file)
+
+hist <- read_tsv(histologies_file) %>%
+  left_join(opc_hist %>%
+              dplyr::select(Kids_First_Participant_ID,
+                            cohort_participant_id)) %>%
+  distinct()
 
 plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
-  bind_rows(read_tsv(plp_lowVAF_file))
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
-plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE)
+plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
+    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs <- read_lines(cpg_file)
 
@@ -116,20 +128,61 @@ hist <- hist %>%
   ))
 ```
 
+```{r}
+survival_df <- read_tsv(survival_file) 
+
+survival_to_append <- survival_df %>%
+  arrange(desc(age_at_event_days)) %>%
+  distinct(cbtn_subject_id, .keep_all = TRUE) %>%
+  dplyr::rename(cohort_participant_id = cbtn_subject_id,
+                OS_days = overall_survival,
+                EFS_days = event_free_survival,
+                OS_status = last_known_clinical_status,
+                EFS_event_type = event_type) %>%
+  dplyr::mutate(OS_days = as.numeric(OS_days),
+                EFS_days = as.numeric(EFS_days)) %>%
+  dplyr::select(-age_at_event_days,
+                -clinical_status_at_event)
+
+pts_w_event <- survival_df %>%
+  dplyr::filter(!event_type %in% c("Initial CNS Tumor",
+                                  "Not Reported", "Unavailable"),
+                !clinical_status_at_event %in% c("Deceased-due to other causes",
+                                                                            "Deceased-due to unknown causes",
+                                                                            "Deceased-causes unavailable")) %>%
+  pull(cbtn_subject_id)
+
+hist <- hist %>%
+  dplyr::select(-OS_days, -OS_status,
+                -EFS_days, -EFS_event_type) %>%
+  left_join(survival_to_append) %>%
+  mutate(OS_years = OS_days/365.25,
+         EFS_years = EFS_days/365.25) %>%
+  dplyr::mutate(OS_status = case_when(
+    grepl("Deceased", OS_status) ~ "DECEASED",
+    OS_status == "Alive" ~ "LIVING",
+    TRUE ~ NA_character_
+  )) %>%
+  dplyr::mutate(EFS_status = case_when(
+    cohort_participant_id %in% pts_w_event ~ "EVENT",
+    !is.na(EFS_event_type) ~ "NO EVENT",
+    TRUE ~ NA_character_
+  ))
+```
+
 We will define `EFS_status` as "NO EVENT" if `EFS_event_type` has values "Not Applicable" or "Not Reported", and as "EVENT" in all other cases. 
 
 ```{r}
-
-hist <- hist %>%
-  mutate(EFS_days = as.numeric(EFS_days),
-         OS_days = as.numeric(OS_days)) %>%
-  mutate(OS_years = OS_days/365.25,
-         EFS_years = EFS_days/365.25) %>%
-  dplyr::mutate(EFS_status = case_when(
-    EFS_event_type %in% c("Not Applicable", "Not Reported") ~ "NO EVENT",
-    !is.na(EFS_event_type) ~ "EVENT",
-    TRUE ~ NA_character_
-  ))
+# hist <- hist %>%
+#   mutate(EFS_days = as.numeric(EFS_days),
+#          OS_days = as.numeric(OS_days)) %>%
+#   mutate(OS_years = OS_days/365.25,
+#          EFS_years = EFS_days/365.25) %>%
+#   dplyr::mutate(EFS_status = case_when(
+#     EFS_event_type %in% c("Not Applicable", "Not Reported") ~ "NO EVENT",
+#     !is.na(EFS_event_type) ~ "EVENT",
+#     TRUE ~ NA_character_
+#   ))
 
 # Save output
 write_tsv(hist,

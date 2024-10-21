@@ -211,7 +211,7 @@ Interaction OS model:
 
 ```{r coxph int OS repair plp}  
 int_os_model <- fit_save_model(hgg_hist,
-                             "age_at_diagnosis_years+molecular_subtype*MMR_variant+molecular_subtype*brca_variant",
+                             "extent_of_tumor_resection+age_at_diagnosis_years+molecular_subtype*MMR_variant+molecular_subtype*brca_variant",
                                  file.path(results_dir, "coxph_int_hgg_OS_subtype_age_repairPLP.RDS"),
                                  "multivariate",
                                  years_col = "OS_years",
@@ -230,7 +230,7 @@ Additive OS model:
 
 ```{r coxph add OS repair plp}
 add_os_model <- fit_save_model(hgg_hist,
-                             "molecular_subtype+age_at_diagnosis_years+MMR_variant+brca_variant",
+                             "extent_of_tumor_resection+molecular_subtype+age_at_diagnosis_years+MMR_variant+brca_variant",
                                  file.path(results_dir, "coxph_add_hgg_OS_subtype_age_repairPLP.RDS"),
                                  "multivariate",
                                  years_col = "OS_years",
@@ -250,7 +250,7 @@ Interaction EFS model:
 
 ```{r coxph int EFS repair plp}
 int_efs_model <- fit_save_model(hgg_hist,
-                             "age_at_diagnosis_years+molecular_subtype*MMR_variant+molecular_subtype*brca_variant",
+                             "extent_of_tumor_resection+age_at_diagnosis_years+molecular_subtype*MMR_variant+molecular_subtype*brca_variant",
                              file.path(results_dir, "coxph_int_hgg_EFS_subtype_age_repairPLP.RDS"),
                              "multivariate",
                              years_col = "EFS_years",
@@ -270,7 +270,7 @@ Additive EFS model:
 
 ```{r coxph add EFS repair plp}
 add_efs_model <- fit_save_model(hgg_hist,
-                             "molecular_subtype+age_at_diagnosis_years+MMR_variant+brca_variant",
+                             "extent_of_tumor_resection+molecular_subtype+age_at_diagnosis_years+MMR_variant+brca_variant",
                              file.path(results_dir, "coxph_add_hgg_EFS_subtype_age_repairPLP.RDS"),
                              "multivariate",
                              years_col = "EFS_years",

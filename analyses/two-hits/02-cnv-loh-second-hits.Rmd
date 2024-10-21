@@ -68,16 +68,18 @@ other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "
 Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add histology
 
 ```{r get all matched tumors}
+hist <- read_tsv(histologies_file)
+
 # Load abridged P-LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep)
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 
 germline_sv <- read_tsv(plp_sv_file) %>%
-  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg)
-
-hist <- read_tsv(histologies_file)
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
+  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 # CPGs
 cpgs <- read_lines(cpg_file)
