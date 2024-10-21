@@ -128,6 +128,7 @@ bm <- getBM(
 bm <- bm %>%
   filter(transcript_is_canonical == 1)
 
+# add canonical yes/no to annot df
 annot <- annot %>%
   dplyr::mutate(canonical = case_when(
     transcript_id %in% bm$ensembl_transcript_id ~ "Yes",
@@ -148,6 +149,7 @@ promoter_annot <- annot %>%
 promoter_methyl <- promoter_methyl %>%
   left_join(promoter_annot[,c("Probe_ID", "Gene_symbol")])
 
+# calculate mean probe beta value z-scores by plot group
 promoter_methyl_df <- promoter_methyl %>%
   gather(key = "Kids_First_Biospecimen_ID_methyl", value = "beta_value", -Probe_ID, -Gene_symbol) %>%
   group_by(Kids_First_Biospecimen_ID_methyl, Gene_symbol) %>%
@@ -157,11 +159,13 @@ promoter_methyl_df <- promoter_methyl %>%
   group_by(Gene_symbol, plot_group) %>%
   dplyr::mutate(z_score = scale(mean_beta_value))
 
+# convert to matrix
 promoter_zscore_mat <- promoter_methyl_df %>%
   ungroup() %>%
   dplyr::select(-plot_group, -mean_beta_value) %>%
   spread(Kids_First_Biospecimen_ID_methyl, z_score)
 
+# save matrix
 saveRDS(promoter_zscore_mat, 
         file.path(results_dir, 
                   "promoter-methyl-zscores.rds"))
@@ -186,6 +190,7 @@ gene_annot <- annot %>%
 gene_methyl <- gene_methyl %>%
   left_join(gene_annot[,c("Probe_ID", "Gene_symbol")])
 
+# calculate mean gene body beta value z-scores by plot group
 gene_methyl_df <- gene_methyl %>%
   gather(key = "Kids_First_Biospecimen_ID_methyl", value = "beta_value", -Probe_ID, -Gene_symbol) %>%
   group_by(Kids_First_Biospecimen_ID_methyl, Gene_symbol) %>%
@@ -195,7 +200,7 @@ gene_methyl_df <- gene_methyl %>%
   group_by(Gene_symbol, plot_group) %>%
   dplyr::mutate(z_score = scale(mean_beta_value))
 
-
+# convert to matrix
 gene_zscore_mat <- gene_methyl_df %>%
   ungroup() %>%
   dplyr::select(-plot_group, -mean_beta_value) %>%
@@ -204,8 +209,7 @@ gene_zscore_mat <- gene_methyl_df %>%
 saveRDS(gene_zscore_mat, 
         file.path(results_dir, "gene-methyl-zscores.rds"))
 
-
-
+# extract H3-wt HGG ids and obtain beta values
 hgg_ids <- hist %>%
   dplyr::filter(plot_group == "Other high-grade glioma",
                 grepl("H3 wildtype", molecular_subtype)) %>%
@@ -213,6 +217,7 @@ hgg_ids <- hist %>%
 
 hgg_methyl <- methyl[,colnames(methyl) %in% c("Probe_ID", hgg_ids)]
 
+# Save H3-wt HGG beta value matrix
 write_tsv(hgg_methyl, 
         file.path(results_dir, 
                   "hgg-methyl-beta-value.tsv.gz"))
@@ -225,6 +230,7 @@ plp <- read_tsv(plp_file) %>%
 
 plp_sv <- read_tsv(plp_sv_file)
 
+# create matrix of CPG-annotated probe beta values
 cpg_methyl <- methyl %>%
   dplyr::filter(Probe_ID %in% annot$Probe_ID) %>%
   left_join(annot[,c("Probe_ID", "Gene_symbol", "Gene_Feature")]) %>%
@@ -235,6 +241,7 @@ saveRDS(cpg_methyl,
         file.path(results_dir,
                   "cpg-methyl-beta-values.rds"))
 
+# save annotation df with canonical status
 write_tsv(annot, 
           file.path(results_dir,
                     "annot-with-canonical.tsv"))
