@@ -257,7 +257,9 @@ germline_somatic_cnvs_loh_gene <- germline_somatic_cnvs_loh %>%
   left_join(loh_gene)
 
 germline_sv_somatic_cnvs_loh_gene <- germline_sv_somatic_cnvs %>%
-  left_join(loh_gene)
+  left_join(loh_gene) %>%
+  dplyr::rename(chr = Chromosome,
+                start = Start)
 
 germline_sv_somatic_cnvs_loh_gene <- add_cnvkit(germline_sv_somatic_cnvs_loh_gene,
                                                 cnvkit)
