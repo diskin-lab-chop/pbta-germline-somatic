@@ -320,7 +320,7 @@ cnv_loh_plot_df %>%
                                         c("gain", "neutral")),
                      method.args = list(alternative = "greater")) + 
   geom_hline(yintercept = 0.2, linetype = "dashed", color = "gray") + 
-  labs(x = "Germline P/LP variant", y = "abs(variant LOH score)", color = "Histology") +
+  labs(x = "Somatic copy number status", y = "abs(variant LOH score)", color = "Histology") +
   ylim(c(0,1)) +
   theme_Publication()
 
@@ -343,7 +343,7 @@ cnv_loh_plot_df %>%
                                         c("gain", "neutral")),
                      method.args = list(alternative = "greater")) + 
   geom_hline(yintercept = 0.2, linetype = "dashed", color = "gray") + 
-  labs(x = "Germline P/LP variant", y = "gene LOH score", color = "Histology") +
+  labs(x = "Somatic copy number status", y = "gene LOH score", color = "Histology") +
   ylim(c(0,0.75)) +
   theme_Publication()
 
