@@ -143,7 +143,7 @@ methyl %>%
   theme_Publication()
 
 ggsave(file.path(plot_dir, "mean-sample-methyl-beta-by-histology-plp.pdf"),
-       width = 7, height = 8, units = "in")
+       width = 8, height = 8, units = "in")
 ```
 Extract histology-gene pairs to perform pairwise comparisons of beta values
 
@@ -190,7 +190,7 @@ methyl %>%
   labs(x = NULL, y = "Mean beta value", fill = "Histology") +
   ylim(c(0.35,0.7)) +
   facet_wrap(~gene_group, nrow = 4,
-             labeller = labeller(gene_group = label_wrap_gen(18))) + 
+             labeller = labeller(gene_group = label_wrap_gen(16))) + 
    scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
   theme_Publication()
@@ -252,7 +252,7 @@ for (each in names(repair_list)){
 
 ggsave(file.path(plot_dir, 
                  glue::glue("global-beta-value-{each}-plp-vs-other.pdf")),
-       height = 8, width = 9, units = "in")
+       height = 9, width = 9, units = "in")
   
 }
 ```
