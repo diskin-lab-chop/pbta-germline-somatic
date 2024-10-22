@@ -37,8 +37,8 @@ summarize_count <- function(hist, var1, var2){
 
 plp_enrichment <- function(hist, var){
   
-  total_plp <- sum(hist$cpgPLP_status == "cpgPLP")
-  total_no_plp <- sum(hist$cpgPLP_status == "no_cpgPLP")
+  total_plp <- sum(hist$cpgPLP_status == "CPG P-LP")
+  total_no_plp <- sum(hist$cpgPLP_status == "No CPG P-LP")
   
   enr_df <- hist %>%
     ## group by junction and calculate means
@@ -53,8 +53,8 @@ plp_enrichment <- function(hist, var){
       Fisher_Test = list(
         fisher.test(
           matrix(
-            c(cpgPLP, total_plp - cpgPLP,  # Counts of High and the absence of High
-              no_cpgPLP, total_no_plp - no_cpgPLP),    # Counts of Low and the absence of Low
+            c(`CPG P-LP`, total_plp - `CPG P-LP`,  # Counts of High and the absence of High
+              `No CPG P-LP`, total_no_plp - `No CPG P-LP`),    # Counts of Low and the absence of Low
             nrow = 2
           )
         )
@@ -64,7 +64,7 @@ plp_enrichment <- function(hist, var){
       CI_lower = Fisher_Test$conf.int[1],
       CI_upper = Fisher_Test$conf.int[2]
     ) %>%
-    select(!!rlang::ensym(var), cpgPLP, no_cpgPLP, OR, P_Value,
+    select(!!rlang::ensym(var), `CPG P-LP`, `No CPG P-LP`, OR, P_Value,
            CI_lower, CI_upper) %>%
     ungroup() %>%
     dplyr::mutate(adjusted_p = p.adjust(P_Value, method = "fdr")) %>%
