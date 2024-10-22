@@ -64,6 +64,7 @@ Wrangle data, add histology annotation to methyl df
 hist <- read_tsv(hist_file)
 
 methyl <- read_tsv(methyl_file) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_methyl %in% hist$Kids_First_Biospecimen_ID_methyl) %>%
   left_join(hist %>% dplyr::select("Kids_First_Biospecimen_ID_methyl", 
                                    "Kids_First_Biospecimen_ID_normal", 
                                    "Kids_First_Biospecimen_ID_tumor", 
@@ -242,7 +243,7 @@ for (each in names(repair_list)){
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) +
-    labs(x = glue::glue("{each} gene P/LP variant"), y = "Mean beta value z-score", fill = "Histology") +
+    labs(x = glue::glue("{each} gene P-LP variant"), y = "Mean beta value z-score", fill = "Histology") +
     ylim(c(0.35,.7)) +
      scale_fill_manual(values = plot_group_palette, 
                         breaks = sort(names(plot_group_palette))) +
@@ -277,7 +278,7 @@ methyl %>%
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("Yes", "No")),
                      method.args = list(alternative = "two.sided")) +
-  labs(x = glue::glue("MMR gene P/LP variant"), y = "Mean beta value", fill = "Histology") +
+  labs(x = glue::glue("MMR gene P-LP variant"), y = "Mean beta value", fill = "Histology") +
   ylim(c(0.35,.65)) +
    scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
@@ -307,7 +308,8 @@ methyl %>%
                    geom = "smooth", colour = "red",
                    fill = "pink", linetype="dashed") +
        labs(x = "Mean methylation beta value",
-            y = "log10-Tumor Mutation Burden") + 
+            y = "log10-Tumor Mutation Burden",
+            title = "HGG, H3 wildtype") + 
        stat_cor(method = "pearson",
                 label.x = 0.4, label.y = 4, size = 5) +
        theme_Publication()
@@ -324,7 +326,8 @@ methyl %>%
                    geom = "smooth", colour = "red",
                    fill = "pink", linetype="dashed") +
        labs(x = "Mean methylation beta value",
-            y = "log10-Tumor Mutation Burden") + 
+            y = "log10-Tumor Mutation Burden",
+            title = "HGG, other subtypes") + 
        stat_cor(method = "pearson",
                 label.x = 0.4, label.y = 4, size = 5) +
        theme_Publication()
