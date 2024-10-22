@@ -412,7 +412,7 @@ loh_gene %>%
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("Yes", "No")),
                      method.args = list(alternative = "greater")) + 
-  labs(x = "Germline P/LP variant", y = "gene LOH score",
+  labs(x = "Germline P-LP variant", y = "gene LOH score",
        fill = "Histology") +
   ylim(c(0,0.75)) +
   scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
