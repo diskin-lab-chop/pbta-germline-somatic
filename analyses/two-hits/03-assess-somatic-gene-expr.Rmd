@@ -343,7 +343,7 @@ z_scored_expression %>%
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "two.sided")) + 
-    labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
+    labs(x = "Germline P-LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3.5,5.75)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
