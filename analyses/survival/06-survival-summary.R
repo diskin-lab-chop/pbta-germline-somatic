@@ -62,6 +62,7 @@ group_df <- subtype_df %>%
 
 # Create empty df to store survival model summary stats
 os_stats <- data.frame(group = c(group_df$group),
+                       group_n = NA_integer_,
                        type = rep("Overall survival", length(group_df$group)),
                        median_surv_years_plp = NA_integer_,
                        median_surv_years_no_plp = NA_integer_, 
@@ -71,6 +72,7 @@ os_stats <- data.frame(group = c(group_df$group),
                        CI_upper = NA_integer_)
                        
 efs_stats <- data.frame(group = c(group_df$group),
+                        group_n = NA_integer_,
                         type = rep("Event-free survival", length(group_df$group)),
                         median_surv_years_plp = NA_integer_,
                         median_surv_years_no_plp = NA_integer_, 
@@ -103,6 +105,8 @@ for (i in 1:nrow(group_df)){
   os_df <- broom::tidy(survival_os_plp)
   os_ci_df <- summary(survival_os_plp)$conf.int
   
+  os_stats[os_stats$group == group_df$group[i],]$group_n <- sum(summary(km_os_plp$model)$table[,"records"])
+  
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_os_plp$model)$table[,"median"][2]/365.25
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_os_plp$model)$table[,"median"][1]/365.25
   
@@ -132,6 +136,9 @@ for (i in 1:nrow(group_df)){
   efs_df <- broom::tidy(survival_efs_plp)
   efs_ci_df <- summary(survival_efs_plp)$conf.int
   
+  # take Ns from OS result so that Ns match
+  efs_stats[efs_stats$group == group_df$group[i],]$group_n <- sum(summary(km_os_plp$model)$table[,"records"])
+  
   #add median EFS
   efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_efs_plp$model)$table[,"median"][2]/365.25
   efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_efs_plp$model)$table[,"median"][1]/365.25
@@ -144,6 +151,7 @@ for (i in 1:nrow(group_df)){
   efs_stats[efs_stats$group == group_df$group[i],]$CI_upper <- efs_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
   
 }
+
 
 # Some models have massively inflated p-values driven by single events; set these to NA
 os_stats[abs(log10(os_stats$HR)) > 3 & !is.na(os_stats$HR), c("HR", "p", "CI_lower", "CI_upper")] <- NA
@@ -174,7 +182,6 @@ group_order <- c("Atypical Teratoid Rhabdoid Tumor",
                  "DIPG or DMG",
                  "Ependymoma",
                  "EPN, PF A",
-                 "EPN, ST ZFTA",
                  "High-grade glioma",
                  "HGG, H3 WT",
                  "Low-grade glioma",
@@ -191,10 +198,15 @@ group_order <- c("Atypical Teratoid Rhabdoid Tumor",
                  "GNG/GNT, Other alteration",
                  "Neurofibroma plexiform")
 
-survival_stats <- survival_stats %>% 
+survival_stats <- survival_stats %>%
   dplyr::filter(group %in% group_order) %>%
-  dplyr::mutate(group = fct_relevel(group, 
-                                    rev(group_order)))
+  dplyr::mutate(group = fct_relevel(group,
+                                    rev(group_order))) %>%
+  arrange(group) %>%
+  dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
+  dplyr::mutate(group_plus_n = fct_relevel(group_plus_n, 
+                                           unique(group_plus_n)))
+
 
 pdf(NULL)
 
@@ -205,14 +217,14 @@ survival_stats %>%
     TRUE ~ CI_upper
   )) %>%
   
-  ggplot(aes(x = log10(HR), y = group,
+  ggplot(aes(x = log10(HR), y = group_plus_n,
              label = p_label)) +
   geom_point(size = 3, color = "#00A087FF",
              show.legend = FALSE) + 
   geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
   geom_text(x = 1, hjust = 0, size = 3.5, fontface = 2) +
-  labs(x = "log10-P/LP carrier hazard ratio (95% CI)", y = NULL) + 
+  labs(x = "log10-P-LP carrier hazard ratio (95% CI)", y = NULL) + 
   xlim(-2, 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   facet_wrap(~type, nrow = 1) +
