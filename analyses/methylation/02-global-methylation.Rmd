@@ -288,7 +288,8 @@ ggsave(file.path(plot_dir,
                  "global-beta-value-hgg-h3wt-mmr-plp-vs-other.pdf"),
        height = 4, width = 4, units = "in")
 ```
-Determine if tumor mutation burden is correlated with global methylation levels in H3 wildtype HGG and other HGG
+
+Determine if tumor mutation burden is correlated with global methylation levels in H3 wildtype HGG and other HGG/DMG
 
 ```{r}
 tmb <- read_tsv(tmb_file) %>%
@@ -318,7 +319,7 @@ ggsave(file.path(plot_dir, "tmb-vs-mean-beta-methylation-hgg-h3-wt.pdf"),
        width = 6, height = 5)
 
 methyl %>%
-  dplyr::filter(plot_group == "Other high-grade glioma",
+  dplyr::filter(plot_group %in% c("Other high-grade glioma", "DIPG or DMG"),
                 !grepl("H3 wildtype", molecular_subtype)) %>%
   ggplot(aes(x = mean_beta_value, y = log10(tmb))) +
        geom_point() +
@@ -327,7 +328,7 @@ methyl %>%
                    fill = "pink", linetype="dashed") +
        labs(x = "Mean methylation beta value",
             y = "log10-Tumor Mutation Burden",
-            title = "HGG, other subtypes") + 
+            title = "Other HGG and DMG") + 
        stat_cor(method = "pearson",
                 label.x = 0.4, label.y = 4, size = 5) +
        theme_Publication()
@@ -335,7 +336,7 @@ methyl %>%
 ggsave(file.path(plot_dir, "tmb-vs-mean-beta-methylation-hgg-h3-mutant.pdf"),
        width = 6, height = 5)
 ```
-Calcualte pearson correlation coefficients between TMB and global methylation in each tumor histology
+Calculate pearson correlation coefficients between TMB and global methylation in each tumor histology
 
 ```{r}
 cor_df <- data.frame(plot_group = unique(methyl$plot_group),
