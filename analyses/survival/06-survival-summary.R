@@ -36,7 +36,7 @@ hist <- read_tsv(hist_file)
 
 # Create subtype df of molecular subgroup names and folder names
 subtype_df <- hist %>%
-  count(mol_sub_group, plot_group) %>%
+  dplyr::count(mol_sub_group, plot_group) %>%
   filter(n >=15 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
   dplyr::mutate(hist = unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[1])),
                 subtype = case_when(
@@ -63,22 +63,29 @@ group_df <- subtype_df %>%
 # Create empty df to store survival model summary stats
 os_stats <- data.frame(group = c(group_df$group),
                        type = rep("Overall survival", length(group_df$group)),
-                       HR = rep(0, length(group_df$group)),
-                       p = rep(0, length(group_df$group)),
-                       CI_lower = rep(0, length(group_df$group)),
-                       CI_upper = rep(0, length(group_df$group)))
+                       median_surv_years_plp = NA_integer_,
+                       median_surv_years_no_plp = NA_integer_, 
+                       HR = NA_integer_,
+                       p = NA_integer_,
+                       CI_lower = NA_integer_,
+                       CI_upper = NA_integer_)
                        
 efs_stats <- data.frame(group = c(group_df$group),
                         type = rep("Event-free survival", length(group_df$group)),
-                        HR = rep(0, length(group_df$group)),
-                        p = rep(0, length(group_df$group)),
-                        CI_lower = rep(0, length(group_df$group)),
-                        CI_upper = rep(0, length(group_df$group)))
+                        median_surv_years_plp = NA_integer_,
+                        median_surv_years_no_plp = NA_integer_, 
+                        HR = NA_integer_,
+                        p = NA_integer_,
+                        CI_lower = NA_integer_,
+                        CI_upper = NA_integer_)
 
 # Loop through histologies and molecular subtypes and extract OS and EFS hazard ratios and associated p-values for CPG P-LP carriers vs. non-carriers
 for (i in 1:nrow(group_df)){
   
   input_dir <- file.path(analysis_dir, "results", group_df$hist[i])
+  
+  km_os_plp <- read_rds(file.path(input_dir,
+                                  glue::glue("logrank_{group_df$subtype[i]}_OS_cpgPLPstatus.RDS")))
   
   if (grepl("Low-grade glioma|LGG", group_df$group[i])){
     survival_os_plp <- read_rds(
@@ -96,6 +103,9 @@ for (i in 1:nrow(group_df)){
   os_df <- broom::tidy(survival_os_plp)
   os_ci_df <- summary(survival_os_plp)$conf.int
   
+  os_stats[os_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_os_plp$model)$table[,"median"][2]/365.25
+  os_stats[os_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_os_plp$model)$table[,"median"][1]/365.25
+  
   # extract OS HRs and p-values
   os_stats[os_stats$group == group_df$group[i],]$HR <- exp(os_df$estimate[os_df$term == "cpgPLP_statuscpgPLP"])
   os_stats[os_stats$group == group_df$group[i],]$p <- os_df$p.value[os_df$term == "cpgPLP_statuscpgPLP"]
@@ -103,6 +113,9 @@ for (i in 1:nrow(group_df)){
   os_stats[os_stats$group == group_df$group[i],]$CI_lower <- os_ci_df["cpgPLP_statuscpgPLP", "lower .95"]
   os_stats[os_stats$group == group_df$group[i],]$CI_upper <- os_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
   
+  
+  km_efs_plp <- read_rds(file.path(input_dir,
+                                  glue::glue("logrank_{group_df$subtype[i]}_EFS_cpgPLPstatus.RDS")))
   
   if (grepl("Low-grade glioma|LGG", group_df$group[i])){
     survival_efs_plp <- read_rds(
@@ -118,6 +131,10 @@ for (i in 1:nrow(group_df)){
   
   efs_df <- broom::tidy(survival_efs_plp)
   efs_ci_df <- summary(survival_efs_plp)$conf.int
+  
+  #add median EFS
+  efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_efs_plp$model)$table[,"median"][2]/365.25
+  efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_efs_plp$model)$table[,"median"][1]/365.25
   
   # extract EFS HRs and p-values
   efs_stats[efs_stats$group == group_df$group[i],]$HR <- exp(efs_df$estimate[efs_df$term == "cpgPLP_statuscpgPLP"])
