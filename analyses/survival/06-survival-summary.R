@@ -26,17 +26,19 @@ hist_file <- file.path(input_dir,
 hist_df <- data.frame(group = c("Atypical Teratoid Rhabdoid Tumor", "DIPG or DMG", 
                                 "High-grade glioma", 
                                 "Ependymoma", "Mixed neuronal-glial tumor", 
-                                "Low-grade glioma", "Medulloblastoma", "Meningioma", 
-                                "Neurofibroma plexiform"),
+                                "Low-grade glioma", "Medulloblastoma", "Meningioma"),
                       hist = c("ATRT", "DMG", "HGG", "EPN", 
-                               "GNG-GNT", "LGG", "MB", "MNG", "NFP"))
+                               "GNG-GNT", "LGG", "MB", "MNG"))
 
 # Load ancestry file
 hist <- read_tsv(hist_file)
 
 # Create subtype df of molecular subgroup names and folder names
 subtype_df <- hist %>%
+  # only retain patients with survival data
+  dplyr::filter(!is.na(EFS_days) | !is.na(OS_days)) %>%
   dplyr::count(mol_sub_group, plot_group) %>%
+  # filter for groups with >=15 pts
   filter(n >=15 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
   dplyr::mutate(hist = unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[1])),
                 subtype = case_when(
@@ -105,7 +107,7 @@ for (i in 1:nrow(group_df)){
   os_df <- broom::tidy(survival_os_plp)
   os_ci_df <- summary(survival_os_plp)$conf.int
   
-  os_stats[os_stats$group == group_df$group[i],]$group_n <- sum(summary(km_os_plp$model)$table[,"records"])
+  os_n <- sum(summary(km_os_plp$model)$table[,"records"])
   
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_os_plp$model)$table[,"median"][2]/365.25
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_os_plp$model)$table[,"median"][1]/365.25
@@ -137,7 +139,7 @@ for (i in 1:nrow(group_df)){
   efs_ci_df <- summary(survival_efs_plp)$conf.int
   
   # take Ns from OS result so that Ns match
-  efs_stats[efs_stats$group == group_df$group[i],]$group_n <- sum(summary(km_os_plp$model)$table[,"records"])
+  efs_n <- sum(summary(km_os_plp$model)$table[,"records"])
   
   #add median EFS
   efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_efs_plp$model)$table[,"median"][2]/365.25
@@ -149,6 +151,10 @@ for (i in 1:nrow(group_df)){
   
   efs_stats[efs_stats$group == group_df$group[i],]$CI_lower <- efs_ci_df["cpgPLP_statuscpgPLP", "lower .95"]
   efs_stats[efs_stats$group == group_df$group[i],]$CI_upper <- efs_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
+  
+  # take Ns as the largest value in OS or EFS survival models 
+  os_stats[os_stats$group == group_df$group[i],]$group_n <- max(c(os_n, efs_n))
+  efs_stats[efs_stats$group == group_df$group[i],]$group_n <- max(c(os_n, efs_n))
   
 }
 
@@ -194,15 +200,14 @@ group_order <- c("Atypical Teratoid Rhabdoid Tumor",
                  "MB, SHH",
                  "Meningioma",
                  "Mixed neuronal-glial tumor",
-                 "GNG/GNT, BRAF V600E",
-                 "GNG/GNT, Other alteration",
-                 "Neurofibroma plexiform")
+                 "GNG/GNT, Other alteration")
 
 survival_stats <- survival_stats %>%
   dplyr::filter(group %in% group_order) %>%
   dplyr::mutate(group = fct_relevel(group,
                                     rev(group_order))) %>%
   arrange(group) %>%
+  # merge group + Ns for plotting labels
   dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
   dplyr::mutate(group_plus_n = fct_relevel(group_plus_n, 
                                            unique(group_plus_n)))
