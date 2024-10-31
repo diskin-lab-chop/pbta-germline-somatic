@@ -90,8 +90,8 @@ cpg_bs <- all_plp %>%
 # Append CPG PLP status and TMB data to `hist`
 hist <- hist %>%
   dplyr::mutate(cpgPLP_status = case_when(
-    Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "cpgPLP",
-    !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "no_cpgPLP"
+    Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "CPG P-LP",
+    !Kids_First_Biospecimen_ID_normal %in% cpg_bs ~ "No CPG P-LP"
   )) %>%
   left_join(tmb[,c("Kids_First_Biospecimen_ID_tumor", "tmb")], by = "Kids_First_Biospecimen_ID_tumor")
 
@@ -149,14 +149,14 @@ demo_path <- sex %>%
   column_to_rownames("cpgPLP_status") %>%
   t() %>%
   as.data.frame() %>%
-  dplyr::mutate(perc_cpgPLP = round(cpgPLP/sum(hist$cpgPLP_status == "cpgPLP")*100, 1),
-                perc_no_cpgPLP = round(no_cpgPLP/sum(hist$cpgPLP_status == "no_cpgPLP")*100, 1)) %>%
-  dplyr::mutate(cpgPLP = glue::glue("{cpgPLP} ({perc_cpgPLP}%)"),
-                no_cpgPLP = glue::glue("{no_cpgPLP} ({perc_no_cpgPLP}%)")) %>%
+  dplyr::mutate(perc_cpgPLP = round(`CPG P-LP`/sum(hist$cpgPLP_status == "CPG P-LP")*100, 1),
+                perc_no_cpgPLP = round(`No CPG P-LP`/sum(hist$cpgPLP_status == "No CPG P-LP")*100, 1)) %>%
+  dplyr::mutate(`CPG P-LP` = glue::glue("{`CPG P-LP`} ({perc_cpgPLP}%)"),
+                `No CPG P-LP` = glue::glue("{`No CPG P-LP`} ({perc_no_cpgPLP}%)")) %>%
   dplyr::select(-perc_cpgPLP, -perc_no_cpgPLP) %>%
-  dplyr::mutate(cpgPLP = case_when(
-    grepl("NA", cpgPLP) ~ "0 (0%)",
-    TRUE ~ cpgPLP
+  dplyr::mutate(`CPG P-LP` = case_when(
+    grepl("NA", `CPG P-LP`) ~ "0 (0%)",
+    TRUE ~ `CPG P-LP`
   ))
   
 # Calculate median survival and tmb for each group
@@ -169,8 +169,8 @@ clin <- hist %>%
   column_to_rownames("cpgPLP_status") %>%
   t() %>%
   as.data.frame() %>%
-  dplyr::mutate(cpgPLP = as.character(cpgPLP),
-                no_cpgPLP = as.character(no_cpgPLP))
+  dplyr::mutate(`CPG P-LP` = as.character(`CPG P-LP`),
+                `No CPG P-LP` = as.character(`No CPG P-LP`))
 
 # Merge stats and save
 stats <- freq %>%
@@ -198,17 +198,17 @@ ethnicity_p <- fisher.test(table(hist$ethnicity, hist$cpgPLP_status))$p.value
 # compute p-value by Monte Carlo simulation here due to large table size
 group_p <- fisher.test(table(hist$plot_group, hist$cpgPLP_status), simulate.p.value = TRUE)$p.value
 
-age_p <- wilcox.test(as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "cpgPLP"]),
-                     as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "no_cpgPLP"]))$p.value
+age_p <- wilcox.test(as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "CPG P-LP"]),
+                     as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "No CPG P-LP"]))$p.value
 
-os_p <- wilcox.test(hist$OS_years[hist$cpgPLP_status == "cpgPLP"],
-          hist$OS_years[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+os_p <- wilcox.test(hist$OS_years[hist$cpgPLP_status == "CPG P-LP"],
+          hist$OS_years[hist$cpgPLP_status == "No CPG P-LP"])$p.value
 
-efs_p <- wilcox.test(hist$EFS_years[hist$cpgPLP_status == "cpgPLP"],
-          hist$EFS_years[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+efs_p <- wilcox.test(hist$EFS_years[hist$cpgPLP_status == "CPG P-LP"],
+          hist$EFS_years[hist$cpgPLP_status == "No CPG P-LP"])$p.value
 
-tmb_p <- wilcox.test(hist$tmb[hist$cpgPLP_status == "cpgPLP"],
-          hist$tmb[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+tmb_p <- wilcox.test(hist$tmb[hist$cpgPLP_status == "CPG P-LP"],
+          hist$tmb[hist$cpgPLP_status == "No CPG P-LP"])$p.value
 
 # Merge p-values and write to output
 pvals <- data.frame(term = terms,
@@ -253,14 +253,14 @@ for (group in groups) {
     column_to_rownames("cpgPLP_status") %>%
     t() %>%
     as.data.frame() %>%
-    dplyr::mutate(perc_cpgPLP = round(cpgPLP/sum(group_hist$cpgPLP_status == "cpgPLP")*100, 1),
-                  perc_no_cpgPLP = round(no_cpgPLP/sum(group_hist$cpgPLP_status == "no_cpgPLP")*100, 1)) %>%
-    dplyr::mutate(cpgPLP = glue::glue("{cpgPLP} ({perc_cpgPLP}%)"),
-                  no_cpgPLP = glue::glue("{no_cpgPLP} ({perc_no_cpgPLP}%)")) %>%
+    dplyr::mutate(perc_cpgPLP = round(`CPG P-LP`/sum(group_hist$cpgPLP_status == "CPG P-LP")*100, 1),
+                  perc_no_cpgPLP = round(`No CPG P-LP`/sum(group_hist$cpgPLP_status == "No CPG P-LP")*100, 1)) %>%
+    dplyr::mutate(`CPG P-LP` = glue::glue("{`CPG P-LP`} ({perc_cpgPLP}%)"),
+                  `No CPG P-LP` = glue::glue("{`No CPG P-LP`} ({perc_no_cpgPLP}%)")) %>%
     dplyr::select(-perc_cpgPLP, -perc_no_cpgPLP) %>%
-    dplyr::mutate(cpgPLP = case_when(
-      grepl("NA", cpgPLP) ~ "0 (0%)",
-      TRUE ~ cpgPLP
+    dplyr::mutate(`CPG P-LP` = case_when(
+      grepl("NA", `CPG P-LP`) ~ "0 (0%)",
+      TRUE ~ `CPG P-LP`
     ))
   
   clin <- group_hist %>%
@@ -272,8 +272,8 @@ for (group in groups) {
     column_to_rownames("cpgPLP_status") %>%
     t() %>%
     as.data.frame() %>%
-    dplyr::mutate(cpgPLP = as.character(cpgPLP),
-                  no_cpgPLP = as.character(no_cpgPLP))
+    dplyr::mutate(`CPG P-LP` = as.character(`CPG P-LP`),
+                  `No CPG P-LP` = as.character(`No CPG P-LP`))
   
   stats_list[[group]] <- freq %>%
     bind_rows(demo_path, clin)
@@ -309,17 +309,17 @@ for (group in groups) {
   
   ethnicity_p <- fisher.test(table(group_hist$ethnicity, group_hist$cpgPLP_status))$p.value
   
-  age_p <- wilcox.test(as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "cpgPLP"]),
-                       as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "no_cpgPLP"]))$p.value
+  age_p <- wilcox.test(as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "CPG P-LP"]),
+                       as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "No CPG P-LP"]))$p.value
 
-  os_p <- wilcox.test(group_hist$OS_years[group_hist$cpgPLP_status == "cpgPLP"],
-            group_hist$OS_years[group_hist$cpgPLP_status == "no_cpgPLP"])$p.value
+  os_p <- wilcox.test(group_hist$OS_years[group_hist$cpgPLP_status == "CPG P-LP"],
+            group_hist$OS_years[group_hist$cpgPLP_status == "No CPG P-LP"])$p.value
   
-  efs_p <- wilcox.test(group_hist$EFS_years[group_hist$cpgPLP_status == "cpgPLP"],
-            group_hist$EFS_years[group_hist$cpgPLP_status == "no_cpgPLP"])$p.value
+  efs_p <- wilcox.test(group_hist$EFS_years[group_hist$cpgPLP_status == "CPG P-LP"],
+            group_hist$EFS_years[group_hist$cpgPLP_status == "No CPG P-LP"])$p.value
   
-  tmb_p <- wilcox.test(group_hist$tmb[hist$cpgPLP_status == "cpgPLP"],
-            group_hist$tmb[hist$cpgPLP_status == "no_cpgPLP"])$p.value
+  tmb_p <- wilcox.test(group_hist$tmb[hist$cpgPLP_status == "CPG P-LP"],
+            group_hist$tmb[hist$cpgPLP_status == "No CPG P-LP"])$p.value
   
   pvalue_list[[group]] <- data.frame(term = terms,
                                     pvalue = c(age_p, sex_p, race_p, ancestry_p,
@@ -379,7 +379,7 @@ hist <- hist %>%
 
 subtype_enr <- plp_enrichment(hist[hist$subtype != "Other",], "subtype")
 subtype_enr <- subtype_enr %>%
-  dplyr::mutate(subtype = glue::glue("{subtype} (N={cpgPLP + no_cpgPLP})")) %>%
+  dplyr::mutate(subtype = glue::glue("{subtype} (N={`CPG P-LP` + `No CPG P-LP`})")) %>%
   write_tsv(file.path(results_dir, "plp-carrier-subtype-counts.tsv"))
 
 subtype_enr_plot <- subtype_enr %>% 
@@ -390,7 +390,7 @@ subtype_enr_plot <- subtype_enr %>%
              show.legend = FALSE) + 
   geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
-  geom_text(x = log10(subtype_enr$CI_upper)+0.25, hjust = 0, vjust = .5, size = 4, fontface = 2) +
+  geom_text(x = log10(subtype_enr$CI_upper)+0.25, hjust = 0, vjust = .5, size = 6, fontface = 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(x = "log10-OR (95% CI)", y = NULL) + 
   xlim(min(log10(subtype_enr$CI_lower))-0.25, max(log10(subtype_enr$CI_upper))+0.25) +
@@ -422,7 +422,7 @@ other_group_enr <- plp_enrichment(other_hist, "cancer_group")
 
 other_group_enr <- other_group_enr %>%
   dplyr::filter(cancer_group %in% other_groups) %>%
-  dplyr::mutate(cancer_group = glue::glue("{cancer_group} (N={cpgPLP+no_cpgPLP})")) %>%
+  dplyr::mutate(cancer_group = glue::glue("{cancer_group} (N={`CPG P-LP` + `No CPG P-LP`})")) %>%
   write_tsv(file.path(results_dir, "plp-carrier-subtype-counts.tsv"))
 
 other_group_enr_plot <- other_group_enr %>% 
@@ -433,7 +433,7 @@ other_group_enr_plot <- other_group_enr %>%
              show.legend = FALSE) + 
   geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
-  geom_text(x = log10(other_group_enr$CI_upper)+0.25, hjust = 0, vjust = .5, size = 4, fontface = 2) +
+  geom_text(x = log10(other_group_enr$CI_upper)+0.25, hjust = 0, vjust = .5, size = 6, fontface = 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(x = "log10-OR (95% CI)", y = NULL) + 
   xlim(min(log10(other_group_enr$CI_lower))-0.25, max(log10(other_group_enr$CI_upper))+0.25) +
