@@ -49,8 +49,11 @@ pc12 <- hist %>%
   geom_point(size=2, shape=23,
              show.legend = FALSE) +
   scale_fill_manual(values = okabe_palette,
-                    labels=c("AFR (n=76)", "AMR (n=101)", "EAS (n=24)",
-                             "EUR (n=575)", "SAS (n=21)")) +
+                    labels=c(glue::glue("AFR (n={sum(grepl('AFR', hist$predicted_ancestry))})"),
+                             glue::glue("AMR (n={sum(grepl('AMR', hist$predicted_ancestry))})"),
+                             glue::glue("EAS (n={sum(grepl('EAS', hist$predicted_ancestry))})"),
+                             glue::glue("EUR (n={sum(grepl('EUR', hist$predicted_ancestry))})"),
+                             glue::glue("SAS (n={sum(grepl('SAS', hist$predicted_ancestry))})"))) +
   labs(fill = "predictd ancestry") +
   theme_Publication()
 
@@ -60,8 +63,11 @@ pc34 <- hist %>%
   ggplot(aes(x = PC3, y = PC4, fill = predicted_ancestry)) +
   geom_point(size=2, shape=23) +
   scale_fill_manual(values = okabe_palette,
-                    labels=c("AFR (n=76)", "AMR (n=101)", "EAS (n=24)",
-                             "EUR (n=575)", "SAS (n=21)")) +
+                    labels=c(glue::glue("AFR (n={sum(grepl('AFR', hist$predicted_ancestry))})"),
+                             glue::glue("AMR (n={sum(grepl('AMR', hist$predicted_ancestry))})"),
+                             glue::glue("EAS (n={sum(grepl('EAS', hist$predicted_ancestry))})"),
+                             glue::glue("EUR (n={sum(grepl('EUR', hist$predicted_ancestry))})"),
+                             glue::glue("SAS (n={sum(grepl('SAS', hist$predicted_ancestry))})"))) +
   labs(fill = "predicted ancestry") +
   theme_Publication()
 

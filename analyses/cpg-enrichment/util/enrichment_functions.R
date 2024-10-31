@@ -164,7 +164,7 @@ plot_perc <- function(enr_df, facet_var){
              show.legend = TRUE, fill = "#00A087FF") + 
     # add fractions to the right of plots
     geom_text(x = x_pos, hjust = 0, size = 4, fontface = 2) +
-    labs(x = "% Cohort P/LP\n", y = NULL, fill = NULL) + 
+    labs(x = "% Cohort P-LP\n", y = NULL, fill = NULL) + 
     scale_y_discrete(labels=c("PBTA" = NULL, "gnomAD" = NULL,
                               "PMBB" = NULL)) +
     guides(fill = guide_legend(nrow = 1)) +
