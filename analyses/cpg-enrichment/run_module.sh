@@ -11,3 +11,6 @@ Rscript --vanilla 02-gene-pathway-enrichment.R
 
 # Run gene-level enrichment by histology
 Rscript --vanilla 03-hist-gene-enr.R
+
+# Run pathway-level enrichment by histology
+Rscript --vanilla 04-hist-pathway-enr.R
