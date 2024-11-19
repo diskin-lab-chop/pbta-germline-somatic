@@ -96,6 +96,7 @@ germline_sv <- read_tsv(plp_sv_file) %>%
 ```
 
 Extract tumor RNA IDs from hist file, and append to `germline`
+NOTE: we will define SHH-MB and SEGA tumors separately from MB and LGG, respectively, in this analysis, given that specific CPGs are P-LP only in these tumor types (i.e., PTCH1 and SUFU in SHH-MB and TSC1/2 in SEGA).
 
 ```{r get matched tumor RNA IDs}
 rna_specimens <- read_tsv(file.path(data_dir, "independent-specimens.rnaseqpanel.primary-plus.tsv")) %>%
@@ -108,7 +109,12 @@ hist_cohort <- read_tsv(hist_cohort_file) %>%
   left_join(hist %>% dplyr::filter(experimental_strategy == "RNA-Seq") %>%
               dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
               dplyr::select(match_id, Kids_First_Biospecimen_ID_rna)) %>%
-  distinct(match_id, .keep_all = TRUE)
+  distinct(match_id, .keep_all = TRUE) %>%
+  # define a "subgroup" column to distinguish SHH-MB and SEGA from MB and LGG plot groups, respectively. 
+  dplyr::mutate(subgroup = case_when(
+    subgroup %in% c("MB, SHH", "SEGA") ~ subgroup,
+    TRUE ~ plot_group
+  ))
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
@@ -151,8 +157,8 @@ z_scored_expression <- log_expression %>%
   rownames_to_column("Hugo_Symbol") %>%
   gather(key = "Kids_First_Biospecimen_ID_rna", value = "expr", -Hugo_Symbol) %>%
   left_join(hist_cohort %>% dplyr::select(Kids_First_Biospecimen_ID_rna, Kids_First_Biospecimen_ID_normal,
-                                   plot_group, plot_group_hex)) %>%
-  group_by(Hugo_Symbol, plot_group) %>%
+                                   plot_group, plot_group_hex, subgroup, molecular_subtype)) %>%
+  group_by(Hugo_Symbol, subgroup) %>%
   dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol) %>%
   dplyr::mutate(expr_zscore = scale(expr)) %>%
   dplyr::mutate(expr_zscore = as.numeric(expr_zscore))
@@ -185,10 +191,12 @@ Plot gene expression z-scores in P-LP carriers
 ```{r}
 expr_plot_df <- germline_somatic_expr %>%
   dplyr::filter(Hugo_Symbol %in% cpgs) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_rna, plot_group,
-                Hugo_Symbol, expr_zscore) %>%
+  dplyr::select(Kids_First_Biospecimen_ID_normal,
+                Kids_First_Biospecimen_ID_rna, plot_group,
+                Hugo_Symbol, expr_zscore, molecular_subtype) %>%
   bind_rows(germline_sv_somatic_expr %>%
-              dplyr::select(Kids_First_Biospecimen_ID_rna, plot_group,
+              dplyr::select(Kids_First_Biospecimen_ID_normal,
+                            Kids_First_Biospecimen_ID_rna, plot_group,
                             Hugo_Symbol, expr_zscore)) %>%
   left_join(hist_cohort %>% dplyr::select(plot_group, plot_group_hex)) %>%
   distinct() %>%
@@ -211,7 +219,7 @@ expr_plot_df %>%
               size = 2.5, alpha = 0.8,
               show.legend = FALSE) +
   geom_violin(aes(fill = plot_group),
-              alpha = 0.2, outlier.shape = NA,
+              alpha = 0.2,
                show.legend = FALSE) +
   geom_vline(xintercept = c(-2, 0, 2), linetype = "dashed", color = "gray60") + 
   geom_label_repel(aes(label = gene_text),
@@ -233,7 +241,7 @@ expr_plot_df %>%
   scale_fill_manual(values = plot_group_palette, 
                      breaks = sort(names(plot_group_palette))) +
   labs(y = NULL, x = "TPM z-score") +
-  xlim(c(-6,4)) +
+ # xlim(c(-6,4)) +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "germline_plp_expr_zscores.pdf"),
@@ -259,40 +267,6 @@ z_scored_expression <- z_scored_expression %>%
            .keep_all = TRUE)
 ```
 
-Calculate mean expression z-scores by gene and P/LP status, and identify genes with significant differences in expression between groups
-
-```{r}
-# calculate mean z-scored expression by gene and sample
-mean_expr <- z_scored_expression %>%
-  group_by(Hugo_Symbol, is_plp) %>%
-  summarise(mean_zscore_expr = mean(expr_zscore))
-
-# filter cpg list for those with P/LP variant in 4 or more patients
-cpgs_test <- germline_all %>%
-  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, .keep_all = T) %>%
-  count(Hugo_Symbol) %>%
-  filter(n >= 4) %>%
-  pull(Hugo_Symbol)
-
-# create empty data frame to store expr diff results
-expr_diff_df <- data.frame(Hugo_Symbol = cpgs_test,
-                           mean_zscore_plp = rep(0, length(cpgs_test)),
-                           mean_zscore_no_plp = rep(0, length(cpgs_test)),
-                           pvalue = rep(0, length(cpgs_test)))
-
-# loop through genes and assess significance of expr diff between pts with vs. without P/LP variants
-for (i in 1:length(cpgs_test)) {
-  
-  expr_diff_df$mean_zscore_plp[i] <- mean_expr$mean_zscore_expr[mean_expr$Hugo_Symbol == cpgs_test[i] & mean_expr$is_plp == "Yes"]
-  expr_diff_df$mean_zscore_no_plp[i] <- mean_expr$mean_zscore_expr[mean_expr$Hugo_Symbol == cpgs_test[i] & mean_expr$is_plp == "No"]
-  expr_diff_df$pvalue[i] <- wilcox.test(z_scored_expression$expr_zscore[z_scored_expression$Hugo_Symbol == cpgs_test[i] & z_scored_expression$is_plp == "Yes"],
-       z_scored_expression$expr_zscore[z_scored_expression$Hugo_Symbol == cpgs_test[i] & z_scored_expression$is_plp == "No"])$p.value
-}
-
-write_tsv(expr_diff_df, 
-          file.path(results_dir, "gene-expr-diff-plp-vs-no-plp.tsv"))
-```
-
 Add P/LP status to `z_scored_expression` for plotting
 
 ```{r add P/LP status}
@@ -300,7 +274,7 @@ z_scored_expression <- z_scored_expression %>%
   # Only samples with P/LP variants in genes will be colored by plot group
   dplyr::mutate(plp_group = case_when(
     is_plp == "No" ~ NA_character_,
-    is_plp == "Yes" ~ plot_group
+    is_plp == "Yes" ~ subgroup
   )) %>%
   distinct(Kids_First_Biospecimen_ID_rna, Hugo_Symbol, .keep_all = TRUE)
 
@@ -314,7 +288,7 @@ Plot normalized expression within histologies, for genes that have P/LP variants
 ```{r plot expr by P/LP status within hist}
 # define group_gene column
 z_scored_expression <- z_scored_expression %>%
-  dplyr::mutate(group_gene = glue::glue("{Hugo_Symbol}: {plot_group}"))
+  dplyr::mutate(group_gene = glue::glue("{Hugo_Symbol}: {subgroup}"))
 
 # Identify histology-gene pairs for which there are at least 3 patients with P/LP variants in group
 plot_group_gene <- z_scored_expression %>%
@@ -327,7 +301,7 @@ plot_group_gene <- z_scored_expression %>%
 compare_means_result <- z_scored_expression %>%
   dplyr::filter(group_gene %in% plot_group_gene) %>%
   group_by(group_gene) %>%
-  summarize(p_value = wilcox.test(expr_zscore ~ is_plp, alternative = "two.sided")$p.value)
+  summarize(p_value = wilcox.test(expr_zscore ~ is_plp, alternative = "greater")$p.value)
 
 to_plot <- compare_means_result %>%
   dplyr::filter(p_value < 0.05) %>%
@@ -338,11 +312,13 @@ z_scored_expression %>%
   dplyr::filter(group_gene %in% to_plot) %>%
   
    ggplot(aes(x = is_plp, y = expr_zscore)) + 
-    geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+    geom_jitter(aes(fill = plot_group), shape = 21, 
+                width = 0.2, size = 2.5, alpha = 0.85,
+                show.legend = FALSE) +
     geom_boxplot(alpha = 0.05, outlier.shape = NA) +
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
-                       method.args = list(alternative = "two.sided")) + 
+                       method.args = list(alternative = "less")) + 
     labs(x = "Germline P-LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3.5,5.75)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
@@ -353,7 +329,7 @@ z_scored_expression %>%
     theme_Publication()
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
-                   width = 10, height = 5)
+                   width = 8, height = 5)
 ```
 
 We can further separate samples based on whether matched tumors have detected oncogenic/likely oncogenic SNV, which may influence gene expression
@@ -398,11 +374,9 @@ z_scored_expression %>%
                      comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "less")) + 
   labs(x = "Somatic Second Hit", y = "TPM z-score", fill = "Histology") +
-  ylim(c(-6,4)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
   scale_fill_manual(values = plot_group_palette, 
                     breaks = sort(names(plot_group_palette))) +
-#  facet_wrap(~plot_group, nrow = 4) +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "gene-expr-second-hit-vs-none.pdf"),
