@@ -1,5 +1,5 @@
 ---
-title: "Assess P-LP carrier status among MB cohort and associations with survival"
+title: "Assess P/LP carrier status among MB cohort and associations with survival"
 output: 
   html_notebook:
     toc: TRUE
@@ -12,7 +12,7 @@ params:
 
 **Purpose:** 
 
-Assess distribution of medulloblastoma molecular and methylation subtypes among germline P-LP carriers
+Assess distribution of medulloblastoma molecular and methylation subtypes among germline P/LP carriers
 
 ## Setup
 
@@ -94,11 +94,11 @@ plp_ids <- unique(c(plp$Kids_First_Biospecimen_ID_normal,
 mb_hist <- hist %>%
   dplyr::filter(plot_group == "Medulloblastoma") %>%
   dplyr::mutate(cpg_plp = case_when(
-    Kids_First_Biospecimen_ID_normal %in% plp_ids ~ "CPG P-LP",
-    TRUE ~ "No P-LP"
+    Kids_First_Biospecimen_ID_normal %in% plp_ids ~ "CPG P/LP",
+    TRUE ~ "No P/LP"
   )) %>%
   dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
-                                      c("No P-LP", "CPG P-LP"))) %>%
+                                      c("No P/LP", "CPG P/LP"))) %>%
   # correct three samples incorrectly labeled as having only biopsies; actually underwent partial resection
   dplyr::mutate(extent_of_tumor_resection = case_when(
     sample_id_tumor %in% c("7316-3510", "7316-3576", "7316-14") ~ "Partial resection",
@@ -106,14 +106,14 @@ mb_hist <- hist %>%
   ))
 ```
 
-Determine if molecular subtypes are enriched among P-LP carriers
+Determine if molecular subtypes are enriched among P/LP carriers
 
 ```{r}
 subtype_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype != "MB, To be classified",], 
                        var1 = "molecular_subtype", 
                        var2 = "cpg_plp",
                        var1_names = unique(mb_hist$molecular_subtype[mb_hist$molecular_subtype != "MB, To be classified"]), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                         padjust = FALSE)
 
 pdf(file.path(plot_dir, "plp_carrier_mb_subtype_enr_heatmap.pdf"),
@@ -162,14 +162,14 @@ mb_hist <- mb_hist %>%
   distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE)
 ```
 
-Assess MB, Group 3 methylation subtype distribution by P-LP carrier status
+Assess MB, Group 3 methylation subtype distribution by P/LP carrier status
 
 ```{r}
 g3_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),], 
                        var1 = "dkfz_v12_methylation_subclass", 
                        var2 = "cpg_plp",
                        var1_names = c("MB_G34_II", "MB_G34_III", "MB_G34_IV"), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_g3_plp_carrier_subtype_enr_heatmap.pdf"),
@@ -178,14 +178,14 @@ draw(g3_plp_enr)
 dev.off()
 ```
 
-Assess MB, Group 4 methylation subtype distribution by P-LP carrier status
+Assess MB, Group 4 methylation subtype distribution by P/LP carrier status
 
 ```{r}
 g4_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),], 
                        var1 = "dkfz_v12_methylation_subclass", 
                        var2 = "cpg_plp",
                        var1_names = c("MB_G34_V", "MB_G34_VI", "MB_G34_VII", "MB_G34_VIII"), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_g4_plp_carrier_subtype_enr_heatmap.pdf"),
@@ -194,14 +194,14 @@ draw(g4_plp_enr)
 dev.off()
 ```
 
-Assess MB, SHH  subtype distribution by P-LP carrier status
+Assess MB, SHH  subtype distribution by P/LP carrier status
 
 ```{r}
 shh_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),], 
                        var1 = "shh_subtype", 
                        var2 = "cpg_plp",
                        var1_names = unique(mb_hist$shh_subtype[!is.na(mb_hist$shh_subtype)]), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_shh_plp_carrier_subtype_enr_heatmap.pdf"),
@@ -224,7 +224,7 @@ shh_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),],
                        var1 = "shh_type", 
                        var2 = "cpg_plp",
                        var1_names = unique(mb_hist$shh_type[!is.na(mb_hist$shh_type)]), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_shh_plp_carrier_type_enr_heatmap.pdf"),
@@ -234,14 +234,14 @@ dev.off()
 
 ```
 
-Within SHH subtype cohort, assess TP53 mutation status distribution by P-LP carrier status
+Within SHH subtype cohort, assess TP53 mutation status distribution by P/LP carrier status
 
 ```{r}
 shh_tp53_status_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),], 
                        var1 = "tp53_status", 
                        var2 = "cpg_plp",
                        var1_names = unique(mb_hist$tp53_status[!is.na(mb_hist$shh_subtype)]), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_shh_plp_carrier_tp53_enr_heatmap.pdf"),
@@ -250,14 +250,14 @@ draw(shh_tp53_status_plp_enr)
 dev.off()
 ```
 
-Assess frequency of metastasis by P-LP carrier status
+Assess frequency of metastasis by P/LP carrier status
 
 ```{r}
 mb_metastasis_plp_enr <- plot_enr(mb_hist, 
                                    var1 = "metastasis", 
                                    var2 = "cpg_plp",
                                    var1_names = unique(mb_hist$metastasis), 
-                                   var2_names = c("No P-LP", "CPG P-LP"),
+                                   var2_names = c("No P/LP", "CPG P/LP"),
                                    padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_plp_carrier_metastasis_enr_heatmap.pdf"),
@@ -279,7 +279,7 @@ for (subtype in subtypes){
                        var1 = "metastasis", 
                        var2 = "cpg_plp",
                        var1_names = sort(unique(mb_hist$metastasis[mb_hist$molecular_subtype == subtype])), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = FALSE)
 
   pdf(file.path(plot_dir, 
@@ -300,7 +300,7 @@ write_tsv(mb_hist,
           file.path(results_dir, "mb-histologies-plus-shh-methyl-subtypes-metastsis.tsv"))
 ```
 
-Extract all P-LP variants in patients with MB, and append subtype info
+Extract all P/LP variants in patients with MB, and append subtype info
 
 ```{r}
 plp_mb <- plp %>%
@@ -318,21 +318,21 @@ plp_mb <- plp %>%
                                       metastasis))
 ```
 
-Print distribution of P-LP variants by gene and subtype in MB SHH 
+Print distribution of P/LP variants by gene and subtype in MB SHH 
 
 ```{r}
 table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == "MB, SHH"],
       plp_mb$shh_subtype[plp_mb$molecular_subtype == "MB, SHH"])
 ```
 
-Print distribution of P-LP variants by gene and methylation subtype in MB Group 3 
+Print distribution of P/LP variants by gene and methylation subtype in MB Group 3 
 
 ```{r}
 table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == "MB, Group3"],
       plp_mb$dkfz_v12_methylation_subclass[plp_mb$molecular_subtype == "MB, Group3"])
 ```
 
-Print distribution of P-LP variants by gene and methylation subtype in MB Group 4
+Print distribution of P/LP variants by gene and methylation subtype in MB Group 4
 
 ```{r}
 table(plp_mb$Hugo_Symbol[plp_mb$molecular_subtype == "MB, Group4"],

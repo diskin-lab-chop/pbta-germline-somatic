@@ -198,7 +198,7 @@ hist_plp_cpg %>%
   arrange(plp_cpg_n) %>%
   ggplot(aes(x = factor(plot_group_n, plot_group_n), y = plp_cpg_n, fill = factor(plot_group_n))) +
   geom_bar(stat = "identity", color = "black", show.legend = FALSE) + 
-  labs(x = "", y = "Number of patients with germline CPG P-LP variant") +
+  labs(x = "", y = "Number of patients with germline CPG P/LP variant") +
   scale_fill_manual(values = plot_group_palette) +
   coord_flip() + 
   theme_Publication()
@@ -209,7 +209,7 @@ hist_plp_cpg %>%
   arrange(freq) %>%
   ggplot(aes(x = factor(plot_group_n, plot_group_n), y = freq, fill = factor(plot_group_n))) +
   geom_bar(stat = "identity", color = "black", show.legend = FALSE) + 
-  labs(x = "", y = "% Patients with germline CPG P-LP variant") +
+  labs(x = "", y = "% Patients with germline CPG P/LP variant") +
   scale_fill_manual(values = plot_group_palette) +
   coord_flip() + 
   theme_Publication()
