@@ -143,7 +143,7 @@ fusion_enr <- plot_enr(fusions,
                        var2_names = c("No P/LP", "CPG P/LP"))
 
 pdf(file.path(plot_dir, "plp_carrier_braf_fusion_enr_heatmap.pdf"),
-    width = 3, height = 4)
+    width = 2.5, height = 3.5)
 draw(fusion_enr)
 dev.off()
 ```
