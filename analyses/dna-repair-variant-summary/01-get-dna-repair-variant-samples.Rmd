@@ -247,11 +247,12 @@ for (i in 1:length(repair_gene_source)){
     groups <- groups[order(groups)]
     paths <- c("All Repair", "BER", "HR", "MMR", "NER", "NHEJ", "Other")
     
-    # Define odds Ratios and p-value matrices
+    # Define count, odds ratio and p-value matrices
     
     enr_mat <- matrix(0, length(groups), length(paths),
                       dimnames = list(groups, paths))
     pval_mat <- enr_mat
+    ct_mat <- enr_mat
     
     # Run Fisher's exact tests by histology and repair pathway
     for (group in groups) {
@@ -277,23 +278,30 @@ for (i in 1:length(repair_gene_source)){
         mat <- matrix(c(length(in_hist_path), length(in_hist_no_path),
                         length(no_hist_in_path), length(no_hist_no_path)),
                       2, 2)
-        enr_mat[group, path] <- fisher.test(mat)$estimate
-        pval_mat[group, path] <- fisher.test(mat)$p.value
+        
+        ct_mat[group, path] <- length(in_hist_path)
+        enr_mat[group, path] <- fisher.test(mat, alternative = "greater")$estimate
+        pval_mat[group, path] <- fisher.test(mat, alternative = "greater")$p.value
       }
     }
+    
+    # multiple test correction
+    fdr_mat <- t(apply(pval_mat, 1, function(x) p.adjust(x, method = "BH")))
   
   # create text matrix of odds ratios and asterisk in cases of statistical significance
-  sig_mat <- ifelse(pval_mat < 0.05 & enr_mat > 1, "*", "")
+  sig_mat <- ifelse(fdr_mat < 0.05 & enr_mat > 1, "*", "")
   
-  fill_mat <- matrix(glue::glue("{round(enr_mat, 1)} {sig_mat}"), 
+  fill_mat <- matrix(glue::glue("{ct_mat}\n({round(enr_mat, 1)}{sig_mat})"), 
                      length(groups), length(paths))
+  
+  fill_mat <- ifelse(fill_mat == "0\n(0)", "0", fill_mat)
   
   # Plot enrichment heatmap
   
   col_fun = colorRamp2(c(0, 6), c("white", "orangered"))
   
   pdf(file.path(plot_dir, paste0("dna_repair_enr_by_plot_group_", repair_gene_source[i], ".pdf")),
-        width = 6, height = 6)
+        width = 6, height = 7)
   
   enr_heatmap <- Heatmap(enr_mat,
                          name = "Odds ratio",
