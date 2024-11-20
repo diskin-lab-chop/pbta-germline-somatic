@@ -24,25 +24,35 @@ plot_enr <- function(df, var1, var2,
       no_var2 <- sum(unlist(df[,var2]) == colnames(enr)[j] & !is.na(unlist(df[,var2])))
       no_var1_var2 <- sum(unlist(df[,var1]) == rownames(enr)[i] & unlist(df[,var2]) == colnames(enr)[j])
       ct[i,j] <- no_var1_var2
-      enr[i,j] <- (no_var1_var2/no_var2)/(no_var1/nrow(df))
-      pval[i,j] <- phyper(no_var1_var2, no_var1, nrow(df) - no_var1, no_var2, lower.tail = F)
+      or_mat <- matrix(c(no_var1_var2, no_var1-no_var1_var2,
+                         no_var2-no_var1_var2, 
+                         nrow(df)-no_var1-no_var2+no_var1_var2),
+                       2, 2)
+      enr[i,j] <- fisher.test(or_mat, alternative = "greater")$estimate
+      pval[i,j] <- phyper(no_var1_var2, no_var1,
+                          nrow(df) - no_var1, no_var2,
+                          lower.tail = FALSE)
     }
   }
   
   if (padjust == TRUE) {
     
     fdr <- t(apply(pval, 1, function(x) p.adjust(x, "fdr")))
-    sig_mat <- ifelse(fdr < 0.05 & enr > 1 & ct > 1, "*", "")
+    sig_mat <- ifelse(fdr < 0.05 & enr > 1 & ct > 1 & !is.infinite(enr), "*", "")
     
   } else {
     
-    sig_mat <- ifelse(pval < 0.05 & enr > 1 & ct > 1, "*",
-                      ifelse(pval > 0.95, "^", ""))
+    sig_mat <- ifelse(pval < 0.05 & enr > 1 & ct > 1 & !is.infinite(enr), "*", "")
     
   }
   
   fill_mat <- matrix(glue::glue("{round(enr, 1)}{sig_mat}"), 
                      nrow(enr), ncol(enr))
+  
+  fill_mat <- matrix(str_replace_all(fill_mat, "Inf", "NR"), 
+                     nrow(enr), ncol(enr))
+  
+  enr <- ifelse(is.infinite(enr), 0, enr)
   
   ct_enr_mat <- matrix(glue::glue("{ct}\n({fill_mat})"),
                        nrow(ct), ncol(ct))
@@ -60,5 +70,28 @@ plot_enr <- function(df, var1, var2,
                        })
   
   return(region_ht)
+  
+}
+
+
+## Function to create a count heatmap, excluding enrichment
+
+plot_ct <- function(df, var1, var2){
+  
+  df <- as.data.frame(df)
+  
+  ct_mat <- table(df[,var1], df[,var2])
+  
+  ht <- Heatmap(ct_mat,
+                 name = "Count",
+                 cluster_rows = F,
+                 cluster_columns = F,
+                 rect_gp = gpar(col = "black", lwd = 2),
+                 col = col_fun,
+                 cell_fun = function(j, i, x, y, width, height, fill) {
+                   grid.text(sprintf("%s", ct_mat[i, j]), x, y, gp = gpar(fontsize = 12))},
+                show_heatmap_legend = FALSE)
+  
+  return(ht)
   
 }

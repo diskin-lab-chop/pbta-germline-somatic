@@ -237,15 +237,12 @@ dev.off()
 Within SHH subtype cohort, assess TP53 mutation status distribution by P-LP carrier status
 
 ```{r}
-shh_tp53_status_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),], 
+shh_tp53_status_plp_enr <- plot_ct(mb_hist[!is.na(mb_hist$shh_subtype),], 
                        var1 = "tp53_status", 
-                       var2 = "cpg_plp",
-                       var1_names = unique(mb_hist$tp53_status[!is.na(mb_hist$shh_subtype)]), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
-                       padjust = FALSE)
+                       var2 = "cpg_plp")
 
-pdf(file.path(plot_dir, "mb_shh_plp_carrier_tp53_enr_heatmap.pdf"),
-    width = 3.5, height = 3)
+pdf(file.path(plot_dir, "mb_shh_plp_carrier_tp53_ct_heatmap.pdf"),
+    width = 3, height = 2)
 draw(shh_tp53_status_plp_enr)
 dev.off()
 ```
@@ -275,16 +272,13 @@ pdf(NULL)
 
 for (subtype in subtypes){
   
-  mb_subtype_metastasis_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == subtype,], 
+  mb_subtype_metastasis_plp_enr <- plot_ct(mb_hist[mb_hist$molecular_subtype == subtype,], 
                        var1 = "metastasis", 
-                       var2 = "cpg_plp",
-                       var1_names = sort(unique(mb_hist$metastasis[mb_hist$molecular_subtype == subtype])), 
-                       var2_names = c("No P-LP", "CPG P-LP"),
-                       padjust = FALSE)
+                       var2 = "cpg_plp")
 
   pdf(file.path(plot_dir, 
-                glue::glue("mb_{subtype}_plp_carrier_metastasis_enr_heatmap.pdf")),
-      width = 3.5, height = 2.5)
+                glue::glue("mb_{subtype}_plp_carrier_metastasis_ct_heatmap.pdf")),
+      width = 3, height = 2)
   
   draw(mb_subtype_metastasis_plp_enr)
   
