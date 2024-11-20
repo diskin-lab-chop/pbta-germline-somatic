@@ -1,6 +1,6 @@
 Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	sample_id_normal	Kids_First_Biospecimen_ID_tumor	sample_id_tumor	location_path_report	CNS_region
 PT_N9CGVG02	BS_9S3N3Y5W	7316-2229	BS_ABENB1H2	7316-2197	cervicomedullary	Mixed
-PT_A9F8Y6MA	BS_BXTHPE56	7316-476	BS_ZKZACPVV	7316-476	"suprasellar/hypothalamic area, spinal cord metastasis"	Mixed
+PT_A9F8Y6MA	BS_BXTHPE56	7316-476	BS_ZKZACPVV	7316-476	"suprasellar/hypothalamic area, spinal cord metastasis"	Suprasellar
 PT_4TASAQKA	BS_HMWZ2893	7316-3563	BS_AEMRNSQX	7316-3566	suprasellar	Suprasellar
 PT_EQ5C5TEA	BS_HVCBQ58H	7316-3922	BS_0S617SMM	7316-3922	cerebellum	Posterior fossa
 PT_VABP80N2	BS_J996NDK4	7316-1949	BS_R913E3VB	7316-1949	cerebellum	Posterior fossa
@@ -11,3 +11,4 @@ PT_ADTP7EHN	BS_TWCW8QZV	7316-1664	BS_KG1YMTA4	7316-1664	hypothalamus	Other
 PT_6E8JYRXM	BS_TYCE05MW	7316-2729	BS_3R0KN6Z4	7316-2729	"ventricle, brainstem-medulla"	Mixed
 PT_YGN06RPZ	BS_V8GEAEZJ	7316-2283	BS_3C4YAMKJ	7316-2204	"posterior fossa, fourth ventricle"	Mixed
 PT_XXZHRPNM	BS_ZMW21B7R	7316-2572	BS_SMCPASF0	7316-2572	"suprasellar, optic pathway"	Mixed
+PT_JXGMAHHN				7316-7103	optic pathway	Optic pathway

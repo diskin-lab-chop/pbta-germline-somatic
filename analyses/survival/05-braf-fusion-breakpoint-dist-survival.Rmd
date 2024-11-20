@@ -53,6 +53,8 @@ Set file paths
 histologies_file <- file.path(results_dir,
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
+opc_hist_file <- file.path(data_dir, "histologies.tsv")
+
 plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
@@ -84,6 +86,9 @@ plp <- read_tsv(plp_file) %>%
 plp_sv <- read_tsv(plp_sv_file)
 
 cns_regions <- read_tsv(cns_region_file)
+
+opc_methyl_hist <- read_tsv(opc_hist_file) %>%
+  dplyr::filter(!is.na(dkfz_v12_methylation_subclass) & dkfz_v12_methylation_subclass_score >= 0.8)
 ```
 
 Obtain all BS IDs of P/LP carriers with BRAF fusion-positive LGG
@@ -114,7 +119,15 @@ fusions <- read_tsv(fusions_file) %>%
   dplyr::mutate(CNS_region = case_when(
     Kids_First_Participant_ID %in% cns_regions$Kids_First_Participant_ID ~ cns_regions$CNS_region[match(Kids_First_Participant_ID, cns_regions$Kids_First_Participant_ID)],
     TRUE ~ CNS_region
-  ))
+  )) %>%
+  # one patient has Not Reported extent_of_tumor_resection but is confirmed in Op report to have received total resection. update here:
+  dplyr::mutate(extent_of_tumor_resection = case_when(
+    sample_id == "7316-436" ~ "Gross/Near total resection",
+    TRUE ~ extent_of_tumor_resection
+  )) %>%
+  dplyr::select(-dkfz_v12_methylation_subclass, -dkfz_v12_methylation_subclass_score) %>%
+  left_join(opc_methyl_hist %>%
+              dplyr::select(match_id, dkfz_v12_methylation_subclass, dkfz_v12_methylation_subclass_score))
 
 table(fusions$cpg_plp)
 table(fusions$breakpoint_group, fusions$cpg_plp)
@@ -129,7 +142,7 @@ fusion_enr <- plot_enr(fusions,
                        var1_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
                        var2_names = c("No P/LP", "CPG P/LP"))
 
-pdf(file.path(plot_dir, "plp_carrier_fusion_enr_heatmap.pdf"),
+pdf(file.path(plot_dir, "plp_carrier_braf_fusion_enr_heatmap.pdf"),
     width = 3, height = 4)
 draw(fusion_enr)
 dev.off()
@@ -138,46 +151,143 @@ dev.off()
 Assess distribution of diagnoses among patients with BRAF fusion LGG by P/LP carrier status
 
 ```{r}
+diagnoses <- read_tsv(file.path(input_dir, "lgg_braf_fusion_final_diagnosis.txt"))
+
+fusions <- fusions %>%
+  dplyr::mutate(diagnosis = case_when(
+    grepl("pilocytic/pilomyxoid", pathology_free_text_diagnosis) ~ "pilocytic/pilomyxoid astrocytoma",
+    grepl("pilocytic|pilocystic|pilocytioc", pathology_free_text_diagnosis) | sample_id %in% diagnoses$sample_id[diagnoses$final_diagnosis == "pilocytic astrocytoma"] ~ "pilocytic astrocytoma",
+    grepl("pilomyxoid", pathology_free_text_diagnosis) | sample_id %in% diagnoses$sample_id[diagnoses$final_diagnosis == "pilomyxoid astrocytoma"] ~ "pilomyxoid astrocytoma",
+    grepl("fibrillary", pathology_free_text_diagnosis) | sample_id %in% diagnoses$sample_id[diagnoses$final_diagnosis == "fibrillary astrocytoma"] ~ "fibrillary astrocytoma",
+    TRUE ~ NA_character_
+  ))
+
 diagnosis_enr <- plot_enr(fusions[!is.na(fusions$diagnosis),], 
                        var1 = "diagnosis", 
                        var2 = "cpg_plp",
                        var1_names = unique(fusions$diagnosis[!is.na(fusions$diagnosis)]), 
-                       var2_names = c("No P/LP", "CPG P/LP"))
+                       var2_names = c("No P/LP", "CPG P/LP"),
+                       padjust = TRUE)
 
-pdf(file.path(plot_dir, "plp_carrier_diagnosis_enr_heatmap.pdf"),
+pdf(file.path(plot_dir, "plp_carrier_braf_fusion_diagnosis_enr_heatmap.pdf"),
     width = 4, height = 4)
 draw(diagnosis_enr)
 dev.off()
-```
-Assess extent of surgical resection by breakpoint group
 
-```{r}
-fusion_resection_enr <- plot_enr(fusions[fusions$extent_of_tumor_resection != "Not Reported",], 
-                       var2 = "breakpoint_group", 
-                       var1 = "extent_of_tumor_resection",
-                       var2_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
-                       var1_names = unique(fusions$extent_of_tumor_resection[fusions$extent_of_tumor_resection != "Not Reported"]),
+for (group in c("16:09", "15:09")){
+
+diagnosis_group_enr <- plot_enr(fusions[!is.na(fusions$diagnosis) & fusions$breakpoint_group == group,], 
+                       var1 = "diagnosis", 
+                       var2 = "cpg_plp",
+                       var1_names = unique(fusions$diagnosis[!is.na(fusions$diagnosis) & fusions$breakpoint_group == group]), 
+                       var2_names = c("No P/LP", "CPG P/LP"),
                        padjust = TRUE)
 
-pdf(file.path(plot_dir, "breakpoint_group_resection_enr_heatmap.pdf"),
-    width = 5.5, height = 3)
+pdf(file.path(plot_dir, glue::glue("plp_carrier_{str_replace(group, ':', '')}_diagnosis_enr_heatmap.pdf")),
+    width = 4, height = 4)
+draw(diagnosis_group_enr)
+dev.off()
+
+}
+```
+
+
+Assess extent of surgical resection by P/LP carrier status
+
+```{r}
+fusion_resection_enr <- plot_enr(fusions, 
+                       var2 = "cpg_plp", 
+                       var1 = "extent_of_tumor_resection",
+                       var2_names = c("No P/LP", "CPG P/LP"), 
+                       var1_names = unique(fusions$extent_of_tumor_resection),
+                       padjust = TRUE)
+
+pdf(file.path(plot_dir, "plp_carrier_braf_fusion_resection_enr_heatmap.pdf"),
+    width = 4, height = 3)
 draw(fusion_resection_enr)
 dev.off()
+
+for (group in c("16:09", "15:09")){
+
+resection_group_enr <- plot_enr(fusions[fusions$breakpoint_group == group,], 
+                       var1 = "extent_of_tumor_resection", 
+                       var2 = "cpg_plp",
+                       var1_names = unique(fusions$extent_of_tumor_resection[fusions$breakpoint_group == group]), 
+                       var2_names = c("No P/LP", "CPG P/LP"),
+                       padjust = TRUE)
+
+pdf(file.path(plot_dir, glue::glue("plp_carrier_{str_replace(group, ':', '')}_resection_enr_heatmap.pdf")),
+    width = 4, height = 4)
+draw(resection_group_enr)
+dev.off()
+
+}
 ```
-Assess anatomical location by breakpoint group
+
+Assess anatomical location by P/LP carrier status
 
 ```{r}
 fusion_region_enr <- plot_enr(fusions, 
-                       var2 = "breakpoint_group", 
+                       var2 = "cpg_plp", 
                        var1 = "CNS_region",
-                       var2_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
-                       var1_names = sort(unique(fusions$CNS_region)),
+                       var2_names = c("No P/LP", "CPG P/LP"), 
+                       var1_names = unique(fusions$CNS_region),
                        padjust = TRUE)
 
-pdf(file.path(plot_dir, "breakpoint_group_region_enr_heatmap.pdf"),
-    width = 4.5, height = 4)
+pdf(file.path(plot_dir, "plp_carrier_braf_fusion_region_enr_heatmap.pdf"),
+    width = 4, height = 5)
 draw(fusion_region_enr)
 dev.off()
+
+for (group in c("16:09", "15:09")){
+
+region_group_enr <- plot_enr(fusions[fusions$breakpoint_group == group,], 
+                       var1 = "CNS_region", 
+                       var2 = "cpg_plp",
+                       var1_names = unique(fusions$CNS_region[fusions$breakpoint_group == group]), 
+                       var2_names = c("No P/LP", "CPG P/LP"),
+                       padjust = TRUE)
+
+pdf(file.path(plot_dir, glue::glue("plp_carrier_{str_replace(group, ':', '')}_region_enr_heatmap.pdf")),
+    width = 4, height = 4)
+draw(region_group_enr)
+dev.off()
+
+}
+```
+
+
+Assess methylation subtype distribution by CPG P/LP carrier status
+
+```{r}
+fusion_methyl <- fusions %>%
+  dplyr::filter(dkfz_v12_methylation_subclass_score >= 0.8,
+                grepl("PA", dkfz_v12_methylation_subclass))
+
+fusion_methyl_enr <- plot_enr(fusion_methyl, 
+                       var2 = "cpg_plp", 
+                       var1 = "dkfz_v12_methylation_subclass",
+                       var2_names = c("No P/LP", "CPG P/LP"), 
+                       var1_names = unique(fusion_methyl$dkfz_v12_methylation_subclass),
+                       padjust = TRUE)
+
+pdf(file.path(plot_dir, "plp_carrier_braf_fusion_methyl_enr_heatmap.pdf"),
+    width = 4, height = 4)
+draw(fusion_methyl_enr)
+dev.off()
+
+
+methyl_group_enr <- plot_enr(fusion_methyl[fusion_methyl$breakpoint_group == "15:09",], 
+                       var1 = "dkfz_v12_methylation_subclass", 
+                       var2 = "cpg_plp",
+                       var1_names = unique(fusion_methyl$dkfz_v12_methylation_subclass[fusion_methyl$breakpoint_group == "15:09"]), 
+                       var2_names = c("No P/LP", "CPG P/LP"))
+
+pdf(file.path(plot_dir, glue::glue("plp_carrier_1509_methyl_enr_heatmap.pdf")),
+    width = 4, height = 4)
+draw(methyl_group_enr)
+dev.off()
+
 ```
 
 Assess EFS by breakpoint group
@@ -188,7 +298,7 @@ fusions <- fusions %>%
                                    OS_years, EFS_years,
                                    EFS_status))
 
-kap_group_efs <- survival_analysis(
+kap_efs <- survival_analysis(
   metadata  = fusions,
   ind_var = "breakpoint_group",
   test = "kap.meier",
@@ -197,31 +307,60 @@ kap_group_efs <- survival_analysis(
   status_col = "EFS_status"
 )
 
-km_group_plot <- plotKM(model = kap_group_efs,
+km_plot <- plotKM(model = kap_efs,
                   variable = "breakpoint_group",
                   combined = F, 
                   title = "LGG, KIAA1549::BRAF fusion")
-km_group_plot
+km_plot
 
 ggsave(file.path(plot_dir, "km_EFS_lgg_braf_fusion_group.pdf"),
        width = 8, height = 6, units = "in")
+```
+Plot EFS by CPG P/LP carrier status within breakpoint groups
 
-add_group_efs_model <- fit_save_model(fusions,
-                                "extent_of_tumor_resection+breakpoint_group",
-                                file.path(results_dir, "coxph_add_EFS_lgg_braf_fusion_resection_group.RDS"),
-                                "multivariate",
-                                years_col = "EFS_years",
-                                status_col = "EFS_status")
-
-plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_lgg_braf_fusion_resection_group.RDS")))
-
-ggsave(file.path(plot_dir, "forest_EFS_lgg_braf_fusion_resection_group.pdf"),
-       width = 7, height = 3, units = "in")
+```{r}
+for (group in c("16:09", "15:09")){
+  
+    
+  kap_group_efs <- survival_analysis(
+    metadata  = fusions[fusions$breakpoint_group == group,],
+    ind_var = "cpg_plp",
+    test = "kap.meier",
+    metadata_sample_col = "Kids_First_Participant_ID", 
+    days_col = "EFS_days",
+    status_col = "EFS_status"
+  )
+  
+  km_group_plot <- plotKM(model = kap_group_efs,
+                    variable = "cpg_plp",
+                    combined = F, 
+                    title = glue::glue("LGG, KIAA1549::BRAF fusion, {group}"))
+  km_group_plot
+  
+  ggsave(file.path(plot_dir, glue::glue("km_EFS_lgg_braf_fusion_{str_replace(group, ':', '')}.pdf")),
+       width = 8, height = 6, units = "in")
+  
+}
 ```
 Assess EFS by P/LP status when including breakpoint group as a covariate
 
 ```{r}
-add_group_plp_efs_model <- fit_save_model(fusions,
+add_plp_efs_model <- fit_save_model(fusions,
+                                "extent_of_tumor_resection+breakpoint_group*cpg_plp",
+                                file.path(results_dir, "coxph_int_EFS_lgg_braf_fusion_resection_group_plp.RDS"),
+                                "multivariate",
+                                years_col = "EFS_years",
+                                status_col = "EFS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_int_EFS_lgg_braf_fusion_resection_group_plp.RDS")))
+
+ggsave(file.path(plot_dir, "forest_EFS_int_lgg_braf_fusion_resection_group_plp.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
+
+```{r}
+add_plp_efs_model <- fit_save_model(fusions,
                                 "extent_of_tumor_resection+breakpoint_group+cpg_plp",
                                 file.path(results_dir, "coxph_add_EFS_lgg_braf_fusion_resection_group_plp.RDS"),
                                 "multivariate",
@@ -233,6 +372,28 @@ plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_lgg_braf_fusion_resecti
 ggsave(file.path(plot_dir, "forest_EFS_lgg_braf_fusion_resection_group_plp.pdf"),
        width = 7, height = 3, units = "in")
 ```
+
+Assess EFS by carrier status in 16:09 and 15:09 breakpoint groups 
+
+```{r}
+for (group in c("16:09", "15:09")){
+
+  add_group_plp_efs_model <- fit_save_model(fusions[fusions$breakpoint_group == group,],
+                                  "extent_of_tumor_resection+cpg_plp",
+                                  file.path(results_dir, 
+                                            glue::glue("coxph_add_EFS_lgg_braf_fusion_{group}_resection_plp.RDS")),
+                                  "multivariate",
+                                  years_col = "EFS_years",
+                                  status_col = "EFS_status")
+  
+  plotForest(readRDS(file.path(results_dir, glue::glue("coxph_add_EFS_lgg_braf_fusion_{group}_resection_plp.RDS"))))
+  
+  ggsave(file.path(plot_dir, glue::glue("forest_EFS_lgg_braf_fusion_{str_replace(group, ':', '')}_resection_group_plp.pdf")),
+         width = 7, height = 3, units = "in")
+  
+}
+```
+
 Print P/LP variants in 16:09 breakpoint group
 
 ```{r}
@@ -257,8 +418,7 @@ plp %>%
   dplyr::filter(Kids_First_Participant_ID %in% fusions$Kids_First_Participant_ID[fusions$breakpoint_group == "15:09"])
 ```
 
-
-
+Print session info
 ```{r}
 sessionInfo()
 ```
