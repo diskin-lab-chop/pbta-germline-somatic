@@ -112,7 +112,8 @@ hist_cohort <- read_tsv(hist_cohort_file) %>%
   distinct(match_id, .keep_all = TRUE) %>%
   # define a "subgroup" column to distinguish SHH-MB and SEGA from MB and LGG plot groups, respectively. 
   dplyr::mutate(subgroup = case_when(
-    subgroup %in% c("MB, SHH", "SEGA") ~ subgroup,
+    molecular_subtype == "MB, SHH" ~ "MB, SHH",
+    grepl("SEGA", molecular_subtype) ~ "SEGA",
     TRUE ~ plot_group
   ))
 
