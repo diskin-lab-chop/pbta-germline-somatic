@@ -69,6 +69,20 @@ mb_hist <- read_tsv(mb_hist_file) %>%
 Generate OS and EFS coxph models, adding covariates for metastasis status
 
 ```{r}
+int_mb_efs_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
+                                "extent_of_tumor_resection+molecular_subtype+metastasis*cpg_plp",
+                                file.path(results_dir, "coxph_int_EFS_mb_resection_subtype_metastasis_plp.RDS"),
+                                "multivariate",
+                                years_col = "EFS_years",
+                                status_col = "EFS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_int_EFS_mb_resection_subtype_metastasis_plp.RDS")))
+
+ggsave(file.path(plot_dir, "forest_EFS_int_mb_resection_subtype_metastasis_plp.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
+```{r}
 add_mb_efs_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
                                 "extent_of_tumor_resection+molecular_subtype+metastasis+cpg_plp",
                                 file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS"),
@@ -81,6 +95,21 @@ plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_me
 ggsave(file.path(plot_dir, "forest_EFS_mb_resection_subtype_metastasis_plp.pdf"),
        width = 7, height = 3, units = "in")
 ```
+
+```{r}
+int_mb_os_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
+                                "molecular_subtype+metastasis*cpg_plp",
+                                file.path(results_dir, "coxph_int_OS_mb_resection_subtype_metastasis_plp.RDS"),
+                                "multivariate",
+                                years_col = "OS_years",
+                                status_col = "OS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_int_OS_mb_resection_subtype_metastasis_plp.RDS")))
+
+ggsave(file.path(plot_dir, "forest_OS_int_mb_resection_subtype_metastasis_plp.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
 
 ```{r}
 add_mb_os_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
@@ -106,7 +135,7 @@ for (subtype in subtypes){
   abbrev <- str_replace(subtype, "MB, ", "")
   
   add_mb_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
-                                "extent_of_tumor_resection+metastasis+cpg_plp",
+                                "extent_of_tumor_resection+metastasis*cpg_plp",
                                 file.path(results_dir, glue::glue("coxph_add_EFS_mb_{abbrev}_resection_metastasis_plp.RDS")),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -120,7 +149,7 @@ for (subtype in subtypes){
   if (subtype != "MB, WNT"){
   
     add_mb_os_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
-                                "extent_of_tumor_resection+metastasis+cpg_plp",
+                                "extent_of_tumor_resection+metastasis*cpg_plp",
                                 file.path(results_dir, glue::glue("coxph_add_OS_mb_{abbrev}_resection_metastasis_plp.RDS")),
                                 "multivariate",
                                 years_col = "OS_years",

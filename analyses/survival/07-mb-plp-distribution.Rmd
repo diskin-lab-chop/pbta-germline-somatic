@@ -69,6 +69,8 @@ mb_shh_file <- file.path(input_dir,
                          "mb_shh_molecular_subtypes.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+
+mb_region_file <- file.path(input_dir, "mb-cns-regions.txt")
 ```
 
 Wrangle data
@@ -79,10 +81,13 @@ hist <- read_tsv(histologies_file, guess_max = 100000)
 cpgs <- read_lines(cpg_file)
 
 plp <- read_tsv(plp_file) %>%
-  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+  bind_rows(read_tsv(plp_lowVAF_file) %>%
+              dplyr::filter(!gene_symbol_vep %in% c("MSH6", "FGFR1"))) %>%
   dplyr::filter(gene_symbol_vep %in% cpgs)
 
 plp_sv <- read_tsv(plp_sv_file)
+
+mb_regions <- read_tsv(mb_region_file)
 ```
 
 Obtain all BS IDs of P/LP carriers with medulloblastoma
@@ -103,7 +108,8 @@ mb_hist <- hist %>%
   dplyr::mutate(extent_of_tumor_resection = case_when(
     sample_id_tumor %in% c("7316-3510", "7316-3576", "7316-14") ~ "Partial resection",
     TRUE ~ extent_of_tumor_resection
-  ))
+  )) %>%
+  left_join(mb_regions %>% dplyr::select(Kids_First_Biospecimen_ID_normal, CNS_region_final))
 ```
 
 Determine if molecular subtypes are enriched among P-LP carriers
@@ -255,7 +261,7 @@ mb_metastasis_plp_enr <- plot_enr(mb_hist,
                                    var2 = "cpg_plp",
                                    var1_names = unique(mb_hist$metastasis), 
                                    var2_names = c("No P-LP", "CPG P-LP"),
-                                   padjust = FALSE)
+                                   padjust = TRUE)
 
 pdf(file.path(plot_dir, "mb_plp_carrier_metastasis_enr_heatmap.pdf"),
     width = 3.5, height = 3)
@@ -285,6 +291,111 @@ for (subtype in subtypes){
   dev.off()
   
 }
+```
+
+```{r}
+mb_region_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$CNS_region_final),], 
+                                   var1 = "CNS_region_final", 
+                                   var2 = "cpg_plp",
+                                   var1_names = unique(mb_hist$CNS_region_final[!is.na(mb_hist$CNS_region_final)]), 
+                                   var2_names = c("No P-LP", "CPG P-LP"),
+                                   padjust = FALSE)
+
+pdf(file.path(plot_dir, "mb_plp_carrier_region_enr_heatmap.pdf"),
+    width = 3.5, height = 3)
+draw(mb_region_plp_enr)
+dev.off()
+
+mb_g34_region_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$CNS_region_final) & mb_hist$molecular_subtype %in% c("MB, Group3", "MB, Group4", "MB, WNT"),], 
+                                   var1 = "CNS_region_final", 
+                                   var2 = "cpg_plp",
+                                   var1_names = unique(mb_hist$CNS_region_final[!is.na(mb_hist$CNS_region_final) & mb_hist$molecular_subtype %in% c("MB, Group3", "MB, Group4", "MB, WNT")]), 
+                                   var2_names = c("No P-LP", "CPG P-LP"),
+                                   padjust = FALSE)
+
+pdf(file.path(plot_dir, "mb_plp_carrier_region_enr_heatmap.pdf"),
+    width = 3.5, height = 3)
+draw(mb_g34_region_plp_enr)
+dev.off()
+
+mb_shh_region_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$CNS_region_final) & mb_hist$molecular_subtype %in% c("MB, SHH"),], 
+                                   var1 = "CNS_region_final", 
+                                   var2 = "cpg_plp",
+                                   var1_names = unique(mb_hist$CNS_region_final[!is.na(mb_hist$CNS_region_final) & mb_hist$molecular_subtype %in% c("MB, SHH")]), 
+                                   var2_names = c("No P-LP", "CPG P-LP"),
+                                   padjust = FALSE)
+
+pdf(file.path(plot_dir, "mb_plp_carrier_region_enr_heatmap.pdf"),
+    width = 3.5, height = 3)
+draw(mb_shh_region_plp_enr)
+dev.off()
+```
+
+
+```{r}
+mb_region_meta_enr <- plot_enr(mb_hist[!is.na(mb_hist$CNS_region_final) & mb_hist$molecular_subtype %in% c("MB, Group3", "MB, Group4", "MB, WNT"),], 
+                                   var1 = "CNS_region_final", 
+                                   var2 = "metastasis",
+                                   var1_names = unique(mb_hist$CNS_region_final[!is.na(mb_hist$CNS_region_final)& mb_hist$molecular_subtype %in% c("MB, Group3", "MB, Group4", "MB, WNT")]), 
+                                   var2_names = unique(mb_hist$metastasis[!is.na(mb_hist$CNS_region_final)& mb_hist$molecular_subtype %in% c("MB, Group3", "MB, Group4")]),
+                                   padjust = FALSE)
+
+pdf(file.path(plot_dir, "mb_metastasis_region_enr_heatmap.pdf"),
+    width = 3.5, height = 3)
+draw(mb_region_meta_enr)
+dev.off()
+```
+
+
+```{r}
+mb_region_subtype_enr <- plot_enr(mb_hist[!is.na(mb_hist$CNS_region_final),], 
+                                   var1 = "CNS_region_final", 
+                                   var2 = "molecular_subtype",
+                                   var1_names = unique(mb_hist$CNS_region_final[!is.na(mb_hist$CNS_region_final)]), 
+                                   var2_names = unique(mb_hist$molecular_subtype[!is.na(mb_hist$CNS_region_final)]),
+                                   padjust = FALSE)
+
+pdf(file.path(plot_dir, "mb_plp_carrier_region_enr_heatmap.pdf"),
+    width = 3.5, height = 3)
+draw(mb_region_subtype_enr)
+dev.off()
+
+
+mb_meta_subtype_enr <- plot_enr(mb_hist, 
+                                   var1 = "metastasis", 
+                                   var2 = "molecular_subtype",
+                                   var1_names = unique(mb_hist$metastasis), 
+                                   var2_names = unique(mb_hist$molecular_subtype),
+                                   padjust = FALSE)
+
+pdf(file.path(plot_dir, "mb_plp_carrier_region_enr_heatmap.pdf"),
+    width = 3.5, height = 3)
+draw(mb_meta_subtype_enr)
+dev.off()
+```
+
+
+```{r}
+mb_hist %>%
+  dplyr::filter(!is.na(CNS_region_final),
+                CNS_region_final != "Mixed",
+                molecular_subtype == "MB, Group3",
+                ) %>%
+  count(cpg_plp, CNS_region_final, metastasis) %>%
+  ggplot(aes(x = n, y = cpg_plp, 
+             fill = CNS_region_final)) +
+  geom_bar(stat = "identity", position = "dodge",
+           colour = "black") +
+  facet_wrap(~metastasis, nrow = 4) +
+  labs(
+    x = NULL,
+    y = "Count",
+    fill = "CNS Region"
+  ) +
+  theme_Publication()
+
+ggsave(file.path(plot_dir, "mb-metastasis-by-region-plp-subtype.pdf"),
+       width = 8, height = 10)
 ```
 
 Save mb_hist to output
