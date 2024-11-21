@@ -165,21 +165,33 @@ mb_hist <- mb_hist %>%
     cohort_participant_id %in% metastasis_pts ~ "Metastasis",
     TRUE ~ "No metastasis"
   )) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE)
+  distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
+  # rename Group 3/4 methylation subgroups; in this cohort, subgroups 1-4 are all Group3 and subgroups 5-8 are all Group4
+  dplyr::mutate(dkfz_v12_methylation_subclass = case_when(
+    dkfz_v12_methylation_subclass == "MB_G34_II" ~ "MB, Group3, subgroup 2",
+    dkfz_v12_methylation_subclass == "MB_G34_III" ~ "MB, Group3, subgroup 3",
+    dkfz_v12_methylation_subclass == "MB_G34_IV" ~ "MB, Group3, subgroup 4",
+    dkfz_v12_methylation_subclass == "MB_G34_V" ~ "MB, Group4, subgroup 5",
+    dkfz_v12_methylation_subclass == "MB_G34_VI" ~ "MB, Group4, subgroup 6",
+    dkfz_v12_methylation_subclass == "MB_G34_VII" ~ "MB, Group4, subgroup 7",
+    dkfz_v12_methylation_subclass == "MB_G34_VIII" ~ "MB, Group4, subgroup 8"
+  ))
 ```
 
 Assess MB, Group 3 methylation subtype distribution by P-LP carrier status
 
 ```{r}
-g3_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),], 
+g3_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("Group3", mb_hist$dkfz_v12_methylation_subclass),], 
                        var1 = "dkfz_v12_methylation_subclass", 
                        var2 = "cpg_plp",
-                       var1_names = c("MB_G34_II", "MB_G34_III", "MB_G34_IV"), 
+                       var1_names = c("MB, Group3, subgroup 2",
+                                      "MB, Group3, subgroup 3",
+                                      "MB, Group3, subgroup 4"), 
                        var2_names = c("No P-LP", "CPG P-LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_g3_plp_carrier_subtype_enr_heatmap.pdf"),
-    width = 3, height = 3)
+    width = 4, height = 3)
 draw(g3_plp_enr)
 dev.off()
 ```
@@ -187,15 +199,18 @@ dev.off()
 Assess MB, Group 4 methylation subtype distribution by P-LP carrier status
 
 ```{r}
-g4_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),], 
+g4_plp_enr <- plot_enr(mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("Group4", mb_hist$dkfz_v12_methylation_subclass),], 
                        var1 = "dkfz_v12_methylation_subclass", 
                        var2 = "cpg_plp",
-                       var1_names = c("MB_G34_V", "MB_G34_VI", "MB_G34_VII", "MB_G34_VIII"), 
+                       var1_names = c("MB, Group4, subgroup 5",
+                                      "MB, Group4, subgroup 6",
+                                      "MB, Group4, subgroup 7",
+                                      "MB, Group4, subgroup 8"), 
                        var2_names = c("No P-LP", "CPG P-LP"),
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_g4_plp_carrier_subtype_enr_heatmap.pdf"),
-    width = 3, height = 3)
+    width = 4, height = 3)
 draw(g4_plp_enr)
 dev.off()
 ```
@@ -234,7 +249,7 @@ shh_plp_enr <- plot_enr(mb_hist[!is.na(mb_hist$shh_subtype),],
                        padjust = FALSE)
 
 pdf(file.path(plot_dir, "mb_shh_plp_carrier_type_enr_heatmap.pdf"),
-    width = 3.5, height = 3)
+    width = 4, height = 2)
 draw(shh_plp_enr)
 dev.off() 
 
@@ -372,30 +387,6 @@ pdf(file.path(plot_dir, "mb_plp_carrier_region_enr_heatmap.pdf"),
     width = 3.5, height = 3)
 draw(mb_meta_subtype_enr)
 dev.off()
-```
-
-
-```{r}
-mb_hist %>%
-  dplyr::filter(!is.na(CNS_region_final),
-                CNS_region_final != "Mixed",
-                molecular_subtype == "MB, Group3",
-                ) %>%
-  count(cpg_plp, CNS_region_final, metastasis) %>%
-  ggplot(aes(x = n, y = cpg_plp, 
-             fill = CNS_region_final)) +
-  geom_bar(stat = "identity", position = "dodge",
-           colour = "black") +
-  facet_wrap(~metastasis, nrow = 4) +
-  labs(
-    x = NULL,
-    y = "Count",
-    fill = "CNS Region"
-  ) +
-  theme_Publication()
-
-ggsave(file.path(plot_dir, "mb-metastasis-by-region-plp-subtype.pdf"),
-       width = 8, height = 10)
 ```
 
 Save mb_hist to output
