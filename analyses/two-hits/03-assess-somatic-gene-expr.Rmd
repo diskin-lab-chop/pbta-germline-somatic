@@ -84,7 +84,7 @@ somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_driver
 
 Read in germline plp file, and append coordinate and ref/alt allele info
 ```{r format germline data}
-# Load abridged P-LP file and append variant coordinates
+# Load abridged P/LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
@@ -187,7 +187,7 @@ germline_sv_somatic_expr <- germline_sv %>%
   write_tsv(file.path(results_dir, "germline-sv-somatic-expr-cpgs.tsv"))
 ```
 
-Plot gene expression z-scores in P-LP carriers
+Plot gene expression z-scores in P/LP carriers
 
 ```{r}
 expr_plot_df <- germline_somatic_expr %>%
@@ -319,8 +319,8 @@ z_scored_expression %>%
     geom_boxplot(alpha = 0.05, outlier.shape = NA) +
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
-                       method.args = list(alternative = "less")) + 
-    labs(x = "Germline P-LP variant", y = "TPM z-score", fill = "Histology") +
+                       method.args = list(alternative = "two.sided")) + 
+    labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3.5,5.75)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
