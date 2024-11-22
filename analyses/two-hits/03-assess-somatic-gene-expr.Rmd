@@ -162,7 +162,7 @@ z_scored_expression <- log_expression %>%
   group_by(Hugo_Symbol, subgroup) %>%
   dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol) %>%
   dplyr::mutate(expr_zscore = scale(expr)) %>%
-  dplyr::mutate(expr_zscore = as.numeric(expr_zscore))
+  dplyr::mutate(expr_zscore = round(as.numeric(expr_zscore), 2))
 
 write_tsv(z_scored_expression,
           file.path(results_dir, "pbta-germline-gene-expr-zscores.tsv"))
@@ -233,16 +233,16 @@ expr_plot_df %>%
                   max.overlaps = 14) +
   annotate("text", x = 4, 
            y = min(expr_plot_df$plot_group), 
-           label = glue::glue("N={sum(expr_plot_df$expr_zscore > 2 & !is.na(expr_plot_df$expr_zscore))}"), 
+           label = glue::glue("N={sum(expr_plot_df$expr_zscore >= 2 & !is.na(expr_plot_df$expr_zscore))}"), 
            color = "black", size = 5, hjust = 1, vjust = 1) +
-    annotate("text", x = -3, 
+    annotate("text", x = -2.5, 
            y = min(expr_plot_df$plot_group), 
-           label = glue::glue("N={sum(expr_plot_df$expr_zscore < -2 & !is.na(expr_plot_df$expr_zscore))}"), 
+           label = glue::glue("N={sum(expr_plot_df$expr_zscore <= -2 & !is.na(expr_plot_df$expr_zscore))}"), 
            color = "black", size = 5, hjust = 1, vjust = 1) +
   scale_fill_manual(values = plot_group_palette, 
                      breaks = sort(names(plot_group_palette))) +
   labs(y = NULL, x = "TPM z-score") +
- # xlim(c(-6,4)) +
+  xlim(c(-4,4)) +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "germline_plp_expr_zscores.pdf"),
