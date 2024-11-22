@@ -7,7 +7,7 @@ toc_float: TRUE
 author: Ryan Corbett
 ---
 
-This analysis identifies patients with germline P-LP variants in cancer predisposition genes that show subsequent seconds CNV or loss of heterozygosity (LOH) hits in tumors 
+This analysis identifies patients with germline P/LP variants in cancer predisposition genes that show subsequent seconds CNV or loss of heterozygosity (LOH) hits in tumors 
 
 Set libraries and file paths
 ```{r load libraries}
@@ -34,7 +34,7 @@ source(file.path(analysis_dir, "util", "cnv_loh_functions.R"))
 
 Define file paths
 ```{r set file paths}
-# germline P-LP calls 
+# germline P/LP calls 
 plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
@@ -67,11 +67,11 @@ embryonal_file <- file.path(root_dir, "analyses", "variant-distribution", "input
 other_file <- file.path(root_dir, "analyses", "variant-distribution", "input", "other_goi_list.tsv")
 ```
 
-Read in PLP, histology, and cpg files. Subset P-LP calls to CPGs only and add histology
+Read in PLP, histology, and cpg files. Subset P/LP calls to CPGs only and add histology
 ```{r get all matched tumors}
 hist <- read_tsv(histologies_file)
 
-# Load abridged P-LP file and append variant coordinates
+# Load abridged P/LP file and append variant coordinates
 germline <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
@@ -351,7 +351,7 @@ cnv_loh_plot_df %>%
                  width = 6, height = 4)
 ```
 
-## Plotting LOH by gene and P-LP status
+## Plotting LOH by gene and P/LP status
 
 For plotting, we will use LOH scores from one matched tumor sample per patient, specified in the cohort histologies file
 ```{r subset for plotting}
@@ -373,7 +373,7 @@ loh_gene <- loh_gene %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, .keep_all = TRUE)
 ```
 
-Look at LOH score differences in P-LP carriers vs non-carriers within histologies 
+Look at LOH score differences in P/LP carriers vs non-carriers within histologies 
 ```{r plot LOH by P/LP status within histologies}
 # define group_gene column
 loh_gene <- loh_gene %>%
@@ -412,7 +412,7 @@ loh_gene %>%
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("Yes", "No")),
                      method.args = list(alternative = "greater")) + 
-  labs(x = "Germline P-LP variant", y = "gene LOH score",
+  labs(x = "Germline P/LP variant", y = "gene LOH score",
        fill = "Histology") +
   ylim(c(0,0.75)) +
   scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette)), na.translate = F) +
