@@ -224,7 +224,7 @@ ggsave(file.path(plot_dir,
        width = 9, height = 4)
 ```
 
-Re-plot TPM vs. PSI z-scores by splicing case and P/LP variant type (frameshift, stop gained, missense, and splice)
+Re-plot TPM vs. PSI z-scores by splicing case and P/LP variant type (frameshift, stop gained, and splice)
 
 ```{r}
 # retained introns
@@ -234,11 +234,11 @@ splice_events %>%
                                               "stop gained", 
                                               "splice variant"),
                 ((strand == "+" & min_dist < 1000) | (strand == "-" & max_dist > -1000))) %>%
-  plot_tpm_vs_psi(., xlab = "Retained Intron PSI z-score")
+  plot_tpm_vs_psi(., xlab = "Retained Intron\nPSI z-score")
   
 ggsave(file.path(plot_dir,
        "tpm-retained-intron-psi-correlations-by-variant-type.pdf"),
-       width = 4, height = 7)
+       width = 3, height = 7)
 
 # single exon
 splice_events %>%
@@ -247,11 +247,11 @@ splice_events %>%
                                               "stop gained", 
                                               "splice variant"),
                 ((strand == "+" & min_dist < 1000) | (strand == "-" & max_dist > -1000))) %>%
-  plot_tpm_vs_psi(., xlab = "Skipped Exon PSI z-score")
+  plot_tpm_vs_psi(., xlab = "Skipped Exon\nPSI z-score")
 
 ggsave(file.path(plot_dir,
        "tpm-single-exon-psi-correlations-by-variant-type.pdf"),
-       width = 4, height = 7)
+       width = 3, height = 7)
 
 # lat splice site
 splice_events %>%
@@ -260,11 +260,11 @@ splice_events %>%
                                               "stop gained", 
                                               "splice variant"),
                 ((strand == "+" & min_dist < 1000) | (strand == "-" & max_dist > -1000))) %>%
-  plot_tpm_vs_psi(., xlab = "Alt. Splice Site PSI z-score")
+  plot_tpm_vs_psi(., xlab = "Alt. Splice Site\nPSI z-score")
 
 ggsave(file.path(plot_dir,
        "tpm-altss-psi-correlations-by-variant-type.pdf"),
-       width = 4, height = 7)
+       width = 3, height = 7)
 ```
 
 ```{r}
