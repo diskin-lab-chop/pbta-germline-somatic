@@ -38,11 +38,14 @@ if (!dir.exists(results_dir)) {
 
 # Call plotting theme
 source(file.path(root_dir, "figures", "theme.R"))
+
+set.seed(2024)
 ```
 
 Set input file paths
 
 ```{r}
+# P/LP variant files
 plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
@@ -52,6 +55,7 @@ plp_lowVAF_file <- file.path(data_dir,
 plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
+# histologies files
 histologies_file <- file.path(data_dir,
                               "histologies.tsv")
 
@@ -59,8 +63,11 @@ hist_cohort_file <- file.path(root_dir, "analyses",
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
+# splice events (PBTA samples and GTF-annotated events)
 splice_events_file <- file.path(input_dir, 
                                 "splice_events_cpgs_pbta.tsv.gz")
+
+splice_events_gtf_file <- file.path(input_dir, "gtf-annotated-splice-events.tsv")
 
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", 
@@ -70,7 +77,6 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation",
 Load files
 
 ```{r load files}
-
 # OPC and cohort histologies
 opc_hist <- read_tsv(histologies_file)
 
@@ -118,13 +124,15 @@ splice_events <- vroom(splice_events_file) %>%
           splicing_case == "RI" ~ glue::glue("{riExonStart_0base}:{riExonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}"),
           splicing_case == "SE" ~ glue::glue("{exonStart_0base}:{exonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}")
         )) %>%
-  dplyr::select(-IncLevel2, -GeneID, -control_id, -chr, -strand, -IJC_SAMPLE_1,
-         -IJC_SAMPLE_2, -SJC_SAMPLE_1, -SJC_SAMPLE_2, -IncFormLen,
-         -SkipFormLen, -PValue, -FDR, -IncLevelDifference,
+  dplyr::select(-IncLevel2, -GeneID, -control_id, -chr,
+         -IJC_SAMPLE_2, -SJC_SAMPLE_2, -PValue, -FDR, -IncLevelDifference,
          -`1stExonStart_0base`, -`1stExonEnd`, -`2ndExonStart_0base`,
          -`2ndExonEnd`) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_rna = sample_id,
-                Hugo_Symbol = geneSymbol)
+                Hugo_Symbol = geneSymbol) 
+
+# Load splice events supported by annotated transcripts in gencode v39
+splice_events_gtf <- read_tsv(splice_events_gtf_file)
 
 # filter histologies file for samples in rmats 
 hist <- hist %>%
@@ -170,9 +178,9 @@ plp_rna_df <- plp %>%
                                 upstream_exon_start_dist, upstream_exon_end_dist,
                                 downstream_exon_start_dist, downstream_exon_end_dist),
     TRUE ~ pmin(region_start_dist, region_end_dist))) %>%
-  arrange(min_dist) %>%
-  # retain the most P/LP variant-proximal splicing event for each sample and splicing case
-  distinct(Kids_First_Biospecimen_ID_rna, Hugo_Symbol, splicing_case, .keep_all = TRUE)
+  dplyr::group_by(Kids_First_Biospecimen_ID_rna, Hugo_Symbol, splicing_case) %>%
+  dplyr::filter(min_dist == min(min_dist)) %>%
+  dplyr::ungroup()
 
 # filter splice events for regions in above df
 splice_events <- splice_events %>%
@@ -188,10 +196,13 @@ splice_psi_df <- tibble(
   plot_group = character(),
   splicing_case = character(),
   exon_region = character(),
+  event_in_gtf = character(),
+  IJC_sample = numeric(),
+  SJC_sample = numeric(),
   PSI_sample = numeric(),
   PSI_other_group = numeric(),
   PSI_diff_group = numeric(),            
-  sample_PSI_zscore = numeric(),
+  sample_PSI_zscore = numeric()
 )
 ```
 
@@ -216,61 +227,86 @@ system.time(
       dplyr::filter(Kids_First_Biospecimen_ID_rna != id & subgroup == hist_group) %>%
       pull(Kids_First_Biospecimen_ID_rna)
 
+    # filter splice events for region and samples of interest
     cpg_splice_events_reg <- splice_events %>%
-      dplyr::filter(Hugo_Symbol == cpg & splicing_case == case) %>%
-      dplyr::filter(region == reg & Kids_First_Biospecimen_ID_rna %in% c(id, other_group_ids))
+      dplyr::filter(Hugo_Symbol == cpg,
+                    splicing_case == case,
+                    region == reg,
+                    Kids_First_Biospecimen_ID_rna %in% c(id, other_group_ids))
     
-    # If RNA ID does not have value in region-- set to 1 (no skipping) for SE events and 0 (no intron retention) for RI events
-    missing_events <- tibble(Kids_First_Biospecimen_ID_rna = other_group_ids[!other_group_ids %in% cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna],
-                             IncLevel1 = case_when(
-                               case == "RI" ~ 0,
-                               case == "SE" ~ 1,
-                               TRUE ~ NA_integer_
-                             ))
-        
-        cpg_splice_events_reg <- cpg_splice_events_reg %>%
-          bind_rows(missing_events) %>%
-          dplyr::mutate(psi_z_score_group = ((IncLevel1 - mean(IncLevel1[Kids_First_Biospecimen_ID_rna %in% c(id, other_group_ids)])) / sd(IncLevel1[Kids_First_Biospecimen_ID_rna %in% c(id, other_group_ids)]))) 
-        
-        # If PSI exists for sample, calculate stats
-        if (length(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id]) > 0){
-          
-          sample_psi <- cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id]
-          # Get mean PSI for all other pts in group
-          mean_psi_group <- round(mean(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna %in% other_group_ids]), 3)
-          
-          mean_psi_diff_group <- round(sample_psi - mean_psi_group, 3)
-          
-          sample_psi_zscore_group <- round(cpg_splice_events_reg$psi_z_score_group[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id], 3)
-          
-          # Create df row to append to `splice_psi_df`
-          df <- tibble(
-            Hugo_Symbol = cpg,
-            Kids_First_Biospecimen_ID_rna = id,
-            plot_group = hist_group,
-            splicing_case = case,
-            exon_region = reg,
-            PSI_sample = sample_psi,
-            PSI_other_group = mean_psi_group,
-            PSI_diff_group = mean_psi_diff_group,
-            sample_PSI_zscore = sample_psi_zscore_group,
-          )
+    # determine if observed splice junction is supported by gencode-annotated transcripts
+    if (reg %in% splice_events_gtf$region[splice_events_gtf$splicing_case == case]){
+      
+      reg_in_gtf <- "Yes"
+      
+    } else {
+      
+      reg_in_gtf <- "No"
+      
+      # If novel splice junction, samples will not report SE or RI IncLevel1 if no reads support junction
+      # In these cases, we can supply IncLevel1 values of 0 and 1 for RI and SE events, respectively
+      missing_events <- tibble(Kids_First_Biospecimen_ID_rna = other_group_ids[!other_group_ids %in% cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna],
+                               IncLevel1 = case_when(
+                                 case == "RI" ~ 0,
+                                 case == "SE" ~ 1,
+                                 TRUE ~ NA_integer_
+                               ))
+      
+      cpg_splice_events_reg <- cpg_splice_events_reg %>%
+          bind_rows(missing_events)
+      
+    }
+    
+    # calculat PSI z-scores    
+    cpg_splice_events_reg <- cpg_splice_events_reg %>%
+      dplyr::mutate(psi_z_score_group = ((IncLevel1 - mean(IncLevel1[Kids_First_Biospecimen_ID_rna %in% c(id, other_group_ids)])) / sd(IncLevel1[Kids_First_Biospecimen_ID_rna %in% c(id, other_group_ids)]))) 
+    
+    # If PSI exists for sample, calculate stats
+    if (length(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id]) > 0){
+      
+      IJC_sample <- cpg_splice_events_reg$IJC_SAMPLE_1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id]
+      SJC_sample <- cpg_splice_events_reg$SJC_SAMPLE_1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id]
+      
+      sample_psi <- cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id]
+      # Get mean PSI for all other pts in group
+      mean_psi_group <- round(mean(cpg_splice_events_reg$IncLevel1[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna %in% other_group_ids]), 3)
+      
+      mean_psi_diff_group <- round(sample_psi - mean_psi_group, 3)
+      
+      sample_psi_zscore_group <- round(cpg_splice_events_reg$psi_z_score_group[cpg_splice_events_reg$Kids_First_Biospecimen_ID_rna == id], 3)
+      
+      # Create df row to append to `splice_psi_df`
+      df <- tibble(
+        Hugo_Symbol = cpg,
+        Kids_First_Biospecimen_ID_rna = id,
+        plot_group = hist_group,
+        splicing_case = case,
+        exon_region = reg,
+        event_in_gtf = reg_in_gtf,
+        IJC_sample = IJC_sample,
+        SJC_sample = SJC_sample,
+        PSI_sample = sample_psi,
+        PSI_other_group = mean_psi_group,
+        PSI_diff_group = mean_psi_diff_group,
+        sample_PSI_zscore = sample_psi_zscore_group
+      )
 
-          # append results to `splice_psi_df`
-          splice_psi_df <- splice_psi_df %>%
-            bind_rows(df)
-          
-        }
+      # append results to `splice_psi_df`
+      splice_psi_df <- splice_psi_df %>%
+        bind_rows(df)
+      
+    }
     
   }
 
 )
 ```
 
+Append sample, P/LP variant, and splice event info to splice_psi_df
 
 ```{r}
 splice_psi_df <- splice_psi_df %>%
-  dplyr::filter(!is.nan(sample_PSI_zscore)) %>%
+  dplyr::filter(!is.nan(sample_PSI_zscore) & !is.na(sample_PSI_zscore)) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_rna", "Kids_First_Biospecimen_ID_normal")]) %>% 
   left_join(plp[,c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol", 
                    "chr", "start", "ref", "alt", 
@@ -278,6 +314,7 @@ splice_psi_df <- splice_psi_df %>%
   dplyr::filter(!is.na(start)) %>%
   left_join(plp_rna_df %>% dplyr::select(Kids_First_Biospecimen_ID_normal,
                                          Hugo_Symbol,
+                                         strand,
                                          splicing_case,
                                          region,
                                          region_start, region_end,
@@ -294,68 +331,65 @@ Determine if splice region variants exhibit differential proximal exon skipping 
 
 ```{r}
 splice_psi_df <- splice_psi_df %>%
-  dplyr::filter(!is.nan(sample_PSI_zscore)) %>%
   dplyr::mutate(min_dist = pmin(region_start_dist, region_end_dist,
                                 upstream_exon_start_dist, upstream_exon_end_dist,
                                 downstream_exon_start_dist, downstream_exon_end_dist)) %>%
+  # define cases by variant type (splice vs. non-splice and proximity to splice event)
   dplyr::mutate(is_splice_variant = case_when(
-    grepl("splic", variant_classification_vep) & min_dist <= 20 ~ "Splice region",
-    min_dist < 250 ~ "Splice event proximal",
-    TRUE ~ "Splice event distal"
+    grepl("splice", variant_classification_vep) & min_dist <= 20 ~ "Splice, proximal",
+    grepl("splice", variant_classification_vep) ~ "Splice, distal",
+    min_dist < 250 ~ "Non-splice, proximal",
+    TRUE ~ "Non-splice, distal"
   )) %>%
-  arrange(min_dist) %>%
+  # In cases of multiple splice events involving the same exon/intron, retain only event with greatest PSI diff relative to subgroup
+  arrange(desc(abs(PSI_diff_group))) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, splicing_case, .keep_all = T) %>%
-  dplyr::mutate(is_splice_variant = fct_relevel(is_splice_variant,
-                                                c("Splice event distal",
-                                                  "Splice event proximal",
-                                                  "Splice region"))) %>%
+  # consolidate variant classifications for plotting
   dplyr::mutate(variant_classification = case_when(
-    is_splice_variant == "Splice region" ~ "proximal splice variant",
-    grepl("splic", variant_classification_vep) ~ "distal splice variant",
-    TRUE ~ variant_classification_vep
+    grepl("splice", variant_classification_vep) ~ "splice variant",
+    grepl("stop_gained&frameshift", variant_classification_vep) ~ "frameshift variant",
+    TRUE ~ str_replace_all(variant_classification_vep, "_", " ")
   )) 
 
+# Plot PSI z-scores by splice case, germline variant type, and proximity to splice event
 splice_psi_df %>%
-  dplyr::filter(variant_classification != "distal splice variant") %>%
   dplyr::mutate(plot_group = case_when(
-    is_splice_variant == "Splice region"~ "Splice\n region",
-    is_splice_variant == "Splice event proximal" ~ "Splice\n event\n proximal",
-    is_splice_variant == "Splice event distal" ~ "Splice\n event\n distal",
+    is_splice_variant == "Splice, proximal" ~ "Splice,\n<20bp",
+    is_splice_variant == "Splice, distal" ~ "Splice,\n>=20bp",
+    is_splice_variant == "Non-splice, proximal" ~ "Non-\nsplice,\n<250bp",
+    is_splice_variant == "Non-splice, distal" ~ "Non-\nsplice,\n>=250bp",
   )) %>%
     dplyr::mutate(plot_group = fct_relevel(plot_group,
-                                                c("Splice\n event\n distal",
-                                                  "Splice\n event\n proximal",
-                                                  "Splice\n region"))) %>%
+                                              c("Splice,\n<20bp",
+                                                "Splice,\n>=20bp",
+                                                "Non-\nsplice,\n<250bp",
+                                                "Non-\nsplice,\n>=250bp")
+                                           )) %>%
   dplyr::mutate(plot_case = case_when(
-    splicing_case == "SE" ~ "Single Exon", 
+    splicing_case == "SE" ~ "Skipped Exon", 
     splicing_case == "RI" ~ "Retained Intron",
-    splicing_case == "A3SS" ~ "Alternative 3'\n Splice Site",
-    splicing_case == "A5SS" ~ "Alternative 5'\n Splice Site"
+    splicing_case %in% c("A3SS", "A5SS") ~ "Alternative Splice Site",
   )) %>%
-  dplyr::mutate(plot_case = case_when(
-    splicing_case == "SE" ~ "Single Exon", 
-    splicing_case == "RI" ~ "Retained Intron",
-    splicing_case %in% c("A3SS", "A5SS") ~ "Alternative\n Splice Site",
-  )) %>%
-  ggplot(aes(x = plot_group, y = sample_PSI_zscore)) + 
-  geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
-  geom_hline(yintercept = c(-2, 2), linetype = "dashed", color = "gray") + 
-  stat_compare_means(method = "wilcox",
-                     comparisons = list(c("Splice\n region", "Splice\n event\n distal"),
-                                        c("Splice\n event\n proximal", "Splice\n event\n distal"),
-                                        c("Splice\n event\n proximal", "Splice\n region")),
-                     method.args = list(alternative = "two.sided"),
-                     step.increase = 0.15) + 
-  labs(x = "P/LP variant type", y = "PSI z-score", fill = "Variant Classification") +
-  facet_wrap(~plot_case, nrow = 1, scale = "free_y") +
-  ylim(c(NA, 10)) +
-  scale_fill_npg() + 
-  theme_Publication()
+
+    ggplot(aes(x = plot_group, y = sample_PSI_zscore)) + 
+    geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+    geom_hline(yintercept = c(-2, 2), linetype = "dashed", color = "gray") + 
+    stat_compare_means(method = "wilcox",
+                      comparisons = list(c("Splice,\n<20bp", "Non-\nsplice,\n>=250bp"),
+                                         c("Splice,\n<20bp", "Non-\nsplice,\n<250bp"),
+                                         c("Splice,\n<20bp", "Splice,\n>=20bp")),
+                       method.args = list(alternative = "two.sided"),
+                       step.increase = 0.15) + 
+    labs(x = "Germline P/LP variant type and proximity to somatic splice event", y = "Somatic PSI z-score", fill = "Germline Variant\nClassification") +
+    facet_wrap(~plot_case, nrow = 1, scale = "free_y") +
+    scale_y_continuous(expand = expansion(mult = .2)) +
+    scale_fill_npg() + 
+    theme_Publication() 
 
 ggsave(file.path(plot_dir,
        "alternative-splicing-PSI-zscores-by-variant-type.pdf"),
-       width = 12, height = 4)
+       width = 13, height = 4.5)
 ```
 
 ```{r}
