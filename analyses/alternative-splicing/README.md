@@ -10,18 +10,31 @@ This module queries alternative splicing event RMATs file to identify germline P
 
 1. `01-calculate-PSI-zscores.Rmd` calculates PSI z-scores of alternative splicing events proximal to germline P/LP variants in P/LP carriers
 
+2. `02-splicing-expression.Rmd` Plots gene expression TPM z-scores by variant classification and alternative splicing PSI z-scores, and identifies candidate P/LP variant-associated alternative splicing events. 
+
 ##Analysis module directory structure
 
 ```
 .
 ├── 01-calculate-PSI-zscores.Rmd
 ├── 01-calculate-PSI-zscores.nb.html
+├── 02-splicing-expression.Rmd
+├── 02-splicing-expression.nb.html
 ├── README.md
 ├── input
+│   ├── gtf-annotated-splice-events.tsv
 │   └── splice_events_cpgs_pbta.tsv.gz
 ├── plots
 │   ├── alternative-splicing-PSI-zscores-by-variant-type.pdf
+│   ├── tpm-altss-psi-correlations-by-variant-type.pdf
+│   ├── tpm-psi-correlations-by-splicing-case.pdf
+│   ├── tpm-retained-intron-psi-correlations-by-variant-type.pdf
+│   ├── tpm-single-exon-psi-correlations-by-variant-type.pdf
+│   └── tpm-zscores-by-variant-classification.pdf
 ├── results
-│   ├── plp-variant-proximal-splicing-event-psi.tsv
-└── run_module.sh
+│   └── plp-variant-proximal-splicing-event-psi.tsv
+├── run_module.sh
+└── util
+    └── splicing_plot_functions.R
+
 ```
