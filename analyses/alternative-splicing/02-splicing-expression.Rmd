@@ -198,8 +198,7 @@ splice_events <- splice_events %>%
 
 splice_events %>%
   dplyr::filter(variant_classification %in% c("frameshift variant", 
-                                              "stop gained", 
-                                              "splice variant"),
+                                              "stop gained"),
                 ((strand == "+" & min_dist < 1000) | (strand == "-" & max_dist > -1000))) %>%
   ggplot(aes(x = sample_PSI_zscore, y = expr_zscore)) +
          geom_point() +
@@ -221,7 +220,7 @@ splice_events %>%
 
 ggsave(file.path(plot_dir,
        "tpm-psi-correlations-by-splicing-case.pdf"),
-       width = 9, height = 4)
+       width = 7, height = 3)
 ```
 
 Re-plot TPM vs. PSI z-scores by splicing case and P/LP variant type (frameshift, stop gained, and splice)
