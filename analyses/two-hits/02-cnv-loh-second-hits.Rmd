@@ -101,7 +101,8 @@ germline <- germline %>%
                 plot_group, molecular_subtype,
                 Hugo_Symbol, autogvp_call, autogvp_call_reason,
                 chr, start, ref, alt, HGVSc, HGVSp) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, start, .keep_all = T)
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor, Hugo_Symbol, start, .keep_all = T) %>%
+  dplyr::mutate(sample_variant_coord = glue::glue("{Kids_First_Biospecimen_ID_normal}:{chr}:{start}"))
 
 germline_sv <- germline_sv %>%
   left_join(hist[,c("Kids_First_Participant_ID", "Kids_First_Biospecimen_ID_normal",
@@ -162,15 +163,28 @@ germline_sv_somatic_cnvs <- germline_sv %>%
   distinct()
 ```
 
-Read in LOH results, and append LOH scores, odds ratios, and p-values to rows of `germline_somatic_cnvs`
+Load LOH results and filter germline variants based on presence in tumor. Save these to output for other second-hit analyses
 ```{r get variant loh data}
-loh <- read_tsv(loh_variant_file) %>%
-  dplyr::filter(start %in% germline$start) %>%
+loh <- read_tsv(loh_variant_file) %>% 
   dplyr::rename(Kids_First_Biospecimen_ID_normal = BS_ID,
                 Kids_First_Biospecimen_ID_tumor = BS_ID_tumor,
                 Hugo_Symbol = gene) %>%
-  dplyr::filter(!is.na(proband_tumor_alt_depth),
-                Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
+  dplyr::mutate(sample_variant_coord = glue::glue("{Kids_First_Biospecimen_ID_normal}:{chr}:{start}")) %>%
+  dplyr::filter(sample_variant_coord %in% germline$sample_variant_coord,
+                !is.na(proband_tumor_vaf),
+                Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor)
+
+germline_in_tumor <- germline %>%
+  dplyr::filter(sample_variant_coord %in% loh$sample_variant_coord | Hugo_Symbol %in% somatic_drivers[!somatic_drivers %in% cpgs]) %>%
+  write_tsv(file.path(results_dir, 
+                      "germline-plp-variants-cpg-somatic-driver-in-tumor.tsv"))
+
+nrow(germline_in_tumor)
+```
+
+Calculate LOH odds ratios and significance
+```{r}
+loh <- loh %>%
   dplyr::mutate(loh_score = proband_tumor_vaf - proband_germline_vaf,
                 loh_OR = 0,
                 loh_pvalue = 0) %>%

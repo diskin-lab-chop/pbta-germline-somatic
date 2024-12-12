@@ -41,14 +41,13 @@ set.seed(2023)
 
 Set input file paths
 ```{r}
-plp_file <- file.path(data_dir, 
-                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+# plp_file <- file.path(data_dir, 
+#                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
+plp_file <- file.path(results_dir, 
+                      "germline-plp-variants-cpg-somatic-driver-in-tumor.tsv")
 
 plp_sv_file <- file.path(data_dir, 
                          "pbta_germline_svs.tsv")
-
-plp_lowVAF_file <- file.path(data_dir,
-                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
 histologies_file <- file.path(data_dir,
                               "histologies.tsv")
@@ -85,10 +84,7 @@ somatic_drivers <- c(hgat_drivers, lgat_drivers, embryonal_drivers, other_driver
 Read in germline plp file, and append coordinate and ref/alt allele info
 ```{r format germline data}
 # Load abridged P/LP file and append variant coordinates
-germline <- read_tsv(plp_file) %>%
-  bind_rows(read_tsv(plp_lowVAF_file)) %>%
-  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)
+germline <- read_tsv(plp_file) 
 
 germline_sv <- read_tsv(plp_sv_file) %>%
   dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg) %>%
@@ -119,7 +115,6 @@ hist_cohort <- read_tsv(hist_cohort_file) %>%
 
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
-  filter(Hugo_Symbol %in% c(cpgs, somatic_drivers)) %>%
   left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal",
                     "Kids_First_Biospecimen_ID_rna", "plot_group", "molecular_subtype")]) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal,
@@ -319,7 +314,7 @@ z_scored_expression %>%
     geom_boxplot(alpha = 0.05, outlier.shape = NA) +
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
-                       method.args = list(alternative = "two.sided")) + 
+                       method.args = list(alternative = "less")) + 
     labs(x = "Germline P/LP variant", y = "TPM z-score", fill = "Histology") +
     ylim(c(-3.5,5.75)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
