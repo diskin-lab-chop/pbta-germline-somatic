@@ -46,18 +46,15 @@ histologies_file <- file.path(root_dir, "analyses",
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
-plp_file <- file.path(data_dir, 
-                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
-
-plp_lowVAF_file <- file.path(data_dir, 
-                       "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+plp_file <- file.path(root_dir, "analyses", "two-hits", "results", 
+                      "germline-plp-variants-cpg-somatic-driver-in-tumor.tsv")
 
 plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
 
-survival_file <- file.path(input_dir, "cbtn-all-survival-09122024.txt")
+survival_file <- file.path(input_dir, "cbtn_all-survival-12122024.csv")
 
 output_histology <- file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 ```
@@ -72,15 +69,12 @@ hist <- read_tsv(histologies_file) %>%
                             cohort_participant_id)) %>%
   distinct()
 
-plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
-  bind_rows(read_tsv(plp_lowVAF_file)) %>%
-    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
+plp <- read_tsv(plp_file, show_col_types = FALSE)
 
 plp_sv <- read_tsv(plp_sv_file, show_col_types = FALSE) %>%
     filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 cpgs <- read_lines(cpg_file)
-
 ```
 
 Consolidate subtypes of HGG, LGG, and GNG into broader subgroups
@@ -112,8 +106,7 @@ Define column `cpgPLP_status` indicating presence or absence of a CPG PLP varian
 
 ```{r}
 cpg_bs <- plp %>%
-  filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
-  filter(gene_symbol_vep %in% cpgs) %>%
+  filter(Hugo_Symbol %in% cpgs) %>%
   pull(Kids_First_Biospecimen_ID_normal) %>%
   unique()
 
@@ -123,13 +116,15 @@ sv_cpg_bs <- plp_sv %>%
 
 hist <- hist %>%
   mutate(cpgPLP_status = case_when(
-    Kids_First_Biospecimen_ID_normal %in% c(cpg_bs, sv_cpg_bs) ~ "cpgPLP",
-    TRUE ~ "no_cpgPLP"
-  ))
+    Kids_First_Biospecimen_ID_normal %in% c(cpg_bs, sv_cpg_bs) ~ "CPG P/LP",
+    TRUE ~ "no CPG P/LP"
+  )) %>%
+  dplyr::mutate(cpgPLP_status = fct_relevel(cpgPLP_status,
+                                            c("no CPG P/LP", "CPG P/LP")))
 ```
 
 ```{r}
-survival_df <- read_tsv(survival_file) 
+survival_df <- read_csv(survival_file) 
 
 survival_to_append <- survival_df %>%
   arrange(desc(age_at_event_days)) %>%
@@ -148,8 +143,8 @@ pts_w_event <- survival_df %>%
   dplyr::filter(!event_type %in% c("Initial CNS Tumor",
                                   "Not Reported", "Unavailable"),
                 !clinical_status_at_event %in% c("Deceased-due to other causes",
-                                                                            "Deceased-due to unknown causes",
-                                                                            "Deceased-causes unavailable")) %>%
+                                                 "Deceased-due to unknown causes",
+                                                 "Deceased-causes unavailable")) %>%
   pull(cbtn_subject_id)
 
 hist <- hist %>%

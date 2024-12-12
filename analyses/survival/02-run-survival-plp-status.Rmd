@@ -53,11 +53,10 @@ Read in metadata
 
 ```{r}
 hist <- read_tsv(histologies_file) %>%
+  dplyr::mutate(cpgPLP_status = fct_relevel(cpgPLP_status,
+                                            c("no CPG P/LP", "CPG P/LP"))) %>%
   dplyr::mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
-  dplyr::mutate(cpgPLP_status = fct_relevel(cpgPLP_status, 
-                                            c("no_cpgPLP",
-                                              "cpgPLP"))) %>%
   dplyr::mutate(extent_of_tumor_resection = case_when(
     extent_of_tumor_resection == "Biopsy only" & plot_group == "Medulloblastoma" ~ "Partial resection",
     TRUE ~ extent_of_tumor_resection
@@ -198,19 +197,19 @@ for (group in groups){
   add_model_os <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group) & !grepl("Unavailable", group_hist$extent_of_tumor_resection),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
-                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status",
+                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status+age_at_diagnosis_years",
                                      ifelse(group %in% c("Other high-grade glioma"),
-                                            "extent_of_tumor_resection+molecular_subtype+cpgPLP_status",
+                                            "extent_of_tumor_resection+molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
                                             ifelse(group == "DIPG or DMG",
-                                                   "molecular_subtype+cpgPLP_status",
+                                                   "molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
                                                    ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor", "Medulloblastoma"),
-                                                          "extent_of_tumor_resection+mol_sub_group+cpgPLP_status",
+                                                          "extent_of_tumor_resection+mol_sub_group+cpgPLP_status+age_at_diagnosis_years",
                                                           ifelse(group %in% c("Mixed neuronal-glial tumor", "Ependymom"),
-                                                                 "mol_sub_group+cpgPLP_status",
+                                                                 "mol_sub_group+cpgPLP_status+age_at_diagnosis_years",
                                                                  ifelse(group %in% c("Choroid plexus tumor", "Mesenchymal tumor",
                                                                                      "Meningioma", "Schwannoma"),
-                                                                        "extent_of_tumor_resection+cpgPLP_status",
-                                                                        "cpgPLP_status"
+                                                                        "extent_of_tumor_resection+cpgPLP_status+age_at_diagnosis_years",
+                                                                        "cpgPLP_status+age_at_diagnosis_years"
                                                                         )))))),
              coxph_os_model_file,
              "multivariate",
@@ -221,19 +220,19 @@ for (group in groups){
   add_model_efs <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group) & !grepl("Unavailable", group_hist$extent_of_tumor_resection),],
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
-                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status",
+                                     "mol_sub_group+extent_of_tumor_resection+cpgPLP_status+age_at_diagnosis_years",
                                      ifelse(group %in% c("Other high-grade glioma"),
-                                            "extent_of_tumor_resection+molecular_subtype+cpgPLP_status",
+                                            "extent_of_tumor_resection+molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
                                             ifelse(group == "DIPG or DMG",
-                                                   "molecular_subtype+cpgPLP_status",
+                                                   "molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
                                                    ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor", "Medulloblastoma"),
-                                                          "extent_of_tumor_resection+mol_sub_group+cpgPLP_status",
+                                                          "extent_of_tumor_resection+mol_sub_group+cpgPLP_status+age_at_diagnosis_years",
                                                           ifelse(group %in% c("Mixed neuronal-glial tumor", "Ependymom"),
-                                                                 "mol_sub_group+cpgPLP_status",
+                                                                 "mol_sub_group+cpgPLP_status+age_at_diagnosis_years",
                                                                  ifelse(group %in% c("Choroid plexus tumor", "Mesenchymal tumor",
                                                                                      "Meningioma", "Schwannoma"),                                                                        
-                                                                        "extent_of_tumor_resection+cpgPLP_status",
-                                                                        "cpgPLP_status"
+                                                                        "extent_of_tumor_resection+cpgPLP_status+age_at_diagnosis_years",
+                                                                        "cpgPLP_status+age_at_diagnosis_years"
                                                                         )))))),
              coxph_efs_model_file,
              "multivariate",
@@ -330,12 +329,12 @@ for (j in 1:nrow(subtypes)) {
     add_model_os <- fit_save_model(subtype_hist[!grepl("Unavailable", subtype_hist$extent_of_tumor_resection),],
                                  terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma",
                                                                                "Medulloblastoma"),
-                                                 "extent_of_tumor_resection+cpgPLP_status",
+                                                 "extent_of_tumor_resection+cpgPLP_status+age_at_diagnosis_years",
                                                  ifelse(subtypes$plot_group[j] %in% c("Other high-grade glioma"),
-                                                        "extent_of_tumor_resection+molecular_subtype+cpgPLP_status",
+                                                        "extent_of_tumor_resection+molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
                                                         ifelse(subtypes$plot_group[j] %in% c("DIPG or DMG"),
-                                                               "molecular_subtype+cpgPLP_status",
-                                                               "cpgPLP_status"
+                                                               "molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
+                                                               "cpgPLP_status+age_at_diagnosis_years"
                                                                ))),
                                    coxph_os_model_file,
                                    "multivariate",
@@ -345,12 +344,12 @@ for (j in 1:nrow(subtypes)) {
     add_model_efs <- fit_save_model(subtype_hist[!grepl("Unavailable", subtype_hist$extent_of_tumor_resection),],
                                   terms = ifelse(subtypes$plot_group[j] %in% c("Low-grade glioma",
                                                                                "Medulloblastoma"),
-                                                 "extent_of_tumor_resection+cpgPLP_status",
+                                                 "extent_of_tumor_resection+cpgPLP_status+age_at_diagnosis_years",
                                                  ifelse(subtypes$plot_group[j] %in% c("Other high-grade glioma"),
-                                                        "extent_of_tumor_resection+molecular_subtype+cpgPLP_status",
+                                                        "extent_of_tumor_resection+molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
                                                         ifelse(subtypes$plot_group[j] %in% c("DIPG or DMG"),
-                                                               "molecular_subtype+cpgPLP_status",
-                                                               "cpgPLP_status"
+                                                               "molecular_subtype+cpgPLP_status+age_at_diagnosis_years",
+                                                               "cpgPLP_status+age_at_diagnosis_years"
                                                                ))),
                                      coxph_efs_model_file,
                                      "multivariate",
