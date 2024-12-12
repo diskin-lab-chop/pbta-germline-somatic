@@ -121,7 +121,7 @@ lof_hits %>%
 # collapse calls a bit
 lof_hits_subset <- lof_hits %>%
   mutate(VAF = t_alt_count / t_depth) %>%
-  select(Matched_Norm_Sample_Barcode, Tumor_Sample_Barcode, Hugo_Symbol, Transcript_ID, HGVSc, HGVSp, VAF, SIFT, PolyPhen, Variant_Classification, HotSpotAllele, ONCOGENIC, MUTATION_EFFECT, VARIANT_IN_ONCOKB)
+  dplyr::select(Matched_Norm_Sample_Barcode, Tumor_Sample_Barcode, Hugo_Symbol, Transcript_ID, HGVSc, HGVSp, VAF, SIFT, PolyPhen, Variant_Classification, HotSpotAllele, ONCOGENIC, MUTATION_EFFECT, VARIANT_IN_ONCOKB)
 
 # two hit CPG matches
 germline_somatic_gene_matches <- germline %>%
@@ -133,7 +133,7 @@ germline_somatic_gene_matches <- germline %>%
 
 ```{r gene hits by patient}
 collapsed <- germline %>%
-  filter(Hugo_Symbol %in% cpg) %>%
+  dplyr::filter(Hugo_Symbol %in% cpg) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %>%
   group_by(Kids_First_Biospecimen_ID_normal) %>%
   summarise(Hugo_Symbol = str_c(sort(unique(Hugo_Symbol)), collapse = "; ")) %>%
@@ -171,6 +171,17 @@ Create lollipop plots of germline variants + somatic mutations. First, modify ge
 aa_key <- read_tsv(file.path(input_dir, "aa_symbol_key.tsv"))
 
 germ_maf <- germline_somatic_gene_matches %>%
+  dplyr::select(-Tumor_Sample_Barcode) %>%
+  bind_rows(germline %>%
+                dplyr::filter((Hugo_Symbol == "LZTR1" & Matched_Norm_Sample_Barcode %in% c("BS_ETAATG3J", "BS_FPB0JGKX")) |
+                                 (Hugo_Symbol == "PTCH1" & Matched_Norm_Sample_Barcode == "BS_MN2FX68Z") |
+                                (Hugo_Symbol == "GBA" & Matched_Norm_Sample_Barcode %in% c("BS_MN2FX68Z", "BS_HVCBQ58H"))) %>%
+                dplyr::select(any_of(names(germline_somatic_gene_matches)))) %>%
+    left_join(integrated_hist %>%
+                dplyr::rename(Tumor_Sample_Barcode = Kids_First_Biospecimen_ID_tumor,
+                              Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal) %>%
+                dplyr::select(Tumor_Sample_Barcode, Matched_Norm_Sample_Barcode),
+              by = "Matched_Norm_Sample_Barcode") %>%
   dplyr::select(-HGVSc, -HGVSp, -Variant_Classification) %>%
   # rename columns to match maf columns
   dplyr::rename(Chromosome = chr,
@@ -184,10 +195,19 @@ germ_maf <- germline_somatic_gene_matches %>%
     Variant_Classification == "missense_variant" ~ "Missense_Mutation",
     grepl("stop_gained", Variant_Classification) ~ "Nonsense_Mutation",
     grepl("splice_acceptor|splice_donor", Variant_Classification) ~ "Splice_Site",
+    grepl("splice", Variant_Classification) ~ "Splice_Region",
+    grepl("synonymous", Variant_Classification) ~ "Silent",
     Variant_Classification == "frameshift_variant" & nchar(alt) > nchar(Reference_Allele) ~ "Frame_Shift_Ins",
     Variant_Classification == "frameshift_variant" & nchar(alt) < nchar(Reference_Allele) ~ "Frame_Shift_Del",
     Variant_Classification == "inframe_deletion" ~ "In_Frame_Del",
     TRUE ~ Variant_Classification
+  )) %>%
+  dplyr::mutate(HGVSp = case_when(
+    Matched_Norm_Sample_Barcode == "BS_MN2FX68Z" ~ "p.X68_splice",
+    Matched_Norm_Sample_Barcode %in% c("BS_MN2FX68Z", "BS_HVCBQ58H") ~ "p.X39_splice",
+    Matched_Norm_Sample_Barcode == "BS_9A5CF1QE" ~ "p.X326_splice",
+    Matched_Norm_Sample_Barcode == "BS_FPB0JGKX" ~ "p.Val214Val",
+    TRUE ~ HGVSp_Short
   )) %>%
   # add variant_type column
   dplyr::mutate(Variant_Type = case_when(
@@ -198,7 +218,7 @@ germ_maf <- germline_somatic_gene_matches %>%
   dplyr::select(Matched_Norm_Sample_Barcode, Hugo_Symbol,
                 Tumor_Sample_Barcode,
                 Chromosome, Start_Position, Variant_Classification,
-                Reference_Allele, HGVSc, HGVSp_Short, Variant_Type)
+                Reference_Allele, HGVSc, HGVSp, HGVSp_Short, Variant_Type)
 
 merged_maf <- maf %>%
   bind_rows(germ_maf) %>%
@@ -212,15 +232,19 @@ write_tsv(merged_maf, file.path(results_dir, "germ-somatic-merged-maf.tsv"))
 Re-load merged_maf as maf object and generate lollipop plots
 
 ```{r}
-merged_maf <- maftools::read.maf(file.path(results_dir, "germ-somatic-merged-maf.tsv"))
+merged_maf <- maftools::read.maf(file.path(results_dir, "germ-somatic-merged-maf.tsv"),
+                                 vc_nonSyn = c("Splice_Site", "Silent", "Splice_Region",
+                                               "Missense_Mutation", "Nonsense_Mutation",
+                                               "Frame_Shift_Ins", "Frame_Shift_Del",
+                                               "In_Frame_Del"))
 
-ids <- germline_somatic_gene_matches %>%
+ids <- germ_maf %>%
   distinct(Tumor_Sample_Barcode) %>%
   pull(Tumor_Sample_Barcode)
 
 for (id in ids){
   
-  gene <- germline_somatic_gene_matches %>%
+  gene <- germ_maf %>%
     dplyr::filter(Tumor_Sample_Barcode == id) %>%
     pull(Hugo_Symbol) %>%
     unique()
@@ -233,14 +257,31 @@ for (id in ids){
                    glue::glue("{id}-{gene}-lollipop.pdf")),
          width = 6, height = 4)
   
-  lollipopPlot(plot_maf, gene = gene, AACol = "HGVSp_Short", 
-               showDomainLabel = FALSE, labPosAngle = 45, 
-               labelPos = "all", legendTxtSize = 1, 
-               labPosSize = 1.25,
-               pointSize = 2.5,
-               repel = TRUE,
-               showMutationRate = FALSE,
-               collapsePosLabel = TRUE)
+  if (id %in% c("BS_DC7XYYG8", "BS_5WK2KXYW", 
+                "BS_DGG7YE8R", "BS_K3PPH522",
+                "BS_0S617SMM")){
+  
+    lollipopPlot(plot_maf, gene = gene, AACol = "HGVSp", 
+                 showDomainLabel = FALSE, labPosAngle = 0, 
+                 labelPos = "all", legendTxtSize = 1, 
+                 labPosSize = 1.25,
+                 pointSize = 2.5,
+               #  repel = TRUE,
+                 showMutationRate = FALSE,
+                 collapsePosLabel = TRUE)
+    
+  } else {
+  
+    lollipopPlot(plot_maf, gene = gene,  AACol = "HGVSp_Short",
+                 showDomainLabel = FALSE, labPosAngle = 45, 
+                 labelPos = "all", legendTxtSize = 1, 
+                 labPosSize = 1.25,
+                 pointSize = 2.5,
+              #   repel = TRUE,
+                 showMutationRate = FALSE,
+                 collapsePosLabel = TRUE)
+    
+  }
   
   dev.off()
   
