@@ -1828,10 +1828,24 @@ font-size: 0.95em;
 <h3>Set libraries and file paths</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBsb2FkIGxpYnJhcmllc1xubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KG1hZnRvb2xzKVxuXG4jIGRlZmluZSBkaXJlY3RvcmllcyBcbnJvb3RfZGlyIDwtIHJwcm9qcm9vdDo6ZmluZF9yb290KHJwcm9qcm9vdDo6aGFzX2RpcihcIi5naXRcIikpXG5hbmFseXNpc19kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFwidHdvLWhpdHNcIilcbmlucHV0X2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCBcImlucHV0XCIpXG5yZXN1bHRzX2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCBcInJlc3VsdHNcIilcbmRhdGFfZGlyIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJkYXRhXCIpXG5wbG90X2RpciA8LSBmaWxlLnBhdGgoYW5hbHlzaXNfZGlyLCBcInBsb3RzXCIpXG5cbiMgSWYgdGhlIGlucHV0IGFuZCByZXN1bHRzIGRpcmVjdG9yaWVzIGRvIG5vdCBleGlzdCwgY3JlYXRlIGl0XG5pZiAoIWRpci5leGlzdHMocmVzdWx0c19kaXIpKSB7XG4gIGRpci5jcmVhdGUocmVzdWx0c19kaXIsIHJlY3Vyc2l2ZSA9IFRSVUUpXG59XG5cbiMgYWRkIGhpc3RvbG9naWVzIGZpbGUgc28gd2UgY2FuIHN1YnNldCBtYWZcbmhpc3RvbG9naWVzX2ZpbGUgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLFwiYW5hbHlzZXNcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcImNvbGxhcHNlLXR1bW9yLWhpc3RvbG9naWVzXCIsIFwicmVzdWx0c1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZ2VybWxpbmUtcHJpbWFyeS1wbHVzLXR1bW9yLWhpc3RvbG9naWVzLXBsb3QtZ3JvdXBzLWNsaW4tbWV0YS50c3ZcIilcblxuIyByZW1vdmUgY2VsbCBsaW5lcyBmcm9tIGhpc3RvbG9naWVzIGZpbGVcbm9wY19oaXN0X2ZpbGUgPC0gZmlsZS5wYXRoKGRhdGFfZGlyLCBcImhpc3RvbG9naWVzLnRzdlwiKVxuXG5wbHBfc3ZfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwicGJ0YV9nZXJtbGluZV9zdnMudHN2XCIpXG5cbiMgZ29pIGZpbGVcbmNwZ19maWxlIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJhbmFseXNlc1wiLCBcIm9uY29rYi1hbm5vdGF0aW9uXCIsIFwiaW5wdXRcIiwgXCJjcGcudHh0XCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgbG9hZCBsaWJyYXJpZXMiLCJsaWJyYXJ5KHRpZHl2ZXJzZSkiXX0= -->
 <pre class="r"><code># load libraries
-library(tidyverse)
-library(maftools)
+library(tidyverse)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuNCAgICAg4pyUIHJlYWRyICAgICAyLjEuNVxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMVxu4pyUIGdncGxvdDIgICAzLjUuMSAgICAg4pyUIHRpYmJsZSAgICAzLjIuMVxu4pyUIGx1YnJpZGF0ZSAxLjkuMyAgICAg4pyUIHRpZHlyICAgICAxLjMuMVxu4pyUIHB1cnJyICAgICAxLjAuMiAgICAgXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbuKEuSBVc2UgdGhlIGNvbmZsaWN0ZWQgcGFja2FnZSAoPGh0dHA6Ly9jb25mbGljdGVkLnItbGliLm9yZy8+KSB0byBmb3JjZSBhbGwgY29uZmxpY3RzIHRvIGJlY29tZSBlcnJvcnNcbiJ9 -->
+<pre><code>── Attaching core tidyverse packages ────────────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkobWFmdG9vbHMpIiwiIiwiIyBkZWZpbmUgZGlyZWN0b3JpZXMgIiwicm9vdF9kaXIgPC0gcnByb2pyb290OjpmaW5kX3Jvb3QocnByb2pyb290OjpoYXNfZGlyKFwiLmdpdFwiKSkiLCJhbmFseXNpc19kaXIgPC0gZmlsZS5wYXRoKHJvb3RfZGlyLCBcImFuYWx5c2VzXCIsIFwidHdvLWhpdHNcIikiLCJpbnB1dF9kaXIgPC0gZmlsZS5wYXRoKGFuYWx5c2lzX2RpciwgXCJpbnB1dFwiKSIsInJlc3VsdHNfZGlyIDwtIGZpbGUucGF0aChhbmFseXNpc19kaXIsIFwicmVzdWx0c1wiKSIsImRhdGFfZGlyIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJkYXRhXCIpIiwicGxvdF9kaXIgPC0gZmlsZS5wYXRoKGFuYWx5c2lzX2RpciwgXCJwbG90c1wiKSIsIiIsIiMgSWYgdGhlIGlucHV0IGFuZCByZXN1bHRzIGRpcmVjdG9yaWVzIGRvIG5vdCBleGlzdCwgY3JlYXRlIGl0IiwiaWYgKCFkaXIuZXhpc3RzKHJlc3VsdHNfZGlyKSkge1xuICBkaXIuY3JlYXRlKHJlc3VsdHNfZGlyLCByZWN1cnNpdmUgPSBUUlVFKVxufSIsIiIsIiMgYWRkIGhpc3RvbG9naWVzIGZpbGUgc28gd2UgY2FuIHN1YnNldCBtYWYiLCJoaXN0b2xvZ2llc19maWxlIDwtIGZpbGUucGF0aChyb290X2RpcixcImFuYWx5c2VzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJjb2xsYXBzZS10dW1vci1oaXN0b2xvZ2llc1wiLCBcInJlc3VsdHNcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcImdlcm1saW5lLXByaW1hcnktcGx1cy10dW1vci1oaXN0b2xvZ2llcy1wbG90LWdyb3Vwcy1jbGluLW1ldGEudHN2XCIpIiwiIiwiIyByZW1vdmUgY2VsbCBsaW5lcyBmcm9tIGhpc3RvbG9naWVzIGZpbGUiLCJvcGNfaGlzdF9maWxlIDwtIGZpbGUucGF0aChkYXRhX2RpciwgXCJoaXN0b2xvZ2llcy50c3ZcIikiLCIiLCJwbHBfc3ZfZmlsZSA8LSBmaWxlLnBhdGgoZGF0YV9kaXIsIFwicGJ0YV9nZXJtbGluZV9zdnMudHN2XCIpIiwiIiwiIyBnb2kgZmlsZSIsImNwZ19maWxlIDwtIGZpbGUucGF0aChyb290X2RpciwgXCJhbmFseXNlc1wiLCBcIm9uY29rYi1hbm5vdGF0aW9uXCIsIFwiaW5wdXRcIiwgXCJjcGcudHh0XCIpIl19 -->
+<pre class="r"><code>library(maftools)
 
 # define directories 
 root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
@@ -1866,14 +1880,148 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <h3>Load oncokb annotated maf and explore data</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFmIDwtIGRhdGEudGFibGU6OmZyZWFkKGZpbGUucGF0aChyb290X2RpciwgcGFyYW1zJG1hZl9pbiksIGRhdGEudGFibGUgPSBGKVxuXG5gYGAifQ== -->
-<pre class="r"><code>maf &lt;- data.table::fread(file.path(root_dir, params$maf_in), data.table = F)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiaW50ZWdyYXRlZF9oaXN0IDwtIHJlYWRfdHN2KGhpc3RvbG9naWVzX2ZpbGUpIn0= -->
+<pre class="r"><code>integrated_hist &lt;- read_tsv(histologies_file)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoifC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tfFxufD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09fFxuIn0= -->
-<pre><code>|--------------------------------------------------|
-|==================================================|</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogODMwIENvbHVtbnM6IDM2XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoMjYpOiBLaWRzX0ZpcnN0X1BhcnRpY2lwYW50X0lELCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgc2FtcGwuLi5cbmRibCAoMTApOiBicm9hZF9oaXN0b2xvZ3lfb3JkZXIsIGFnZV9hdF9kaWFnbm9zaXNfZGF5cywgYWdlX2xhc3RfdXBkYXRlX2RheXMuLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Rows: 830 Columns: 36
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
+dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiZ2VybWxpbmUgPC0gcmVhZF90c3YoZmlsZS5wYXRoKHJvb3RfZGlyLCBwYXJhbXMkZ2VybV9pbikpICU+JVxuICBiaW5kX3Jvd3MocmVhZF90c3YoZmlsZS5wYXRoKGRhdGFfZGlyLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwicGJ0YS1tZXJnZWQtcGxwLXZhcmlhbnRzLWF1dG9ndnAtYWJyaWRnZWQtbG93VkFGLWNwZ3MudHN2XCIpKSkgJT4lXG4gIGRwbHlyOjpmaWx0ZXIoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgJWluJSBpbnRlZ3JhdGVkX2hpc3QkS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JVxuICBkcGx5cjo6cmVuYW1lKE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLFxuICAgICAgICAgICAgICAgIEh1Z29fU3ltYm9sID0gZ2VuZV9zeW1ib2xfdmVwLFxuICAgICAgICAgICAgICAgIEhHVlNjX2dlcm0gPSBIR1ZTYyxcbiAgICAgICAgICAgICAgICBIR1ZTcF9nZXJtID0gSEdWU3ApICJ9 -->
+<pre class="r"><code>germline &lt;- read_tsv(file.path(root_dir, params$germ_in)) %&gt;%
+  bind_rows(read_tsv(file.path(data_dir,
+                               &quot;pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv&quot;))) %&gt;%
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% integrated_hist$Kids_First_Biospecimen_ID_normal) %&gt;%
+  dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
+                Hugo_Symbol = gene_symbol_vep,
+                HGVSc_germ = HGVSc,
+                HGVSp_germ = HGVSp) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjg2OSBDb2x1bW5zOiAyM1xu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDE5KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG5Sb3dzOiAxMCBDb2x1bW5zOiAyNFxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIwKTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
+<pre><code>Rows: 2869 Columns: 23
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
+dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 10 Columns: 24
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
+dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoib3BjX2hpc3QgPC0gcmVhZF90c3Yob3BjX2hpc3RfZmlsZSwgZ3Vlc3NfbWF4ID0gMzAwMCkgJT4lXG4gIGZpbHRlcighaXMubmEocGF0aG9sb2d5X2RpYWdub3NpcyksXG4gICAgICAgICBleHBlcmltZW50YWxfc3RyYXRlZ3kgPT0gXCJXR1NcIixcbiAgICAgICAgIHR1bW9yX2Rlc2NyaXB0b3IgIT0gXCJEZXJpdmVkIENlbGwgTGluZVwiKSJ9 -->
+<pre class="r"><code>opc_hist &lt;- read_tsv(opc_hist_file, guess_max = 3000) %&gt;%
+  filter(!is.na(pathology_diagnosis),
+         experimental_strategy == &quot;WGS&quot;,
+         tumor_descriptor != &quot;Derived Cell Line&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNDc4OTUgQ29sdW1uczogNjZcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg0NSk6IEtpZHNfRmlyc3RfUGFydGljaXBhbnRfSUQsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIHNhbXBsZV9pZCwgYS4uLlxuZGJsICgyMSk6IGNlbGxfbGluZV9wYXNzYWdlLCBPU19kYXlzLCBFRlNfZGF5cywgYWdlX2F0X2RpYWdub3Npc19kYXlzLCBhZ2VfYS4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
+<pre><code>Rows: 47895 Columns: 66
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;\t&quot;
+chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
+dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgQ1BHcyIsImNwZyA8LSByZWFkX2xpbmVzKGNwZ19maWxlKSIsIiIsIiMgbG9hZCBtYWYiLCJtYWYgPC0gZGF0YS50YWJsZTo6ZnJlYWQoZmlsZS5wYXRoKHJvb3RfZGlyLCBwYXJhbXMkbWFmX2luKSwgZGF0YS50YWJsZSA9IEYpICU+JVxuICBmaWx0ZXIoVHVtb3JfU2FtcGxlX0JhcmNvZGUgJWluJSBvcGNfaGlzdCRLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEKSIsIiIsIiMgQ1BHcyB3aXRob3V0IHNvbWF0aWMgaGl0cyIsInNldGRpZmYoY3BnLCB1bmlxdWUobWFmJEh1Z29fU3ltYm9sKSkiXX0= -->
+<pre class="r"><code># CPGs
+cpg &lt;- read_lines(cpg_file)
+
+# load maf
+maf &lt;- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) %&gt;%
+  filter(Tumor_Sample_Barcode %in% opc_hist$Kids_First_Biospecimen_ID)
+
+# CPGs without somatic hits
+setdiff(cpg, unique(maf$Hugo_Symbol))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRVJDQzVcIiAgICBcIkgxOVwiICAgICAgXCJLQ05RMU9UMVwiIFwiTDJIR0RIXCIgICBcIk1SRTExXCIgICAgXCJSTVJQXCIgICAgXG4ifQ== -->
+<pre><code>[1] &quot;ERCC5&quot;    &quot;H19&quot;      &quot;KCNQ1OT1&quot; &quot;L2HGDH&quot;   &quot;MRE11&quot;    &quot;RMRP&quot;    </code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjpbIkVSQ0M1XG4iLCJIMTlcbiIsIktDTlExT1QxXG4iLCJMMkhHREhcbiIsIk1SRTExXG4iLCJSTVJQXG4iXX0= -->
+<pre><code>ERCC5
+H19
+KCNQ1OT1
+L2HGDH
+MRE11
+RMRP</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgdGFibGUgb2YgZ2VuZSBjb3VudHMgYnkgb25jb2dlbmljIGVmZmVjdCIsIm1hZiAlPiVcbiAgY291bnQoT05DT0dFTklDKSAlPiVcbiAgYXJyYW5nZSgtbikiXX0= -->
+<pre class="r"><code># table of gene counts by oncogenic effect
+maf %&gt;%
+  count(ONCOGENIC) %&gt;%
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["ONCOGENIC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"26234"},{"1":"Likely Oncogenic","2":"387"},{"1":"Oncogenic","2":"106"},{"1":"Inconclusive","2":"3"},{"1":"Likely Neutral","2":"2"},{"1":"Resistance","2":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgZXh0cmFjdCBvbmNvZ2VuaWMvbGlrZWx5IG9uY29nZW5pYyBhbmQvb3Igb3RoZXIgTE9GIHZhcmlhbnRzIiwibG9mX2hpdHMgPC0gbWFmICU+JVxuICBmaWx0ZXIoT05DT0dFTklDICVpbiUgYyhcIkxpa2VseSBPbmNvZ2VuaWNcIiwgXCJPbmNvZ2VuaWNcIiwgXCJSZXNpc3RhbmNlXCIpIHxcbiAgICAgICAgICAgVmFyaWFudF9DbGFzc2lmaWNhdGlvbiAlaW4lIGMoXCJGcmFtZV9TaGlmdF9EZWxcIiwgXCJGcmFtZV9TaGlmdF9JbnNcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJNaXNzZW5zZV9NdXRhdGlvblwiLCBcIk5vbnNlbnNlX011dGF0aW9uXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiU3BsaWNlX1NpdGVcIiwgXCJUcmFuc2xhdGlvbl9TdGFydF9TaXRlXCIpKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJwYnRhLW9uY29rYi1vbmNvZ2VuaWMtbG9mLW1hZi50c3ZcIikpIiwiIiwiIyBwcmV2YWxlbmNlIGJ5IGdlbmUiLCJsb2ZfaGl0cyAlPiVcbiAgY291bnQoSHVnb19TeW1ib2wpICU+JVxuICBhcnJhbmdlKC1uKSJdfQ== -->
+<pre class="r"><code># extract oncogenic/likely oncogenic and/or other LOF variants
+lof_hits &lt;- maf %&gt;%
+  filter(ONCOGENIC %in% c(&quot;Likely Oncogenic&quot;, &quot;Oncogenic&quot;, &quot;Resistance&quot;) |
+           Variant_Classification %in% c(&quot;Frame_Shift_Del&quot;, &quot;Frame_Shift_Ins&quot;,
+                                         &quot;Missense_Mutation&quot;, &quot;Nonsense_Mutation&quot;,
+                                         &quot;Splice_Site&quot;, &quot;Translation_Start_Site&quot;)) %&gt;%
+  write_tsv(file.path(results_dir, &quot;pbta-oncokb-oncogenic-lof-maf.tsv&quot;))
+
+# prevalence by gene
+lof_hits %&gt;%
+  count(Hugo_Symbol) %&gt;%
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Hugo_Symbol"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"TP53","2":"97"},{"1":"BRAF","2":"57"},{"1":"NF1","2":"41"},{"1":"ATRX","2":"35"},{"1":"COL7A1","2":"29"},{"1":"GNAS","2":"29"},{"1":"FGFR1","2":"28"},{"1":"TERT","2":"27"},{"1":"SMARCA4","2":"24"},{"1":"ATM","2":"23"},{"1":"PIK3CA","2":"23"},{"1":"NF2","2":"20"},{"1":"PDGFRA","2":"19"},{"1":"EGFR","2":"18"},{"1":"TSC2","2":"18"},{"1":"PTEN","2":"17"},{"1":"PTPN11","2":"17"},{"1":"AKT1","2":"16"},{"1":"GLI3","2":"15"},{"1":"PTCH1","2":"15"},{"1":"RPS6","2":"13"},{"1":"SDHA","2":"13"},{"1":"SMARCB1","2":"13"},{"1":"ASXL1","2":"12"},{"1":"ZEB2","2":"12"},{"1":"KRAS","2":"11"},{"1":"CREBBP","2":"10"},{"1":"KIF1B","2":"10"},{"1":"STAT3","2":"10"},{"1":"CBL","2":"9"},{"1":"CDK4","2":"9"},{"1":"NSD1","2":"9"},{"1":"POLE","2":"9"},{"1":"RHBDF2","2":"9"},{"1":"CDH1","2":"8"},{"1":"EP300","2":"8"},{"1":"FGFR2","2":"8"},{"1":"FLCN","2":"8"},{"1":"KIT","2":"8"},{"1":"POLD1","2":"8"},{"1":"REST","2":"8"},{"1":"SAMD9L","2":"8"},{"1":"SLX4","2":"8"},{"1":"SMARCA2","2":"8"},{"1":"ABCB11","2":"7"},{"1":"BRCA2","2":"7"},{"1":"CASR","2":"7"},{"1":"DICER1","2":"7"},{"1":"DIS3L2","2":"7"},{"1":"RET","2":"7"},{"1":"SAMD9","2":"7"},{"1":"SH2B3","2":"7"},{"1":"SOX10","2":"7"},{"1":"APC","2":"6"},{"1":"DDX41","2":"6"},{"1":"MSH3","2":"6"},{"1":"NRAS","2":"6"},{"1":"PRSS1","2":"6"},{"1":"RAD50","2":"6"},{"1":"RECQL4","2":"6"},{"1":"SMAD4","2":"6"},{"1":"BAP1","2":"5"},{"1":"BLM","2":"5"},{"1":"BUB1B","2":"5"},{"1":"EGLN1","2":"5"},{"1":"ELP1","2":"5"},{"1":"ERCC2","2":"5"},{"1":"FANCB","2":"5"},{"1":"FANCC","2":"5"},{"1":"FGFR3","2":"5"},{"1":"HFE","2":"5"},{"1":"MET","2":"5"},{"1":"MSH6","2":"5"},{"1":"SOS2","2":"5"},{"1":"WRN","2":"5"},{"1":"ALK","2":"4"},{"1":"BARD1","2":"4"},{"1":"BMPR1A","2":"4"},{"1":"BRCA1","2":"4"},{"1":"FANCM","2":"4"},{"1":"GPC4","2":"4"},{"1":"HACE1","2":"4"},{"1":"MAP2K1","2":"4"},{"1":"MAX","2":"4"},{"1":"MSH2","2":"4"},{"1":"NKX2-1","2":"4"},{"1":"POT1","2":"4"},{"1":"PRF1","2":"4"},{"1":"RPL11","2":"4"},{"1":"RPL5","2":"4"},{"1":"SERPINA1","2":"4"},{"1":"STK11","2":"4"},{"1":"WAS","2":"4"},{"1":"BRIP1","2":"3"},{"1":"CDKN2A","2":"3"},{"1":"CHEK2","2":"3"},{"1":"DKC1","2":"3"},{"1":"DOCK8","2":"3"},{"1":"EPCAM","2":"3"},{"1":"ERCC3","2":"3"},{"1":"ERCC4","2":"3"},{"1":"EXT1","2":"3"},{"1":"EZH2","2":"3"},{"1":"FANCD2","2":"3"},{"1":"FANCG","2":"3"},{"1":"FANCL","2":"3"},{"1":"G6PC3","2":"3"},{"1":"GATA2","2":"3"},{"1":"GPR161","2":"3"},{"1":"LZTR1","2":"3"},{"1":"MPL","2":"3"},{"1":"MUTYH","2":"3"},{"1":"NBN","2":"3"},{"1":"NTHL1","2":"3"},{"1":"NTRK1","2":"3"},{"1":"PMS2","2":"3"},{"1":"RAF1","2":"3"},{"1":"SLC25A13","2":"3"},{"1":"SOS1","2":"3"},{"1":"SPRED1","2":"3"},{"1":"TSC1","2":"3"},{"1":"UROD","2":"3"},{"1":"XPA","2":"3"},{"1":"XPC","2":"3"},{"1":"AIP","2":"2"},{"1":"ARID5B","2":"2"},{"1":"AXIN2","2":"2"},{"1":"CDKN1C","2":"2"},{"1":"CYLD","2":"2"},{"1":"EDNRB","2":"2"},{"1":"ERCC1","2":"2"},{"1":"ETV6","2":"2"},{"1":"EXT2","2":"2"},{"1":"FANCA","2":"2"},{"1":"FANCE","2":"2"},{"1":"FANCI","2":"2"},{"1":"GDNF","2":"2"},{"1":"HAX1","2":"2"},{"1":"HOXB13","2":"2"},{"1":"HRAS","2":"2"},{"1":"ITK","2":"2"},{"1":"MAP2K2","2":"2"},{"1":"MEN1","2":"2"},{"1":"MITF","2":"2"},{"1":"MTAP","2":"2"},{"1":"POLH","2":"2"},{"1":"PTCH2","2":"2"},{"1":"RAD51D","2":"2"},{"1":"RB1","2":"2"},{"1":"RPS24","2":"2"},{"1":"RUNX1","2":"2"},{"1":"SMARCE1","2":"2"},{"1":"SUFU","2":"2"},{"1":"TGFBR1","2":"2"},{"1":"WRAP53","2":"2"},{"1":"CDC73","2":"1"},{"1":"CDKN1B","2":"1"},{"1":"CEBPA","2":"1"},{"1":"CEBPE","2":"1"},{"1":"DDB2","2":"1"},{"1":"FAH","2":"1"},{"1":"FMR1","2":"1"},{"1":"GBA","2":"1"},{"1":"GJB2","2":"1"},{"1":"GPC3","2":"1"},{"1":"GREM1","2":"1"},{"1":"HABP2","2":"1"},{"1":"HMBS","2":"1"},{"1":"IKZF1","2":"1"},{"1":"MLF1","2":"1"},{"1":"PHOX2B","2":"1"},{"1":"PRKAR1A","2":"1"},{"1":"RAD51","2":"1"},{"1":"RIT1","2":"1"},{"1":"RPS17","2":"1"},{"1":"RPS7","2":"1"},{"1":"SBDS","2":"1"},{"1":"SDHAF2","2":"1"},{"1":"SDHC","2":"1"},{"1":"SHOC2","2":"1"},{"1":"TINF2","2":"1"},{"1":"TMEM127","2":"1"},{"1":"TRIM37","2":"1"},{"1":"TRIP13","2":"1"},{"1":"VHL","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgcHJldmFsZW5jZSBieSB2YXJpYW50IGluIG9uY29rYiIsImxvZl9oaXRzICU+JVxuICBjb3VudChWQVJJQU5UX0lOX09OQ09LQikgJT4lXG4gIGFycmFuZ2UoLW4pIl19 -->
+<pre class="r"><code># prevalence by variant in oncokb
+lof_hits %&gt;%
+  count(VARIANT_IN_ONCOKB) %&gt;%
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VARIANT_IN_ONCOKB"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"965"},{"1":"TRUE","2":"270"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgcHJldmFsZW5jZSBieSB2YXJpYW50IGluIG9uY29rYiIsImxvZl9oaXRzICU+JVxuICBjb3VudChNVVRBVElPTl9FRkZFQ1QpICU+JVxuICBhcnJhbmdlKC1uKSJdfQ== -->
+<pre class="r"><code># prevalence by variant in oncokb
+lof_hits %&gt;%
+  count(MUTATION_EFFECT) %&gt;%
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["MUTATION_EFFECT"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"742"},{"1":"Likely Loss-of-function","2":"319"},{"1":"Gain-of-function","2":"100"},{"1":"Likely Gain-of-function","2":"42"},{"1":"Loss-of-function","2":"25"},{"1":"Inconclusive","2":"5"},{"1":"Likely Neutral","2":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgaG93IG1hbnkgYXJlIGhvdHNwb3RzPyIsImxvZl9oaXRzICU+JVxuICBjb3VudChIb3RTcG90QWxsZWxlKSAlPiVcbiAgYXJyYW5nZSgtbikiXX0= -->
+<pre class="r"><code># how many are hotspots?
+lof_hits %&gt;%
+  count(HotSpotAllele) %&gt;%
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["HotSpotAllele"],"name":[1],"type":["int"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"967"},{"1":"1","2":"268"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1881,7 +2029,7 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <h3>Integrate with germline data</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjb2xsYXBzZSBjYWxscyBhIGJpdFxubG9mX2hpdHNfc3Vic2V0IDwtIGxvZl9oaXRzICU+JVxuICBtdXRhdGUoVkFGID0gdF9hbHRfY291bnQgLyB0X2RlcHRoKSAlPiVcbiAgZHBseXI6OnNlbGVjdChNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUsIFR1bW9yX1NhbXBsZV9CYXJjb2RlLCBIdWdvX1N5bWJvbCwgVHJhbnNjcmlwdF9JRCwgSEdWU2MsIEhHVlNwLCBWQUYsIFNJRlQsIFBvbHlQaGVuLCBWYXJpYW50X0NsYXNzaWZpY2F0aW9uLCBIb3RTcG90QWxsZWxlLCBPTkNPR0VOSUMsIE1VVEFUSU9OX0VGRkVDVCwgVkFSSUFOVF9JTl9PTkNPS0IpXG5cbiMgdHdvIGhpdCBDUEcgbWF0Y2hlc1xuZ2VybWxpbmVfc29tYXRpY19nZW5lX21hdGNoZXMgPC0gZ2VybWxpbmUgJT4lXG4gIGlubmVyX2pvaW4obG9mX2hpdHNfc3Vic2V0LCBieSA9IGMoXCJNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGVcIiwgXCJIdWdvX1N5bWJvbFwiKSkgJT4lXG4gIHdyaXRlX3RzdihmaWxlLnBhdGgocmVzdWx0c19kaXIsIFwiZ2VybWxpbmUtc29tYXRpYy10d28tZ2VuZS1oaXRzLnRzdlwiKSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgY29sbGFwc2UgY2FsbHMgYSBiaXQiLCJsb2ZfaGl0c19zdWJzZXQgPC0gbG9mX2hpdHMgJT4lXG4gIG11dGF0ZShWQUYgPSB0X2FsdF9jb3VudCAvIHRfZGVwdGgpICU+JVxuICBkcGx5cjo6c2VsZWN0KE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSwgVHVtb3JfU2FtcGxlX0JhcmNvZGUsIEh1Z29fU3ltYm9sLCBUcmFuc2NyaXB0X0lELCBIR1ZTYywgSEdWU3AsIFZBRiwgU0lGVCwgUG9seVBoZW4sIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24sIEhvdFNwb3RBbGxlbGUsIE9OQ09HRU5JQywgTVVUQVRJT05fRUZGRUNULCBWQVJJQU5UX0lOX09OQ09LQikiLCIiLCIjIHR3byBoaXQgQ1BHIG1hdGNoZXMiLCJnZXJtbGluZV9zb21hdGljX2dlbmVfbWF0Y2hlcyA8LSBnZXJtbGluZSAlPiVcbiAgaW5uZXJfam9pbihsb2ZfaGl0c19zdWJzZXQsIGJ5ID0gYyhcIk1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZVwiLCBcIkh1Z29fU3ltYm9sXCIpKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJnZXJtbGluZS1zb21hdGljLXR3by1nZW5lLWhpdHMudHN2XCIpKSJdfQ== -->
 <pre class="r"><code># collapse calls a bit
 lof_hits_subset &lt;- lof_hits %&gt;%
   mutate(VAF = t_alt_count / t_depth) %&gt;%
@@ -1892,9 +2040,12 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
   inner_join(lof_hits_subset, by = c(&quot;Matched_Norm_Sample_Barcode&quot;, &quot;Hugo_Symbol&quot;)) %&gt;%
   write_tsv(file.path(results_dir, &quot;germline-somatic-two-gene-hits.tsv&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG4ifQ== -->
-<pre><code>Warning: Detected an unexpected many-to-many relationship between `x` and `y`.</code></pre>
-<!-- rnb-output-end -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBpbm5lcl9qb2luKC4sIGxvZl9oaXRzX3N1YnNldCwgYnkgPSBjKFwiTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlXCIsIDogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG7ihLkgUm93IDQwMSBvZiBgeGAgbWF0Y2hlcyBtdWx0aXBsZSByb3dzIGluIGB5YC5cbuKEuSBSb3cgNTczIG9mIGB5YCBtYXRjaGVzIG11bHRpcGxlIHJvd3MgaW4gYHhgLlxu4oS5IElmIGEgbWFueS10by1tYW55IHJlbGF0aW9uc2hpcCBpcyBleHBlY3RlZCwgc2V0IGByZWxhdGlvbnNoaXAgPSBcIm1hbnktdG8tbWFueVwiYCB0byBzaWxlbmNlIHRoaXMgd2FybmluZy5cbiJ9 -->
+<pre><code>Warning in inner_join(., lof_hits_subset, by = c(&quot;Matched_Norm_Sample_Barcode&quot;, : Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 401 of `x` matches multiple rows in `y`.
+ℹ Row 573 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
+<!-- rnb-warning-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1902,7 +2053,7 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
 <h3>List germline + somatic gene hits by sample</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbGFwc2VkIDwtIGdlcm1saW5lICU+JVxuICBkcGx5cjo6ZmlsdGVyKEh1Z29fU3ltYm9sICVpbiUgY3BnKSAlPiVcbiAgZHBseXI6OnJlbmFtZShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCA9IE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSkgJT4lXG4gIGdyb3VwX2J5KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSAlPiVcbiAgc3VtbWFyaXNlKEh1Z29fU3ltYm9sID0gc3RyX2Moc29ydCh1bmlxdWUoSHVnb19TeW1ib2wpKSwgY29sbGFwc2UgPSBcIjsgXCIpKSAlPiVcbiAgbGVmdF9qb2luKGludGVncmF0ZWRfaGlzdClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiY29sbGFwc2VkIDwtIGdlcm1saW5lICU+JVxuICBkcGx5cjo6ZmlsdGVyKEh1Z29fU3ltYm9sICVpbiUgY3BnKSAlPiVcbiAgZHBseXI6OnJlbmFtZShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCA9IE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSkgJT4lXG4gIGdyb3VwX2J5KEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSAlPiVcbiAgc3VtbWFyaXNlKEh1Z29fU3ltYm9sID0gc3RyX2Moc29ydCh1bmlxdWUoSHVnb19TeW1ib2wpKSwgY29sbGFwc2UgPSBcIjsgXCIpKSAlPiVcbiAgbGVmdF9qb2luKGludGVncmF0ZWRfaGlzdCkifQ== -->
 <pre class="r"><code>collapsed &lt;- germline %&gt;%
   dplyr::filter(Hugo_Symbol %in% cpg) %&gt;%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode) %&gt;%
@@ -1910,10 +2061,10 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
   summarise(Hugo_Symbol = str_c(sort(unique(Hugo_Symbol)), collapse = &quot;; &quot;)) %&gt;%
   left_join(integrated_hist)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpYFxuIn0= -->
+<!-- rnb-message-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpYFxuIn0= -->
 <pre><code>Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbGFwc2VkX2xvZiA8LSBsb2ZfaGl0c19zdWJzZXQgJT4lXG4gIGRwbHlyOjpyZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgPSBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUsXG4gICAgICAgICAgICAgICAgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vcl9tYWYgPSBUdW1vcl9TYW1wbGVfQmFyY29kZSxcbiAgICAgICAgICAgICAgICBIdWdvX1N5bWJvbF9zb21hdGljID0gSHVnb19TeW1ib2wpICU+JVxuICBncm91cF9ieShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vcl9tYWYpICU+JVxuICBzdW1tYXJpc2UoSHVnb19TeW1ib2xfc29tYXRpYyA9IHN0cl9jKHNvcnQodW5pcXVlKEh1Z29fU3ltYm9sX3NvbWF0aWMpKSwgY29sbGFwc2UgPSBcIjsgXCIpKVxuYGBgIn0= -->
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiY29sbGFwc2VkX2xvZiA8LSBsb2ZfaGl0c19zdWJzZXQgJT4lXG4gIGRwbHlyOjpyZW5hbWUoS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwgPSBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUsXG4gICAgICAgICAgICAgICAgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vcl9tYWYgPSBUdW1vcl9TYW1wbGVfQmFyY29kZSxcbiAgICAgICAgICAgICAgICBIdWdvX1N5bWJvbF9zb21hdGljID0gSHVnb19TeW1ib2wpICU+JVxuICBncm91cF9ieShLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF90dW1vcl9tYWYpICU+JVxuICBzdW1tYXJpc2UoSHVnb19TeW1ib2xfc29tYXRpYyA9IHN0cl9jKHNvcnQodW5pcXVlKEh1Z29fU3ltYm9sX3NvbWF0aWMpKSwgY29sbGFwc2UgPSBcIjsgXCIpKSJ9 -->
 <pre class="r"><code>collapsed_lof &lt;- lof_hits_subset %&gt;%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
                 Kids_First_Biospecimen_ID_tumor_maf = Tumor_Sample_Barcode,
@@ -1921,10 +2072,11 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
   group_by(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor_maf) %&gt;%
   summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ0tpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsJy4gWW91IGNhbiBvdmVycmlkZSB1c2luZyB0aGUgYC5ncm91cHNgIGFyZ3VtZW50LlxuIn0= -->
-<pre><code>`summarise()` has grouped output by &#39;Kids_First_Biospecimen_ID_normal&#39;. You can override using the `.groups` argument.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbGFwc2VkX2dlcm1fc29tIDwtIGNvbGxhcHNlZCAlPiVcbiAgbGVmdF9qb2luKGNvbGxhcHNlZF9sb2YsIGJ5ID0gXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbFwiKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJnZXJtbGluZS1zb21hdGljLWNvbGxhcHNlZC1ieS1nZW5lLnRzdlwiKSlcbmBgYCJ9 -->
+<!-- rnb-message-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ0tpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsJy4gWW91IGNhblxub3ZlcnJpZGUgdXNpbmcgdGhlIGAuZ3JvdXBzYCBhcmd1bWVudC5cbiJ9 -->
+<pre><code>`summarise()` has grouped output by &#39;Kids_First_Biospecimen_ID_normal&#39;. You can
+override using the `.groups` argument.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiY29sbGFwc2VkX2dlcm1fc29tIDwtIGNvbGxhcHNlZCAlPiVcbiAgbGVmdF9qb2luKGNvbGxhcHNlZF9sb2YsIGJ5ID0gXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbFwiKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJnZXJtbGluZS1zb21hdGljLWNvbGxhcHNlZC1ieS1nZW5lLnRzdlwiKSkifQ== -->
 <pre class="r"><code>collapsed_germ_som &lt;- collapsed %&gt;%
   left_join(collapsed_lof, by = &quot;Kids_First_Biospecimen_ID_normal&quot;) %&gt;%
   write_tsv(file.path(results_dir, &quot;germline-somatic-collapsed-by-gene.tsv&quot;))</code></pre>
@@ -1933,21 +2085,23 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VybWxpbmVfc3YgPC0gcmVhZF90c3YocGxwX3N2X2ZpbGUpICU+JVxuICBkcGx5cjo6ZmlsdGVyKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsICVpbiUgaW50ZWdyYXRlZF9oaXN0JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSAlPiVcbiAgZHBseXI6OnJlbmFtZShNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCxcbiAgICAgICAgICAgICAgICBIdWdvX1N5bWJvbCA9IEh1Z29fU3ltYm9sX2NwZylcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiZ2VybWxpbmVfc3YgPC0gcmVhZF90c3YocGxwX3N2X2ZpbGUpICU+JVxuICBkcGx5cjo6ZmlsdGVyKEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsICVpbiUgaW50ZWdyYXRlZF9oaXN0JEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsKSAlPiVcbiAgZHBseXI6OnJlbmFtZShNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCxcbiAgICAgICAgICAgICAgICBIdWdvX1N5bWJvbCA9IEh1Z29fU3ltYm9sX2NwZykifQ== -->
 <pre class="r"><code>germline_sv &lt;- read_tsv(plp_sv_file) %&gt;%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% integrated_hist$Kids_First_Biospecimen_ID_normal) %&gt;%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
                 Hugo_Symbol = Hugo_Symbol_cpg)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMTggQ29sdW1uczogMTDilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoNyk6IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsLCBDaHJvbW9zb21lLCBUeXBlLCBDbGFzc2lmaWNhdGlvbiwgQ2FsbGVyLCBIdWdvX1N5bWJvbF9hbGwsIEh1Z29fU3ltYm9sX2NwZ1xuZGJsICgzKTogU3RhcnQsIEVuZCwgTGVuZ3RoXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
-<pre><code>Rows: 18 Columns: 10── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMTggQ29sdW1uczogMTBcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg3KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIENocm9tb3NvbWUsIFR5cGUsIENsYXNzaWZpY2F0aW9uLC4uLlxuZGJsICgzKTogU3RhcnQsIEVuZCwgTGVuZ3RoXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
+<pre><code>Rows: 18 Columns: 10
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
-chr (7): Kids_First_Biospecimen_ID_normal, Chromosome, Type, Classification, Caller, Hugo_Symbol_all, Hugo_Symbol_cpg
+chr (7): Kids_First_Biospecimen_ID_normal, Chromosome, Type, Classification,...
 dbl (3): Start, End, Length
+
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB0d28gaGl0IENQRyBtYXRjaGVzXG5nZXJtbGluZV9zdl9zb21hdGljX2dlbmVfbWF0Y2hlcyA8LSBnZXJtbGluZV9zdiAlPiVcbiAgaW5uZXJfam9pbihsb2ZfaGl0c19zdWJzZXQsIGJ5ID0gYyhcIk1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZVwiLCBcIkh1Z29fU3ltYm9sXCIpKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJnZXJtbGluZS1zdi1zb21hdGljLXR3by1nZW5lLWhpdHMudHN2XCIpKVxuYGBgIn0= -->
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgdHdvIGhpdCBDUEcgbWF0Y2hlcyIsImdlcm1saW5lX3N2X3NvbWF0aWNfZ2VuZV9tYXRjaGVzIDwtIGdlcm1saW5lX3N2ICU+JVxuICBpbm5lcl9qb2luKGxvZl9oaXRzX3N1YnNldCwgYnkgPSBjKFwiTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlXCIsIFwiSHVnb19TeW1ib2xcIikpICU+JVxuICB3cml0ZV90c3YoZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcImdlcm1saW5lLXN2LXNvbWF0aWMtdHdvLWdlbmUtaGl0cy50c3ZcIikpIl19 -->
 <pre class="r"><code># two hit CPG matches
 germline_sv_somatic_gene_matches &lt;- germline_sv %&gt;%
   inner_join(lof_hits_subset, by = c(&quot;Matched_Norm_Sample_Barcode&quot;, &quot;Hugo_Symbol&quot;)) %&gt;%
@@ -1959,18 +2113,20 @@ germline_sv_somatic_gene_matches &lt;- germline_sv %&gt;%
 First, modify germline variant df to be compatible with maf columns:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIGFtaW5vIGFjaWQgYWJicmV2aWF0aW9uIGtleVxuYWFfa2V5IDwtIHJlYWRfdHN2KGZpbGUucGF0aChpbnB1dF9kaXIsIFwiYWFfc3ltYm9sX2tleS50c3ZcIikpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgTG9hZCBhbWlubyBhY2lkIGFiYnJldmlhdGlvbiBrZXkiLCJhYV9rZXkgPC0gcmVhZF90c3YoZmlsZS5wYXRoKGlucHV0X2RpciwgXCJhYV9zeW1ib2xfa2V5LnRzdlwiKSkiXX0= -->
 <pre class="r"><code># Load amino acid abbreviation key
 aa_key &lt;- read_tsv(file.path(input_dir, &quot;aa_symbol_key.tsv&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjEgQ29sdW1uczogMuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICgyKTogQUFfdGhyZWVfbGV0dGVyLCBBQV9vbmVfbGV0dGVyXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
-<pre><code>Rows: 21 Columns: 2── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjEgQ29sdW1uczogMlxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIpOiBBQV90aHJlZV9sZXR0ZXIsIEFBX29uZV9sZXR0ZXJcblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Rows: 21 Columns: 2
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (2): AA_three_letter, AA_one_letter
+
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2VybV9tYWYgPC0gZ2VybWxpbmVfc29tYXRpY19nZW5lX21hdGNoZXMgJT4lXG4gIGRwbHlyOjpzZWxlY3QoLVR1bW9yX1NhbXBsZV9CYXJjb2RlKSAlPiVcbiAgYmluZF9yb3dzKGdlcm1saW5lICU+JVxuICAgICAgICAgICAgICAgIGRwbHlyOjpmaWx0ZXIoKEh1Z29fU3ltYm9sID09IFwiTFpUUjFcIiAmIE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSAlaW4lIGMoXCJCU19FVEFBVEczSlwiLCBcIkJTX0ZQQjBKR0tYXCIpKSB8XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoSHVnb19TeW1ib2wgPT0gXCJQVENIMVwiICYgTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlID09IFwiQlNfTU4yRlg2OFpcIikgfFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoSHVnb19TeW1ib2wgPT0gXCJHQkFcIiAmIE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSAlaW4lIGMoXCJCU19NTjJGWDY4WlwiLCBcIkJTX0hWQ0JRNThIXCIpKSkgJT4lXG4gICAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChhbnlfb2YobmFtZXMoZ2VybWxpbmVfc29tYXRpY19nZW5lX21hdGNoZXMpKSkpICU+JVxuICAgIGxlZnRfam9pbihpbnRlZ3JhdGVkX2hpc3QgJT4lXG4gICAgICAgICAgICAgICAgZHBseXI6OnJlbmFtZShUdW1vcl9TYW1wbGVfQmFyY29kZSA9IEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfdHVtb3IsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCkgJT4lXG4gICAgICAgICAgICAgICAgZHBseXI6OnNlbGVjdChUdW1vcl9TYW1wbGVfQmFyY29kZSwgTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlKSxcbiAgICAgICAgICAgICAgYnkgPSBcIk1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZVwiKSAlPiVcbiAgZHBseXI6OnNlbGVjdCgtSEdWU2MsIC1IR1ZTcCwgLVZhcmlhbnRfQ2xhc3NpZmljYXRpb24pICU+JVxuICAjIHJlbmFtZSBjb2x1bW5zIHRvIG1hdGNoIG1hZiBjb2x1bW5zXG4gIGRwbHlyOjpyZW5hbWUoQ2hyb21vc29tZSA9IGNocixcbiAgICAgICAgICAgICAgICBTdGFydF9Qb3NpdGlvbiA9IHN0YXJ0LFxuICAgICAgICAgICAgICAgIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24gPSB2YXJpYW50X2NsYXNzaWZpY2F0aW9uX3ZlcCxcbiAgICAgICAgICAgICAgICBSZWZlcmVuY2VfQWxsZWxlID0gcmVmLFxuICAgICAgICAgICAgICAgIEhHVlNjID0gSEdWU2NfZ2VybSxcbiAgICAgICAgICAgICAgICBIR1ZTcF9TaG9ydCA9IEhHVlNwX2dlcm0pICU+JVxuICAjIG1vZGlmeSB2YXJpYW50IGNsYXNzaWZpY2F0aW9ucyB0byBtYXRjaCB0aG9zZSBpbiBtYWZcbiAgZHBseXI6Om11dGF0ZShWYXJpYW50X0NsYXNzaWZpY2F0aW9uID0gY2FzZV93aGVuKFxuICAgIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24gPT0gXCJtaXNzZW5zZV92YXJpYW50XCIgfiBcIk1pc3NlbnNlX011dGF0aW9uXCIsXG4gICAgZ3JlcGwoXCJzdG9wX2dhaW5lZFwiLCBWYXJpYW50X0NsYXNzaWZpY2F0aW9uKSB+IFwiTm9uc2Vuc2VfTXV0YXRpb25cIixcbiAgICBncmVwbChcInNwbGljZV9hY2NlcHRvcnxzcGxpY2VfZG9ub3JcIiwgVmFyaWFudF9DbGFzc2lmaWNhdGlvbikgfiBcIlNwbGljZV9TaXRlXCIsXG4gICAgZ3JlcGwoXCJzcGxpY2VcIiwgVmFyaWFudF9DbGFzc2lmaWNhdGlvbikgfiBcIlNwbGljZV9SZWdpb25cIixcbiAgICBncmVwbChcInN5bm9ueW1vdXNcIiwgVmFyaWFudF9DbGFzc2lmaWNhdGlvbikgfiBcIlNpbGVudFwiLFxuICAgIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24gPT0gXCJmcmFtZXNoaWZ0X3ZhcmlhbnRcIiAmIG5jaGFyKGFsdCkgPiBuY2hhcihSZWZlcmVuY2VfQWxsZWxlKSB+IFwiRnJhbWVfU2hpZnRfSW5zXCIsXG4gICAgVmFyaWFudF9DbGFzc2lmaWNhdGlvbiA9PSBcImZyYW1lc2hpZnRfdmFyaWFudFwiICYgbmNoYXIoYWx0KSA8IG5jaGFyKFJlZmVyZW5jZV9BbGxlbGUpIH4gXCJGcmFtZV9TaGlmdF9EZWxcIixcbiAgICBWYXJpYW50X0NsYXNzaWZpY2F0aW9uID09IFwiaW5mcmFtZV9kZWxldGlvblwiIH4gXCJJbl9GcmFtZV9EZWxcIixcbiAgICBUUlVFIH4gVmFyaWFudF9DbGFzc2lmaWNhdGlvblxuICApKSAlPiVcbiAgZHBseXI6Om11dGF0ZShIR1ZTcCA9IGNhc2Vfd2hlbihcbiAgICBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgPT0gXCJCU19NTjJGWDY4WlwiIH4gXCJwLlg2OF9zcGxpY2VcIixcbiAgICBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgJWluJSBjKFwiQlNfTU4yRlg2OFpcIiwgXCJCU19IVkNCUTU4SFwiKSB+IFwicC5YMzlfc3BsaWNlXCIsXG4gICAgTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlID09IFwiQlNfOUE1Q0YxUUVcIiB+IFwicC5YMzI2X3NwbGljZVwiLFxuICAgIE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSA9PSBcIkJTX0ZQQjBKR0tYXCIgfiBcInAuVmFsMjE0VmFsXCIsXG4gICAgVFJVRSB+IEhHVlNwX1Nob3J0XG4gICkpICU+JVxuICAjIGFkZCB2YXJpYW50X3R5cGUgY29sdW1uXG4gIGRwbHlyOjptdXRhdGUoVmFyaWFudF9UeXBlID0gY2FzZV93aGVuKFxuICAgIG5jaGFyKGFsdCkgPT0gbmNoYXIoUmVmZXJlbmNlX0FsbGVsZSkgfiBcIlNOUFwiLFxuICAgIG5jaGFyKGFsdCkgPCBuY2hhcihSZWZlcmVuY2VfQWxsZWxlKSB+IFwiREVMXCIsXG4gICAgbmNoYXIoYWx0KSA+IG5jaGFyKFJlZmVyZW5jZV9BbGxlbGUpIH4gXCJJTlNcIlxuICApKSAlPiVcbiAgZHBseXI6OnNlbGVjdChNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUsIEh1Z29fU3ltYm9sLFxuICAgICAgICAgICAgICAgIFR1bW9yX1NhbXBsZV9CYXJjb2RlLFxuICAgICAgICAgICAgICAgIENocm9tb3NvbWUsIFN0YXJ0X1Bvc2l0aW9uLCBWYXJpYW50X0NsYXNzaWZpY2F0aW9uLFxuICAgICAgICAgICAgICAgIFJlZmVyZW5jZV9BbGxlbGUsIEhHVlNjLCBIR1ZTcCwgSEdWU3BfU2hvcnQsIFZhcmlhbnRfVHlwZSlcblxubWVyZ2VkX21hZiA8LSBtYWYgJT4lXG4gIGJpbmRfcm93cyhnZXJtX21hZikgJT4lXG4gICMgUmVwbGFjZSBBQSBzeW1ib2xzIHdpdGggb25lLWxldHRlciBzeW1ib2xzXG4gIGRwbHlyOjptdXRhdGUoSEdWU3BfU2hvcnQgPSByZWR1Y2UyKGFhX2tleSRBQV90aHJlZV9sZXR0ZXIsIGFhX2tleSRBQV9vbmVfbGV0dGVyLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAuaW5pdCA9IEhHVlNwX1Nob3J0LCBzdHJfcmVwbGFjZSkpXG5cbndyaXRlX3RzdihtZXJnZWRfbWFmLCBmaWxlLnBhdGgocmVzdWx0c19kaXIsIFwiZ2VybS1zb21hdGljLW1lcmdlZC1tYWYudHN2XCIpKVxuYGBgIn0= -->
+<!-- rnb-message-end -->
+<!-- rnb-source-begin eyJkYXRhIjpbImdlcm1fbWFmIDwtIGdlcm1saW5lX3NvbWF0aWNfZ2VuZV9tYXRjaGVzICU+JVxuICBkcGx5cjo6c2VsZWN0KC1UdW1vcl9TYW1wbGVfQmFyY29kZSkgJT4lXG4gIGJpbmRfcm93cyhnZXJtbGluZSAlPiVcbiAgICAgICAgICAgICAgICBkcGx5cjo6ZmlsdGVyKChIdWdvX1N5bWJvbCA9PSBcIkxaVFIxXCIgJiBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgJWluJSBjKFwiQlNfRVRBQVRHM0pcIiwgXCJCU19GUEIwSkdLWFwiKSkgfFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKEh1Z29fU3ltYm9sID09IFwiUFRDSDFcIiAmIE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSA9PSBcIkJTX01OMkZYNjhaXCIpIHxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKEh1Z29fU3ltYm9sID09IFwiR0JBXCIgJiBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgJWluJSBjKFwiQlNfTU4yRlg2OFpcIiwgXCJCU19IVkNCUTU4SFwiKSkpICU+JVxuICAgICAgICAgICAgICAgIGRwbHlyOjpzZWxlY3QoYW55X29mKG5hbWVzKGdlcm1saW5lX3NvbWF0aWNfZ2VuZV9tYXRjaGVzKSkpKSAlPiVcbiAgICBsZWZ0X2pvaW4oaW50ZWdyYXRlZF9oaXN0ICU+JVxuICAgICAgICAgICAgICAgIGRwbHlyOjpyZW5hbWUoVHVtb3JfU2FtcGxlX0JhcmNvZGUgPSBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX3R1bW9yLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlID0gS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwpICU+JVxuICAgICAgICAgICAgICAgIGRwbHlyOjpzZWxlY3QoVHVtb3JfU2FtcGxlX0JhcmNvZGUsIE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSksXG4gICAgICAgICAgICAgIGJ5ID0gXCJNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGVcIikgJT4lXG4gIGRwbHlyOjpzZWxlY3QoLUhHVlNjLCAtSEdWU3AsIC1WYXJpYW50X0NsYXNzaWZpY2F0aW9uKSAlPiVcbiAgIyByZW5hbWUgY29sdW1ucyB0byBtYXRjaCBtYWYgY29sdW1uc1xuICBkcGx5cjo6cmVuYW1lKENocm9tb3NvbWUgPSBjaHIsXG4gICAgICAgICAgICAgICAgU3RhcnRfUG9zaXRpb24gPSBzdGFydCxcbiAgICAgICAgICAgICAgICBWYXJpYW50X0NsYXNzaWZpY2F0aW9uID0gdmFyaWFudF9jbGFzc2lmaWNhdGlvbl92ZXAsXG4gICAgICAgICAgICAgICAgUmVmZXJlbmNlX0FsbGVsZSA9IHJlZixcbiAgICAgICAgICAgICAgICBIR1ZTYyA9IEhHVlNjX2dlcm0sXG4gICAgICAgICAgICAgICAgSEdWU3BfU2hvcnQgPSBIR1ZTcF9nZXJtKSAlPiVcbiAgIyBtb2RpZnkgdmFyaWFudCBjbGFzc2lmaWNhdGlvbnMgdG8gbWF0Y2ggdGhvc2UgaW4gbWFmXG4gIGRwbHlyOjptdXRhdGUoVmFyaWFudF9DbGFzc2lmaWNhdGlvbiA9IGNhc2Vfd2hlbihcbiAgICBWYXJpYW50X0NsYXNzaWZpY2F0aW9uID09IFwibWlzc2Vuc2VfdmFyaWFudFwiIH4gXCJNaXNzZW5zZV9NdXRhdGlvblwiLFxuICAgIGdyZXBsKFwic3RvcF9nYWluZWRcIiwgVmFyaWFudF9DbGFzc2lmaWNhdGlvbikgfiBcIk5vbnNlbnNlX011dGF0aW9uXCIsXG4gICAgZ3JlcGwoXCJzcGxpY2VfYWNjZXB0b3J8c3BsaWNlX2Rvbm9yXCIsIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24pIH4gXCJTcGxpY2VfU2l0ZVwiLFxuICAgIGdyZXBsKFwic3BsaWNlXCIsIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24pIH4gXCJTcGxpY2VfUmVnaW9uXCIsXG4gICAgZ3JlcGwoXCJzeW5vbnltb3VzXCIsIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24pIH4gXCJTaWxlbnRcIixcbiAgICBWYXJpYW50X0NsYXNzaWZpY2F0aW9uID09IFwiZnJhbWVzaGlmdF92YXJpYW50XCIgJiBuY2hhcihhbHQpID4gbmNoYXIoUmVmZXJlbmNlX0FsbGVsZSkgfiBcIkZyYW1lX1NoaWZ0X0luc1wiLFxuICAgIFZhcmlhbnRfQ2xhc3NpZmljYXRpb24gPT0gXCJmcmFtZXNoaWZ0X3ZhcmlhbnRcIiAmIG5jaGFyKGFsdCkgPCBuY2hhcihSZWZlcmVuY2VfQWxsZWxlKSB+IFwiRnJhbWVfU2hpZnRfRGVsXCIsXG4gICAgVmFyaWFudF9DbGFzc2lmaWNhdGlvbiA9PSBcImluZnJhbWVfZGVsZXRpb25cIiB+IFwiSW5fRnJhbWVfRGVsXCIsXG4gICAgVFJVRSB+IFZhcmlhbnRfQ2xhc3NpZmljYXRpb25cbiAgKSkgJT4lXG4gIGRwbHlyOjptdXRhdGUoSEdWU3AgPSBjYXNlX3doZW4oXG4gICAgTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlID09IFwiQlNfTU4yRlg2OFpcIiB+IFwicC5YNjhfc3BsaWNlXCIsXG4gICAgTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlICVpbiUgYyhcIkJTX01OMkZYNjhaXCIsIFwiQlNfSFZDQlE1OEhcIikgfiBcInAuWDM5X3NwbGljZVwiLFxuICAgIE1hdGNoZWRfTm9ybV9TYW1wbGVfQmFyY29kZSA9PSBcIkJTXzlBNUNGMVFFXCIgfiBcInAuWDMyNl9zcGxpY2VcIixcbiAgICBNYXRjaGVkX05vcm1fU2FtcGxlX0JhcmNvZGUgPT0gXCJCU19GUEIwSkdLWFwiIH4gXCJwLlZhbDIxNFZhbFwiLFxuICAgIFRSVUUgfiBIR1ZTcF9TaG9ydFxuICApKSAlPiVcbiAgIyBhZGQgdmFyaWFudF90eXBlIGNvbHVtblxuICBkcGx5cjo6bXV0YXRlKFZhcmlhbnRfVHlwZSA9IGNhc2Vfd2hlbihcbiAgICBuY2hhcihhbHQpID09IG5jaGFyKFJlZmVyZW5jZV9BbGxlbGUpIH4gXCJTTlBcIixcbiAgICBuY2hhcihhbHQpIDwgbmNoYXIoUmVmZXJlbmNlX0FsbGVsZSkgfiBcIkRFTFwiLFxuICAgIG5jaGFyKGFsdCkgPiBuY2hhcihSZWZlcmVuY2VfQWxsZWxlKSB+IFwiSU5TXCJcbiAgKSkgJT4lXG4gIGRwbHlyOjpzZWxlY3QoTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlLCBIdWdvX1N5bWJvbCxcbiAgICAgICAgICAgICAgICBUdW1vcl9TYW1wbGVfQmFyY29kZSxcbiAgICAgICAgICAgICAgICBDaHJvbW9zb21lLCBTdGFydF9Qb3NpdGlvbiwgVmFyaWFudF9DbGFzc2lmaWNhdGlvbixcbiAgICAgICAgICAgICAgICBSZWZlcmVuY2VfQWxsZWxlLCBIR1ZTYywgSEdWU3AsIEhHVlNwX1Nob3J0LCBWYXJpYW50X1R5cGUpIiwiIiwibWVyZ2VkX21hZiA8LSBtYWYgJT4lXG4gIGJpbmRfcm93cyhnZXJtX21hZikgJT4lXG4gICMgUmVwbGFjZSBBQSBzeW1ib2xzIHdpdGggb25lLWxldHRlciBzeW1ib2xzXG4gIGRwbHlyOjptdXRhdGUoSEdWU3BfU2hvcnQgPSByZWR1Y2UyKGFhX2tleSRBQV90aHJlZV9sZXR0ZXIsIGFhX2tleSRBQV9vbmVfbGV0dGVyLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAuaW5pdCA9IEhHVlNwX1Nob3J0LCBzdHJfcmVwbGFjZSkpIiwiIiwid3JpdGVfdHN2KG1lcmdlZF9tYWYsIGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJnZXJtLXNvbWF0aWMtbWVyZ2VkLW1hZi50c3ZcIikpIl19 -->
 <pre class="r"><code>germ_maf &lt;- germline_somatic_gene_matches %&gt;%
   dplyr::select(-Tumor_Sample_Barcode) %&gt;%
   bind_rows(germline %&gt;%
@@ -2034,14 +2190,14 @@ write_tsv(merged_maf, file.path(results_dir, &quot;germ-somatic-merged-maf.tsv&q
 <p>Re-load merged_maf as maf object and generate lollipop plots</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVyZ2VkX21hZiA8LSBtYWZ0b29sczo6cmVhZC5tYWYoZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcImdlcm0tc29tYXRpYy1tZXJnZWQtbWFmLnRzdlwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZjX25vblN5biA9IGMoXCJTcGxpY2VfU2l0ZVwiLCBcIlNpbGVudFwiLCBcIlNwbGljZV9SZWdpb25cIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJNaXNzZW5zZV9NdXRhdGlvblwiLCBcIk5vbnNlbnNlX011dGF0aW9uXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiRnJhbWVfU2hpZnRfSW5zXCIsIFwiRnJhbWVfU2hpZnRfRGVsXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiSW5fRnJhbWVfRGVsXCIpKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoibWVyZ2VkX21hZiA8LSBtYWZ0b29sczo6cmVhZC5tYWYoZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcImdlcm0tc29tYXRpYy1tZXJnZWQtbWFmLnRzdlwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZjX25vblN5biA9IGMoXCJTcGxpY2VfU2l0ZVwiLCBcIlNpbGVudFwiLCBcIlNwbGljZV9SZWdpb25cIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJNaXNzZW5zZV9NdXRhdGlvblwiLCBcIk5vbnNlbnNlX011dGF0aW9uXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiRnJhbWVfU2hpZnRfSW5zXCIsIFwiRnJhbWVfU2hpZnRfRGVsXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiSW5fRnJhbWVfRGVsXCIpKSJ9 -->
 <pre class="r"><code>merged_maf &lt;- maftools::read.maf(file.path(results_dir, &quot;germ-somatic-merged-maf.tsv&quot;),
                                  vc_nonSyn = c(&quot;Splice_Site&quot;, &quot;Silent&quot;, &quot;Splice_Region&quot;,
                                                &quot;Missense_Mutation&quot;, &quot;Nonsense_Mutation&quot;,
                                                &quot;Frame_Shift_Ins&quot;, &quot;Frame_Shift_Del&quot;,
                                                &quot;In_Frame_Del&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLVJlYWRpbmdcbi1WYWxpZGF0aW5nXG4tLVJlbW92ZWQgMSBkdXBsaWNhdGVkIHZhcmlhbnRzXG4tU2lsZW50IHZhcmlhbnRzOiAyNTMxMiBcbi1TdW1tYXJpemluZ1xuLS1NdXRpcGxlIGNlbnRlcnMgZm91bmRcbi47TkEtUHJvY2Vzc2luZyBjbGluaWNhbCBkYXRhXG4tLU1pc3NpbmcgY2xpbmljYWwgZGF0YVxuLUZpbmlzaGVkIGluIDAuMzk1cyBlbGFwc2VkICgwLjI5MXMgY3B1KSBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiLVJlYWRpbmdcbi1WYWxpZGF0aW5nXG4tLVJlbW92ZWQgMSBkdXBsaWNhdGVkIHZhcmlhbnRzXG4tU2lsZW50IHZhcmlhbnRzOiAyNTMxMiBcbi1TdW1tYXJpemluZ1xuLS1NdXRpcGxlIGNlbnRlcnMgZm91bmRcbi47TkEtUHJvY2Vzc2luZyBjbGluaWNhbCBkYXRhXG4tLU1pc3NpbmcgY2xpbmljYWwgZGF0YVxuLUZpbmlzaGVkIGluIDMuMjUycyBlbGFwc2VkICg2LjM1M3MgY3B1KSBcbiJ9 -->
 <pre><code>-Reading
 -Validating
 --Removed 1 duplicated variants
@@ -2050,9 +2206,9 @@ write_tsv(merged_maf, file.path(results_dir, &quot;germ-somatic-merged-maf.tsv&q
 --Mutiple centers found
 .;NA-Processing clinical data
 --Missing clinical data
--Finished in 0.395s elapsed (0.291s cpu) </code></pre>
+-Finished in 3.252s elapsed (6.353s cpu) </code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWRzIDwtIGdlcm1fbWFmICU+JVxuICBkaXN0aW5jdChUdW1vcl9TYW1wbGVfQmFyY29kZSkgJT4lXG4gIHB1bGwoVHVtb3JfU2FtcGxlX0JhcmNvZGUpXG5cbmZvciAoaWQgaW4gaWRzKXtcbiAgXG4gIGdlbmUgPC0gZ2VybV9tYWYgJT4lXG4gICAgZHBseXI6OmZpbHRlcihUdW1vcl9TYW1wbGVfQmFyY29kZSA9PSBpZCkgJT4lXG4gICAgcHVsbChIdWdvX1N5bWJvbCkgJT4lXG4gICAgdW5pcXVlKClcbiAgXG4gIHRvX3JtIDwtIHVuaXF1ZShtYWYkVHVtb3JfU2FtcGxlX0JhcmNvZGVbbWFmJFR1bW9yX1NhbXBsZV9CYXJjb2RlICE9IGlkXSlcblxuICBwbG90X21hZiA8LSBtYWZ0b29sczo6ZmlsdGVyTWFmKG1lcmdlZF9tYWYsIHRzYiA9IHRvX3JtKVxuICBcbiAgcGRmKGZpbGUucGF0aChwbG90X2RpcixcbiAgICAgICAgICAgICAgICAgICBnbHVlOjpnbHVlKFwie2lkfS17Z2VuZX0tbG9sbGlwb3AucGRmXCIpKSxcbiAgICAgICAgIHdpZHRoID0gNiwgaGVpZ2h0ID0gNClcbiAgXG4gIGlmIChpZCAlaW4lIGMoXCJCU19EQzdYWVlHOFwiLCBcIkJTXzVXSzJLWFlXXCIsIFxuICAgICAgICAgICAgICAgIFwiQlNfREdHN1lFOFJcIiwgXCJCU19LM1BQSDUyMlwiLFxuICAgICAgICAgICAgICAgIFwiQlNfMFM2MTdTTU1cIikpe1xuICBcbiAgICBsb2xsaXBvcFBsb3QocGxvdF9tYWYsIGdlbmUgPSBnZW5lLCBBQUNvbCA9IFwiSEdWU3BcIiwgXG4gICAgICAgICAgICAgICAgIHNob3dEb21haW5MYWJlbCA9IEZBTFNFLCBsYWJQb3NBbmdsZSA9IDAsIFxuICAgICAgICAgICAgICAgICBsYWJlbFBvcyA9IFwiYWxsXCIsIGxlZ2VuZFR4dFNpemUgPSAxLCBcbiAgICAgICAgICAgICAgICAgbGFiUG9zU2l6ZSA9IDEuMjUsXG4gICAgICAgICAgICAgICAgIHBvaW50U2l6ZSA9IDIuNSxcbiAgICAgICAgICAgICAgICMgIHJlcGVsID0gVFJVRSxcbiAgICAgICAgICAgICAgICAgc2hvd011dGF0aW9uUmF0ZSA9IEZBTFNFLFxuICAgICAgICAgICAgICAgICBjb2xsYXBzZVBvc0xhYmVsID0gVFJVRSlcbiAgICBcbiAgfSBlbHNlIHtcbiAgXG4gICAgbG9sbGlwb3BQbG90KHBsb3RfbWFmLCBnZW5lID0gZ2VuZSwgIEFBQ29sID0gXCJIR1ZTcF9TaG9ydFwiLFxuICAgICAgICAgICAgICAgICBzaG93RG9tYWluTGFiZWwgPSBGQUxTRSwgbGFiUG9zQW5nbGUgPSA0NSwgXG4gICAgICAgICAgICAgICAgIGxhYmVsUG9zID0gXCJhbGxcIiwgbGVnZW5kVHh0U2l6ZSA9IDEsIFxuICAgICAgICAgICAgICAgICBsYWJQb3NTaXplID0gMS4yNSxcbiAgICAgICAgICAgICAgICAgcG9pbnRTaXplID0gMi41LFxuICAgICAgICAgICAgICAjICAgcmVwZWwgPSBUUlVFLFxuICAgICAgICAgICAgICAgICBzaG93TXV0YXRpb25SYXRlID0gRkFMU0UsXG4gICAgICAgICAgICAgICAgIGNvbGxhcHNlUG9zTGFiZWwgPSBUUlVFKVxuICAgIFxuICB9XG4gIFxuICBkZXYub2ZmKClcbiAgXG59XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbImlkcyA8LSBnZXJtX21hZiAlPiVcbiAgZGlzdGluY3QoVHVtb3JfU2FtcGxlX0JhcmNvZGUpICU+JVxuICBwdWxsKFR1bW9yX1NhbXBsZV9CYXJjb2RlKSIsIiIsImZvciAoaWQgaW4gaWRzKXtcbiAgXG4gIGdlbmUgPC0gZ2VybV9tYWYgJT4lXG4gICAgZHBseXI6OmZpbHRlcihUdW1vcl9TYW1wbGVfQmFyY29kZSA9PSBpZCkgJT4lXG4gICAgcHVsbChIdWdvX1N5bWJvbCkgJT4lXG4gICAgdW5pcXVlKClcbiAgXG4gIHRvX3JtIDwtIHVuaXF1ZShtYWYkVHVtb3JfU2FtcGxlX0JhcmNvZGVbbWFmJFR1bW9yX1NhbXBsZV9CYXJjb2RlICE9IGlkXSlcblxuICBwbG90X21hZiA8LSBtYWZ0b29sczo6ZmlsdGVyTWFmKG1lcmdlZF9tYWYsIHRzYiA9IHRvX3JtKVxuICBcbiAgcGRmKGZpbGUucGF0aChwbG90X2RpcixcbiAgICAgICAgICAgICAgICAgICBnbHVlOjpnbHVlKFwie2lkfS17Z2VuZX0tbG9sbGlwb3AucGRmXCIpKSxcbiAgICAgICAgIHdpZHRoID0gNiwgaGVpZ2h0ID0gNClcbiAgXG4gIGlmIChpZCAlaW4lIGMoXCJCU19EQzdYWVlHOFwiLCBcIkJTXzVXSzJLWFlXXCIsIFxuICAgICAgICAgICAgICAgIFwiQlNfREdHN1lFOFJcIiwgXCJCU19LM1BQSDUyMlwiLFxuICAgICAgICAgICAgICAgIFwiQlNfMFM2MTdTTU1cIikpe1xuICBcbiAgICBsb2xsaXBvcFBsb3QocGxvdF9tYWYsIGdlbmUgPSBnZW5lLCBBQUNvbCA9IFwiSEdWU3BcIiwgXG4gICAgICAgICAgICAgICAgIHNob3dEb21haW5MYWJlbCA9IEZBTFNFLCBsYWJQb3NBbmdsZSA9IDAsIFxuICAgICAgICAgICAgICAgICBsYWJlbFBvcyA9IFwiYWxsXCIsIGxlZ2VuZFR4dFNpemUgPSAxLCBcbiAgICAgICAgICAgICAgICAgbGFiUG9zU2l6ZSA9IDEuMjUsXG4gICAgICAgICAgICAgICAgIHBvaW50U2l6ZSA9IDIuNSxcbiAgICAgICAgICAgICAgICMgIHJlcGVsID0gVFJVRSxcbiAgICAgICAgICAgICAgICAgc2hvd011dGF0aW9uUmF0ZSA9IEZBTFNFLFxuICAgICAgICAgICAgICAgICBjb2xsYXBzZVBvc0xhYmVsID0gVFJVRSlcbiAgICBcbiAgfSBlbHNlIHtcbiAgXG4gICAgbG9sbGlwb3BQbG90KHBsb3RfbWFmLCBnZW5lID0gZ2VuZSwgIEFBQ29sID0gXCJIR1ZTcF9TaG9ydFwiLFxuICAgICAgICAgICAgICAgICBzaG93RG9tYWluTGFiZWwgPSBGQUxTRSwgbGFiUG9zQW5nbGUgPSA0NSwgXG4gICAgICAgICAgICAgICAgIGxhYmVsUG9zID0gXCJhbGxcIiwgbGVnZW5kVHh0U2l6ZSA9IDEsIFxuICAgICAgICAgICAgICAgICBsYWJQb3NTaXplID0gMS4yNSxcbiAgICAgICAgICAgICAgICAgcG9pbnRTaXplID0gMi41LFxuICAgICAgICAgICAgICAjICAgcmVwZWwgPSBUUlVFLFxuICAgICAgICAgICAgICAgICBzaG93TXV0YXRpb25SYXRlID0gRkFMU0UsXG4gICAgICAgICAgICAgICAgIGNvbGxhcHNlUG9zTGFiZWwgPSBUUlVFKVxuICAgIFxuICB9XG4gIFxuICBkZXYub2ZmKClcbiAgXG59Il19 -->
 <pre class="r"><code>ids &lt;- germ_maf %&gt;%
   distinct(Tumor_Sample_Barcode) %&gt;%
   pull(Tumor_Sample_Barcode)
@@ -2102,105 +2258,190 @@ for (id in ids){
   
 }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVtb3ZlZCAyMDIyMCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG5SZW1vdmVkIDEgbXV0YXRpb25zIGZvciB3aGljaCBBQSBwb3NpdGlvbiB3YXMgbm90IGF2YWlsYWJsZVxuIn0= -->
-<pre><code>Removed 20220 variants from 798 samples
-Removed 1 mutations for which AA position was not available</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyMDIyMCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 20220 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAxIG11dGF0aW9ucyBmb3Igd2hpY2ggQUEgcG9zaXRpb24gd2FzIG5vdCBhdmFpbGFibGVcbiJ9 -->
+<pre><code>Removed 1 mutations for which AA position was not available</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjY4OSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26689 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
+<pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgIE5GMSAgICBOTV8wMDAyNjcgICAgTlBfMDAwMjU4ICAgICAgMjgxOFxuMjogICAgTkYxIE5NXzAwMTA0MjQ5MiBOUF8wMDEwMzU5NTcgICAgICAyODM5XG4ifQ== -->
+<pre><code>     HGNC    refseq.ID   protein.ID aa.length
+   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+1:    NF1    NM_000267    NP_000258      2818
+2:    NF1 NM_001042492 NP_001035957      2839</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjIsIm5jb2wiOjQsInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZHQgWzIgw5cgNF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMlZRVVUvQ01CQSt0b0xaSW9URTMwRXpCZ2k4a1VoUUgxeUkwWVEzVTZIQTR1em1WdFJIZncwL2szbnJXb1RacE50MzMzMTMvZTRlcDR1ZXUzQUJ3QVpDYW1EWEVVTDkrV25XR1FFUUM0TWFFSENLL3plS3JoQVF2RzI4bGs3WXdheDdDcyt6VHZEdzRubWVmejNVeEtVaXVsN2Y3NC85ZitLNUVnOUdSL0ZjaVh1RDhXQ0ljYXNRVC9hRkJZREpua0o1em93NmFmeEZCWHZuR1FiTm91QUhQM21lSHlyQytqSmlXYVl0R05KZE1jbm9Pc1g2cXR6MGJLc2xsQ1M1dXcxdWpnL3pkY1kvNlAzVTlFclNXUEpRL0RFT1l6VGlZaU8zR0ZUOVhNU0pER09CVDFqRm5oc1ZaN1cwUXJSM29yQzA2aXkzTy9IVzhVZVZ2SjJJVGVGQ1VlVnBhbXlkWUZMYUlMa3ViK2p5QnZvTUJUZlRSK3lWUjZiemluOXEyTUp0cThYUUpBMkZOSk1qbTFFWlMyWkszR1VjR1VhTkRvZGZRdWxRazMwQ0FBQT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"NF1","2":"NM_000267","3":"NP_000258","4":"2818"},{"1":"NF1","2":"NM_001042492","3":"NP_001035957","4":"2839"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjIsIm5jb2wiOjQsInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZHQgWzIgw5cgNF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMlZRVVUvQ01CQSt0b0xaSW9URTMwRXpCZ2k4a1VoUUgxeUkwWVEzVTZIQTR1em1WdFJIZncwL2szbnJXb1RacE50MzMzMTMvZTRlcDR1ZXUzQUJ3QVpDYW1EWEVVTDkrV25XR1FFUUM0TWFFSENLL3plS3JoQVF2RzI4bGs3WXdheDdDcyt6VHZEdzRubWVmejNVeEtVaXVsN2Y3NC85ZitLNUVnOUdSL0ZjaVh1RDhXQ0ljYXNRVC9hRkJZREpua0o1em93NmFmeEZCWHZuR1FiTm91QUhQM21lSHlyQytqSmlXYVl0R05KZE1jbm9Pc1g2cXR6MGJLc2xsQ1M1dXcxdWpnL3pkY1kvNlAzVTlFclNXUEpRL0RFT1l6VGlZaU8zR0ZUOVhNU0pER09CVDFqRm5oc1ZaN1cwUXJSM29yQzA2aXkzTy9IVzhVZVZ2SjJJVGVGQ1VlVnBhbXlkWUZMYUlMa3ViK2p5QnZvTUJUZlRSK3lWUjZiemluOXEyTUp0cThYUUpBMkZOSk1qbTFFWlMyWkszR1VjR1VhTkRvZGZRdWxRazMwQ0FBQT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"NF1","2":"NM_000267","3":"NP_000258","4":"2818"},{"1":"NF1","2":"NM_001042492","3":"NP_001035957","4":"2839"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjMsIm5jb2wiOjQsInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZHQgWzMgw5cgNF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBM1ZSMjA2RFFCQ2R3aFlEc1UyajN3RUJHcFcrYWRwNGViQWhScE8rbWJYZHRrUmNFTGJxbzEvalgxb2NGcmExV0NkWjlzelp1WndaN2thVHZqV3hBRUFIUWxxZ3R4RkMrK0grMGc0QWlJWk9Dd2lZNWYyQlFjY0lDSjVlbFNFZjlJdHcrQS9jRFRUSHQ0OHVXaitvaVVOSmVKNS9kdUs1ZXpqdlQ0RlFGdkFIbStDd0NuWUhnYitINjZQZkxRdWNmNTJXZzhIMlBvTEtkbVkwcytUZDRmU0Y1ZWgwOEdpZitDbUs0cnNSMko3R05NOXJlWXEwWmxSUVo1NWhmak5jMWV6Si9WVWt1YjRhRHplTjJUeG5yODdOU05WS3MwU3dpRzhaazFJblpud2hsdWlzR3cwT2tsUkVDY2NXV3ZtTGpJYXlWdFlnZWl0ZVNwclowK1dLUDl0KzBIalhVNzRvVlVpcXNrNk45VitZVkRKSVVhY2JkYnFCT2lQTzFQUXhmV0t4cWp4amJ6WHM0cmJsWXB3MGk3aFFreU9iT3lJUlZLVlkweVJXakJ3ZDFqOU9UKzFidUFJQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"APC","2":"NM_000038","3":"NP_000029","4":"2843"},{"1":"APC","2":"NM_001127510","3":"NP_001120982","4":"2843"},{"1":"APC","2":"NM_001127511","3":"NP_001120983","4":"2825"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjIsIm5jb2wiOjQsInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZHQgWzIgw5cgNF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMlZRWVUvQ01CQzlqWUxaSW9URTM4SENtQXo4UmlKQi9TQXhLZ25mVE4wS0xNNXViZ1ZOVEl5L25IbmRXcFRacE52ZHUvZXU3KzUrdXZUc3BRMEFEU0RFZ0VZVFEyZ3VIbWU5TVFBeE1UR0FnQ1gvSDBnNnc0RGc3ZUkxVllFOExHYUxvL2k0ZmpxL2ZlcjNYWGMwZGoxUFlaYkVYTi8xTC82Ujd5cXk2L2ZQRDJURWhxUEIwTU9rSThtVFQ2a0JtSHhOb0RwSFZxMHNlWGM0ZldVNUptMHArTVpQVVJUN0dyRVp4RFRQbFFVTjJpRVYxRmxscUsvVGRjOXV1UVkxOHZYVi9QTHdNRnZsN00yNW1lcGVhWllJRnZGZnhLTFVpUmxmaXcwbWRUOG5TU3FpaE9NVHB0eDBxK2JNeUdwQWQ4dWxwYkFYYkxiOHBUY1kxK3FObEsrbGl4S3FUbHZGNXArWVZEWklvZVF0SlcraHo0Z3pQWDFNbjFtc080ZHNwOElPYnJ0Y2pKTm1FUmQ2Y2tSelJ5U0Nhb2tkSkxGR3l0Rmgvd01wYU15MmZ3SUFBQT09In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"SUFU","2":"NM_001178133","3":"NP_001171604","4":"433"},{"1":"SUFU","2":"NM_016169","3":"NP_057253","4":"484"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjIsIm5jb2wiOjQsInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZHQgWzIgw5cgNF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMlZRVVUvQ01CQSt0b0xaSW9URTMwRXpCZ2k4a1VoUUgxeUkwWVEzVTZIQTR1em1WdFJIZncwL2szbnJXb1RacE50MzMzMTMvZTRlcDR1ZXUzQUJ3QVpDYW1EWEVVTDkrV25XR1FFUUM0TWFFSENLL3plS3JoQVF2RzI4bGs3WXdheDdDcyt6VHZEdzRubWVmejNVeEtVaXVsN2Y3NC85ZitLNUVnOUdSL0ZjaVh1RDhXQ0ljYXNRVC9hRkJZREpua0o1em93NmFmeEZCWHZuR1FiTm91QUhQM21lSHlyQytqSmlXYVl0R05KZE1jbm9Pc1g2cXR6MGJLc2xsQ1M1dXcxdWpnL3pkY1kvNlAzVTlFclNXUEpRL0RFT1l6VGlZaU8zR0ZUOVhNU0pER09CVDFqRm5oc1ZaN1cwUXJSM29yQzA2aXkzTy9IVzhVZVZ2SjJJVGVGQ1VlVnBhbXlkWUZMYUlMa3ViK2p5QnZvTUJUZlRSK3lWUjZiemluOXEyTUp0cThYUUpBMkZOSk1qbTFFWlMyWkszR1VjR1VhTkRvZGZRdWxRazMwQ0FBQT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"NF1","2":"NM_000267","3":"NP_000258","4":"2818"},{"1":"NF1","2":"NM_001042492","3":"NP_001035957","4":"2839"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjUsIm5jb2wiOjQsInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZHQgWzUgw5cgNF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBNVdTMzAvQ01CREhDK3N3VzRRczhlOWdXUWZJSHYxQlJCOGt4R2pDbTZsUVlIRjJjeXZvZ3pIOGFmNWZKc3pydHFLTXZiaWs2OTJuZC8zZTNYWTNtSFRNaVlrUTBoREdOYVRwWUNMOTRmNnE3U0dFNitEVUVFYUczTjhoNkFRTURNdVNVY1dCTnJ3NC81ZTVuMjZNYmg4ZHh5RzlmZ0dPTTBBY3A5ZnZrZ3JtN2pQU0p4NGhGY3c5RUJwblFsMXZGenl1RUJwWENHV01uUFpjcjRwMXdHOUpvYlBObHh3Zk90Zy9ySHovakZEKzdFM1dpTU0zbTlNWGxvRFRoRlhmd0N0TjArOVNvRDROYUpJVWJTbG96cWlnOWp5Ry9ISzR1dFBLdmxvTzhmVndkTGtUWnZPRXZkbzNBM1ZYRkllQytmeVhHSlRhQWVNTHNRUm5XeEk0Q2lQaGh4d2s2dkxIYUpRcXE4VWxZSzI0TEduV25pNVgvTG50ZXFWekxlSUxXVVdHOHFkWjJQb2ZHK2RsNExSSWJ4VHBEYWpUNTB4MUg5QW5GcWliWjJ4ZG1DMllkallZTzRwOUxsVG5RQk5iaElLcUZITWFCb3BrcmFQdER3T3ZDNEF1QXdBQSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"GBA","2":"NM_000157","3":"NP_000148","4":"536"},{"1":"GBA","2":"NM_001005741","3":"NP_001005741","4":"536"},{"1":"GBA","2":"NM_001005742","3":"NP_001005742","4":"536"},{"1":"GBA","2":"NM_001171811","3":"NP_001165282","4":"449"},{"1":"GBA","2":"NM_001171812","3":"NP_001165283","4":"487"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjEyLCJuY29sIjo0LCJzdW1tYXJ5Ijp7IkRlc2NyaXB0aW9uIjpbImR0IFsxMiDDlyA0XSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MlR5MDdDUUJSQUI5cGkyZ0JwNG5mUWRQcGVvaGpCaFlRWVROaVpDZ1VhNjdTMlJWMFl3MGVnY2VISCtGR3VxZE1YMm1IaXd0aGtldTg5YzUvdHpNWEpSQlVtQWdDQUFTeGJBd3lIVmNCZGprODdGZ0JzSFJzMXdBSStsWS9ZNlJBckxGNGlYczFpZytrZkgvMUI1VWJqM2dEK3MxSHRqQitlWDhteURIV3pBTTBNUUZuV1RRMVNtRkpsMElRV2hCU21WQXNvaGtZa3MxUkRWaWhNcFRCYXJFNWhCb1daZXhPUHNvazFhK2M4b2t3OG9reWNNV2pvaWtWamFyV0FvdXRFTXRPVVRiSkF5aFFLVXlsTW96QmFEUVBiN1pSMTF4L3BXUVY3OGtuTTVYT1F5OWYzWEw1c0N2c3RsNXZ1cjVJNC9uem9QMGpJdm5VaWJMVHdxcS94SzBtU1Q4S1JtM3AyRkJYL3BZVEN6STV0YVI3aWVOSzl6Q2xtVnl1SDdLQS83TzBLTy9QSXVaUE9Uc3BjUWVqSGpvdStDVy9ia3VlZ1JiekV4cFlvY09BSHNlc2pYS0tlM3Q0RzBWa3RKSUM0UW1sTHM4NTB1VUkzSGNVaTlwa0FMZEl1TXBRL3JVSnYvdERadkEwMktjSWJSWGdEOStraXA1emVzNjhkcjh3OGMrNEx0WTIvZHZaaHBDQjBVVnhPam1ra3hYNXNseUhDMVBkS2tvME90bC9hb0NtWTB3UUFBQT09In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HGNC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["refseq.ID"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protein.ID"],"name":[3],"type":["chr"],"align":["left"]},{"label":["aa.length"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"GBA","2":"NM_000157","3":"NP_000148","4":"536"},{"1":"GBA","2":"NM_001005741","3":"NP_001005741","4":"536"},{"1":"GBA","2":"NM_001005742","3":"NP_001005742","4":"536"},{"1":"GBA","2":"NM_001171811","3":"NP_001165282","4":"449"},{"1":"GBA","2":"NM_001171812","3":"NP_001165283","4":"487"},{"1":"PTCH1","2":"NM_000264","3":"NP_000255","4":"1447"},{"1":"PTCH1","2":"NM_001083602","3":"NP_001077071","4":"1381"},{"1":"PTCH1","2":"NM_001083603","3":"NP_001077072","4":"1446"},{"1":"PTCH1","2":"NM_001083604","3":"NP_001077073","4":"1296"},{"1":"PTCH1","2":"NM_001083605","3":"NP_001077074","4":"1296"},{"1":"PTCH1","2":"NM_001083606","3":"NP_001077075","4":"1296"},{"1":"PTCH1","2":"NM_001083607","3":"NP_001077076","4":"1296"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[12]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAxMDQyNDkyIGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_001042492 for now.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczMSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26731 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
+<pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgIE5GMSAgICBOTV8wMDAyNjcgICAgTlBfMDAwMjU4ICAgICAgMjgxOFxuMjogICAgTkYxIE5NXzAwMTA0MjQ5MiBOUF8wMDEwMzU5NTcgICAgICAyODM5XG4ifQ== -->
+<pre><code>     HGNC    refseq.ID   protein.ID aa.length
+   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+1:    NF1    NM_000267    NP_000258      2818
+2:    NF1 NM_001042492 NP_001035957      2839</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAxMDQyNDkyIGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_001042492 for now.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczNSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26735 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiMyB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
+<pre><code>3 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgIEFQQyAgICBOTV8wMDAwMzggICAgTlBfMDAwMDI5ICAgICAgMjg0M1xuMjogICAgQVBDIE5NXzAwMTEyNzUxMCBOUF8wMDExMjA5ODIgICAgICAyODQzXG4zOiAgICBBUEMgTk1fMDAxMTI3NTExIE5QXzAwMTEyMDk4MyAgICAgIDI4MjVcbiJ9 -->
+<pre><code>     HGNC    refseq.ID   protein.ID aa.length
+   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+1:    APC    NM_000038    NP_000029      2843
+2:    APC NM_001127510 NP_001120982      2843
+3:    APC NM_001127511 NP_001120983      2825</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAwMDM4IGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_000038 for now.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjc0MCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26740 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
+<pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgU1VGVSBOTV8wMDExNzgxMzMgTlBfMDAxMTcxNjA0ICAgICAgIDQzM1xuMjogICBTVUZVICAgIE5NXzAxNjE2OSAgICBOUF8wNTcyNTMgICAgICAgNDg0XG4ifQ== -->
+<pre><code>     HGNC    refseq.ID   protein.ID aa.length
+   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+1:   SUFU NM_001178133 NP_001171604       433
+2:   SUFU    NM_016169    NP_057253       484</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDE2MTY5IGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_016169 for now.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczNiB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26736 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjcyNSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26725 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
+<pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgIE5GMSAgICBOTV8wMDAyNjcgICAgTlBfMDAwMjU4ICAgICAgMjgxOFxuMjogICAgTkYxIE5NXzAwMTA0MjQ5MiBOUF8wMDEwMzU5NTcgICAgICAyODM5XG4ifQ== -->
+<pre><code>     HGNC    refseq.ID   protein.ID aa.length
+   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+1:    NF1    NM_000267    NP_000258      2818
+2:    NF1 NM_001042492 NP_001035957      2839</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAxMDQyNDkyIGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_001042492 for now.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczOSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26739 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjc0MCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26740 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjcyMiB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26722 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiNSB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
+<pre><code>5 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgIEdCQSAgICBOTV8wMDAxNTcgICAgTlBfMDAwMTQ4ICAgICAgIDUzNlxuMjogICAgR0JBIE5NXzAwMTAwNTc0MSBOUF8wMDEwMDU3NDEgICAgICAgNTM2XG4zOiAgICBHQkEgTk1fMDAxMDA1NzQyIE5QXzAwMTAwNTc0MiAgICAgICA1MzZcbjQ6ICAgIEdCQSBOTV8wMDExNzE4MTEgTlBfMDAxMTY1MjgyICAgICAgIDQ0OVxuNTogICAgR0JBIE5NXzAwMTE3MTgxMiBOUF8wMDExNjUyODMgICAgICAgNDg3XG4ifQ== -->
+<pre><code>     HGNC    refseq.ID   protein.ID aa.length
+   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+1:    GBA    NM_000157    NP_000148       536
+2:    GBA NM_001005741 NP_001005741       536
+3:    GBA NM_001005742 NP_001005742       536
+4:    GBA NM_001171811 NP_001165282       449
+5:    GBA NM_001171812 NP_001165283       487</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAwMTU3IGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_000157 for now.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjc0MSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26741 variants from 798 samples</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiMTIgdHJhbnNjcmlwdHMgYXZhaWxhYmxlLiBVc2UgYXJndW1lbnRzIHJlZlNlcUlEIG9yIHByb3RlaW5JRCB0byBtYW51YWxseSBzcGVjaWZ5IHR4IG5hbWUuXG4ifQ== -->
+<pre><code>12 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
+<!-- rnb-message-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgSEdOQyAgICByZWZzZXEuSUQgICBwcm90ZWluLklEIGFhLmxlbmd0aFxuICAgIDxjaGFyPiAgICAgICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICA8bnVtPlxuIDE6ICAgIEdCQSAgICBOTV8wMDAxNTcgICAgTlBfMDAwMTQ4ICAgICAgIDUzNlxuIDI6ICAgIEdCQSBOTV8wMDEwMDU3NDEgTlBfMDAxMDA1NzQxICAgICAgIDUzNlxuIDM6ICAgIEdCQSBOTV8wMDEwMDU3NDIgTlBfMDAxMDA1NzQyICAgICAgIDUzNlxuIDQ6ICAgIEdCQSBOTV8wMDExNzE4MTEgTlBfMDAxMTY1MjgyICAgICAgIDQ0OVxuIDU6ICAgIEdCQSBOTV8wMDExNzE4MTIgTlBfMDAxMTY1MjgzICAgICAgIDQ4N1xuIDY6ICBQVENIMSAgICBOTV8wMDAyNjQgICAgTlBfMDAwMjU1ICAgICAgMTQ0N1xuIDc6ICBQVENIMSBOTV8wMDEwODM2MDIgTlBfMDAxMDc3MDcxICAgICAgMTM4MVxuIDg6ICBQVENIMSBOTV8wMDEwODM2MDMgTlBfMDAxMDc3MDcyICAgICAgMTQ0NlxuIDk6ICBQVENIMSBOTV8wMDEwODM2MDQgTlBfMDAxMDc3MDczICAgICAgMTI5NlxuMTA6ICBQVENIMSBOTV8wMDEwODM2MDUgTlBfMDAxMDc3MDc0ICAgICAgMTI5NlxuMTE6ICBQVENIMSBOTV8wMDEwODM2MDYgTlBfMDAxMDc3MDc1ICAgICAgMTI5NlxuMTI6ICBQVENIMSBOTV8wMDEwODM2MDcgTlBfMDAxMDc3MDc2ICAgICAgMTI5NlxuIn0= -->
+<pre><code>      HGNC    refseq.ID   protein.ID aa.length
+    &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
+ 1:    GBA    NM_000157    NP_000148       536
+ 2:    GBA NM_001005741 NP_001005741       536
+ 3:    GBA NM_001005742 NP_001005742       536
+ 4:    GBA NM_001171811 NP_001165282       449
+ 5:    GBA NM_001171812 NP_001165283       487
+ 6:  PTCH1    NM_000264    NP_000255      1447
+ 7:  PTCH1 NM_001083602 NP_001077071      1381
+ 8:  PTCH1 NM_001083603 NP_001077072      1446
+ 9:  PTCH1 NM_001083604 NP_001077073      1296
+10:  PTCH1 NM_001083605 NP_001077074      1296
+11:  PTCH1 NM_001083606 NP_001077075      1296
+12:  PTCH1 NM_001083607 NP_001077076      1296</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAwMjY0IGZvciBub3cuXG4ifQ== -->
+<pre><code>Using longer transcript NM_000264 for now.</code></pre>
+<!-- rnb-message-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Print session info</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2Vzc2lvbkluZm8oKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoic2Vzc2lvbkluZm8oKSJ9 -->
 <pre class="r"><code>sessionInfo()</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUiB2ZXJzaW9uIDQuNC4xICgyMDI0LTA2LTE0KVxuUGxhdGZvcm06IGFhcmNoNjQtYXBwbGUtZGFyd2luMjBcblJ1bm5pbmcgdW5kZXI6IG1hY09TIFZlbnR1cmEgMTMuNi4yXG5cbk1hdHJpeCBwcm9kdWN0czogZGVmYXVsdFxuQkxBUzogICAvU3lzdGVtL0xpYnJhcnkvRnJhbWV3b3Jrcy9BY2NlbGVyYXRlLmZyYW1ld29yay9WZXJzaW9ucy9BL0ZyYW1ld29ya3MvdmVjTGliLmZyYW1ld29yay9WZXJzaW9ucy9BL2xpYkJMQVMuZHlsaWIgXG5MQVBBQ0s6IC9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvNC40LWFybTY0L1Jlc291cmNlcy9saWIvbGliUmxhcGFjay5keWxpYjsgIExBUEFDSyB2ZXJzaW9uIDMuMTIuMFxuXG5sb2NhbGU6XG5bMV0gZW5fVVMuVVRGLTgvZW5fVVMuVVRGLTgvZW5fVVMuVVRGLTgvQy9lbl9VUy5VVEYtOC9lbl9VUy5VVEYtOFxuXG50aW1lIHpvbmU6IEFtZXJpY2EvTmV3X1lvcmtcbnR6Y29kZSBzb3VyY2U6IGludGVybmFsXG5cbmF0dGFjaGVkIGJhc2UgcGFja2FnZXM6XG5bMV0gZ3JpZCAgICAgIHN0YXRzICAgICBncmFwaGljcyAgZ3JEZXZpY2VzIHV0aWxzICAgICBkYXRhc2V0cyAgbWV0aG9kcyAgIGJhc2UgICAgIFxuXG5vdGhlciBhdHRhY2hlZCBwYWNrYWdlczpcbiBbMV0gbWFmdG9vbHNfMi4yMC4wICAgICAgIGJpb21hUnRfMi42MC4xICAgICAgICBCaW9jTWFuYWdlcl8xLjMwLjIzICAgQ29tcGxleEhlYXRtYXBfMi4yMC4wIHJlYWR4bF8xLjQuMyAgICAgICAgICBkYXRhLnRhYmxlXzEuMTUuNCAgICAgZ2d0aGVtZXNfNS4xLjAgICAgICAgIGdnc2NpXzMuMi4wICAgICAgICAgIFxuIFs5XSBnZ3JlcGVsXzAuOS41ICAgICAgICAgZ2dwdWJyXzAuNi4wICAgICAgICAgIGNpcmNsaXplXzAuNC4xNiAgICAgICB2cm9vbV8xLjYuNSAgICAgICAgICAgbHVicmlkYXRlXzEuOS4zICAgICAgIGZvcmNhdHNfMS4wLjAgICAgICAgICBzdHJpbmdyXzEuNS4xICAgICAgICAgZHBseXJfMS4xLjQgICAgICAgICAgXG5bMTddIHB1cnJyXzEuMC4yICAgICAgICAgICByZWFkcl8yLjEuNSAgICAgICAgICAgdGlkeXJfMS4zLjEgICAgICAgICAgIHRpYmJsZV8zLjIuMSAgICAgICAgICB0aWR5dmVyc2VfMi4wLjAgICAgICAgZ2dwbG90Ml8zLjUuMSAgICAgICAgXG5cbmxvYWRlZCB2aWEgYSBuYW1lc3BhY2UgKGFuZCBub3QgYXR0YWNoZWQpOlxuICBbMV0gREJJXzEuMi4zICAgICAgICAgICAgICAgaHR0cjJfMS4wLjQgICAgICAgICAgICAgcmxhbmdfMS4xLjQgICAgICAgICAgICAgbWFncml0dHJfMi4wLjMgICAgICAgICAgY2x1ZV8wLjMtNjUgICAgICAgICAgICAgR2V0b3B0TG9uZ18xLjAuNSAgICAgICAgbWF0cml4U3RhdHNfMS4zLjAgICAgICAgY29tcGlsZXJfNC40LjEgICAgICAgICBcbiAgWzldIFJTUUxpdGVfMi4zLjcgICAgICAgICAgIG1nY3ZfMS45LTEgICAgICAgICAgICAgIHBuZ18wLjEtOCAgICAgICAgICAgICAgIHN5c3RlbWZvbnRzXzEuMS4wICAgICAgIHZjdHJzXzAuNi41ICAgICAgICAgICAgIHBrZ2NvbmZpZ18yLjAuMyAgICAgICAgIHNoYXBlXzEuNC42LjEgICAgICAgICAgIGNyYXlvbl8xLjUuMiAgICAgICAgICAgXG4gWzE3XSBmYXN0bWFwXzEuMi4wICAgICAgICAgICBkYnBseXJfMi41LjAgICAgICAgICAgICBYVmVjdG9yXzAuNDQuMCAgICAgICAgICBiYWNrcG9ydHNfMS41LjAgICAgICAgICBsYWJlbGluZ18wLjQuMyAgICAgICAgICB1dGY4XzEuMi40ICAgICAgICAgICAgICBybWFya2Rvd25fMi4yNyAgICAgICAgICB0emRiXzAuNC4wICAgICAgICAgICAgIFxuIFsyNV0gVUNTQy51dGlsc18xLjAuMCAgICAgICAgcmFnZ18xLjMuMiAgICAgICAgICAgICAgYml0XzQuMC41ICAgICAgICAgICAgICAgeGZ1bl8wLjQ1ICAgICAgICAgICAgICAgemxpYmJpb2NfMS41MC4wICAgICAgICAgY2FjaGVtXzEuMS4wICAgICAgICAgICAgR2Vub21lSW5mb0RiXzEuNDAuMSAgICAganNvbmxpdGVfMS44LjggICAgICAgICBcbiBbMzNdIHByb2dyZXNzXzEuMi4zICAgICAgICAgIGJsb2JfMS4yLjQgICAgICAgICAgICAgIHByZXR0eXVuaXRzXzEuMi4wICAgICAgIGJyb29tXzEuMC42ICAgICAgICAgICAgIHBhcmFsbGVsXzQuNC4xICAgICAgICAgIGNsdXN0ZXJfMi4xLjYgICAgICAgICAgIFI2XzIuNS4xICAgICAgICAgICAgICAgIGJzbGliXzAuNy4wICAgICAgICAgICAgXG4gWzQxXSBzdHJpbmdpXzEuOC40ICAgICAgICAgICBSQ29sb3JCcmV3ZXJfMS4xLTMgICAgICBETkFjb3B5XzEuNzguMCAgICAgICAgICBjYXJfMy4xLTIgICAgICAgICAgICAgICBwa2dsb2FkXzEuMy40ICAgICAgICAgICBqcXVlcnlsaWJfMC4xLjQgICAgICAgICBjZWxscmFuZ2VyXzEuMS4wICAgICAgICBSY3BwXzEuMC4xMiAgICAgICAgICAgIFxuIFs0OV0gaXRlcmF0b3JzXzEuMC4xNCAgICAgICAga25pdHJfMS40NyAgICAgICAgICAgICAgSVJhbmdlc18yLjM4LjAgICAgICAgICAgTWF0cml4XzEuNy0wICAgICAgICAgICAgc3BsaW5lc180LjQuMSAgICAgICAgICAgdGltZWNoYW5nZV8wLjMuMCAgICAgICAgdGlkeXNlbGVjdF8xLjIuMSAgICAgICAgcnN0dWRpb2FwaV8wLjE2LjAgICAgICBcbiBbNTddIGFiaW5kXzEuNC01ICAgICAgICAgICAgIHlhbWxfMi4zLjggICAgICAgICAgICAgIGRvUGFyYWxsZWxfMS4wLjE3ICAgICAgIGNvZGV0b29sc18wLjItMjAgICAgICAgIGN1cmxfNS4yLjIgICAgICAgICAgICAgIGxhdHRpY2VfMC4yMi02ICAgICAgICAgIEtFR0dSRVNUXzEuNDQuMSAgICAgICAgIEJpb2Jhc2VfMi42NC4wICAgICAgICAgXG4gWzY1XSB3aXRocl8zLjAuMCAgICAgICAgICAgICBldmFsdWF0ZV8wLjI0LjAgICAgICAgICBzdXJ2aXZhbF8zLjYtNCAgICAgICAgICBCaW9jRmlsZUNhY2hlXzIuMTIuMCAgICB4bWwyXzEuMy42ICAgICAgICAgICAgICBCaW9zdHJpbmdzXzIuNzIuMSAgICAgICBmaWxlbG9ja18xLjAuMyAgICAgICAgICBwaWxsYXJfMS45LjAgICAgICAgICAgIFxuIFs3M10gY2FyRGF0YV8zLjAtNSAgICAgICAgICAgZm9yZWFjaF8xLjUuMiAgICAgICAgICAgc3RhdHM0XzQuNC4xICAgICAgICAgICAgZ2VuZXJpY3NfMC4xLjMgICAgICAgICAgcnByb2pyb290XzIuMC40ICAgICAgICAgaG1zXzEuMS4zICAgICAgICAgICAgICAgUzRWZWN0b3JzXzAuNDIuMCAgICAgICAgbXVuc2VsbF8wLjUuMSAgICAgICAgICBcbiBbODFdIHNjYWxlc18xLjMuMCAgICAgICAgICAgIGdsdWVfMS43LjAgICAgICAgICAgICAgIHRvb2xzXzQuNC4xICAgICAgICAgICAgIGdnc2lnbmlmXzAuNi40ICAgICAgICAgIEFubm90YXRpb25EYmlfMS42Ni4wICAgIGNvbG9yc3BhY2VfMi4xLTEgICAgICAgIEdlbm9tZUluZm9EYkRhdGFfMS4yLjEyIG5sbWVfMy4xLTE2NCAgICAgICAgICAgXG4gWzg5XSBjbGlfMy42LjIgICAgICAgICAgICAgICByYXBwZGlyc18wLjMuMyAgICAgICAgICB0ZXh0c2hhcGluZ18wLjQuMCAgICAgICBmYW5zaV8xLjAuNiAgICAgICAgICAgICBndGFibGVfMC4zLjUgICAgICAgICAgICByc3RhdGl4XzAuNy4yICAgICAgICAgICBzYXNzXzAuNC45ICAgICAgICAgICAgICBkaWdlc3RfMC42LjM1ICAgICAgICAgIFxuIFs5N10gQmlvY0dlbmVyaWNzXzAuNTAuMCAgICAgcmpzb25fMC4yLjIxICAgICAgICAgICAgZmFydmVyXzIuMS4yICAgICAgICAgICAgbWVtb2lzZV8yLjAuMSAgICAgICAgICAgaHRtbHRvb2xzXzAuNS44LjEgICAgICAgbGlmZWN5Y2xlXzEuMC40ICAgICAgICAgaHR0cl8xLjQuNyAgICAgICAgICAgICAgR2xvYmFsT3B0aW9uc18wLjEuMiAgICBcblsxMDVdIGJpdDY0XzQuMC41ICAgICAgICAgICAgXG4ifQ== -->
-<pre><code>R version 4.4.1 (2024-06-14)
-Platform: aarch64-apple-darwin20
-Running under: macOS Ventura 13.6.2
+<!-- rnb-output-begin eyJkYXRhIjoiUiB2ZXJzaW9uIDQuNC4wICgyMDI0LTA0LTI0KVxuUGxhdGZvcm06IHg4Nl82NC1wYy1saW51eC1nbnVcblJ1bm5pbmcgdW5kZXI6IFVidW50dSAyMi4wNC40IExUU1xuXG5NYXRyaXggcHJvZHVjdHM6IGRlZmF1bHRcbkJMQVM6ICAgL3Vzci9saWIveDg2XzY0LWxpbnV4LWdudS9vcGVuYmxhcy1wdGhyZWFkL2xpYmJsYXMuc28uMyBcbkxBUEFDSzogL3Vzci9saWIveDg2XzY0LWxpbnV4LWdudS9vcGVuYmxhcy1wdGhyZWFkL2xpYm9wZW5ibGFzcC1yMC4zLjIwLnNvOyAgTEFQQUNLIHZlcnNpb24gMy4xMC4wXG5cbmxvY2FsZTpcbiBbMV0gTENfQ1RZUEU9ZW5fVVMuVVRGLTggICAgICAgTENfTlVNRVJJQz1DICAgICAgICAgICAgICBcbiBbM10gTENfVElNRT1lbl9VUy5VVEYtOCAgICAgICAgTENfQ09MTEFURT1lbl9VUy5VVEYtOCAgICBcbiBbNV0gTENfTU9ORVRBUlk9ZW5fVVMuVVRGLTggICAgTENfTUVTU0FHRVM9ZW5fVVMuVVRGLTggICBcbiBbN10gTENfUEFQRVI9ZW5fVVMuVVRGLTggICAgICAgTENfTkFNRT1DICAgICAgICAgICAgICAgICBcbiBbOV0gTENfQUREUkVTUz1DICAgICAgICAgICAgICAgTENfVEVMRVBIT05FPUMgICAgICAgICAgICBcblsxMV0gTENfTUVBU1VSRU1FTlQ9ZW5fVVMuVVRGLTggTENfSURFTlRJRklDQVRJT049QyAgICAgICBcblxudGltZSB6b25lOiBFdGMvVVRDXG50emNvZGUgc291cmNlOiBzeXN0ZW0gKGdsaWJjKVxuXG5hdHRhY2hlZCBiYXNlIHBhY2thZ2VzOlxuWzFdIHN0YXRzICAgICBncmFwaGljcyAgZ3JEZXZpY2VzIHV0aWxzICAgICBkYXRhc2V0cyAgbWV0aG9kcyAgIGJhc2UgICAgIFxuXG5vdGhlciBhdHRhY2hlZCBwYWNrYWdlczpcbiBbMV0gbWFmdG9vbHNfMi4yMC4wIGx1YnJpZGF0ZV8xLjkuMyBmb3JjYXRzXzEuMC4wICAgc3RyaW5ncl8xLjUuMSAgXG4gWzVdIGRwbHlyXzEuMS40ICAgICBwdXJycl8xLjAuMiAgICAgcmVhZHJfMi4xLjUgICAgIHRpZHlyXzEuMy4xICAgIFxuIFs5XSB0aWJibGVfMy4yLjEgICAgZ2dwbG90Ml8zLjUuMSAgIHRpZHl2ZXJzZV8yLjAuMFxuXG5sb2FkZWQgdmlhIGEgbmFtZXNwYWNlIChhbmQgbm90IGF0dGFjaGVkKTpcbiBbMV0gc2Fzc18wLjQuOSAgICAgICAgIHV0ZjhfMS4yLjQgICAgICAgICBnZW5lcmljc18wLjEuMyAgICAgc3RyaW5naV8xLjguNCAgICAgXG4gWzVdIGxhdHRpY2VfMC4yMi02ICAgICBobXNfMS4xLjMgICAgICAgICAgZGlnZXN0XzAuNi4zNSAgICAgIG1hZ3JpdHRyXzIuMC4zICAgIFxuIFs5XSBldmFsdWF0ZV8wLjI0LjAgICAgZ3JpZF80LjQuMCAgICAgICAgIHRpbWVjaGFuZ2VfMC4zLjAgICBSQ29sb3JCcmV3ZXJfMS4xLTNcblsxM10gZmFzdG1hcF8xLjIuMCAgICAgIHJwcm9qcm9vdF8yLjAuNCAgICBqc29ubGl0ZV8xLjguOCAgICAgTWF0cml4XzEuNy0wICAgICAgXG5bMTddIHN1cnZpdmFsXzMuNy0wICAgICBmYW5zaV8xLjAuNiAgICAgICAgc2NhbGVzXzEuMy4wICAgICAgIGpxdWVyeWxpYl8wLjEuNCAgIFxuWzIxXSBjbGlfMy42LjIgICAgICAgICAgY3JheW9uXzEuNS4yICAgICAgIHJsYW5nXzEuMS40ICAgICAgICBiaXQ2NF80LjAuNSAgICAgICBcblsyNV0gbXVuc2VsbF8wLjUuMSAgICAgIHNwbGluZXNfNC40LjAgICAgICB3aXRocl8zLjAuMCAgICAgICAgY2FjaGVtXzEuMS4wICAgICAgXG5bMjldIHlhbWxfMi4zLjggICAgICAgICBETkFjb3B5XzEuNzguMCAgICAgcGFyYWxsZWxfNC40LjAgICAgIHRvb2xzXzQuNC4wICAgICAgIFxuWzMzXSB0emRiXzAuNC4wICAgICAgICAgY29sb3JzcGFjZV8yLjEtMCAgIHZjdHJzXzAuNi41ICAgICAgICBSNl8yLjUuMSAgICAgICAgICBcblszN10gbGlmZWN5Y2xlXzEuMC40ICAgIGJpdF80LjAuNSAgICAgICAgICB2cm9vbV8xLjYuNSAgICAgICAgcGtnY29uZmlnXzIuMC4zICAgXG5bNDFdIHBpbGxhcl8xLjkuMCAgICAgICBic2xpYl8wLjcuMCAgICAgICAgZ3RhYmxlXzAuMy41ICAgICAgIGdsdWVfMS43LjAgICAgICAgIFxuWzQ1XSBkYXRhLnRhYmxlXzEuMTUuNCAgeGZ1bl8wLjQ0ICAgICAgICAgIHRpZHlzZWxlY3RfMS4yLjEgICBrbml0cl8xLjQ3ICAgICAgICBcbls0OV0gaHRtbHRvb2xzXzAuNS44LjEgIHJtYXJrZG93bl8yLjI3ICAgICBjb21waWxlcl80LjQuMCAgICBcbiJ9 -->
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.4 LTS
 
 Matrix products: default
-BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
-LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
-time zone: America/New_York
-tzcode source: internal
+time zone: Etc/UTC
+tzcode source: system (glibc)
 
 attached base packages:
-[1] grid      stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] maftools_2.20.0       biomaRt_2.60.1        BiocManager_1.30.23   ComplexHeatmap_2.20.0 readxl_1.4.3          data.table_1.15.4     ggthemes_5.1.0        ggsci_3.2.0          
- [9] ggrepel_0.9.5         ggpubr_0.6.0          circlize_0.4.16       vroom_1.6.5           lubridate_1.9.3       forcats_1.0.0         stringr_1.5.1         dplyr_1.1.4          
-[17] purrr_1.0.2           readr_2.1.5           tidyr_1.3.1           tibble_3.2.1          tidyverse_2.0.0       ggplot2_3.5.1        
+ [1] maftools_2.20.0 lubridate_1.9.3 forcats_1.0.0   stringr_1.5.1  
+ [5] dplyr_1.1.4     purrr_1.0.2     readr_2.1.5     tidyr_1.3.1    
+ [9] tibble_3.2.1    ggplot2_3.5.1   tidyverse_2.0.0
 
 loaded via a namespace (and not attached):
-  [1] DBI_1.2.3               httr2_1.0.4             rlang_1.1.4             magrittr_2.0.3          clue_0.3-65             GetoptLong_1.0.5        matrixStats_1.3.0       compiler_4.4.1         
-  [9] RSQLite_2.3.7           mgcv_1.9-1              png_0.1-8               systemfonts_1.1.0       vctrs_0.6.5             pkgconfig_2.0.3         shape_1.4.6.1           crayon_1.5.2           
- [17] fastmap_1.2.0           dbplyr_2.5.0            XVector_0.44.0          backports_1.5.0         labeling_0.4.3          utf8_1.2.4              rmarkdown_2.27          tzdb_0.4.0             
- [25] UCSC.utils_1.0.0        ragg_1.3.2              bit_4.0.5               xfun_0.45               zlibbioc_1.50.0         cachem_1.1.0            GenomeInfoDb_1.40.1     jsonlite_1.8.8         
- [33] progress_1.2.3          blob_1.2.4              prettyunits_1.2.0       broom_1.0.6             parallel_4.4.1          cluster_2.1.6           R6_2.5.1                bslib_0.7.0            
- [41] stringi_1.8.4           RColorBrewer_1.1-3      DNAcopy_1.78.0          car_3.1-2               pkgload_1.3.4           jquerylib_0.1.4         cellranger_1.1.0        Rcpp_1.0.12            
- [49] iterators_1.0.14        knitr_1.47              IRanges_2.38.0          Matrix_1.7-0            splines_4.4.1           timechange_0.3.0        tidyselect_1.2.1        rstudioapi_0.16.0      
- [57] abind_1.4-5             yaml_2.3.8              doParallel_1.0.17       codetools_0.2-20        curl_5.2.2              lattice_0.22-6          KEGGREST_1.44.1         Biobase_2.64.0         
- [65] withr_3.0.0             evaluate_0.24.0         survival_3.6-4          BiocFileCache_2.12.0    xml2_1.3.6              Biostrings_2.72.1       filelock_1.0.3          pillar_1.9.0           
- [73] carData_3.0-5           foreach_1.5.2           stats4_4.4.1            generics_0.1.3          rprojroot_2.0.4         hms_1.1.3               S4Vectors_0.42.0        munsell_0.5.1          
- [81] scales_1.3.0            glue_1.7.0              tools_4.4.1             ggsignif_0.6.4          AnnotationDbi_1.66.0    colorspace_2.1-1        GenomeInfoDbData_1.2.12 nlme_3.1-164           
- [89] cli_3.6.2               rappdirs_0.3.3          textshaping_0.4.0       fansi_1.0.6             gtable_0.3.5            rstatix_0.7.2           sass_0.4.9              digest_0.6.35          
- [97] BiocGenerics_0.50.0     rjson_0.2.21            farver_2.1.2            memoise_2.0.1           htmltools_0.5.8.1       lifecycle_1.0.4         httr_1.4.7              GlobalOptions_0.1.2    
-[105] bit64_4.0.5            </code></pre>
+ [1] sass_0.4.9         utf8_1.2.4         generics_0.1.3     stringi_1.8.4     
+ [5] lattice_0.22-6     hms_1.1.3          digest_0.6.35      magrittr_2.0.3    
+ [9] evaluate_0.24.0    grid_4.4.0         timechange_0.3.0   RColorBrewer_1.1-3
+[13] fastmap_1.2.0      rprojroot_2.0.4    jsonlite_1.8.8     Matrix_1.7-0      
+[17] survival_3.7-0     fansi_1.0.6        scales_1.3.0       jquerylib_0.1.4   
+[21] cli_3.6.2          crayon_1.5.2       rlang_1.1.4        bit64_4.0.5       
+[25] munsell_0.5.1      splines_4.4.0      withr_3.0.0        cachem_1.1.0      
+[29] yaml_2.3.8         DNAcopy_1.78.0     parallel_4.4.0     tools_4.4.0       
+[33] tzdb_0.4.0         colorspace_2.1-0   vctrs_0.6.5        R6_2.5.1          
+[37] lifecycle_1.0.4    bit_4.0.5          vroom_1.6.5        pkgconfig_2.0.3   
+[41] pillar_1.9.0       bslib_0.7.0        gtable_0.3.5       glue_1.7.0        
+[45] data.table_1.15.4  xfun_0.44          tidyselect_1.2.1   knitr_1.47        
+[49] htmltools_0.5.8.1  rmarkdown_2.27     compiler_4.4.0    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
