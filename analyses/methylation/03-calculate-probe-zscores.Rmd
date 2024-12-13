@@ -62,7 +62,12 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.t
 
 # Load files
 ```{r load files}
-hist <- read_tsv(hist_cohort_file)
+hist <- read_tsv(hist_cohort_file) %>%
+  dplyr::mutate(subgroup = case_when(
+    molecular_subtype == "MB, SHH" ~ "MB, SHH",
+    grepl("SEGA", molecular_subtype) ~ "SEGA",
+    TRUE ~ plot_group
+  ))
 cpgs <- read_lines(cpg_file)
 ```
 
@@ -83,24 +88,31 @@ Append additional sample metadata (methylation sample id, histology & subtype) t
 germline <- germline %>%
   filter(Hugo_Symbol %in% cpgs) %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
-                    "Kids_First_Biospecimen_ID_methyl", "plot_group", "molecular_subtype")]) %>%
+                    "Kids_First_Biospecimen_ID_methyl", "plot_group",
+                    "subgroup", "molecular_subtype")]) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_methyl, 
-                plot_group, molecular_subtype,
-                Hugo_Symbol, autogvp_call, autogvp_call_reason,
-                chr, start, ref, alt,
-                HGVSc, HGVSp) %>%
-  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_methyl, Hugo_Symbol, start, .keep_all = T)
+                plot_group, subgroup, molecular_subtype,
+                Hugo_Symbol, chr, start, ref, alt, 
+                variant_classification_vep) %>%
+  dplyr::rename(variant_chr = chr,
+                variant_position = `start`,
+                variant_classification = variant_classification_vep) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_methyl, Hugo_Symbol, variant_position, .keep_all = T)
 
 germline_sv <- germline_sv %>%
   left_join(hist[,c("Kids_First_Biospecimen_ID_normal", "Kids_First_Participant_ID", 
-                    "Kids_First_Biospecimen_ID_methyl", "plot_group", "molecular_subtype")]) %>%
+                    "Kids_First_Biospecimen_ID_methyl", "plot_group",
+                    "subgroup", "molecular_subtype")]) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, 
                 Kids_First_Biospecimen_ID_methyl, 
-                plot_group, molecular_subtype,
+                plot_group, subgroup, molecular_subtype,
                 Hugo_Symbol,
-                Chromosome, Start, End, Length,
-                Type, Classification) %>%
+                Chromosome, Start, 
+                Type) %>%
+  dplyr::rename(variant_chr = Chromosome,
+                variant_position = Start,
+                variant_classification = Type) %>%
   distinct(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_methyl, Hugo_Symbol, .keep_all = T)
 ```
 
@@ -120,8 +132,11 @@ methyl_df <- cpg_methyl %>%
   left_join(methyl_annot %>% dplyr::select(Chromosome, Location, Probe_ID, 
                                            transcript_id, canonical)) %>%
   left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_methyl, 
-                                   plot_group)) %>%
-  dplyr::rename(Hugo_Symbol = Gene_symbol) %>%
+                                   plot_group, subgroup)) %>%
+  dplyr::rename(Hugo_Symbol = Gene_symbol,
+                probe_position = Location,
+                probe_gene_feature = Gene_Feature,
+                probe_transcript_id = transcript_id) %>%
   distinct(Probe_ID, Kids_First_Biospecimen_ID_methyl, .keep_all = TRUE)
 ```
 
@@ -130,53 +145,49 @@ Create df and calculate probe beta value z-scores in P-LP carriers relative to 1
 methyl_beta_diff_df <- germline %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, 
                 Kids_First_Biospecimen_ID_methyl,
-                plot_group, Hugo_Symbol) %>%
+                variant_chr, variant_position, ref, alt, 
+                variant_classification,
+                plot_group, subgroup, Hugo_Symbol) %>%
   # add germline SVs
   bind_rows(germline_sv %>% 
               dplyr::select(Kids_First_Biospecimen_ID_normal,
                             Kids_First_Biospecimen_ID_methyl,
-                            plot_group, Hugo_Symbol)) %>%
+                            plot_group, subgroup, Hugo_Symbol,
+                            variant_chr, variant_position,
+                            variant_classification)) %>%
   distinct() %>%
   # remove cases with no matched methylation sample
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_methyl)) %>%
   left_join(methyl_df %>%
               select(Probe_ID, Kids_First_Biospecimen_ID_methyl,
-                     Chromosome, Location, Gene_Feature,
-                     Hugo_Symbol, transcript_id, canonical, beta_value)) %>%
-  dplyr::rename(beta_value_sample = beta_value)
+                     probe_position, probe_gene_feature,
+                     Hugo_Symbol, probe_transcript_id, canonical, beta_value)) %>%
+  dplyr::rename(beta_value_sample = beta_value) %>%
+  dplyr::mutate(variant_probe_dist = variant_position - probe_position)
 
 # calculate mean probe beta values by histology group
 mean_beta_group_df <- methyl_df %>%
-  group_by(Probe_ID, plot_group) %>%
+  group_by(Probe_ID, subgroup) %>%
   summarise(mean_beta_group = mean(beta_value, na.rm = TRUE),
             sd_beta_group = sd(beta_value, na.rm = TRUE))
-
-# calculate mean probe z-scores across cohort
-mean_beta_all_df <- methyl_df %>%
-  group_by(Probe_ID) %>%
-  summarise(mean_beta_all = mean(beta_value, na.rm = TRUE),
-            sd_beta_all = sd(beta_value, na.rm = TRUE))
 
 # calculate beta value differences and z-scores relative to histology group and entire cohort
 methyl_beta_diff_df <- methyl_beta_diff_df %>%
   # join mean and sd beta values
   left_join(mean_beta_group_df) %>%
-  left_join(mean_beta_all_df) %>%
   # calculate differences and z-scores
   dplyr::mutate(beta_diff_group = beta_value_sample - mean_beta_group,
-                beta_diff_all = beta_value_sample - mean_beta_all,
-                sample_beta_zscore_group = (beta_value_sample - mean_beta_group)/sd_beta_group,
-                sample_beta_zscore_all = (beta_value_sample - mean_beta_all)/sd_beta_all) %>%
-  dplyr::select(-sd_beta_group, -sd_beta_all) %>%
+                sample_beta_zscore_group = (beta_value_sample - mean_beta_group)/sd_beta_group) %>%
+  dplyr::select(-sd_beta_group) %>%
   dplyr::mutate(methyl_status = case_when(
     sample_beta_zscore_group >= 1 & beta_diff_group >= 0.05 ~ "hypermethylated",
     sample_beta_zscore_group < -1 & beta_diff_group < -0.05 ~ "hypomethylated",
     TRUE ~ "neither"
   )) %>%
-  dplyr::mutate(Gene_Feature = case_when(
-    grepl("three_prime", Gene_Feature) ~ "3' UTR",
-    grepl("five_prime", Gene_Feature) ~ "5' UTR",
-    TRUE ~ Gene_Feature
+  dplyr::mutate(probe_gene_feature = case_when(
+    grepl("three_prime", probe_gene_feature) ~ "3' UTR",
+    grepl("five_prime", probe_gene_feature) ~ "5' UTR",
+    TRUE ~ probe_gene_feature
   ))
 ```
 
