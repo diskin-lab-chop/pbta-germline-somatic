@@ -53,11 +53,8 @@ Set file paths
 histologies_file <- file.path(results_dir,
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-plp_file <- file.path(data_dir, 
-                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
-
-plp_lowVAF_file <- file.path(data_dir, 
-                       "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+plp_file <- file.path(root_dir, "analyses", "two-hits", "results", 
+                      "germline-plp-variants-cpg-somatic-driver-in-tumor.tsv")
 
 plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
@@ -73,13 +70,12 @@ Wrangle data
 
 ```{r}
 hist <- read_tsv(histologies_file, guess_max = 10000) %>%
-  dplyr::mutate()
+  dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25)
 
 cpgs <- read_lines(cpg_file)
 
 plp <- read_tsv(plp_file) %>%
-  bind_rows(read_tsv(plp_lowVAF_file)) %>%
-  dplyr::filter(gene_symbol_vep %in% cpgs)
+  dplyr::filter(Hugo_Symbol %in% cpgs)
 
 plp_sv <- read_tsv(plp_sv_file)
 
@@ -102,6 +98,7 @@ Load braf fusions file, and add column indicating if patient is CPG P/LP carrier
 
 ```{r}
 fusions <- read_tsv(fusions_file) %>%
+  dplyr::arrange(diagnosis) %>%
   distinct(Kids_First_Participant_ID, .keep_all = TRUE) %>%
   dplyr::filter(Kids_First_Participant_ID %in% hist$Kids_First_Participant_ID[hist$plot_group == "Low-grade glioma" & grepl("BRAF fusion", hist$mol_sub_group)]) %>%
   dplyr::mutate(cpg_plp = case_when(
@@ -114,16 +111,81 @@ fusions <- read_tsv(fusions_file) %>%
   dplyr::mutate(CNS_region = case_when(
     Kids_First_Participant_ID %in% cns_regions$Kids_First_Participant_ID ~ cns_regions$CNS_region[match(Kids_First_Participant_ID, cns_regions$Kids_First_Participant_ID)],
     TRUE ~ CNS_region
-  ))
+  )) %>%
+  left_join(hist %>% dplyr::select(Kids_First_Participant_ID,
+                                   OS_years, EFS_years,
+                                   EFS_status, age_at_diagnosis_years)) %>%
+  dplyr::mutate(diagnosis = fct_relevel(diagnosis,
+                                        c("pilocytic astrocytoma",
+                                          "pilomyxoid astrocytoma",
+                                          "fibrillary astrocytoma")))
 
 table(fusions$cpg_plp)
 table(fusions$breakpoint_group, fusions$cpg_plp)
 ```
 
+```{r}
+int_braf_fusions_plp_efs_model <- fit_save_model(fusions[fusions$diagnosis == "pilocytic astrocytoma",],
+                                    "extent_of_tumor_resection+cpg_plp+age_at_diagnosis_years",
+                                    file.path(results_dir, "coxph_add_EFS_lgg_braf_fusion_resection_group_plp.RDS"),
+                                    "multivariate",
+                                    years_col = "EFS_years",
+                                    status_col = "EFS_status")
+
+plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_lgg_braf_fusion_resection_group_plp.RDS")))
+
+ggsave(file.path(plot_dir, "forest_EFS_lgg_braf_fusion_resection_group_plp.pdf"),
+       width = 7, height = 3, units = "in")
+```
+
+```{r}
+kap_pma_plp_efs <- survival_analysis(
+  metadata  = fusions[fusions$diagnosis == "pilomyxoid astrocytoma",],
+  ind_var = "cpg_plp",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Participant_ID", 
+  days_col = "EFS_days",
+  status_col = "EFS_status"
+)
+
+km_pma_plp_plot <- plotKM(model = kap_pma_plp_efs,
+                  variable = "cpg_plp",
+                  combined = F, 
+                  title = "Pilomyxoid astrocytoma")
+km_pma_plp_plot
+
+ggsave(file.path(plot_dir, "km_EFS_pma_plp.pdf"),
+       width = 8, height = 6, units = "in")
+
+
+
+kap_pa_plp_efs <- survival_analysis(
+  metadata  = fusions[fusions$diagnosis == "pilocytic astrocytoma",],
+  ind_var = "cpg_plp",
+  test = "kap.meier",
+  metadata_sample_col = "Kids_First_Participant_ID", 
+  days_col = "EFS_days",
+  status_col = "EFS_status"
+)
+
+km_pa_plp_plot <- plotKM(model = kap_pa_plp_efs,
+                  variable = "cpg_plp",
+                  combined = F, 
+                  title = "Pilocytic astrocytoma")
+km_pa_plp_plot
+
+ggsave(file.path(plot_dir, "km_EFS_pa_plp.pdf"),
+       width = 8, height = 6, units = "in")
+```
+
+
 Determine if breakpoint groups are enriched among P/LP carriers
 
 ```{r}
-fusion_enr <- plot_enr(fusions, 
+pa_fusions <- fusions %>%
+  dplyr::filter(diagnosis == "pilocytic astrocytoma")
+
+fusion_enr <- plot_enr(pa_fusions, 
                        var1 = "breakpoint_group", 
                        var2 = "cpg_plp",
                        var1_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
@@ -152,41 +214,38 @@ dev.off()
 Assess extent of surgical resection by breakpoint group
 
 ```{r}
-fusion_resection_enr <- plot_enr(fusions[fusions$extent_of_tumor_resection != "Not Reported",], 
-                       var2 = "breakpoint_group", 
+pa_plp_resection_enr <- plot_enr(pa_fusions[pa_fusions$extent_of_tumor_resection != "Not Reported",], 
+                       var2 = "cpg_plp", 
                        var1 = "extent_of_tumor_resection",
-                       var2_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
-                       var1_names = unique(fusions$extent_of_tumor_resection[fusions$extent_of_tumor_resection != "Not Reported"]),
+                       var2_names = c("No P/LP", "CPG P/LP"), 
+                       var1_names = unique(pa_fusions$extent_of_tumor_resection[pa_fusions$extent_of_tumor_resection != "Not Reported"]),
                        padjust = TRUE)
 
 pdf(file.path(plot_dir, "breakpoint_group_resection_enr_heatmap.pdf"),
     width = 5.5, height = 3)
-draw(fusion_resection_enr)
+draw(pa_plp_resection_enr)
 dev.off()
 ```
-Assess anatomical location by breakpoint group
+
 
 ```{r}
-fusion_region_enr <- plot_enr(fusions, 
-                       var2 = "breakpoint_group", 
+pa_plp_region_enr <- plot_enr(pa_fusions, 
+                       var2 = "cpg_plp", 
                        var1 = "CNS_region",
-                       var2_names = c("15:09", "16:09", "16:11", "18:10", "rare"), 
-                       var1_names = sort(unique(fusions$CNS_region)),
+                       var2_names = c("No P/LP", "CPG P/LP"), 
+                       var1_names = unique(pa_fusions$CNS_region),
                        padjust = TRUE)
 
-pdf(file.path(plot_dir, "breakpoint_group_region_enr_heatmap.pdf"),
-    width = 4.5, height = 4)
-draw(fusion_region_enr)
+pdf(file.path(plot_dir, "breakpoint_group_resection_enr_heatmap.pdf"),
+    width = 5.5, height = 3)
+draw(pa_plp_region_enr)
 dev.off()
 ```
+
 
 Assess EFS by breakpoint group
 
 ```{r}
-fusions <- fusions %>%
-  left_join(hist %>% dplyr::select(Kids_First_Participant_ID,
-                                   OS_years, EFS_years,
-                                   EFS_status))
 
 kap_group_efs <- survival_analysis(
   metadata  = fusions,
