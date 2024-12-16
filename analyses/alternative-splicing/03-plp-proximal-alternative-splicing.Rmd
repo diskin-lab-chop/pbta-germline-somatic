@@ -201,6 +201,7 @@ for (i in 1:nrow(plp_splice_candidates)){
   reg <- plp_splice_candidates$region[i]
   case <- plp_splice_candidates$splicing_case[i]
   
+  known_junction <- plp_splice_candidates$event_in_gtf[i]
   exon_intron_rank <- plp_splice_candidates$rank[i]
   
   group_rna <- plp_splice_candidates$subgroup[i]
@@ -220,8 +221,8 @@ for (i in 1:nrow(plp_splice_candidates)){
                                            splicing_case),
               by = c("Kids_First_Biospecimen_ID_rna", "Hugo_Symbol")) %>%
     dplyr::mutate(IncLevel1 = case_when(
-      is.na(IncLevel1) & case == "SE" ~ 1,
-      is.na(IncLevel1) & case == "RI" ~ 0,
+      known_junction == "No" & is.na(IncLevel1) & case == "SE" ~ 1,
+      known_junction == "No" & is.na(IncLevel1) & case == "RI" ~ 0,
       TRUE ~ IncLevel1
     )) %>%
     group_by(subgroup) %>%
@@ -238,7 +239,6 @@ for (i in 1:nrow(plp_splice_candidates)){
     
   }
   
-  
     prot_gene <- prot_zscores %>%
     dplyr::filter(Hugo_Symbol == gene,
                   plot_group == group_prot) %>%
@@ -248,8 +248,8 @@ for (i in 1:nrow(plp_splice_candidates)){
                                            splicing_case),
               by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol")) %>%
     dplyr::mutate(IncLevel1 = case_when(
-      is.na(IncLevel1) & case == "SE" ~ 1,
-      is.na(IncLevel1) & case == "RI" ~ 0,
+      known_junction == "No" & is.na(IncLevel1) & case == "SE" ~ 1,
+      known_junction == "No" & is.na(IncLevel1) & case == "RI" ~ 0,
       TRUE ~ IncLevel1
     )) %>%
     group_by(plot_group) %>%
@@ -267,7 +267,8 @@ for (i in 1:nrow(plp_splice_candidates)){
     }
     
     if ((plp_splice_candidates$psi_expr_cor_p[i] < 0.05 & !is.na(plp_splice_candidates$psi_expr_cor_p[i])) | gene %in% c("PTCH1", "TSC2", 
-                                                                                                                         "LZTR1", "GBA")){
+                                                                                                                         "LZTR1", "GBA",
+                                                                                                                         "FAH")){
       
       expr_gene %>%
         dplyr::mutate(plp_carrier = case_when(
@@ -304,7 +305,8 @@ for (i in 1:nrow(plp_splice_candidates)){
     
     
     if (!is.na(plp_splice_candidates$psi_prot_cor_p[i]) & (plp_splice_candidates$psi_prot_cor_p[i] < 0.05 | gene %in% c("PTCH1", "TSC2", 
-                                                                                                                        "LZTR1", "GBA"))){
+                                                                                                                        "LZTR1", "GBA",
+                                                                                                                        "FAH"))){
       
       prot_gene %>%
         dplyr::mutate(plp_carrier = case_when(
@@ -344,4 +346,6 @@ for (i in 1:nrow(plp_splice_candidates)){
 write_tsv(plp_splice_candidates,
           file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
 ```
+
+
 
