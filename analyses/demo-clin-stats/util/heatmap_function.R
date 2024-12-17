@@ -29,9 +29,7 @@ plot_enr <- function(df, var1, var2,
                          nrow(df)-no_var1-no_var2+no_var1_var2),
                        2, 2)
       enr[i,j] <- fisher.test(or_mat, alternative = "greater")$estimate
-      pval[i,j] <- phyper(no_var1_var2, no_var1,
-                          nrow(df) - no_var1, no_var2,
-                          lower.tail = FALSE)
+      pval[i,j] <- fisher.test(or_mat, alternative = "greater")$p.value
     }
   }
   
@@ -81,6 +79,8 @@ plot_ct <- function(df, var1, var2){
   df <- as.data.frame(df)
   
   ct_mat <- table(df[,var1], df[,var2])
+  
+  col_fun = colorRamp2(c(0, ceiling(max(ct_mat))), c("white", "orangered"))
   
   ht <- Heatmap(ct_mat,
                  name = "Count",
