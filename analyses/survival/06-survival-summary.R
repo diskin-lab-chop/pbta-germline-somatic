@@ -230,7 +230,7 @@ survival_stats %>%
                 show.legend = FALSE, color = "#00A087FF") +
   geom_text(x = 1, hjust = 0, size = 3.5, fontface = 2) +
   labs(x = "log10-P-LP carrier hazard ratio (95% CI)", y = NULL) + 
-  xlim(-2, 2) +
+  xlim(-2.5, 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   facet_wrap(~type, nrow = 1) +
   theme_Publication() +

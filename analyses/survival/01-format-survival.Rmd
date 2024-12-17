@@ -168,17 +168,6 @@ hist <- hist %>%
 We will define `EFS_status` as "NO EVENT" if `EFS_event_type` has values "Not Applicable" or "Not Reported", and as "EVENT" in all other cases. 
 
 ```{r}
-# hist <- hist %>%
-#   mutate(EFS_days = as.numeric(EFS_days),
-#          OS_days = as.numeric(OS_days)) %>%
-#   mutate(OS_years = OS_days/365.25,
-#          EFS_years = EFS_days/365.25) %>%
-#   dplyr::mutate(EFS_status = case_when(
-#     EFS_event_type %in% c("Not Applicable", "Not Reported") ~ "NO EVENT",
-#     !is.na(EFS_event_type) ~ "EVENT",
-#     TRUE ~ NA_character_
-#   ))
-
 # Save output
 write_tsv(hist,
           output_histology)
