@@ -201,7 +201,7 @@ pa_plp_resection_enr <- plot_enr(pa_fusions,
                        var1_names = unique(pa_fusions$extent_of_tumor_resection),
                        padjust = TRUE)
 
-pdf(file.path(plot_dir, "pa_breakpoint_group_resection_enr_heatmap.pdf"),
+pdf(file.path(plot_dir, "pa_cpg_plp_resection_enr_heatmap.pdf"),
     width = 5.5, height = 3)
 draw(pa_plp_resection_enr)
 dev.off()
@@ -217,7 +217,7 @@ pa_plp_region_enr <- plot_enr(pa_fusions,
                        var1_names = unique(pa_fusions$CNS_region),
                        padjust = TRUE)
 
-pdf(file.path(plot_dir, "breakpoint_group_resection_enr_heatmap.pdf"),
+pdf(file.path(plot_dir, "pa_cpg_plp_region_enr_heatmap.pdf"),
     width = 5.5, height = 3)
 draw(pa_plp_region_enr)
 dev.off()
