@@ -153,7 +153,7 @@ int_braf_fusions_plp_efs_model <- fit_save_model(fusions,
 plotForest(readRDS(file.path(results_dir, "coxph_EFS_lgg_braf_fusion_resection_age_int_diagnosis_plp.RDS")))
 
 ggsave(file.path(plot_dir, "forest_EFS_lgg_braf_fusion_resection_age_int_diagnosis_plp.pdf"),
-       width = 7, height = 3, units = "in")
+       width = 7.5, height = 3, units = "in")
 ```
 
 Pilocytic astrocytoma additive EFS model
