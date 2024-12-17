@@ -45,6 +45,8 @@ source(file.path(analysis_dir, "util",
 source(file.path(root_dir, "analyses", 
                   "demo-clin-stats", "util",
                  "heatmap_function.R"))
+
+set.seed(2024)
 ```
 
 Set file paths
@@ -119,6 +121,7 @@ fusions <- read_tsv(fusions_file) %>%
   # add survival and age at dx data
   left_join(hist %>% dplyr::select(Kids_First_Participant_ID,
                                    Kids_First_Biospecimen_ID_normal,
+                                   Kids_First_Biospecimen_ID_tumor,
                                    OS_years, EFS_years,
                                    EFS_status, age_at_diagnosis_years)) %>%
   # reorder path diagnosis
@@ -233,6 +236,33 @@ plp %>%
               dplyr::select(Kids_First_Biospecimen_ID_normal, Hugo_Symbol)) %>%
   left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Participant_ID, EFS_days, EFS_status)) %>%
   dplyr::filter(Kids_First_Participant_ID %in% pa_fusions$Kids_First_Participant_ID)
+```
+Plot PA TMB by CPG P/LP status
+
+```{r}
+tmb <- read_tsv(file.path(data_dir, "snv-mutation-tmb-coding.tsv")) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode)
+
+pa_fusions <- pa_fusions %>%
+  left_join(tmb %>% dplyr::select(Kids_First_Biospecimen_ID_tumor,
+                                  tmb))
+
+pa_fusions %>%
+  ggplot(aes(x = cpg_plp, y = log10(tmb), fill = cpg_plp)) + 
+    geom_jitter(shape = 21, 
+                width = 0.2, size = 2.5, alpha = 0.85,
+                show.legend = FALSE) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                 show.legend = FALSE) +
+    stat_compare_means(method = "wilcox",
+                       comparisons = list(c("CPG P/LP", "No CPG P/LP")),
+                       method.args = list(alternative = "greater")) + 
+    labs(x = NULL, y = "log10(Mutations/Mb)") +
+  ylim(c(-1.5, 2)) +
+    theme_Publication()
+
+ggsave(file.path(plot_dir, "pa-tmb-by-cpg-plp-status.pdf"),
+       width = 4, height = 3)
 ```
 
 ```{r}
