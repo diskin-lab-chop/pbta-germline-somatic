@@ -84,7 +84,7 @@ for (group in groups){
   
   # save plot
   ggsave(km_output_pdf, km_plot,
-         width = 10, height = 6, units = "in",
+         width = 8, height = 6, units = "in",
          device = "pdf")
   
   
@@ -183,7 +183,7 @@ for (i in 1:nrow(subtype_df)){
   
   # save plot
   ggsave(subtype_km_output_pdf, subtype_km_plot,
-         width = 10, height = 6, units = "in",
+         width = 8, height = 6, units = "in",
          device = "pdf")
   
   
