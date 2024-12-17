@@ -100,6 +100,7 @@ Load braf fusions file, and add column indicating if patient is CPG P/LP carrier
 
 ```{r}
 fusions <- read_tsv(fusions_file) %>%
+  dplyr::select(-Kids_First_Biospecimen_ID, -tumor_descriptor) %>%
   dplyr::rename(path_diagnosis = diagnosis) %>%
   dplyr::arrange(path_diagnosis) %>%
   distinct(Kids_First_Participant_ID, .keep_all = TRUE) %>%
@@ -122,6 +123,7 @@ fusions <- read_tsv(fusions_file) %>%
   left_join(hist %>% dplyr::select(Kids_First_Participant_ID,
                                    Kids_First_Biospecimen_ID_normal,
                                    Kids_First_Biospecimen_ID_tumor,
+                                   tumor_descriptor,
                                    OS_years, EFS_years,
                                    EFS_status, age_at_diagnosis_years)) %>%
   # reorder path diagnosis
@@ -248,6 +250,7 @@ pa_fusions <- pa_fusions %>%
                                   tmb))
 
 pa_fusions %>%
+  dplyr::filter(tumor_descriptor == "Initial CNS Tumor") %>%
   ggplot(aes(x = cpg_plp, y = log10(tmb), fill = cpg_plp)) + 
     geom_jitter(shape = 21, 
                 width = 0.2, size = 2.5, alpha = 0.85,
