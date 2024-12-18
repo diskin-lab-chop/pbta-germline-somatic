@@ -155,7 +155,7 @@ z_scored_expression <- log_expression %>%
   left_join(hist_cohort %>% dplyr::select(Kids_First_Biospecimen_ID_rna, Kids_First_Biospecimen_ID_normal,
                                    plot_group, plot_group_hex, subgroup, molecular_subtype)) %>%
   group_by(Hugo_Symbol, subgroup) %>%
-  dplyr::filter(Hugo_Symbol %in% germline$Hugo_Symbol) %>%
+  dplyr::filter(Hugo_Symbol %in% c(germline$Hugo_Symbol, germline_sv$Hugo_Symbol)) %>%
   dplyr::mutate(expr_zscore = scale(expr)) %>%
   dplyr::mutate(expr_zscore = round(as.numeric(expr_zscore), 2))
 
