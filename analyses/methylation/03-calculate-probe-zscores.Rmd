@@ -280,7 +280,7 @@ n_plot <- methyl_enr_df %>%
   ggplot(aes(x = n, y = type, fill = type)) +
     geom_bar(stat = "identity", color = "black",
              show.legend = TRUE) + 
-    labs(x = "N Diff. \nMethylated Probes", y = NULL, fill = NULL) + 
+    labs(x = "N Differentially \nMethylated Probes", y = NULL, fill = NULL) + 
     guides(fill = guide_legend(nrow = 1)) +
     facet_wrap(~factor(probe_gene_feature), nrow = 5, scale = "fixed",
                strip.position = "left") +
