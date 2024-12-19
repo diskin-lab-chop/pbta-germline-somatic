@@ -16,6 +16,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(ggpubr)
   library(ggrepel)
+  library(ggsci)
 })
 
 # Set up directories
@@ -200,7 +201,7 @@ write_tsv(methyl_beta_diff_df,
 Generate table of hypermethylated probe count and gene feature enrichment
 ```{r}
 n_feat <- methyl_beta_diff_df %>%
-  dplyr::count(Gene_Feature) %>%
+  dplyr::count(probe_gene_feature) %>%
   dplyr::rename("n_feat" = "n") %>%
   dplyr::mutate(n_total = sum(n_feat))
 
@@ -208,7 +209,7 @@ hyper_enr_df <- methyl_beta_diff_df %>%
   dplyr::filter(sample_beta_zscore_group > 2,
                beta_diff_group >= .05
                ) %>%
-  dplyr::count(Gene_Feature) %>%
+  dplyr::count(probe_gene_feature) %>%
   dplyr::mutate(n_diff = sum(n)) %>%
   left_join(n_feat) %>%
   rowwise() %>%
@@ -237,7 +238,7 @@ hypo_enr_df <- methyl_beta_diff_df %>%
   dplyr::filter(sample_beta_zscore_group < -2,
                beta_diff_group < -.05
                ) %>%
-  dplyr::count(Gene_Feature) %>%
+  dplyr::count(probe_gene_feature) %>%
   dplyr::mutate(n_diff = sum(n)) %>%
   left_join(n_feat) %>%
   rowwise() %>%
@@ -269,11 +270,11 @@ methyl_enr_df <- hyper_enr_df %>%
     P_Value < 0.05 ~ glue::glue("*p={round(P_Value, 3)}"),
     TRUE ~ glue::glue("p={round(P_Value, 2)}")
   )) %>%
-  dplyr::mutate(Gene_Feature = factor(Gene_Feature,
+  dplyr::mutate(probe_gene_feature = factor(probe_gene_feature,
                                            levels = c("promoter", "5' UTR",
                                              "exon", "intron", 
                                              "3' UTR"))) %>%
-  arrange(Gene_Feature)
+  arrange(probe_gene_feature)
 
 n_plot <- methyl_enr_df %>%
   ggplot(aes(x = n, y = type, fill = type)) +
@@ -281,7 +282,7 @@ n_plot <- methyl_enr_df %>%
              show.legend = TRUE) + 
     labs(x = "N Diff. \nMethylated Probes", y = NULL, fill = NULL) + 
     guides(fill = guide_legend(nrow = 1)) +
-    facet_wrap(~factor(Gene_Feature), nrow = 5, scale = "fixed",
+    facet_wrap(~factor(probe_gene_feature), nrow = 5, scale = "fixed",
                strip.position = "left") +
     scale_y_discrete(labels=c("hypomethylated" = NULL, 
                               "hypermethylated" = NULL)) +
@@ -306,7 +307,7 @@ enr_plot <- methyl_enr_df %>%
   xlim(c(-5,6.25)) +
   scale_y_discrete(labels=c("hypermethylated" = NULL, 
                             "hypomethylated" = NULL)) +
-  facet_wrap(~factor(Gene_Feature), nrow = 5, scale = "fixed",
+  facet_wrap(~factor(probe_gene_feature), nrow = 5, scale = "fixed",
              strip.position = "left") +
   theme_Publication() +
   theme(plot.margin = unit(c(0,1,1,0), "lines"),
@@ -349,13 +350,13 @@ Plot expression z-scores by differential methylation status
 ```{r}
 #exclude samples with evidence for promoter diff meth in both directions
 hypo_ids <- methyl_expr_diff_df %>%
-  dplyr::filter(Gene_Feature == "promoter",
+  dplyr::filter(probe_gene_feature == "promoter",
                 methyl_status == "hypomethylated") %>%
   distinct(Kids_First_Biospecimen_ID_normal) %>%
   pull(Kids_First_Biospecimen_ID_normal)
 
 hyper_ids <- methyl_expr_diff_df %>%
-  dplyr::filter(Gene_Feature == "promoter",
+  dplyr::filter(probe_gene_feature == "promoter",
                 methyl_status == "hypermethylated") %>%
   distinct(Kids_First_Biospecimen_ID_normal) %>%
   pull(Kids_First_Biospecimen_ID_normal)
@@ -364,10 +365,10 @@ hyper_ids <- methyl_expr_diff_df %>%
 hyper_hypo_ids <- hypo_ids[hypo_ids %in% hyper_ids]
 
 methyl_expr_plot_df <- methyl_expr_diff_df %>%
-  dplyr::filter(Gene_Feature == "promoter",
+  dplyr::filter(probe_gene_feature == "promoter",
                 !Kids_First_Biospecimen_ID_normal %in% hyper_hypo_ids) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal,
-                Hugo_Symbol, Gene_Feature,
+                Hugo_Symbol, probe_gene_feature,
                 beta_diff_group, sample_beta_zscore_group,
                 methyl_status, expr_zscore,
                 plot_group, plot_group_hex) %>%
