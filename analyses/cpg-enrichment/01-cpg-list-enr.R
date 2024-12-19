@@ -142,7 +142,7 @@ plp <- read_tsv(plp_all_exome_file) %>%
   distinct(Kids_First_Biospecimen_ID_normal, .keep_all = TRUE) %>%
   left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, plot_group))
 
-# Obtain P-LP carrier count by plot group
+# Obtain P/LP carrier count by plot group
 hist_plp_ct <- plp %>%
   count(plot_group) %>%
   dplyr::rename(count_with_plp_case = n) %>%
@@ -154,7 +154,7 @@ hist_plp_ct <- plp %>%
   dplyr::mutate(count_without_plp_case = total_cohort_size_case - count_with_plp_case) %>%
   dplyr::mutate(pathway_name = "Cancer predisposition genes")
 
-# Calculate plot group P-LP carrier enrichment relative to gnomAD
+# Calculate plot group P/LP carrier enrichment relative to gnomAD
 hist_cpg_enr_gnomad <- all_cpg_enr_gnomad %>%
   dplyr::select(pathway_name, count_with_plp_control,
                 total_cohort_size_control, count_without_plp_control) %>%

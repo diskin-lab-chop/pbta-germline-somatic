@@ -151,7 +151,7 @@ for (each in names(plplists)){
   dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = hist_n, fill = plot_group)) +
     geom_col(col = "black", size = 0.4) +
     scale_fill_manual(values = plot_group_palette, breaks = sort(names(plot_group_palette))) + 
-    ylab("Number of patients with P-LP variants") +
+    ylab("Number of patients with P/LP variants") +
     xlab(x_axis_title) +
     theme_Publication() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
@@ -220,7 +220,7 @@ for (each in names(plplists)){
   dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(gene_symbol_vep, plot_order), y = vc_n, fill = variant_classification_vep)) +
     geom_col(col = "black", size = 0.4) +
     scale_fill_manual(values = vc_palette, breaks = sort(names(vc_palette))) + 
-    ylab("Number of patients with P-LP variants") +
+    ylab("Number of patients with P/LP variants") +
     xlab(x_axis_title) +
     theme_Publication() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +

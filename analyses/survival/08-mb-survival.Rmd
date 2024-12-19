@@ -12,7 +12,7 @@ params:
 
 **Purpose:** 
 
-Assess survival in medulloblastoma cohort by CPG P-LP status, methylation subtypes, and metastasis status
+Assess survival in medulloblastoma cohort by CPG P/LP status, methylation subtypes, and metastasis status
 
 ## Setup
 
@@ -61,7 +61,7 @@ mb_hist <- read_tsv(mb_hist_file) %>%
   dplyr::mutate(metastasis = fct_relevel(metastasis, 
                                          c("No metastasis", "Metastasis"))) %>%
   dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
-                                      c("No P-LP", "CPG P-LP"))) %>%
+                                      c("No P/LP", "CPG P/LP"))) %>%
   dplyr::mutate(shh_type = fct_relevel(shh_type,
                                        "MB, child-adult SHH", "MB, infant SHH"))
 ```
@@ -96,7 +96,7 @@ ggsave(file.path(plot_dir, "forest_OS_mb_resection_subtype_metastasis_plp.pdf"),
        width = 7, height = 3, units = "in")
 ```
 
-Generate OS and EFS survival models by molecular subtype, including covariates for extent of tumor resection, metastasis, and cpg P-LP status
+Generate OS and EFS survival models by molecular subtype, including covariates for extent of tumor resection, metastasis, and cpg P/LP status
 
 ```{r}
 subtypes <- unique(mb_hist$molecular_subtype[!grepl("classified", mb_hist$molecular_subtype)])
