@@ -100,7 +100,7 @@ cnv_loh_snv <- read_tsv(cnv_loh_file) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
                 Hugo_Symbol, start, CNV_status_somatic, proband_germline_vaf, proband_tumor_vaf,
-                loh_score, loh_OR, loh_pvalue, gene_LOH)
+                loh_OR, loh_pvalue, gene_LOH, cnvkit_cn, cnvkit_cn1, cnvkit_cn2, loh_status)
 
 expression_snv <- read_tsv(expr_file) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_rna %in% rna_specimens$Kids_First_Biospecimen_ID) %>%
@@ -147,7 +147,7 @@ snv_hits_sv <- read_tsv(sv_onco_snv_file) %>%
 cnv_loh_sv <- read_tsv(sv_cnv_loh_file) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_tumor %in% hist$Kids_First_Biospecimen_ID_tumor) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-                Hugo_Symbol, CNV_status_somatic, gene_LOH)
+                Hugo_Symbol, CNV_status_somatic, gene_LOH, loh_status)
 
 expression_sv <- read_tsv(sv_expr_file) %>%
   dplyr::select(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_rna,

@@ -35,10 +35,10 @@ plp_all <- read_tsv(file.path(root_dir, "analyses",
                              "pbta-merged-plp-variants-autogvp-abridged-wxs-exome-filtered-20bp_padded.tsv")) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
   # determine whether final call was due to clinvar or intervar
-  mutate(final_call_source = case_when(autogvp_call == "Likely_pathogenic" & autogvp_call_reason == "ClinVar" ~ "ClinVar - Likely Pathogenic",
-                                       autogvp_call == "Pathogenic" & autogvp_call_reason == "ClinVar" ~ "ClinVar - Pathogenic",
-                                       autogvp_call == "Likely_pathogenic" & autogvp_call_reason == "InterVar" ~ "InterVar - Likely Pathogenic",
-                                       autogvp_call == "Pathogenic" & autogvp_call_reason == "InterVar" ~ "InterVar - Pathogenic"))
+  mutate(final_call_source = case_when(autogvp_call == "Likely_pathogenic" & grepl("ClinVar", autogvp_call_reason) ~ "ClinVar - Likely Pathogenic",
+                                       autogvp_call == "Pathogenic" & grepl("ClinVar", autogvp_call_reason) ~ "ClinVar - Pathogenic",
+                                       autogvp_call == "Likely_pathogenic" & grepl("InterVar", autogvp_call_reason) ~ "InterVar - Likely Pathogenic",
+                                       autogvp_call == "Pathogenic" & grepl("InterVar", autogvp_call_reason) ~ "InterVar - Pathogenic"))
 
 plp_cpg <- plp_all %>%
   filter(gene_symbol_vep %in% cpg)
@@ -198,7 +198,7 @@ hist_plp_cpg %>%
   arrange(plp_cpg_n) %>%
   ggplot(aes(x = factor(plot_group_n, plot_group_n), y = plp_cpg_n, fill = factor(plot_group_n))) +
   geom_bar(stat = "identity", color = "black", show.legend = FALSE) + 
-  labs(x = "", y = "Number of patients with germline CPG P-LP variant") +
+  labs(x = "", y = "Number of patients with germline CPG P/LP variant") +
   scale_fill_manual(values = plot_group_palette) +
   coord_flip() + 
   theme_Publication()
@@ -209,7 +209,7 @@ hist_plp_cpg %>%
   arrange(freq) %>%
   ggplot(aes(x = factor(plot_group_n, plot_group_n), y = freq, fill = factor(plot_group_n))) +
   geom_bar(stat = "identity", color = "black", show.legend = FALSE) + 
-  labs(x = "", y = "% Patients with germline CPG P-LP variant") +
+  labs(x = "", y = "% Patients with germline CPG P/LP variant") +
   scale_fill_manual(values = plot_group_palette) +
   coord_flip() + 
   theme_Publication()
