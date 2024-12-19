@@ -460,7 +460,7 @@ maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 Filter histologies file for high-grade glioma only</p>
 <pre class="r"><code>hist_pbta &lt;- read_tsv(pbta_histologies_file) </code></pre>
 <pre><code>## Rows: 47895 Columns: 66
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 ## dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -478,7 +478,7 @@ Filter histologies file for high-grade glioma only</p>
               dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %&gt;%
               dplyr::select(match_id, Kids_First_Biospecimen_ID_rna))</code></pre>
 <pre><code>## Rows: 830 Columns: 36
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -489,7 +489,7 @@ Filter histologies file for high-grade glioma only</p>
 ## Joining with `by = join_by(match_id)`</code></pre>
 <pre class="r"><code>hallmark_scores &lt;- read_tsv(gsva_file)</code></pre>
 <pre><code>## Rows: 54300 Columns: 4
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, hallmark_name, data_type
 ## dbl (1): gsea_score
@@ -500,7 +500,7 @@ Filter histologies file for high-grade glioma only</p>
 
 kegg_scores &lt;- read_tsv(kegg_file)</code></pre>
 <pre><code>## Rows: 479322 Columns: 4
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (3): Kids_First_Biospecimen_ID, kegg_name, data_type
 ## dbl (1): gsea_score

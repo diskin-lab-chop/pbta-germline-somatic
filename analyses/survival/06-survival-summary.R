@@ -26,17 +26,19 @@ hist_file <- file.path(input_dir,
 hist_df <- data.frame(group = c("Atypical Teratoid Rhabdoid Tumor", "DIPG or DMG", 
                                 "High-grade glioma", 
                                 "Ependymoma", "Mixed neuronal-glial tumor", 
-                                "Low-grade glioma", "Medulloblastoma", "Meningioma", 
-                                "Neurofibroma plexiform"),
+                                "Low-grade glioma", "Medulloblastoma", "Meningioma"),
                       hist = c("ATRT", "DMG", "HGG", "EPN", 
-                               "GNG-GNT", "LGG", "MB", "MNG", "NFP"))
+                               "GNG-GNT", "LGG", "MB", "MNG"))
 
 # Load ancestry file
 hist <- read_tsv(hist_file)
 
 # Create subtype df of molecular subgroup names and folder names
 subtype_df <- hist %>%
-  count(mol_sub_group, plot_group) %>%
+  # only retain patients with survival data
+  dplyr::filter(!is.na(EFS_days) | !is.na(OS_days)) %>%
+  dplyr::count(mol_sub_group, plot_group) %>%
+  # filter for groups with >=15 pts
   filter(n >=15 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
   dplyr::mutate(hist = unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[1])),
                 subtype = case_when(
@@ -62,23 +64,32 @@ group_df <- subtype_df %>%
 
 # Create empty df to store survival model summary stats
 os_stats <- data.frame(group = c(group_df$group),
+                       group_n = NA_integer_,
                        type = rep("Overall survival", length(group_df$group)),
-                       HR = rep(0, length(group_df$group)),
-                       p = rep(0, length(group_df$group)),
-                       CI_lower = rep(0, length(group_df$group)),
-                       CI_upper = rep(0, length(group_df$group)))
+                       median_surv_years_plp = NA_integer_,
+                       median_surv_years_no_plp = NA_integer_, 
+                       HR = NA_integer_,
+                       p = NA_integer_,
+                       CI_lower = NA_integer_,
+                       CI_upper = NA_integer_)
                        
 efs_stats <- data.frame(group = c(group_df$group),
+                        group_n = NA_integer_,
                         type = rep("Event-free survival", length(group_df$group)),
-                        HR = rep(0, length(group_df$group)),
-                        p = rep(0, length(group_df$group)),
-                        CI_lower = rep(0, length(group_df$group)),
-                        CI_upper = rep(0, length(group_df$group)))
+                        median_surv_years_plp = NA_integer_,
+                        median_surv_years_no_plp = NA_integer_, 
+                        HR = NA_integer_,
+                        p = NA_integer_,
+                        CI_lower = NA_integer_,
+                        CI_upper = NA_integer_)
 
 # Loop through histologies and molecular subtypes and extract OS and EFS hazard ratios and associated p-values for CPG P-LP carriers vs. non-carriers
 for (i in 1:nrow(group_df)){
   
   input_dir <- file.path(analysis_dir, "results", group_df$hist[i])
+  
+  km_os_plp <- read_rds(file.path(input_dir,
+                                  glue::glue("logrank_{group_df$subtype[i]}_OS_cpgPLPstatus.RDS")))
   
   if (grepl("Low-grade glioma|LGG", group_df$group[i])){
     survival_os_plp <- read_rds(
@@ -96,6 +107,11 @@ for (i in 1:nrow(group_df)){
   os_df <- broom::tidy(survival_os_plp)
   os_ci_df <- summary(survival_os_plp)$conf.int
   
+  os_n <- sum(summary(km_os_plp$model)$table[,"records"])
+  
+  os_stats[os_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_os_plp$model)$table[,"median"][2]/365.25
+  os_stats[os_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_os_plp$model)$table[,"median"][1]/365.25
+  
   # extract OS HRs and p-values
   os_stats[os_stats$group == group_df$group[i],]$HR <- exp(os_df$estimate[os_df$term == "cpgPLP_statuscpgPLP"])
   os_stats[os_stats$group == group_df$group[i],]$p <- os_df$p.value[os_df$term == "cpgPLP_statuscpgPLP"]
@@ -103,6 +119,9 @@ for (i in 1:nrow(group_df)){
   os_stats[os_stats$group == group_df$group[i],]$CI_lower <- os_ci_df["cpgPLP_statuscpgPLP", "lower .95"]
   os_stats[os_stats$group == group_df$group[i],]$CI_upper <- os_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
   
+  
+  km_efs_plp <- read_rds(file.path(input_dir,
+                                  glue::glue("logrank_{group_df$subtype[i]}_EFS_cpgPLPstatus.RDS")))
   
   if (grepl("Low-grade glioma|LGG", group_df$group[i])){
     survival_efs_plp <- read_rds(
@@ -119,6 +138,13 @@ for (i in 1:nrow(group_df)){
   efs_df <- broom::tidy(survival_efs_plp)
   efs_ci_df <- summary(survival_efs_plp)$conf.int
   
+  # take Ns from OS result so that Ns match
+  efs_n <- sum(summary(km_os_plp$model)$table[,"records"])
+  
+  #add median EFS
+  efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_efs_plp$model)$table[,"median"][2]/365.25
+  efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_efs_plp$model)$table[,"median"][1]/365.25
+  
   # extract EFS HRs and p-values
   efs_stats[efs_stats$group == group_df$group[i],]$HR <- exp(efs_df$estimate[efs_df$term == "cpgPLP_statuscpgPLP"])
   efs_stats[efs_stats$group == group_df$group[i],]$p <- efs_df$p.value[efs_df$term == "cpgPLP_statuscpgPLP"]
@@ -126,7 +152,12 @@ for (i in 1:nrow(group_df)){
   efs_stats[efs_stats$group == group_df$group[i],]$CI_lower <- efs_ci_df["cpgPLP_statuscpgPLP", "lower .95"]
   efs_stats[efs_stats$group == group_df$group[i],]$CI_upper <- efs_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
   
+  # take Ns as the largest value in OS or EFS survival models 
+  os_stats[os_stats$group == group_df$group[i],]$group_n <- max(c(os_n, efs_n))
+  efs_stats[efs_stats$group == group_df$group[i],]$group_n <- max(c(os_n, efs_n))
+  
 }
+
 
 # Some models have massively inflated p-values driven by single events; set these to NA
 os_stats[abs(log10(os_stats$HR)) > 3 & !is.na(os_stats$HR), c("HR", "p", "CI_lower", "CI_upper")] <- NA
@@ -157,7 +188,6 @@ group_order <- c("Atypical Teratoid Rhabdoid Tumor",
                  "DIPG or DMG",
                  "Ependymoma",
                  "EPN, PF A",
-                 "EPN, ST ZFTA",
                  "High-grade glioma",
                  "HGG, H3 WT",
                  "Low-grade glioma",
@@ -170,14 +200,18 @@ group_order <- c("Atypical Teratoid Rhabdoid Tumor",
                  "MB, SHH",
                  "Meningioma",
                  "Mixed neuronal-glial tumor",
-                 "GNG/GNT, BRAF V600E",
-                 "GNG/GNT, Other alteration",
-                 "Neurofibroma plexiform")
+                 "GNG/GNT, Other alteration")
 
-survival_stats <- survival_stats %>% 
+survival_stats <- survival_stats %>%
   dplyr::filter(group %in% group_order) %>%
-  dplyr::mutate(group = fct_relevel(group, 
-                                    rev(group_order)))
+  dplyr::mutate(group = fct_relevel(group,
+                                    rev(group_order))) %>%
+  arrange(group) %>%
+  # merge group + Ns for plotting labels
+  dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
+  dplyr::mutate(group_plus_n = fct_relevel(group_plus_n, 
+                                           unique(group_plus_n)))
+
 
 pdf(NULL)
 
@@ -188,14 +222,14 @@ survival_stats %>%
     TRUE ~ CI_upper
   )) %>%
   
-  ggplot(aes(x = log10(HR), y = group,
+  ggplot(aes(x = log10(HR), y = group_plus_n,
              label = p_label)) +
   geom_point(size = 3, color = "#00A087FF",
              show.legend = FALSE) + 
   geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
   geom_text(x = 1, hjust = 0, size = 3.5, fontface = 2) +
-  labs(x = "log10-P/LP carrier hazard ratio (95% CI)", y = NULL) + 
+  labs(x = "log10-P-LP carrier hazard ratio (95% CI)", y = NULL) + 
   xlim(-2, 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   facet_wrap(~type, nrow = 1) +

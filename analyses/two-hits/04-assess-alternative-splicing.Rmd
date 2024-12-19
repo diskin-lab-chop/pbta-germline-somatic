@@ -79,7 +79,7 @@ hist <- read_tsv(hist_cohort_file) %>%
               dplyr::rename(Kids_First_Biospecimen_ID_rna = Kids_First_Biospecimen_ID) %>%
               dplyr::select(match_id, Kids_First_Biospecimen_ID_rna))
 
-# Full P-LP results
+# Full P/LP results
 plp <- read_tsv(plp_file) %>%
   bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
@@ -373,7 +373,7 @@ plp_splice_candidates %>%
                   max.overlaps = 14) +
   scale_fill_manual(values = plot_group_palette, 
                      breaks = sort(names(plot_group_palette))) +
-  labs(y = NULL, x = "delta PSI (sample-group") +
+  labs(y = NULL, x = "delta PSI (sample-group)") +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "germline_plp_alternative_splicing_diff_plot.pdf"),

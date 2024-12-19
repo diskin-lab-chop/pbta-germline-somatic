@@ -1,5 +1,5 @@
 
-# calculate P-LP variant enrichment in case cohort (here, PBTA) relative to control cohort
+# calculate P/LP variant enrichment in case cohort (here, PBTA) relative to control cohort
 calculate_enrichment <- function(df) {
   
   # Loop through rows of df to calcualte enrichment 
@@ -151,7 +151,7 @@ plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
   
 }
 
-# plot percent P-LP by cohort
+# plot percent P/LP by cohort
 plot_perc <- function(enr_df, facet_var){
   
   # calculate position to plot fractions to the right of plot

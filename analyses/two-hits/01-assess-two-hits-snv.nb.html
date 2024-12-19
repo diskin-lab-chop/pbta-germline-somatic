@@ -1832,14 +1832,14 @@ font-size: 0.95em;
 <pre class="r"><code># load libraries
 library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuNCAgICAg4pyUIHJlYWRyICAgICAyLjEuNVxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMVxu4pyUIGdncGxvdDIgICAzLjUuMSAgICAg4pyUIHRpYmJsZSAgICAzLjIuMVxu4pyUIGx1YnJpZGF0ZSAxLjkuMyAgICAg4pyUIHRpZHlyICAgICAxLjMuMVxu4pyUIHB1cnJyICAgICAxLjAuMiAgICAgXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbuKEuSBVc2UgdGhlIGNvbmZsaWN0ZWQgcGFja2FnZSAoPGh0dHA6Ly9jb25mbGljdGVkLnItbGliLm9yZy8+KSB0byBmb3JjZSBhbGwgY29uZmxpY3RzIHRvIGJlY29tZSBlcnJvcnNcbiJ9 -->
-<pre><code>── Attaching core tidyverse packages ───────────────────────────────────────────────── tidyverse 2.0.0 ──
+<!-- rnb-message-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuNCAgICAg4pyUIHJlYWRyICAgICAyLjEuNVxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMVxu4pyUIGdncGxvdDIgICAzLjUuMSAgICAg4pyUIHRpYmJsZSAgICAzLjIuMVxu4pyUIGx1YnJpZGF0ZSAxLjkuMyAgICAg4pyUIHRpZHlyICAgICAxLjMuMVxu4pyUIHB1cnJyICAgICAxLjAuMiAgICAgXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbuKEuSBVc2UgdGhlIGNvbmZsaWN0ZWQgcGFja2FnZSAoPGh0dHA6Ly9jb25mbGljdGVkLnItbGliLm9yZy8+KSB0byBmb3JjZSBhbGwgY29uZmxpY3RzIHRvIGJlY29tZSBlcnJvcnNcbiJ9 -->
+<pre><code>── Attaching core tidyverse packages ────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
 ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
 ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
 ✔ purrr     1.0.2     
-── Conflicts ─────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
@@ -1883,9 +1883,9 @@ cpg_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation
 <!-- rnb-source-begin eyJkYXRhIjoiaW50ZWdyYXRlZF9oaXN0IDwtIHJlYWRfdHN2KGhpc3RvbG9naWVzX2ZpbGUpIn0= -->
 <pre class="r"><code>integrated_hist &lt;- read_tsv(histologies_file)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogODMwIENvbHVtbnM6IDM2XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoMjYpOiBLaWRzX0ZpcnN0X1BhcnRpY2lwYW50X0lELCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgc2FtcGwuLi5cbmRibCAoMTApOiBicm9hZF9oaXN0b2xvZ3lfb3JkZXIsIGFnZV9hdF9kaWFnbm9zaXNfZGF5cywgYWdlX2xhc3RfdXBkYXRlX2RheXMuLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogODMwIENvbHVtbnM6IDM2XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiXFx0XCJcbmNociAoMjYpOiBLaWRzX0ZpcnN0X1BhcnRpY2lwYW50X0lELCBLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbCwgc2FtcGwuLi5cbmRibCAoMTApOiBicm9hZF9oaXN0b2xvZ3lfb3JkZXIsIGFnZV9hdF9kaWFnbm9zaXNfZGF5cywgYWdlX2xhc3RfdXBkYXRlX2RheXMuLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
 <pre><code>Rows: 830 Columns: 36
-── Column specification ─────────────────────────────────────────────────────────────────────────────────
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
@@ -1903,9 +1903,9 @@ dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
                 HGVSc_germ = HGVSc,
                 HGVSp_germ = HGVSp) </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjg2OSBDb2x1bW5zOiAyM1xu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDE5KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG5Sb3dzOiAxMCBDb2x1bW5zOiAyNFxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIwKTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjg2OSBDb2x1bW5zOiAyM1xu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDE5KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG5Sb3dzOiAxMCBDb2x1bW5zOiAyNFxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIwKTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIGNociwgcmVmLCBhbHQsIHZhcmlhbnRfaWRzLCBnZW5lLi4uXG5kYmwgICg0KTogc3RhcnQsIGNsaW52YXJfc3RhcnMsIGNsaW52YXJfdmFyaWFudF9pZCwgZ25vbWFkXzNfMV8xX0FGX25vbl9jYW5jLi4uXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
 <pre><code>Rows: 2869 Columns: 23
-── Column specification ─────────────────────────────────────────────────────────────────────────────────
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
 dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
@@ -1913,7 +1913,7 @@ dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 Rows: 10 Columns: 24
-── Column specification ─────────────────────────────────────────────────────────────────────────────────
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (20): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
 dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
@@ -1927,9 +1927,9 @@ dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
          experimental_strategy == &quot;WGS&quot;,
          tumor_descriptor != &quot;Derived Cell Line&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNDc4OTUgQ29sdW1uczogNjZcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg0NSk6IEtpZHNfRmlyc3RfUGFydGljaXBhbnRfSUQsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIHNhbXBsZV9pZCwgYS4uLlxuZGJsICgyMSk6IGNlbGxfbGluZV9wYXNzYWdlLCBPU19kYXlzLCBFRlNfZGF5cywgYWdlX2F0X2RpYWdub3Npc19kYXlzLCBhZ2VfYS4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogNDc4OTUgQ29sdW1uczogNjZcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg0NSk6IEtpZHNfRmlyc3RfUGFydGljaXBhbnRfSUQsIEtpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSUQsIHNhbXBsZV9pZCwgYS4uLlxuZGJsICgyMSk6IGNlbGxfbGluZV9wYXNzYWdlLCBPU19kYXlzLCBFRlNfZGF5cywgYWdlX2F0X2RpYWdub3Npc19kYXlzLCBhZ2VfYS4uLlxuXG7ihLkgVXNlIGBzcGVjKClgIHRvIHJldHJpZXZlIHRoZSBmdWxsIGNvbHVtbiBzcGVjaWZpY2F0aW9uIGZvciB0aGlzIGRhdGEuXG7ihLkgU3BlY2lmeSB0aGUgY29sdW1uIHR5cGVzIG9yIHNldCBgc2hvd19jb2xfdHlwZXMgPSBGQUxTRWAgdG8gcXVpZXQgdGhpcyBtZXNzYWdlLlxuIn0= -->
 <pre><code>Rows: 47895 Columns: 66
-── Column specification ─────────────────────────────────────────────────────────────────────────────────
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -1948,17 +1948,16 @@ maf &lt;- data.table::fread(file.path(root_dir, params$maf_in), data.table = F) 
 # CPGs without somatic hits
 setdiff(cpg, unique(maf$Hugo_Symbol))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiR1BDMTYxXCIgICBcIkgxOVwiICAgICAgXCJLQ05RMU9UMVwiIFwiTDJIR0FcIiAgICBcIk1SRTExQVwiICAgXCJSTVJQXCIgICAgIFwiVE5GUlNGNlwiIFxuIn0= -->
-<pre><code>[1] &quot;GPC161&quot;   &quot;H19&quot;      &quot;KCNQ1OT1&quot; &quot;L2HGA&quot;    &quot;MRE11A&quot;   &quot;RMRP&quot;     &quot;TNFRSF6&quot; </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRVJDQzVcIiAgICBcIkgxOVwiICAgICAgXCJLQ05RMU9UMVwiIFwiTDJIR0RIXCIgICBcIk1SRTExXCIgICAgXCJSTVJQXCIgICAgXG4ifQ== -->
+<pre><code>[1] &quot;ERCC5&quot;    &quot;H19&quot;      &quot;KCNQ1OT1&quot; &quot;L2HGDH&quot;   &quot;MRE11&quot;    &quot;RMRP&quot;    </code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjpbIkdQQzE2MVxuIiwiSDE5XG4iLCJLQ05RMU9UMVxuIiwiTDJIR0FcbiIsIk1SRTExQVxuIiwiUk1SUFxuIiwiVE5GUlNGNlxuIl19 -->
-<pre><code>GPC161
+<!-- rnb-output-begin eyJkYXRhIjpbIkVSQ0M1XG4iLCJIMTlcbiIsIktDTlExT1QxXG4iLCJMMkhHREhcbiIsIk1SRTExXG4iLCJSTVJQXG4iXX0= -->
+<pre><code>ERCC5
 H19
 KCNQ1OT1
-L2HGA
-MRE11A
-RMRP
-TNFRSF6</code></pre>
+L2HGDH
+MRE11
+RMRP</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgdGFibGUgb2YgZ2VuZSBjb3VudHMgYnkgb25jb2dlbmljIGVmZmVjdCIsIm1hZiAlPiVcbiAgY291bnQoT05DT0dFTklDKSAlPiVcbiAgYXJyYW5nZSgtbikiXX0= -->
 <pre class="r"><code># table of gene counts by oncogenic effect
@@ -1968,7 +1967,7 @@ maf %&gt;%
 <!-- rnb-source-end -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["ONCOGENIC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"26355"},{"1":"Likely Oncogenic","2":"392"},{"1":"Oncogenic","2":"100"},{"1":"Inconclusive","2":"3"},{"1":"Resistance","2":"2"},{"1":"Likely Neutral","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["ONCOGENIC"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"26234"},{"1":"Likely Oncogenic","2":"387"},{"1":"Oncogenic","2":"106"},{"1":"Inconclusive","2":"3"},{"1":"Likely Neutral","2":"2"},{"1":"Resistance","2":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgZXh0cmFjdCBvbmNvZ2VuaWMvbGlrZWx5IG9uY29nZW5pYyBhbmQvb3Igb3RoZXIgTE9GIHZhcmlhbnRzIiwibG9mX2hpdHMgPC0gbWFmICU+JVxuICBmaWx0ZXIoT05DT0dFTklDICVpbiUgYyhcIkxpa2VseSBPbmNvZ2VuaWNcIiwgXCJPbmNvZ2VuaWNcIiwgXCJSZXNpc3RhbmNlXCIpIHxcbiAgICAgICAgICAgVmFyaWFudF9DbGFzc2lmaWNhdGlvbiAlaW4lIGMoXCJGcmFtZV9TaGlmdF9EZWxcIiwgXCJGcmFtZV9TaGlmdF9JbnNcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJNaXNzZW5zZV9NdXRhdGlvblwiLCBcIk5vbnNlbnNlX011dGF0aW9uXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiU3BsaWNlX1NpdGVcIiwgXCJUcmFuc2xhdGlvbl9TdGFydF9TaXRlXCIpKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJwYnRhLW9uY29rYi1vbmNvZ2VuaWMtbG9mLW1hZi50c3ZcIikpIiwiIiwiIyBwcmV2YWxlbmNlIGJ5IGdlbmUiLCJsb2ZfaGl0cyAlPiVcbiAgY291bnQoSHVnb19TeW1ib2wpICU+JVxuICBhcnJhbmdlKC1uKSJdfQ== -->
@@ -1987,7 +1986,7 @@ lof_hits %&gt;%
 <!-- rnb-source-end -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Hugo_Symbol"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"TP53","2":"86"},{"1":"BRAF","2":"56"},{"1":"NF1","2":"44"},{"1":"GNAS","2":"36"},{"1":"ATRX","2":"35"},{"1":"COL7A1","2":"29"},{"1":"FGFR1","2":"29"},{"1":"SMARCA4","2":"26"},{"1":"TERT","2":"26"},{"1":"ATM","2":"24"},{"1":"PIK3CA","2":"22"},{"1":"NF2","2":"20"},{"1":"TSC2","2":"18"},{"1":"EGFR","2":"17"},{"1":"AKT1","2":"16"},{"1":"PTPN11","2":"16"},{"1":"PDGFRA","2":"15"},{"1":"PTEN","2":"15"},{"1":"GLI3","2":"14"},{"1":"PTCH1","2":"14"},{"1":"RPS6","2":"13"},{"1":"SMARCB1","2":"13"},{"1":"STAT3","2":"13"},{"1":"ZEB2","2":"12"},{"1":"ASXL1","2":"11"},{"1":"CREBBP","2":"11"},{"1":"KRAS","2":"11"},{"1":"CDK4","2":"10"},{"1":"CDKN2A","2":"10"},{"1":"KIF1B","2":"10"},{"1":"NSD1","2":"10"},{"1":"POLE","2":"10"},{"1":"RHBDF2","2":"10"},{"1":"SMARCA2","2":"10"},{"1":"CBL","2":"9"},{"1":"FGFR2","2":"9"},{"1":"FLCN","2":"9"},{"1":"POLD1","2":"9"},{"1":"SAMD9L","2":"9"},{"1":"SLX4","2":"9"},{"1":"BRCA2","2":"8"},{"1":"CDH1","2":"8"},{"1":"EP300","2":"8"},{"1":"KIT","2":"8"},{"1":"REST","2":"8"},{"1":"ABCB11","2":"7"},{"1":"ALK","2":"7"},{"1":"CASR","2":"7"},{"1":"DICER1","2":"7"},{"1":"DIS3L2","2":"7"},{"1":"NRAS","2":"7"},{"1":"RAD50","2":"7"},{"1":"RET","2":"7"},{"1":"SAMD9","2":"7"},{"1":"SDHA","2":"7"},{"1":"SH2B3","2":"7"},{"1":"SOX10","2":"7"},{"1":"DDX41","2":"6"},{"1":"FGFR3","2":"6"},{"1":"HFE","2":"6"},{"1":"MSH3","2":"6"},{"1":"SMAD4","2":"6"},{"1":"SOS2","2":"6"},{"1":"APC","2":"5"},{"1":"BAP1","2":"5"},{"1":"BLM","2":"5"},{"1":"BUB1B","2":"5"},{"1":"EGLN1","2":"5"},{"1":"ELP1","2":"5"},{"1":"ERCC2","2":"5"},{"1":"FANCC","2":"5"},{"1":"LZTR1","2":"5"},{"1":"MET","2":"5"},{"1":"MSH6","2":"5"},{"1":"POT1","2":"5"},{"1":"PRSS1","2":"5"},{"1":"TSC1","2":"5"},{"1":"BARD1","2":"4"},{"1":"BMPR1A","2":"4"},{"1":"BRIP1","2":"4"},{"1":"EPCAM","2":"4"},{"1":"ERCC1","2":"4"},{"1":"ERCC3","2":"4"},{"1":"FANCB","2":"4"},{"1":"FANCM","2":"4"},{"1":"GPC4","2":"4"},{"1":"HACE1","2":"4"},{"1":"MAP2K1","2":"4"},{"1":"MAX","2":"4"},{"1":"MSH2","2":"4"},{"1":"MTAP","2":"4"},{"1":"NBN","2":"4"},{"1":"PRF1","2":"4"},{"1":"PTCH2","2":"4"},{"1":"RECQL4","2":"4"},{"1":"RPL11","2":"4"},{"1":"RPL5","2":"4"},{"1":"SOS1","2":"4"},{"1":"STK11","2":"4"},{"1":"WAS","2":"4"},{"1":"WRN","2":"4"},{"1":"BRCA1","2":"3"},{"1":"CHEK2","2":"3"},{"1":"DKC1","2":"3"},{"1":"DOCK8","2":"3"},{"1":"ERCC4","2":"3"},{"1":"EXT1","2":"3"},{"1":"EZH2","2":"3"},{"1":"FANCA","2":"3"},{"1":"FANCL","2":"3"},{"1":"G6PC3","2":"3"},{"1":"GATA2","2":"3"},{"1":"MPL","2":"3"},{"1":"MUTYH","2":"3"},{"1":"NKX2-1","2":"3"},{"1":"NTHL1","2":"3"},{"1":"NTRK1","2":"3"},{"1":"PMS2","2":"3"},{"1":"RAF1","2":"3"},{"1":"RUNX1","2":"3"},{"1":"SERPINA1","2":"3"},{"1":"SLC25A13","2":"3"},{"1":"SPRED1","2":"3"},{"1":"UROD","2":"3"},{"1":"XPA","2":"3"},{"1":"XPC","2":"3"},{"1":"AIP","2":"2"},{"1":"ARID5B","2":"2"},{"1":"AXIN2","2":"2"},{"1":"CDKN1C","2":"2"},{"1":"CYLD","2":"2"},{"1":"EDNRB","2":"2"},{"1":"ETV6","2":"2"},{"1":"EXT2","2":"2"},{"1":"FANCD2","2":"2"},{"1":"FANCE","2":"2"},{"1":"FANCG","2":"2"},{"1":"FANCI","2":"2"},{"1":"GDNF","2":"2"},{"1":"HAX1","2":"2"},{"1":"HOXB13","2":"2"},{"1":"IKZF1","2":"2"},{"1":"ITK","2":"2"},{"1":"MAP2K2","2":"2"},{"1":"MEN1","2":"2"},{"1":"MITF","2":"2"},{"1":"POLH","2":"2"},{"1":"PRKAR1A","2":"2"},{"1":"RAD51D","2":"2"},{"1":"RB1","2":"2"},{"1":"RPS24","2":"2"},{"1":"SMARCE1","2":"2"},{"1":"SUFU","2":"2"},{"1":"TGFBR1","2":"2"},{"1":"WRAP53","2":"2"},{"1":"CDC73","2":"1"},{"1":"CDKN1B","2":"1"},{"1":"CEBPA","2":"1"},{"1":"CEBPE","2":"1"},{"1":"DDB2","2":"1"},{"1":"FAH","2":"1"},{"1":"FMR1","2":"1"},{"1":"GBA","2":"1"},{"1":"GJB2","2":"1"},{"1":"GPC3","2":"1"},{"1":"GREM1","2":"1"},{"1":"HABP2","2":"1"},{"1":"HMBS","2":"1"},{"1":"HRAS","2":"1"},{"1":"MLF1","2":"1"},{"1":"PHOX2B","2":"1"},{"1":"RAD51","2":"1"},{"1":"RIT1","2":"1"},{"1":"RPS7","2":"1"},{"1":"SBDS","2":"1"},{"1":"SDHAF2","2":"1"},{"1":"SDHC","2":"1"},{"1":"SDHD","2":"1"},{"1":"SHOC2","2":"1"},{"1":"TINF2","2":"1"},{"1":"TMEM127","2":"1"},{"1":"TRIM37","2":"1"},{"1":"TRIP13","2":"1"},{"1":"VHL","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Hugo_Symbol"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"TP53","2":"97"},{"1":"BRAF","2":"57"},{"1":"NF1","2":"41"},{"1":"ATRX","2":"35"},{"1":"COL7A1","2":"29"},{"1":"GNAS","2":"29"},{"1":"FGFR1","2":"28"},{"1":"TERT","2":"27"},{"1":"SMARCA4","2":"24"},{"1":"ATM","2":"23"},{"1":"PIK3CA","2":"23"},{"1":"NF2","2":"20"},{"1":"PDGFRA","2":"19"},{"1":"EGFR","2":"18"},{"1":"TSC2","2":"18"},{"1":"PTEN","2":"17"},{"1":"PTPN11","2":"17"},{"1":"AKT1","2":"16"},{"1":"GLI3","2":"15"},{"1":"PTCH1","2":"15"},{"1":"RPS6","2":"13"},{"1":"SDHA","2":"13"},{"1":"SMARCB1","2":"13"},{"1":"ASXL1","2":"12"},{"1":"ZEB2","2":"12"},{"1":"KRAS","2":"11"},{"1":"CREBBP","2":"10"},{"1":"KIF1B","2":"10"},{"1":"STAT3","2":"10"},{"1":"CBL","2":"9"},{"1":"CDK4","2":"9"},{"1":"NSD1","2":"9"},{"1":"POLE","2":"9"},{"1":"RHBDF2","2":"9"},{"1":"CDH1","2":"8"},{"1":"EP300","2":"8"},{"1":"FGFR2","2":"8"},{"1":"FLCN","2":"8"},{"1":"KIT","2":"8"},{"1":"POLD1","2":"8"},{"1":"REST","2":"8"},{"1":"SAMD9L","2":"8"},{"1":"SLX4","2":"8"},{"1":"SMARCA2","2":"8"},{"1":"ABCB11","2":"7"},{"1":"BRCA2","2":"7"},{"1":"CASR","2":"7"},{"1":"DICER1","2":"7"},{"1":"DIS3L2","2":"7"},{"1":"RET","2":"7"},{"1":"SAMD9","2":"7"},{"1":"SH2B3","2":"7"},{"1":"SOX10","2":"7"},{"1":"APC","2":"6"},{"1":"DDX41","2":"6"},{"1":"MSH3","2":"6"},{"1":"NRAS","2":"6"},{"1":"PRSS1","2":"6"},{"1":"RAD50","2":"6"},{"1":"RECQL4","2":"6"},{"1":"SMAD4","2":"6"},{"1":"BAP1","2":"5"},{"1":"BLM","2":"5"},{"1":"BUB1B","2":"5"},{"1":"EGLN1","2":"5"},{"1":"ELP1","2":"5"},{"1":"ERCC2","2":"5"},{"1":"FANCB","2":"5"},{"1":"FANCC","2":"5"},{"1":"FGFR3","2":"5"},{"1":"HFE","2":"5"},{"1":"MET","2":"5"},{"1":"MSH6","2":"5"},{"1":"SOS2","2":"5"},{"1":"WRN","2":"5"},{"1":"ALK","2":"4"},{"1":"BARD1","2":"4"},{"1":"BMPR1A","2":"4"},{"1":"BRCA1","2":"4"},{"1":"FANCM","2":"4"},{"1":"GPC4","2":"4"},{"1":"HACE1","2":"4"},{"1":"MAP2K1","2":"4"},{"1":"MAX","2":"4"},{"1":"MSH2","2":"4"},{"1":"NKX2-1","2":"4"},{"1":"POT1","2":"4"},{"1":"PRF1","2":"4"},{"1":"RPL11","2":"4"},{"1":"RPL5","2":"4"},{"1":"SERPINA1","2":"4"},{"1":"STK11","2":"4"},{"1":"WAS","2":"4"},{"1":"BRIP1","2":"3"},{"1":"CDKN2A","2":"3"},{"1":"CHEK2","2":"3"},{"1":"DKC1","2":"3"},{"1":"DOCK8","2":"3"},{"1":"EPCAM","2":"3"},{"1":"ERCC3","2":"3"},{"1":"ERCC4","2":"3"},{"1":"EXT1","2":"3"},{"1":"EZH2","2":"3"},{"1":"FANCD2","2":"3"},{"1":"FANCG","2":"3"},{"1":"FANCL","2":"3"},{"1":"G6PC3","2":"3"},{"1":"GATA2","2":"3"},{"1":"GPR161","2":"3"},{"1":"LZTR1","2":"3"},{"1":"MPL","2":"3"},{"1":"MUTYH","2":"3"},{"1":"NBN","2":"3"},{"1":"NTHL1","2":"3"},{"1":"NTRK1","2":"3"},{"1":"PMS2","2":"3"},{"1":"RAF1","2":"3"},{"1":"SLC25A13","2":"3"},{"1":"SOS1","2":"3"},{"1":"SPRED1","2":"3"},{"1":"TSC1","2":"3"},{"1":"UROD","2":"3"},{"1":"XPA","2":"3"},{"1":"XPC","2":"3"},{"1":"AIP","2":"2"},{"1":"ARID5B","2":"2"},{"1":"AXIN2","2":"2"},{"1":"CDKN1C","2":"2"},{"1":"CYLD","2":"2"},{"1":"EDNRB","2":"2"},{"1":"ERCC1","2":"2"},{"1":"ETV6","2":"2"},{"1":"EXT2","2":"2"},{"1":"FANCA","2":"2"},{"1":"FANCE","2":"2"},{"1":"FANCI","2":"2"},{"1":"GDNF","2":"2"},{"1":"HAX1","2":"2"},{"1":"HOXB13","2":"2"},{"1":"HRAS","2":"2"},{"1":"ITK","2":"2"},{"1":"MAP2K2","2":"2"},{"1":"MEN1","2":"2"},{"1":"MITF","2":"2"},{"1":"MTAP","2":"2"},{"1":"POLH","2":"2"},{"1":"PTCH2","2":"2"},{"1":"RAD51D","2":"2"},{"1":"RB1","2":"2"},{"1":"RPS24","2":"2"},{"1":"RUNX1","2":"2"},{"1":"SMARCE1","2":"2"},{"1":"SUFU","2":"2"},{"1":"TGFBR1","2":"2"},{"1":"WRAP53","2":"2"},{"1":"CDC73","2":"1"},{"1":"CDKN1B","2":"1"},{"1":"CEBPA","2":"1"},{"1":"CEBPE","2":"1"},{"1":"DDB2","2":"1"},{"1":"FAH","2":"1"},{"1":"FMR1","2":"1"},{"1":"GBA","2":"1"},{"1":"GJB2","2":"1"},{"1":"GPC3","2":"1"},{"1":"GREM1","2":"1"},{"1":"HABP2","2":"1"},{"1":"HMBS","2":"1"},{"1":"IKZF1","2":"1"},{"1":"MLF1","2":"1"},{"1":"PHOX2B","2":"1"},{"1":"PRKAR1A","2":"1"},{"1":"RAD51","2":"1"},{"1":"RIT1","2":"1"},{"1":"RPS17","2":"1"},{"1":"RPS7","2":"1"},{"1":"SBDS","2":"1"},{"1":"SDHAF2","2":"1"},{"1":"SDHC","2":"1"},{"1":"SHOC2","2":"1"},{"1":"TINF2","2":"1"},{"1":"TMEM127","2":"1"},{"1":"TRIM37","2":"1"},{"1":"TRIP13","2":"1"},{"1":"VHL","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgcHJldmFsZW5jZSBieSB2YXJpYW50IGluIG9uY29rYiIsImxvZl9oaXRzICU+JVxuICBjb3VudChWQVJJQU5UX0lOX09OQ09LQikgJT4lXG4gIGFycmFuZ2UoLW4pIl19 -->
@@ -1998,7 +1997,7 @@ lof_hits %&gt;%
 <!-- rnb-source-end -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["VARIANT_IN_ONCOKB"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"986"},{"1":"TRUE","2":"268"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["VARIANT_IN_ONCOKB"],"name":[1],"type":["lgl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"FALSE","2":"965"},{"1":"TRUE","2":"270"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgcHJldmFsZW5jZSBieSB2YXJpYW50IGluIG9uY29rYiIsImxvZl9oaXRzICU+JVxuICBjb3VudChNVVRBVElPTl9FRkZFQ1QpICU+JVxuICBhcnJhbmdlKC1uKSJdfQ== -->
@@ -2009,7 +2008,7 @@ lof_hits %&gt;%
 <!-- rnb-source-end -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["MUTATION_EFFECT"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"760"},{"1":"Likely Loss-of-function","2":"313"},{"1":"Gain-of-function","2":"98"},{"1":"Likely Gain-of-function","2":"57"},{"1":"Loss-of-function","2":"22"},{"1":"Inconclusive","2":"3"},{"1":"Likely Neutral","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["MUTATION_EFFECT"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Unknown","2":"742"},{"1":"Likely Loss-of-function","2":"319"},{"1":"Gain-of-function","2":"100"},{"1":"Likely Gain-of-function","2":"42"},{"1":"Loss-of-function","2":"25"},{"1":"Inconclusive","2":"5"},{"1":"Likely Neutral","2":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgaG93IG1hbnkgYXJlIGhvdHNwb3RzPyIsImxvZl9oaXRzICU+JVxuICBjb3VudChIb3RTcG90QWxsZWxlKSAlPiVcbiAgYXJyYW5nZSgtbikiXX0= -->
@@ -2020,7 +2019,7 @@ lof_hits %&gt;%
 <!-- rnb-source-end -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["HotSpotAllele"],"name":[1],"type":["int"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"1003"},{"1":"1","2":"251"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["HotSpotAllele"],"name":[1],"type":["int"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"967"},{"1":"1","2":"268"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-chunk-end -->
@@ -2041,12 +2040,11 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
   inner_join(lof_hits_subset, by = c(&quot;Matched_Norm_Sample_Barcode&quot;, &quot;Hugo_Symbol&quot;)) %&gt;%
   write_tsv(file.path(results_dir, &quot;germline-somatic-two-gene-hits.tsv&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBpbm5lcl9qb2luKC4sIGxvZl9oaXRzX3N1YnNldCwgYnkgPSBjKFwiTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlXCIsIDogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG7ihLkgUm93IDQwMSBvZiBgeGAgbWF0Y2hlcyBtdWx0aXBsZSByb3dzIGluIGB5YC5cbuKEuSBSb3cgNzE2IG9mIGB5YCBtYXRjaGVzIG11bHRpcGxlIHJvd3MgaW4gYHhgLlxu4oS5IElmIGEgbWFueS10by1tYW55IHJlbGF0aW9uc2hpcCBpcyBleHBlY3RlZCwgc2V0IGByZWxhdGlvbnNoaXAgPSBcIm1hbnktdG8tbWFueVwiYCB0byBzaWxlbmNlIHRoaXNcbiAgd2FybmluZy5cbiJ9 -->
+<!-- rnb-warning-begin eyJkYXRhIjoiV2FybmluZyBpbiBpbm5lcl9qb2luKC4sIGxvZl9oaXRzX3N1YnNldCwgYnkgPSBjKFwiTWF0Y2hlZF9Ob3JtX1NhbXBsZV9CYXJjb2RlXCIsIDogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG7ihLkgUm93IDQwMSBvZiBgeGAgbWF0Y2hlcyBtdWx0aXBsZSByb3dzIGluIGB5YC5cbuKEuSBSb3cgNTczIG9mIGB5YCBtYXRjaGVzIG11bHRpcGxlIHJvd3MgaW4gYHhgLlxu4oS5IElmIGEgbWFueS10by1tYW55IHJlbGF0aW9uc2hpcCBpcyBleHBlY3RlZCwgc2V0IGByZWxhdGlvbnNoaXAgPSBcIm1hbnktdG8tbWFueVwiYCB0byBzaWxlbmNlIHRoaXMgd2FybmluZy5cbiJ9 -->
 <pre><code>Warning in inner_join(., lof_hits_subset, by = c(&quot;Matched_Norm_Sample_Barcode&quot;, : Detected an unexpected many-to-many relationship between `x` and `y`.
 ℹ Row 401 of `x` matches multiple rows in `y`.
-ℹ Row 716 of `y` matches multiple rows in `x`.
-ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this
-  warning.</code></pre>
+ℹ Row 573 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship = &quot;many-to-many&quot;` to silence this warning.</code></pre>
 <!-- rnb-warning-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2074,9 +2072,9 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
   group_by(Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor_maf) %&gt;%
   summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ0tpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsJy4gWW91IGNhbiBvdmVycmlkZSB1c2luZyB0aGVcbmAuZ3JvdXBzYCBhcmd1bWVudC5cbiJ9 -->
-<pre><code>`summarise()` has grouped output by &#39;Kids_First_Biospecimen_ID_normal&#39;. You can override using the
-`.groups` argument.</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ0tpZHNfRmlyc3RfQmlvc3BlY2ltZW5fSURfbm9ybWFsJy4gWW91IGNhblxub3ZlcnJpZGUgdXNpbmcgdGhlIGAuZ3JvdXBzYCBhcmd1bWVudC5cbiJ9 -->
+<pre><code>`summarise()` has grouped output by &#39;Kids_First_Biospecimen_ID_normal&#39;. You can
+override using the `.groups` argument.</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiY29sbGFwc2VkX2dlcm1fc29tIDwtIGNvbGxhcHNlZCAlPiVcbiAgbGVmdF9qb2luKGNvbGxhcHNlZF9sb2YsIGJ5ID0gXCJLaWRzX0ZpcnN0X0Jpb3NwZWNpbWVuX0lEX25vcm1hbFwiKSAlPiVcbiAgd3JpdGVfdHN2KGZpbGUucGF0aChyZXN1bHRzX2RpciwgXCJnZXJtbGluZS1zb21hdGljLWNvbGxhcHNlZC1ieS1nZW5lLnRzdlwiKSkifQ== -->
 <pre class="r"><code>collapsed_germ_som &lt;- collapsed %&gt;%
@@ -2093,9 +2091,9 @@ germline_somatic_gene_matches &lt;- germline %&gt;%
   dplyr::rename(Matched_Norm_Sample_Barcode = Kids_First_Biospecimen_ID_normal,
                 Hugo_Symbol = Hugo_Symbol_cpg)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMTggQ29sdW1uczogMTBcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg3KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIENocm9tb3NvbWUsIFR5cGUsIENsYXNzaWZpY2F0aW9uLC4uLlxuZGJsICgzKTogU3RhcnQsIEVuZCwgTGVuZ3RoXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMTggQ29sdW1uczogMTBcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCJcXHRcIlxuY2hyICg3KTogS2lkc19GaXJzdF9CaW9zcGVjaW1lbl9JRF9ub3JtYWwsIENocm9tb3NvbWUsIFR5cGUsIENsYXNzaWZpY2F0aW9uLC4uLlxuZGJsICgzKTogU3RhcnQsIEVuZCwgTGVuZ3RoXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
 <pre><code>Rows: 18 Columns: 10
-── Column specification ─────────────────────────────────────────────────────────────────────────────────
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (7): Kids_First_Biospecimen_ID_normal, Chromosome, Type, Classification,...
 dbl (3): Start, End, Length
@@ -2119,9 +2117,9 @@ First, modify germline variant df to be compatible with maf columns:</p>
 <pre class="r"><code># Load amino acid abbreviation key
 aa_key &lt;- read_tsv(file.path(input_dir, &quot;aa_symbol_key.tsv&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjEgQ29sdW1uczogMlxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIpOiBBQV90aHJlZV9sZXR0ZXIsIEFBX29uZV9sZXR0ZXJcblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<!-- rnb-message-begin eyJkYXRhIjoiUm93czogMjEgQ29sdW1uczogMlxu4pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIlxcdFwiXG5jaHIgKDIpOiBBQV90aHJlZV9sZXR0ZXIsIEFBX29uZV9sZXR0ZXJcblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
 <pre><code>Rows: 21 Columns: 2
-── Column specification ─────────────────────────────────────────────────────────────────────────────────
+── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;\t&quot;
 chr (2): AA_three_letter, AA_one_letter
 
@@ -2175,16 +2173,16 @@ write_tsv(merged_maf, file.path(results_dir, &quot;germ-somatic-merged-maf.tsv&q
 <!-- rnb-source-begin eyJkYXRhIjoibWVyZ2VkX21hZiA8LSBtYWZ0b29sczo6cmVhZC5tYWYoZmlsZS5wYXRoKHJlc3VsdHNfZGlyLCBcImdlcm0tc29tYXRpYy1tZXJnZWQtbWFmLnRzdlwiKSkifQ== -->
 <pre class="r"><code>merged_maf &lt;- maftools::read.maf(file.path(results_dir, &quot;germ-somatic-merged-maf.tsv&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLVJlYWRpbmdcbi1WYWxpZGF0aW5nXG4tLVJlbW92ZWQgMSBkdXBsaWNhdGVkIHZhcmlhbnRzXG4tU2lsZW50IHZhcmlhbnRzOiAyNTYyOSBcbi1TdW1tYXJpemluZ1xuLS1NdXRpcGxlIGNlbnRlcnMgZm91bmRcbi47TkEtUHJvY2Vzc2luZyBjbGluaWNhbCBkYXRhXG4tLU1pc3NpbmcgY2xpbmljYWwgZGF0YVxuLUZpbmlzaGVkIGluIDMuOTQ4cyBlbGFwc2VkICg1Ljk3MnMgY3B1KSBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiLVJlYWRpbmdcbi1WYWxpZGF0aW5nXG4tLVJlbW92ZWQgMSBkdXBsaWNhdGVkIHZhcmlhbnRzXG4tU2lsZW50IHZhcmlhbnRzOiAyNTUyMyBcbi1TdW1tYXJpemluZ1xuLS1NdXRpcGxlIGNlbnRlcnMgZm91bmRcbi47TkEtUHJvY2Vzc2luZyBjbGluaWNhbCBkYXRhXG4tLU1pc3NpbmcgY2xpbmljYWwgZGF0YVxuLUZpbmlzaGVkIGluIDMuNTA2cyBlbGFwc2VkICg2LjczM3MgY3B1KSBcbiJ9 -->
 <pre><code>-Reading
 -Validating
 --Removed 1 duplicated variants
--Silent variants: 25629 
+-Silent variants: 25523 
 -Summarizing
 --Mutiple centers found
 .;NA-Processing clinical data
 --Missing clinical data
--Finished in 3.948s elapsed (5.972s cpu) </code></pre>
+-Finished in 3.506s elapsed (6.733s cpu) </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjpbImlkcyA8LSBnZXJtbGluZV9zb21hdGljX2dlbmVfbWF0Y2hlcyAlPiVcbiAgZGlzdGluY3QoVHVtb3JfU2FtcGxlX0JhcmNvZGUpICU+JVxuICBwdWxsKFR1bW9yX1NhbXBsZV9CYXJjb2RlKSIsIiIsImZvciAoaWQgaW4gaWRzKXtcbiAgXG4gIGdlbmUgPC0gZ2VybWxpbmVfc29tYXRpY19nZW5lX21hdGNoZXMgJT4lXG4gICAgZHBseXI6OmZpbHRlcihUdW1vcl9TYW1wbGVfQmFyY29kZSA9PSBpZCkgJT4lXG4gICAgcHVsbChIdWdvX1N5bWJvbCkgJT4lXG4gICAgdW5pcXVlKClcbiAgXG4gIHRvX3JtIDwtIHVuaXF1ZShtYWYkVHVtb3JfU2FtcGxlX0JhcmNvZGVbbWFmJFR1bW9yX1NhbXBsZV9CYXJjb2RlICE9IGlkXSlcblxuICBwbG90X21hZiA8LSBtYWZ0b29sczo6ZmlsdGVyTWFmKG1lcmdlZF9tYWYsIHRzYiA9IHRvX3JtKVxuICBcbiAgcGRmKGZpbGUucGF0aChwbG90X2RpcixcbiAgICAgICAgICAgICAgICAgICBnbHVlOjpnbHVlKFwie2lkfS17Z2VuZX0tbG9sbGlwb3AucGRmXCIpKSxcbiAgICAgICAgIHdpZHRoID0gNiwgaGVpZ2h0ID0gNClcbiAgXG4gIGxvbGxpcG9wUGxvdChwbG90X21hZiwgZ2VuZSA9IGdlbmUsIEFBQ29sID0gXCJIR1ZTcF9TaG9ydFwiLCBcbiAgICAgICAgICAgICAgIHNob3dEb21haW5MYWJlbCA9IEZBTFNFLCBsYWJQb3NBbmdsZSA9IDQ1LCBcbiAgICAgICAgICAgICAgIGxhYmVsUG9zID0gXCJhbGxcIiwgbGVnZW5kVHh0U2l6ZSA9IDEsIFxuICAgICAgICAgICAgICAgbGFiUG9zU2l6ZSA9IDEuMjUsXG4gICAgICAgICAgICAgICBwb2ludFNpemUgPSAyLjUsXG4gICAgICAgICAgICAgICByZXBlbCA9IFRSVUUsXG4gICAgICAgICAgICAgICBzaG93TXV0YXRpb25SYXRlID0gRkFMU0UsXG4gICAgICAgICAgICAgICBjb2xsYXBzZVBvc0xhYmVsID0gVFJVRSlcbiAgXG4gIGRldi5vZmYoKVxuICBcbn0iXX0= -->
 <pre class="r"><code>ids &lt;- germline_somatic_gene_matches %&gt;%
@@ -2219,14 +2217,14 @@ for (id in ids){
   
 }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyMDM0MyB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 20343 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyMDIxNSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 20215 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAxIG11dGF0aW9ucyBmb3Igd2hpY2ggQUEgcG9zaXRpb24gd2FzIG5vdCBhdmFpbGFibGVcbiJ9 -->
 <pre><code>Removed 1 mutations for which AA position was not available</code></pre>
 <!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjgwMyB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26803 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjY4NCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26684 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
 <pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
@@ -2240,8 +2238,8 @@ for (id in ids){
 <!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAxMDQyNDkyIGZvciBub3cuXG4ifQ== -->
 <pre><code>Using longer transcript NM_001042492 for now.</code></pre>
 <!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjg1MCB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26850 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjcyNiB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26726 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
 <pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
@@ -2255,8 +2253,8 @@ for (id in ids){
 <!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAxMDQyNDkyIGZvciBub3cuXG4ifQ== -->
 <pre><code>Using longer transcript NM_001042492 for now.</code></pre>
 <!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjg1MCB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26850 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczMCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26730 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-message-begin eyJkYXRhIjoiMyB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
 <pre><code>3 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
@@ -2271,8 +2269,8 @@ for (id in ids){
 <!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAwMDM4IGZvciBub3cuXG4ifQ== -->
 <pre><code>Using longer transcript NM_000038 for now.</code></pre>
 <!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjg1NSB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26855 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczNSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26735 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
 <pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
@@ -2286,26 +2284,11 @@ for (id in ids){
 <!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDE2MTY5IGZvciBub3cuXG4ifQ== -->
 <pre><code>Using longer transcript NM_016169 for now.</code></pre>
 <!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjg1NSB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26855 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjczMSB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26731 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjg0OSB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26849 variants from 796 samples</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
-<pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICBIR05DICAgIHJlZnNlcS5JRCAgIHByb3RlaW4uSUQgYWEubGVuZ3RoXG4gICA8Y2hhcj4gICAgICAgPGNoYXI+ICAgICAgIDxjaGFyPiAgICAgPG51bT5cbjE6ICAgIE5GMSAgICBOTV8wMDAyNjcgICAgTlBfMDAwMjU4ICAgICAgMjgxOFxuMjogICAgTkYxIE5NXzAwMTA0MjQ5MiBOUF8wMDEwMzU5NTcgICAgICAyODM5XG4ifQ== -->
-<pre><code>     HGNC    refseq.ID   protein.ID aa.length
-   &lt;char&gt;       &lt;char&gt;       &lt;char&gt;     &lt;num&gt;
-1:    NF1    NM_000267    NP_000258      2818
-2:    NF1 NM_001042492 NP_001035957      2839</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiVXNpbmcgbG9uZ2VyIHRyYW5zY3JpcHQgTk1fMDAxMDQyNDkyIGZvciBub3cuXG4ifQ== -->
-<pre><code>Using longer transcript NM_001042492 for now.</code></pre>
-<!-- rnb-message-end -->
-<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjg0NCB2YXJpYW50cyBmcm9tIDc5NiBzYW1wbGVzXG4ifQ== -->
-<pre><code>Removed 26844 variants from 796 samples</code></pre>
+<!-- rnb-message-begin eyJkYXRhIjoiUmVtb3ZlZCAyNjcyMCB2YXJpYW50cyBmcm9tIDc5OCBzYW1wbGVzXG4ifQ== -->
+<pre><code>Removed 26720 variants from 798 samples</code></pre>
 <!-- rnb-message-end -->
 <!-- rnb-message-begin eyJkYXRhIjoiMiB0cmFuc2NyaXB0cyBhdmFpbGFibGUuIFVzZSBhcmd1bWVudHMgcmVmU2VxSUQgb3IgcHJvdGVpbklEIHRvIG1hbnVhbGx5IHNwZWNpZnkgdHggbmFtZS5cbiJ9 -->
 <pre><code>2 transcripts available. Use arguments refSeqID or proteinID to manually specify tx name.</code></pre>

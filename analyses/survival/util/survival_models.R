@@ -12,7 +12,7 @@ library(patchwork)
 # Magrittr pipe
 `%>%` <- dplyr::`%>%`
 
-efs_palette <- c("#E69F01", "#56B4E8", "#009E74", "#F0E441",
+efs_palette <- c("#E69F01", "#56B4E8", "#009E74", 
                  "#0072B3", "#D55E01", "#CC79A6", "#999998")
 
 survival_analysis <- function(metadata,
