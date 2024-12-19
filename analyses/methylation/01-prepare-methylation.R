@@ -3,7 +3,7 @@ library(biomaRt)
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-setwd(root_dir)
+#setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "methylation")
@@ -15,7 +15,7 @@ results_dir <- file.path(analysis_dir, "results")
 
 methyl_file <- file.path(data_dir,
                          "methyl-beta-values.rds")
-methyl_ids_file <- file.path("methylation_ids.tsv")
+
 methyl_annot_file <- file.path(data_dir,
                                "infinium.gencode.v39.probe.annotations.tsv.gz")
 
@@ -37,6 +37,15 @@ plp_lowVAF_file <- file.path(data_dir,
 
 plp_sv_file <- file.path(data_dir, 
                          "pbta_germline_svs.tsv")
+
+
+# First, check that methylation data files exist, and download if not
+
+if (!file.exists(methyl_file) | !file.exists(methyl_annot_file)){
+  
+  system(glue::glue("bash {root_dir}/scripts/download-methyl.sh"))
+  
+}
 
 # Wrangle histology data
 

@@ -1,6 +1,6 @@
 Kids_First_Participant_ID	Kids_First_Biospecimen_ID_normal	Kids_First_Biospecimen_ID_tumor	plot_group	molecular_subtype	MMR_exposure	germline_variant	Hugo_Symbol_germline	Hugo_Symbol_somatic
-PT_VTM2STE3	BS_AYFJ1B57	BS_02YBZSBY	Other high-grade glioma	HGG, H3 wildtype, TP53	0.8475574234418267	MMR	PMS2	ATM; CHEK2; MSH2; MSH6
-PT_3CHB9PK5	BS_0754AZX0	BS_20TBZG09	Other high-grade glioma	HGG, H3 wildtype, TP53	0.5169458526394308	MMR	MSH6	ATM; BRCA2; BRIP1; MUTYH; PMS2
+PT_VTM2STE3	BS_AYFJ1B57	BS_02YBZSBY	Other high-grade glioma	HGG, H3 wildtype, TP53	0.8475574234418267	MMR	PMS2	ATM; CHEK2; ERCC1; MSH2; MSH6
+PT_3CHB9PK5	BS_0754AZX0	BS_20TBZG09	Other high-grade glioma	HGG, H3 wildtype, TP53	0.5169458526394308	MMR	MSH6	ATM; MUTYH; PMS2
 PT_SGJK5KSB	BS_KKBNERGA	BS_35DRDAFV	Other high-grade glioma	HGG, H3 wildtype, TP53	0.2779205131321932	Non-repair	NA	NA
 PT_M8MDJNZB	BS_0ZQ4019R	BS_5XC635HW	Other high-grade glioma	HGG, H3 wildtype, TP53	0.8071516003250689	Non-repair	NA	ATM; AXIN2; BRCA2; MSH6
 PT_TVJ5EGMR	BS_APXB3MQ5	BS_7PAAZQE6	Other high-grade glioma	HGG, H3 wildtype	0.072991621152912	Non-repair	NA	NA
