@@ -64,8 +64,8 @@ hist_cohort_file <- file.path(root_dir, "analyses",
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
 
 # splice events (PBTA samples and GTF-annotated events)
-splice_events_file <- file.path(input_dir, 
-                                "splice_events_cpgs_pbta.tsv.gz")
+splice_events_file <- file.path(results_dir, 
+                                "splice-events-rmats-cpgs.tsv.gz")
 
 splice_events_gtf_file <- file.path(input_dir, "gtf-annotated-splice-events.tsv")
 
