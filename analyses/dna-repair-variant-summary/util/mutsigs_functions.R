@@ -26,11 +26,26 @@ data_summary <- function(x) {
 #' @examples
 plot_exposure_violin <- function(df, x, y, sig){
   
-  comparisons_mmr <- list(c("MMR", "BRCA/interacting"), c("MMR", "Other repair"),
-                          c("MMR", "Non-repair"))
+  comparisons <- ifelse(sig == "SBS3",
+                            list(c("HR", "Non-HR")),
+                            list(c("MMR", "Non-MMR")))
   
-  comparisons_brca <- list(c("BRCA/interacting", "MMR"), c("BRCA/interacting", "Other repair"), 
-                           c("BRCA/interacting", "Non-repair"))
+  mmr_labels <- c(paste0("HR P/LP\n (n=", sum(df$germline_variant == "HR"), ")"), 
+                  paste0("HR WT\n (n=", sum(df$germline_variant == "Non-HR"), ")"))
+  
+  brca_labels <- c(paste0("MMR P/LP\n (n=", sum(df$germline_variant == "MMR"), ")"), 
+                   paste0("MMR WT\n (n=", sum(df$germline_variant == "Non-MMR"), ")"))
+  
+  x_labels <- if (sig == "SBS3"){
+    
+                   mmr_labels
+    
+  } else {
+    
+    brca_labels
+    
+  }
+                   brca_labels
   
   vplot <- df %>%
     # generate violin plot and save 
@@ -38,30 +53,22 @@ plot_exposure_violin <- function(df, x, y, sig){
     geom_violin(binaxis = "y", stackdir = "center", 
                 show.legend = FALSE) +
     geom_boxplot(width=0.1, show.legend = FALSE) + 
-    labs(x = 'Germline Variant Class', y = paste0(sig, " Exposure")) +
+    labs(x = 'Germline Variant Class', y = paste0(sig, " Exposure"),
+         title = "HGG, H3-WT") +
     theme_minimal() +
     theme(legend.position = 'none',
           text = element_text(size = 12)) +
-    scale_x_discrete(labels = c(paste0("MMR\n (n=", length(mmr_ids), ")"), 
-                                paste0("BRCA/\nBRCA-interacting\n (n=", length(brca_ids), ")"),
-                                paste0("Other repair\n (n=", length(otherRepair_ids), ")"),
-                                paste0("No DNA repair\n (n=", length(ctrl_ids), ")"))) +
+    scale_x_discrete(labels = x_labels) +
     scale_fill_npg() +
     stat_summary(fun.data=data_summary,
                  show.legend = F) +
+    scale_y_continuous(expand = expansion(mult = .2)) +
     theme_Publication()
-    
-    if (sig == "SBS3"){
-      
-      vplot <- vplot + stat_compare_means(comparisons = comparisons_brca, size = 3)
-      
-    } else {
-      
-      vplot <- vplot + stat_compare_means(comparisons = comparisons_mmr, size = 3)
-      
-    }
 
-  
+    vplot <- vplot + stat_compare_means(method = "wilcox",
+                                        comparisons = comparisons, size = 3,
+                                        method.args = list(alternative = "greater"))
+
   return(vplot)
   
 }
