@@ -97,5 +97,5 @@ Jo Lynne Rokita ([@jharenza](https://github.com/jharenza)) and Ryan Corbett ([@r
 
 ## Contact
 
-For questions, please submit an issue or send an email to Jo Lynne Rokita: rokita@chop.edu
+For questions, please submit an issue.
 
