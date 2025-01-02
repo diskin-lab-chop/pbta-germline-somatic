@@ -276,8 +276,8 @@ methyl %>%
   dplyr::filter(plot_group == "Other high-grade glioma",
                 grepl("wildtype", molecular_subtype)) %>%
     dplyr::mutate(MMR_plp = case_when(
-    Kids_First_Biospecimen_ID_normal %in% plp_summary$Kids_First_Biospecimen_ID_normal[plp_summary$Hugo_Symbol %in% mmr_genes] ~ "Yes",
-    TRUE ~ "No"
+    Kids_First_Biospecimen_ID_normal %in% plp_summary$Kids_First_Biospecimen_ID_normal[plp_summary$Hugo_Symbol %in% mmr_genes] ~ "MMR P/LP",
+    TRUE ~ "MMR WT"
   )) %>%
   ggplot(aes(x = MMR_plp, y = mean_beta_value)) + 
   geom_jitter(aes(fill = plot_group), shape = 21, 
@@ -286,9 +286,12 @@ methyl %>%
   geom_boxplot(alpha = 0.05, outlier.shape = NA,
                show.legend = FALSE) +
   stat_compare_means(method = "wilcox",
-                     comparisons = list(c("Yes", "No")),
+                     comparisons = list(c("MMR P/LP", "MMR WT")),
                      method.args = list(alternative = "two.sided")) +
-  labs(x = glue::glue("MMR gene P-LP variant"), y = "Mean beta value", fill = "Histology") +
+  labs(title = "HGG, H3 WT",
+       x = "Germline Variant Class", 
+       y = "Mean beta value", 
+       fill = "Histology") +
   ylim(c(0.35,.65)) +
    scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
