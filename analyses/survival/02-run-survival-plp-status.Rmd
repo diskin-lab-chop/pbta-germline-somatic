@@ -59,6 +59,7 @@ hist <- read_tsv(histologies_file) %>%
   dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
   dplyr::mutate(extent_of_tumor_resection = case_when(
     extent_of_tumor_resection == "Biopsy only" & plot_group == "Medulloblastoma" ~ "Partial resection",
+    # this patient with a BRAF-fusion positive LGG is recorded as having received total tumor resection in path report
     sample_id_normal == "7316-436" ~ "Gross/Near total resection",
     TRUE ~ extent_of_tumor_resection
   )) %>%
