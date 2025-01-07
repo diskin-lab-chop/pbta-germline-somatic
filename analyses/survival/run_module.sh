@@ -26,3 +26,6 @@ Rscript -e "rmarkdown::render('07-mb-plp-distribution.Rmd')"
 
 # Assess P-LP carrier distribution across MB molecular and methylation subtypes
 Rscript -e "rmarkdown::render('08-mb-survival.Rmd')"
+
+# Generate MB metastasis models and plot tmb
+Rscript --vanilla 09-mb-metastasis-tmb.R
