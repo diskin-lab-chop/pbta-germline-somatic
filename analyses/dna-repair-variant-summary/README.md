@@ -38,3 +38,42 @@ This module summarizes germline pathogenic variation in known DNA repair genes, 
   - Bar plots of GSVA score differences in HGG patients with versus without P-LP variants in DNA repair genes. 
   - Violin plots of GSVA scores in HGG patients with 1) MMR gene P-LP variants, 2) BRCA/BRCA-interacting gene P-LP variants, and 3) No DNA repair germline variants.
   
+  
+## Directory structure
+
+```
+.
+├── 01-get-dna-repair-variant-samples.Rmd
+├── 01-get-dna-repair-variant-samples.html
+├── 02-mutational-signatures.Rmd
+├── 02-mutational-signatures.html
+├── 03-run-gsva-comparison.Rmd
+├── 03-run-gsva-comparison.html
+├── README.md
+├── input
+│   ├── COSMICv3.3_signature_exposures_SBS39_included.tsv
+│   ├── Knijnenburg_paper
+│   ├── broad
+│   └── pbta-hallmark-gsva-scores.tsv
+├── plots
+│   ├── Broad_GO_repair_genes
+│   ├── DIPG or DMG
+│   ├── HGG, H3 wildtype
+│   ├── Knijnenburg_repair_genes
+│   ├── Mesenchymal tumor
+│   └── Non-neoplastic tumor
+├── results
+│   ├── Broad_GO_repair_genes
+│   ├── DIPG or DMG
+│   ├── HGG, H3 wildtype
+│   ├── Knijnenburg_repair_genes
+│   ├── Mesenchymal tumor
+│   ├── Non-neoplastic tumor
+│   └── pbta-KEGG-gsva-scores.tsv
+├── run-kegg-gsva.R
+├── run_dna_repair_variant_analysis.sh
+└── util
+    ├── gsva_functions.R
+    └── mutsigs_functions.R
+```
+  
