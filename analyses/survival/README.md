@@ -16,6 +16,7 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 6. `06-survival-summary.R` plots P-LP carrier OS and EFS hazard ratios for each histologya and molecular subtype cohort
 7. `07-mb-plp-distribution.Rmd` assessees distribution of P-LP carriers across MB molecular and methylation subtypes
 8. `08-mb-survival.Rmd` assesses survival in MB cohort by molecular and methylation subtypes and metastasis status
+9. `09-mb-metastasis-tmb.R` generate MB metastasis logistic regression model and plot TMB
 
 ## Directory structure
 ```
@@ -35,9 +36,10 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 ├── 07-mb-plp-distribution.nb.html
 ├── 08-mb-survival.Rmd
 ├── 08-mb-survival.nb.html
+├── 09-mb-metastasis-tmb.R
 ├── README.md
 ├── input
-│   ├── cbtn-all-survival-09122024.txt
+│   ├── cbtn_all-survival-12122024.csv
 │   ├── lgg-braf-fusion-breakpoint-annotation.tsv
 │   ├── mb_shh_molecular_subtypes.tsv
 │   ├── pbta-lgg-braf-fusion-mixed-location.tsv
@@ -55,10 +57,8 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── MMR_km_survival_hgg.pdf
 │   ├── MNG
 │   ├── NFP
-│   ├── breakpoint_group_region_enr_heatmap.pdf
-│   ├── breakpoint_group_resection_enr_heatmap.pdf
-│   ├── forest_EFS_lgg_braf_fusion_resection_group.pdf
-│   ├── forest_EFS_lgg_braf_fusion_resection_group_plp.pdf
+│   ├── forest-MB-metastasis-additive-resection-subtype-plp-age-dx.pdf
+│   ├── forest_EFS_lgg_braf_fusion_resection_age_int_diagnosis_plp.pdf
 │   ├── forest_EFS_mb_Group3_resection_subtype_metastasis.pdf
 │   ├── forest_EFS_mb_Group4_resection_subtype_metastasis.pdf
 │   ├── forest_EFS_mb_SHH_resection_subtype_metastasis.pdf
@@ -66,6 +66,7 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── forest_EFS_mb_g3_resection_methyl_subtype.pdf
 │   ├── forest_EFS_mb_g4_resection_methyl_subtype.pdf
 │   ├── forest_EFS_mb_resection_subtype_metastasis_plp.pdf
+│   ├── forest_EFS_pa_resection_age_plp.pdf
 │   ├── forest_OS_mb_Group3_resection_subtype_metastasis.pdf
 │   ├── forest_OS_mb_Group4_resection_subtype_metastasis.pdf
 │   ├── forest_OS_mb_SHH_resection_subtype_metastasis.pdf
@@ -78,18 +79,27 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── km_EFS_lgg_braf_fusion_group.pdf
 │   ├── km_OS_mb_shh_subtype.pdf
 │   ├── km_mb_g4_subtype.pdf
+│   ├── mb-age-dx-by-subtype-cpg-plp-status.pdf
+│   ├── mb-tmb-by-subtype-cpg-plp-status.pdf
+│   ├── mb_MB, Group3_plp_carrier_metastasis_ct_heatmap.pdf
 │   ├── mb_MB, Group3_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_MB, Group4_plp_carrier_metastasis_ct_heatmap.pdf
 │   ├── mb_MB, Group4_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_MB, SHH_plp_carrier_metastasis_ct_heatmap.pdf
 │   ├── mb_MB, SHH_plp_carrier_metastasis_enr_heatmap.pdf
+│   ├── mb_MB, WNT_plp_carrier_metastasis_ct_heatmap.pdf
 │   ├── mb_MB, WNT_plp_carrier_metastasis_enr_heatmap.pdf
 │   ├── mb_g3_plp_carrier_subtype_enr_heatmap.pdf
 │   ├── mb_g4_plp_carrier_subtype_enr_heatmap.pdf
 │   ├── mb_plp_carrier_metastasis_enr_heatmap.pdf
 │   ├── mb_shh_plp_carrier_subtype_enr_heatmap.pdf
+│   ├── mb_shh_plp_carrier_tp53_ct_heatmap.pdf
 │   ├── mb_shh_plp_carrier_tp53_enr_heatmap.pdf
 │   ├── mb_shh_plp_carrier_type_enr_heatmap.pdf
-│   ├── plp_carrier_diagnosis_enr_heatmap.pdf
-│   ├── plp_carrier_fusion_enr_heatmap.pdf
+│   ├── pa-tmb-by-cpg-plp-status.pdf
+│   ├── pa_cpg_plp_region_enr_heatmap.pdf
+│   ├── pa_cpg_plp_resection_enr_heatmap.pdf
+│   ├── pa_plp_carrier_fusion_enr_heatmap.pdf
 │   ├── plp_carrier_mb_subtype_enr_heatmap.pdf
 │   └── survival-hr-plp-vs-wt.pdf
 ├── results
@@ -103,8 +113,9 @@ This module assesses overall and event-free survival in the PBTA germline cohort
 │   ├── MB
 │   ├── MNG
 │   ├── NFP
-│   ├── coxph_add_EFS_lgg_braf_fusion_resection_group.RDS
-│   ├── coxph_add_EFS_lgg_braf_fusion_resection_group_plp.RDS
+│   ├── coxph_EFS_lgg_braf_fusion_resection_age_int_diagnosis_plp.RDS
+│   ├── coxph_EFS_pa_resection_age_plp.RDS
+│   ├── coxph_EFS_pa_resection_age_plp_tmb.RDS
 │   ├── coxph_add_EFS_mb_Group3_resection_metastasis_plp.RDS
 │   ├── coxph_add_EFS_mb_Group4_resection_metastasis_plp.RDS
 │   ├── coxph_add_EFS_mb_SHH_resection_metastasis_plp.RDS
