@@ -58,19 +58,21 @@ Wrangle data
 
 ```{r}
 mb_hist <- read_tsv(mb_hist_file) %>%
-  dplyr::mutate(metastasis = fct_relevel(metastasis, 
+  dplyr::rename(mt = metastasis) %>%
+  dplyr::mutate(mt = fct_relevel(mt, 
                                          c("No metastasis", "Metastasis"))) %>%
   dplyr::mutate(cpg_plp = fct_relevel(cpg_plp,
-                                      c("No P/LP", "CPG P/LP"))) %>%
+                                      c("No CPG P/LP", "CPG P/LP"))) %>%
   dplyr::mutate(shh_type = fct_relevel(shh_type,
-                                       "MB, child-adult SHH", "MB, infant SHH"))
+                                       "MB, child-adult SHH", "MB, infant SHH")) %>%
+  dplyr::mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25)
 ```
 
 Generate OS and EFS coxph models, adding covariates for metastasis status
 
 ```{r}
 add_mb_efs_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
-                                "extent_of_tumor_resection+molecular_subtype+metastasis+cpg_plp",
+                                "extent_of_tumor_resection+molecular_subtype+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS"),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -84,7 +86,7 @@ ggsave(file.path(plot_dir, "forest_EFS_mb_resection_subtype_metastasis_plp.pdf")
 
 ```{r}
 add_mb_os_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
-                                "extent_of_tumor_resection+molecular_subtype+metastasis+cpg_plp",
+                                "extent_of_tumor_resection+molecular_subtype+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_OS_mb_resection_subtype_metastasis_plp.RDS"),
                                 "multivariate",
                                 years_col = "OS_years",
@@ -106,7 +108,7 @@ for (subtype in subtypes){
   abbrev <- str_replace(subtype, "MB, ", "")
   
   add_mb_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
-                                "extent_of_tumor_resection+metastasis+cpg_plp",
+                                "extent_of_tumor_resection+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, glue::glue("coxph_add_EFS_mb_{abbrev}_resection_metastasis_plp.RDS")),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -120,7 +122,7 @@ for (subtype in subtypes){
   if (subtype != "MB, WNT"){
   
     add_mb_os_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
-                                "extent_of_tumor_resection+metastasis+cpg_plp",
+                                "extent_of_tumor_resection+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, glue::glue("coxph_add_OS_mb_{abbrev}_resection_metastasis_plp.RDS")),
                                 "multivariate",
                                 years_col = "OS_years",
@@ -201,7 +203,7 @@ Plot MB Group 4 EFS coxph model including methylation subclass as a covariate
 
 ```{r}
 add_mb_g4_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
-                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp",
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_EFS_mb_g4_methyl_subtype.RDS"),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -216,7 +218,7 @@ Plot MB Group 3 EFS coxph model including methylation subtype as covariate
 
 ```{r}
 add_mb_g3_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
-                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp",
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_EFS_mb_g3_resection_methyl_subtype.RDS"),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -231,7 +233,7 @@ Plot MB Group 3 OS coxph model including methylation subtype as covariate
 
 ```{r}
 add_mb_g3_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
-                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp",
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_OS_mb_g3_resection_methyl_subtype.RDS"),
                                 "multivariate",
                                 years_col = "OS_years",
