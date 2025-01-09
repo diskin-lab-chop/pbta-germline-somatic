@@ -12,6 +12,8 @@ This module processes DNA methylation array data and tests for differential meth
 
 2. `02-global-methylation.Rmd` Compare mean beta values of P-LP carriers to non-carriers within histology groups
 
+3. `03-calculate-probe-zscores.Rmd` Compare probe beta values of P-LP carriers to non-carriers within histology groups
+
 ## Directory structure
 
 ```
@@ -19,6 +21,8 @@ This module processes DNA methylation array data and tests for differential meth
 ├── 01-prepare-methylation.R
 ├── 02-global-methylation.Rmd
 ├── 02-global-methylation.nb.html
+├── 03-calculate-probe-zscores.Rmd
+├── 03-calculate-probe-zscores.nb.html
 ├── plots
 │   ├── global-beta-value-BER-plp-vs-other.pdf
 │   ├── global-beta-value-DNA repair-plp-vs-other.pdf
@@ -36,6 +40,7 @@ This module processes DNA methylation array data and tests for differential meth
 │   ├── cpg-methyl-beta-values.rds
 │   ├── gene-methyl-zscores.rds
 │   ├── pbta-germline-mean-sample-methyl-beta.tsv
+│   ├── pbta-germline-methylation-beta-zscores.tsv
 │   └── promoter-methyl-zscores.rds
 └── run_module.sh
 ```
