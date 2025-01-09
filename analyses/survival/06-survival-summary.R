@@ -113,11 +113,11 @@ for (i in 1:nrow(group_df)){
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_os_plp$model)$table[,"median"][1]/365.25
   
   # extract OS HRs and p-values
-  os_stats[os_stats$group == group_df$group[i],]$HR <- exp(os_df$estimate[os_df$term == "cpgPLP_statuscpgPLP"])
-  os_stats[os_stats$group == group_df$group[i],]$p <- os_df$p.value[os_df$term == "cpgPLP_statuscpgPLP"]
+  os_stats[os_stats$group == group_df$group[i],]$HR <- exp(os_df$estimate[os_df$term == "cpgPLP_statusCPG P/LP"])
+  os_stats[os_stats$group == group_df$group[i],]$p <- os_df$p.value[os_df$term == "cpgPLP_statusCPG P/LP"]
   
-  os_stats[os_stats$group == group_df$group[i],]$CI_lower <- os_ci_df["cpgPLP_statuscpgPLP", "lower .95"]
-  os_stats[os_stats$group == group_df$group[i],]$CI_upper <- os_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
+  os_stats[os_stats$group == group_df$group[i],]$CI_lower <- os_ci_df["cpgPLP_statusCPG P/LP", "lower .95"]
+  os_stats[os_stats$group == group_df$group[i],]$CI_upper <- os_ci_df["cpgPLP_statusCPG P/LP", "upper .95"]
   
   
   km_efs_plp <- read_rds(file.path(input_dir,
@@ -146,11 +146,11 @@ for (i in 1:nrow(group_df)){
   efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_efs_plp$model)$table[,"median"][1]/365.25
   
   # extract EFS HRs and p-values
-  efs_stats[efs_stats$group == group_df$group[i],]$HR <- exp(efs_df$estimate[efs_df$term == "cpgPLP_statuscpgPLP"])
-  efs_stats[efs_stats$group == group_df$group[i],]$p <- efs_df$p.value[efs_df$term == "cpgPLP_statuscpgPLP"]
+  efs_stats[efs_stats$group == group_df$group[i],]$HR <- exp(efs_df$estimate[efs_df$term == "cpgPLP_statusCPG P/LP"])
+  efs_stats[efs_stats$group == group_df$group[i],]$p <- efs_df$p.value[efs_df$term == "cpgPLP_statusCPG P/LP"]
   
-  efs_stats[efs_stats$group == group_df$group[i],]$CI_lower <- efs_ci_df["cpgPLP_statuscpgPLP", "lower .95"]
-  efs_stats[efs_stats$group == group_df$group[i],]$CI_upper <- efs_ci_df["cpgPLP_statuscpgPLP", "upper .95"]
+  efs_stats[efs_stats$group == group_df$group[i],]$CI_lower <- efs_ci_df["cpgPLP_statusCPG P/LP", "lower .95"]
+  efs_stats[efs_stats$group == group_df$group[i],]$CI_upper <- efs_ci_df["cpgPLP_statusCPG P/LP", "upper .95"]
   
   # take Ns as the largest value in OS or EFS survival models 
   os_stats[os_stats$group == group_df$group[i],]$group_n <- max(c(os_n, efs_n))
@@ -230,7 +230,7 @@ survival_stats %>%
                 show.legend = FALSE, color = "#00A087FF") +
   geom_text(x = 1, hjust = 0, size = 3.5, fontface = 2) +
   labs(x = "log10-P-LP carrier hazard ratio (95% CI)", y = NULL) + 
-  xlim(-2, 2) +
+  xlim(-2.5, 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   facet_wrap(~type, nrow = 1) +
   theme_Publication() +
