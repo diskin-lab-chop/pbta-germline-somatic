@@ -47,6 +47,7 @@ source(file.path(analysis_dir, "util", "intron_exon_annotation_function.R"))
 set.seed(2024)
 ```
 
+Set file paths
 
 ```{r}
 hist_cohort_file <- file.path(root_dir, "analyses", 
@@ -68,6 +69,7 @@ prot_file <- file.path(root_dir, "analyses",
                        "cptac-hope-cpg-proteomics-zscores.tsv")
 ```
 
+Wrangle data
 
 ```{r}
 hist <- read_tsv(hist_cohort_file)
@@ -77,6 +79,10 @@ expr_zscores <- read_tsv(expr_file)
 splice_events <- read_tsv(splice_events_file) %>%
   dplyr::rename(subgroup = plot_group)
 ```
+Define significant P/LP variant-associated splice events as those with:
+1) min dist b/w variant and splice event < 250bp
+2) abs(PSI zscore) >= 2
+3 abs (PSI diff) >= 0.05
 
 ```{r}
 plp_splice_candidates <- splice_events %>%
@@ -95,12 +101,14 @@ plp_splice_candidates <- splice_events %>%
     event_in_gtf == "No" ~ "Novel"
   ))
 
+# apply function to annotate exon or intron number
 plp_splice_candidates <- get_exon_intron_numbers(plp_splice_candidates)
 
 write_tsv(plp_splice_candidates,
           file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
 ```
 
+Plot significant P/LP variant-associated splice events
 
 ```{r}
 plot_group_palette <- plp_splice_candidates$plot_group_hex
@@ -164,6 +172,7 @@ plp_splice_candidates %>%
                       "as-event-proximal-nonsplice-plp-variants.tsv"))
 ```
 
+Load rmats, gene expression z-scores, and proteomics abundances 
 
 ```{r}
 rmats <- read_tsv(rmats_file) %>%
@@ -182,10 +191,15 @@ rmats <- read_tsv(rmats_file) %>%
 prot_zscores <- read_tsv(prot_file) %>%
   dplyr::rename(Hugo_Symbol = GeneSymbol)
 ```
-
+Loop through sig variant-associated splice events and calculate pearson correlation coefficients between PSI and 1) transcript abundance and 2) protein abundance.
+We will also plot correlations, when data are available. 
 
 ```{r}
 plp_splice_candidates <- plp_splice_candidates %>%
+  dplyr::mutate(subgroup = case_when(
+      subgroup == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+      TRUE ~ subgroup
+    )) %>%
   dplyr::mutate(psi_expr_cor = NA_integer_,
                 psi_expr_cor_p = NA_integer_,
                 psi_prot_cor = NA_integer_,
@@ -209,6 +223,10 @@ for (i in 1:nrow(plp_splice_candidates)){
                   splicing_case == case) 
   
   expr_gene <- expr_zscores %>%
+    dplyr::mutate(subgroup = case_when(
+      subgroup == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+      TRUE ~ subgroup
+    )) %>%
     dplyr::filter(Hugo_Symbol == gene,
                   subgroup == group_rna) %>%
     left_join(rmats_gene %>% dplyr::select(Kids_First_Biospecimen_ID_rna,
@@ -222,7 +240,8 @@ for (i in 1:nrow(plp_splice_candidates)){
       TRUE ~ IncLevel1
     )) %>%
     group_by(subgroup) %>%
-    dplyr::mutate(psi_zscore = scale(IncLevel1))
+    dplyr::mutate(psi_zscore = scale(IncLevel1)) %>%
+    ungroup() 
   
   if (sum(!is.na(expr_gene$psi_zscore)) >= 3){
   
@@ -287,7 +306,7 @@ for (i in 1:nrow(plp_splice_candidates)){
               y = "TPM z-score",
               color = "Splice event\n proximal\n P/LP carrier",
               shape = "Splice event\n proximal\n P/LP carrier",
-              title = glue::glue("{gene}, {exon_intron_rank}\n{group_rna}")) + 
+              title = glue::glue("{gene}, {exon_intron_rank}\n{unique(expr_gene$subgroup)}")) + 
          stat_cor(method = "pearson",
                   label.x.npc = "left",
                   label.y.npc = "top",
@@ -346,6 +365,8 @@ for (i in 1:nrow(plp_splice_candidates)){
 write_tsv(plp_splice_candidates,
           file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
 ```
+
+Print session info
 
 ```{r}
 sessionInfo()
