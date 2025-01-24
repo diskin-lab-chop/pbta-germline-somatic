@@ -653,11 +653,12 @@ for (i in 1:length(repair_gene_source)){
     groups &lt;- groups[order(groups)]
     paths &lt;- c(&quot;All Repair&quot;, &quot;BER&quot;, &quot;HR&quot;, &quot;MMR&quot;, &quot;NER&quot;, &quot;NHEJ&quot;, &quot;Other&quot;)
     
-    # Define odds Ratios and p-value matrices
+    # Define count, odds ratio and p-value matrices
     
     enr_mat &lt;- matrix(0, length(groups), length(paths),
                       dimnames = list(groups, paths))
     pval_mat &lt;- enr_mat
+    ct_mat &lt;- enr_mat
     
     # Run Fisher&#39;s exact tests by histology and repair pathway
     for (group in groups) {
@@ -683,23 +684,30 @@ for (i in 1:length(repair_gene_source)){
         mat &lt;- matrix(c(length(in_hist_path), length(in_hist_no_path),
                         length(no_hist_in_path), length(no_hist_no_path)),
                       2, 2)
-        enr_mat[group, path] &lt;- fisher.test(mat)$estimate
-        pval_mat[group, path] &lt;- fisher.test(mat)$p.value
+        
+        ct_mat[group, path] &lt;- length(in_hist_path)
+        enr_mat[group, path] &lt;- fisher.test(mat, alternative = &quot;greater&quot;)$estimate
+        pval_mat[group, path] &lt;- fisher.test(mat, alternative = &quot;greater&quot;)$p.value
       }
     }
+    
+    # multiple test correction
+    fdr_mat &lt;- t(apply(pval_mat, 1, function(x) p.adjust(x, method = &quot;BH&quot;)))
   
   # create text matrix of odds ratios and asterisk in cases of statistical significance
-  sig_mat &lt;- ifelse(pval_mat &lt; 0.05 &amp; enr_mat &gt; 1, &quot;*&quot;, &quot;&quot;)
+  sig_mat &lt;- ifelse(fdr_mat &lt; 0.05 &amp; enr_mat &gt; 1, &quot;*&quot;, &quot;&quot;)
   
-  fill_mat &lt;- matrix(glue::glue(&quot;{round(enr_mat, 1)} {sig_mat}&quot;), 
+  fill_mat &lt;- matrix(glue::glue(&quot;{ct_mat}\n({round(enr_mat, 1)}{sig_mat})&quot;), 
                      length(groups), length(paths))
+  
+  fill_mat &lt;- ifelse(fill_mat == &quot;0\n(0)&quot;, &quot;0&quot;, fill_mat)
   
   # Plot enrichment heatmap
   
   col_fun = colorRamp2(c(0, 6), c(&quot;white&quot;, &quot;orangered&quot;))
   
   pdf(file.path(plot_dir, paste0(&quot;dna_repair_enr_by_plot_group_&quot;, repair_gene_source[i], &quot;.pdf&quot;)),
-        width = 6, height = 6)
+        width = 6, height = 7)
   
   enr_heatmap &lt;- Heatmap(enr_mat,
                          name = &quot;Odds ratio&quot;,
