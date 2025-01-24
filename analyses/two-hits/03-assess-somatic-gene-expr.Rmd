@@ -113,6 +113,10 @@ hist_cohort <- read_tsv(hist_cohort_file) %>%
     TRUE ~ plot_group
   ))
 
+write_tsv(hist_cohort,
+          file.path(results_dir, 
+                    "germline-primary-plus-tumor-histologies-rna.tsv"))
+
 # filter PLP calls for cpgs, and add plot_group and molecular_subtype
 germline <- germline %>%
   left_join(hist_cohort[,c("Kids_First_Biospecimen_ID_normal",
