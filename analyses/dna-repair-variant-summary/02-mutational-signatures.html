@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-01-01" />
 
-<title>Mutational Signatures Analysis in HGG tumors</title>
+<title>Mutational Signatures Analysis in CPG P/LP carriers</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -420,8 +420,8 @@ font-size: 0.95em;
 
 
 
-<h1 class="title toc-ignore">Mutational Signatures Analysis in HGG
-tumors</h1>
+<h1 class="title toc-ignore">Mutational Signatures Analysis in CPG P/LP
+carriers</h1>
 <h4 class="author">Ryan Corbett</h4>
 <h4 class="date">2023</h4>
 
@@ -441,7 +441,7 @@ root_dir &lt;- rprojroot::find_root(rprojroot::has_dir(&quot;.git&quot;))
 
 data_dir &lt;- file.path(root_dir, &quot;data&quot;)
 analysis_dir &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;dna-repair-variant-summary&quot;)
-input_dir &lt;- file.path(analysis_dir, &quot;input&quot;)
+input_dir &lt;- c(file.path(analysis_dir, &quot;input&quot;))
 
 source(file.path(analysis_dir, &quot;util&quot;, &quot;mutsigs_functions.R&quot;))
 source(file.path(root_dir, &quot;figures&quot;, &quot;theme.R&quot;))</code></pre>
@@ -450,46 +450,26 @@ COSMICv3 mutational signature weights file, - TMB file</p>
 <pre class="r"><code>histologies_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;collapse-tumor-histologies&quot;,
                               &quot;results&quot;,&quot;germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv&quot;)
 
-plp_file &lt;- file.path(data_dir, 
-                      &quot;pbta-merged-plp-variants-autogvp-abridged.tsv&quot;)
-
-plp_sv_file &lt;- file.path(data_dir,
-                         &quot;pbta_germline_svs.tsv&quot;)
-
 tmb_file &lt;- file.path(data_dir, &quot;snv-mutation-tmb-coding.tsv&quot;)
 
-maf_file &lt;- file.path(root_dir, &quot;analyses&quot;, &quot;oncokb-annotation&quot;, &quot;results&quot;, &quot;snv-consensus-plus-hotspots-goi-oncokb.maf.tsv&quot;)</code></pre>
-<p>Read in histologies, germline PLP, and tmb file. Subset histologies
-file to include only HGG tumors</p>
-<pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) %&gt;%
-  filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
-         grepl(&quot;wildtype&quot;, molecular_subtype))
-
-plp &lt;- read_tsv(plp_file, show_col_types = FALSE) %&gt;%
-    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
-
-plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE) %&gt;%
-    filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
+dna_repair_plp_file &lt;- file.path(analysis_dir, &quot;results&quot;, &quot;Knijnenburg_repair_genes&quot;, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
+dna_repair_sv_plp_file &lt;- file.path(analysis_dir, &quot;results&quot;, &quot;Knijnenburg_repair_genes&quot;, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)</code></pre>
+<p>wrangle data</p>
+<pre class="r"><code>hist &lt;- read_tsv(histologies_file,show_col_types = FALSE) 
 
 tmb &lt;- read_tsv(tmb_file,show_col_types = FALSE) %&gt;%
   dplyr::rename(&quot;Kids_First_Biospecimen_ID&quot; = &quot;Tumor_Sample_Barcode&quot;)
 
-maf &lt;- data.table::fread(maf_file, data.table = F) %&gt;%
-  filter(Tumor_Sample_Barcode %in% hist$Kids_First_Biospecimen_ID_tumor)</code></pre>
-<p>Comparison of mutational signatures between HGG samples with and
-without germline variants in DNA repair genes will be performed through
-multiple loops to change the following parameters: - DNA repair gene
-list: run comparative analyses using two separate DNA repair gene lists
-(one obtained from <a href="https://pubmed.ncbi.nlm.nih.gov/29617664/">Knijnenburg et al. 2021
-paper</a>, another from <a href="https://www.gsea-msigdb.org/gsea/msigdb/human/genesets.jsp?collection=CP:KEGG">Broad
-GSEA gene lists</a>) - Pairwise comparisons; run separate comparative
-analyses of mutational signatures, considering 1) All patients with
-germline DNA repair variants vs. those without, 2) All patients with
-germline MMR gene variants vs. those without, 3) All patients with
-germline BRCA/BRCA-interacting gene variants vs. those without, and 4)
-all patients with other DNA repair germline variants vs. those without
-DNA repair variants.</p>
-<p>Consistent with <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6357558/pdf/bbx082.pdf">current
+dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
+dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+
+dna_repair_plp &lt;- dna_repair_plp %&gt;%
+    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                  BER, HR, MMR, NER, NHEJ) %&gt;%
+    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
+                                                  BER, HR, MMR, NER, NHEJ))</code></pre>
+<p>Load cosmic v3 mutational signature exposure data, and define DNA
+repair deficiency signatures Consistent with <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6357558/pdf/bbx082.pdf">current
 practices</a>, we set signature exposures &lt; 0.06 to zero to exclude
 spurious signatures.</p>
 <pre class="r"><code># Define cosmicV3 results files, one excluding and one including SBS39 from analysis 
@@ -517,69 +497,71 @@ mutate(exposure = case_when(
   
 # Define MMR-associated and other DNA repair signatures
 mmr_sigs &lt;- c(&#39;SBS6&#39;, &#39;SBS14&#39;, &#39;SBS15&#39;, &#39;SBS20&#39;, &#39;SBS21&#39;, &#39;SBS26&#39;, &#39;SBS44&#39;)
-repair_sigs &lt;- c(&#39;SBS30&#39;, &#39;SBS36&#39;, &#39;SBS3&#39;, &#39;SBS9&#39;, &#39;SBS10a&#39;, &#39;SBS10b&#39;, &#39;SBS10c&#39;, &#39;SBS10d&#39;)
-
-# Define repair gene source input directories 
-repair_gene_source &lt;- c(&quot;Knijnenburg_repair_genes&quot;, &quot;Broad_GO_repair_genes&quot;)
-
-input_dir &lt;- c(file.path(analysis_dir, &quot;input&quot;, &quot;Knijnenburg_paper&quot;),
-               file.path(analysis_dir, &quot;input&quot;, &quot;broad&quot;))
-names(input_dir) &lt;- repair_gene_source
+repair_sigs &lt;- c(&#39;SBS30&#39;, &#39;SBS36&#39;, &#39;SBS3&#39;, &#39;SBS9&#39;, &#39;SBS10a&#39;, &#39;SBS10b&#39;, &#39;SBS10c&#39;, &#39;SBS10d&#39;)</code></pre>
+<p>Comparison of mutational signatures between tumors with and without
+germline variants in DNA repair genes will be performed through multiple
+loops to change the following parameters: - Tumor diagnoses; HGG, DIPG
+or DMG, mesenchymal tumors, and non-neoplastic tumors, in which we
+observed modest enrichment for DNA repair P/LP carriers - DNA repair
+pathway P/LP carriers; compare MMR, HR, and BER P/LP carrier mut sigs to
+WT of the same tumor histology</p>
+<pre class="r"><code>groups &lt;- c(&quot;HGG, H3 wildtype&quot;, &quot;DIPG or DMG&quot;,
+            &quot;Non-neoplastic tumor&quot;, &quot;Mesenchymal tumor&quot;)
   
 # Loop through two DNA repair gene lists
-for (j in 1:length(repair_gene_source)){
+for (group in groups){
   
-  # define gene list-specific results and plot directories
-  results_dir &lt;- file.path(analysis_dir, &quot;results&quot;, repair_gene_source[j])
-  plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, repair_gene_source[j])
+  #subset histologies
+  if (group == &quot;HGG, H3 wildtype&quot;){
   
-  # read in DNA repair gene germline PLP file
-  if (repair_gene_source[j] == &quot;Knijnenburg_repair_genes&quot;){
-    dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
-    dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
-    }else{
-      dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
-      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
-    }
+    sub_hist &lt;- hist %&gt;%
+      filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
+             grepl(&quot;wildtype&quot;, molecular_subtype))
+    
+  } else {
+    
+    sub_hist &lt;- hist %&gt;%
+      dplyr::filter(plot_group == group)
+    
+  }
   
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
-  dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
+  # define histologiy-specific results and plot directories
+  results_dir &lt;- file.path(analysis_dir, &quot;results&quot;, group)
+  plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, group)
   
-  dna_repair_plp &lt;- dna_repair_plp %&gt;%
-    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
-                  BER, HR, MMR, NER, NHEJ) %&gt;%
-    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
-                                                  BER, HR, MMR, NER, NHEJ))
+  if (!dir.exists(results_dir)){
+    
+    dir.create(results_dir)
+    
+  }
   
-  # obtain normal BS_ids for patients with germline PLP variant in: 1) any DNA repair gene, 2) MMR genes, 3) BRCA and BRCA_interacting genes, and 4) Other DNA repair genes, excluding MMR
-  allRepair_germline &lt;- dna_repair_plp %&gt;%
-    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
-    pull(Kids_First_Biospecimen_ID_normal)
-
+  if (!dir.exists(plot_dir)){
+    
+    dir.create(plot_dir)
+    
+  }
+  
+  # obtain normal BS_ids for patients with germline PLP variants in MMR, HR, and BER pathway genes
   mmr_germline &lt;- dna_repair_plp %&gt;%
     filter(MMR == &quot;Yes&quot;) %&gt;%
     distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
     pull(Kids_First_Biospecimen_ID_normal)
 
   brca_germline &lt;- dna_repair_plp %&gt;%
-    filter(grepl(&quot;BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A&quot;, gene_symbol_vep)) %&gt;%
+    filter(grepl(&quot;BRCA|BARD1|BRIP1|ATM|CHEK2|PALB2|RAD51|MRE11A&quot;, gene_symbol_vep)) %&gt;%
     distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
     pull(Kids_First_Biospecimen_ID_normal)
   
-  otherRepair_germline &lt;- dna_repair_plp %&gt;%
-    filter(!Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %&gt;%
+  ber_germline &lt;- dna_repair_plp %&gt;%
+    filter(BER == &quot;Yes&quot;) %&gt;%
     distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
     pull(Kids_First_Biospecimen_ID_normal)
-  
-  ctrl_germline &lt;- hist %&gt;%
-    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal) %&gt;%
-    pull(Kids_First_Biospecimen_ID_normal)
-    
+
   # define list of BS_ids in each group, and names for subsequent plots
-  sample_list &lt;- list(allRepair_germline, mmr_germline, brca_germline, otherRepair_germline)
-  names(sample_list) &lt;- c(&quot;All_repair&quot;, &quot;MMR&quot;, &quot;BRCA&quot;, &quot;Other_repair&quot;)
+  sample_list &lt;- list(mmr_germline, brca_germline, ber_germline)
+  names(sample_list) &lt;- c(&quot;MMR&quot;, &quot;BRCA&quot;, &quot;BER&quot;)
   
-  plot_names &lt;- c(&quot;DNA repair&quot;, &quot;MMR&quot;, &quot;BRCA/BRCA-interacting&quot;, &quot;Other DNA repair&quot;)
+  plot_names &lt;- c(&quot;MMR&quot;, &quot;HR&quot;, &quot;BER&quot;)
   
   # Loop through sample lists to compare mutational signatures between group of interest and samples without DNA repair germline variants
   for (k in 1:length(sample_list)){
@@ -587,22 +569,22 @@ for (j in 1:length(repair_gene_source)){
     repair_germline &lt;- sample_list[[k]]
     
     # Define control BS_ids list
-    ctrl_germline &lt;- hist %&gt;%
+    ctrl_germline &lt;- sub_hist %&gt;%
       filter(!Kids_First_Biospecimen_ID_normal %in% repair_germline) %&gt;%
       pull(Kids_First_Biospecimen_ID_normal)
 
     # obtain corresponding tumors IDs for `repair_germline` and `ctrl_germline` samples 
-    repair_ids &lt;- hist %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% repair_germline]) %&gt;%
+    repair_ids &lt;- sub_hist %&gt;%
+    filter(Kids_First_Biospecimen_ID_normal %in% repair_germline) %&gt;%
     pull(Kids_First_Biospecimen_ID_tumor)
     
-    ctrl_ids &lt;- hist %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% ctrl_germline]) %&gt;%
+    ctrl_ids &lt;- sub_hist %&gt;%
+    filter(Kids_First_Biospecimen_ID_normal %in% ctrl_germline) %&gt;%
     pull(Kids_First_Biospecimen_ID_tumor)
     
     # define data frame to stores mean mutational signature exposures, differences between groups, and corresponding test statistic p-values 
     cosmicv3_res &lt;- data.frame(signature = signatures,
-                              repair_exposure = rep(0, length(signatures)),
+                             repair_exposure = rep(0, length(signatures)),
                              ctrl_exposure = rep(0, length(signatures)),
                              exposure_diff = rep(0, length(signatures)),
                              wilcox_stat = rep(0, length(signatures)),
@@ -648,7 +630,7 @@ for (j in 1:length(repair_gene_source)){
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
               plot.title = element_text(hjust = 0.5, size = 18)) + 
         labs(x = &#39;COSMIC v3.3 signature&#39;, y = &#39;exposure difference&#39;,
-             fill = &#39;sig etiology&#39;, title = glue::glue(&quot;HGG, H3 WT, {plot_names[k]} P/LP vs. no P/LP&quot;)) +
+             fill = &#39;sig etiology&#39;, title = glue::glue(&quot;{group}, {plot_names[k]} P/LP vs. no P/LP&quot;)) +
         geom_hline(yintercept = 0) + 
         geom_text(aes(x = signature, y = exposure_diff * 1.1,
                   label = ifelse(pvalue &lt; 0.05, &quot;*&quot;, &quot;&quot;)),
@@ -660,8 +642,249 @@ for (j in 1:length(repair_gene_source)){
         width = 17, height = 10, units = &quot;cm&quot;)
 
   }
+  
 }</code></pre>
 <pre><code>## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
+## &quot;two.sided&quot;): cannot compute exact p-value with ties
+## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
 ## Warning in wilcox.test.default(repair_exposures, ctrl_exposures, alternative =
 ## &quot;two.sided&quot;): cannot compute exact p-value with ties
@@ -1661,36 +1884,27 @@ variant samples, BRCA/BRCA-interacting germline variant samples, other
 DNA repair germline variant samples, no DNA repair germline variant
 samples)</p>
 <pre class="r"><code># Define signatures of interest to plot
-plot_sigs &lt;- c(mmr_sigs, &quot;SBS3&quot;, &quot;SBS5&quot;, &quot;SBS9&quot;)
-
-# Define MMR-associated and other DNA repair-associated mutational signatures
-mmr_sigs &lt;- c(&#39;SBS6&#39;, &#39;SBS14&#39;, &#39;SBS15&#39;, &#39;SBS20&#39;, &#39;SBS21&#39;, &#39;SBS26&#39;, &#39;SBS44&#39;)
-repair_sigs &lt;- c(&#39;SBS30&#39;, &#39;SBS36&#39;, &#39;SBS3&#39;, &#39;SBS9&#39;, &#39;SBS10a&#39;, &#39;SBS10b&#39;, &#39;SBS10c&#39;, &#39;SBS10d&#39;)
+plot_sigs &lt;- c(mmr_sigs, &quot;SBS3&quot;, &quot;SBS5&quot;, &quot;SBS9&quot;, &quot;SBS30&quot;)
 
 # create plots for each DNA repair gene list source
-for (j in 1:length(repair_gene_source)){
+for (group in groups){
   
-  # define gene list-specific results and plots dir
-  results_dir &lt;- file.path(analysis_dir, &quot;results&quot;, repair_gene_source[j])
-  plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, repair_gene_source[j])
+  if (group == &quot;HGG, H3 wildtype&quot;){
   
-  # read in DNA repair gene germline PLP file
-  if (repair_gene_source[j] == &quot;Knijnenburg_repair_genes&quot;){
-    dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_Knijnenburg_paper.tsv&quot;)
-    dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_Knijnenburg_paper.tsv&quot;)
-    }else{
-      dna_repair_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_variant_plp_broad.tsv&quot;)
-      dna_repair_sv_plp_file &lt;- file.path(results_dir, &quot;dna_repair_germline_sv_plp_broad.tsv&quot;)
-    }
+    sub_hist &lt;- hist %&gt;%
+      filter(grepl(&quot;Other high-grade glioma&quot;, plot_group),
+             grepl(&quot;wildtype&quot;, molecular_subtype))
+    
+  } else {
+    
+    sub_hist &lt;- hist %&gt;%
+      dplyr::filter(plot_group == group)
+    
+  }
   
-  dna_repair_plp &lt;- read_tsv(dna_repair_plp_file, show_col_types = FALSE)
-  dna_repair_sv_plp &lt;- read_tsv(dna_repair_sv_plp_file, show_col_types = FALSE)
-  
-  dna_repair_plp &lt;- dna_repair_plp %&gt;%
-    dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
-                  BER, HR, MMR, NER, NHEJ) %&gt;%
-    bind_rows(dna_repair_sv_plp %&gt;% dplyr::select(Kids_First_Biospecimen_ID_normal, gene_symbol_vep, 
-                                                  BER, HR, MMR, NER, NHEJ))
+    # define gene list-specific results and plot directories
+  results_dir &lt;- file.path(analysis_dir, &quot;results&quot;, group)
+  plot_dir &lt;- file.path(analysis_dir, &quot;plots&quot;, group)
 
   # Define BS_ids for normal and corresponding tumor IDs for each sample group 
   mmr_germline &lt;- dna_repair_plp %&gt;%
@@ -1699,392 +1913,385 @@ for (j in 1:length(repair_gene_source)){
     pull(Kids_First_Biospecimen_ID_normal)
 
   brca_germline &lt;- dna_repair_plp %&gt;%
-    filter(grepl(&quot;BRCA|BARD1|BRIP|ATM|CHEK2|PALB2|RAD51|MRE11A&quot;, gene_symbol_vep)) %&gt;%
+    filter(grepl(&quot;BRCA|BARD1|BRIP1|ATM|CHEK2|PALB2|RAD51|MRE11A&quot;, gene_symbol_vep)) %&gt;%
     distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
     pull(Kids_First_Biospecimen_ID_normal)
   
-  otherRepair_germline &lt;- hist %&gt;%
-    filter(Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal &amp; !Kids_First_Biospecimen_ID_normal %in% c(mmr_germline, brca_germline)) %&gt;%
-    pull(Kids_First_Biospecimen_ID_normal)
-  
-  ctrl_germline &lt;- hist %&gt;%
-    filter(!Kids_First_Biospecimen_ID_normal %in% dna_repair_plp$Kids_First_Biospecimen_ID_normal) %&gt;%
+  ber_germline &lt;- dna_repair_plp %&gt;%
+    filter(BER == &quot;Yes&quot;) %&gt;%
+    distinct(Kids_First_Biospecimen_ID_normal) %&gt;%
     pull(Kids_First_Biospecimen_ID_normal)
     
-  mmr_ids &lt;- hist %&gt;%
+  mmr_ids &lt;- sub_hist %&gt;%
     filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% mmr_germline]) %&gt;%
     pull(Kids_First_Biospecimen_ID_tumor)
 
-  brca_ids &lt;- hist %&gt;%
+  brca_ids &lt;- sub_hist %&gt;%
     filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% brca_germline]) %&gt;%
     pull(Kids_First_Biospecimen_ID_tumor)
   
-  otherRepair_ids &lt;- hist %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% otherRepair_germline]) %&gt;%
-    pull(Kids_First_Biospecimen_ID_tumor)
-    
-  ctrl_ids &lt;- hist %&gt;%
-    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% ctrl_germline]) %&gt;%
+  ber_ids &lt;- sub_hist %&gt;%
+    filter(Kids_First_Participant_ID %in% Kids_First_Participant_ID[Kids_First_Biospecimen_ID_normal %in% ber_germline]) %&gt;%
     pull(Kids_First_Biospecimen_ID_tumor)
   
   # Loop through mutational signatures of interest to generate exposure violin plots by group
   for (k in 1:length(plot_sigs)){
     
-    # Create data frame for plotting
+    if (plot_sigs[k] == &quot;SBS3&quot;){
+      
     sbs_df &lt;- cosmicv3_sigs %&gt;%
-      filter(signature == plot_sigs[k] &amp; Kids_First_Biospecimen_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %&gt;%
+      filter(signature == plot_sigs[k] &amp; Kids_First_Biospecimen_ID %in% sub_hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
       mutate(germline_variant = case_when(
-        Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
-        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;BRCA/interacting&quot;,
-        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
-        TRUE ~ &quot;Non-repair&quot;
+        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;HR&quot;,
+        TRUE ~ &quot;Non-HR&quot;
       )) %&gt;%
       mutate(germline_variant = factor(germline_variant)) %&gt;% 
       mutate(germline_variant = fct_relevel(germline_variant,
-                                            c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
+                                            c(&quot;HR&quot;, &quot;Non-HR&quot;))
              )
     
-    plot_exposure_violin(sbs_df, &quot;germline_variant&quot;, &quot;exposure&quot;, plot_sigs[k])
+    plot_exposure_violin(sbs_df, &quot;germline_variant&quot;, &quot;exposure&quot;, plot_sigs[k],
+                         group = group)
         
       ggsave(
         file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
-        width = 14, height = 11, units = &quot;cm&quot;)
-               
+        width = 3, height = 3.5)
+      
+    } else if (plot_sigs[k] == &quot;SBS30&quot;){
+      
+    sbs_df &lt;- cosmicv3_sigs %&gt;%
+      filter(signature == plot_sigs[k] &amp; Kids_First_Biospecimen_ID %in% sub_hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
+      mutate(germline_variant = case_when(
+        Kids_First_Biospecimen_ID %in% ber_ids ~ &quot;BER&quot;,
+        TRUE ~ &quot;Non-BER&quot;
+      )) %&gt;%
+      mutate(germline_variant = factor(germline_variant)) %&gt;% 
+      mutate(germline_variant = fct_relevel(germline_variant,
+                                            c(&quot;BER&quot;, &quot;Non-BER&quot;))
+             )
+    
+    plot_exposure_violin(sbs_df, &quot;germline_variant&quot;, &quot;exposure&quot;, plot_sigs[k],
+                         group = group)
+        
+      ggsave(
+        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
+        width = 3, height = 3.5)
+      
+    } else {
+    
+    # Create data frame for plotting
+    sbs_df &lt;- cosmicv3_sigs %&gt;%
+      filter(signature == plot_sigs[k] &amp; Kids_First_Biospecimen_ID %in% sub_hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
+      mutate(germline_variant = case_when(
+        Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
+        TRUE ~ &quot;Non-MMR&quot;
+      )) %&gt;%
+      mutate(germline_variant = factor(germline_variant)) %&gt;% 
+      mutate(germline_variant = fct_relevel(germline_variant,
+                                            c(&quot;MMR&quot;, &quot;Non-MMR&quot;))
+             )
+    
+    if (sum(sbs_df$germline_variant == &quot;MMR&quot;) &gt; 0 ){
+    
+      plot_exposure_violin(sbs_df, &quot;germline_variant&quot;, &quot;exposure&quot;, plot_sigs[k],
+                           group = group)
+          
+      ggsave(
+        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
+        width = 3, height = 3.5)
+        
+    }
+    
+    }
+    
   }
-  
+
   # Create table of summed MMR deficiency-associated signatures across all samples
   mmr_df &lt;- cosmicv3_sigs %&gt;%
-      filter(signature %in% mmr_sigs &amp; Kids_First_Biospecimen_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %&gt;%
+      filter(signature %in% mmr_sigs &amp; Kids_First_Biospecimen_ID %in% sub_hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
       group_by(Kids_First_Biospecimen_ID) %&gt;%
       summarize(sum = sum(exposure)) %&gt;%
       mutate(germline_variant = case_when(
         Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
-        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;BRCA/interacting&quot;,
-        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
-        TRUE ~ &quot;Non-repair&quot;
+        TRUE ~ &quot;Non-MMR&quot;
       )) %&gt;%
       mutate(germline_variant = factor(germline_variant)) %&gt;% 
       mutate(germline_variant = fct_relevel(germline_variant,
-                                            c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
+                                            c(&quot;MMR&quot;, &quot;Non-MMR&quot;))
              )
   
-  plot_exposure_violin(mmr_df, &quot;germline_variant&quot;, &quot;sum&quot;, &quot;MMR&quot;)
-  
-  ggsave(
-    file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.tiff&quot;)), 
-    width = 14, height = 11, units = &quot;cm&quot;)
-  
-  comparisons_mmr &lt;- list(c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;), c(&quot;MMR&quot;, &quot;Other repair&quot;),
-                          c(&quot;MMR&quot;, &quot;Non-repair&quot;))
-  
-  tmb %&gt;%
-    dplyr::filter(Kids_First_Biospecimen_ID %in% hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
-    mutate(germline_variant = case_when(
-        Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
-        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;BRCA/interacting&quot;,
-        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
-        TRUE ~ &quot;Non-repair&quot;
-      )) %&gt;%
-    mutate(germline_variant = factor(germline_variant)) %&gt;% 
-    mutate(germline_variant = fct_relevel(germline_variant,
-                                          c(&quot;MMR&quot;, &quot;BRCA/interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
-           ) %&gt;%
+  if (sum(mmr_df$germline_variant == &quot;MMR&quot;) &gt; 0 ){
     
-    ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
-    geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, 
-                show.legend = FALSE) +
-    geom_boxplot(width=0.1, show.legend = FALSE) + 
-    stat_compare_means(comparisons = comparisons_mmr, size = 3) +
-    labs(x = &#39;Germline Variant Class&#39;, y = &quot;log10(TMB)&quot;) +
-    theme_minimal() +
-    theme(legend.position = &#39;none&#39;,
-          text = element_text(size = 12)) +
-    scale_x_discrete(labels = c(paste0(&quot;MMR\n (n=&quot;, length(mmr_ids), &quot;)&quot;), 
-                                paste0(&quot;BRCA/\nBRCA-interacting\n (n=&quot;, length(brca_ids), &quot;)&quot;),
-                                paste0(&quot;Other repair\n (n=&quot;, length(otherRepair_ids), &quot;)&quot;),
-                                paste0(&quot;No DNA repair\n (n=&quot;, length(ctrl_ids), &quot;)&quot;))) +
-    scale_fill_npg() +
-    stat_summary(fun.data=data_summary,
-                 show.legend = F) +
-    theme_Publication()
-        
-  ggsave(
-    file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.tiff&quot;)), 
-    width = 14, height = 11, units = &quot;cm&quot;)
+    plot_exposure_violin(mmr_df, &quot;germline_variant&quot;, &quot;sum&quot;, &quot;MMR&quot;,
+                         group = group)
+    
+    ggsave(
+      file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.tiff&quot;)), 
+      width = 3, height = 3.5)
+    
+    comparisons_mmr &lt;- list(c(&quot;MMR&quot;, &quot;Non-MMR&quot;))
+    
+    tmb %&gt;%
+      dplyr::filter(Kids_First_Biospecimen_ID %in% sub_hist$Kids_First_Biospecimen_ID_tumor) %&gt;%
+      mutate(germline_variant = case_when(
+          Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
+          TRUE ~ &quot;Non-MMR&quot;
+        )) %&gt;%
+      mutate(germline_variant = factor(germline_variant)) %&gt;% 
+      mutate(germline_variant = fct_relevel(germline_variant,
+                                            c(&quot;MMR&quot;, &quot;Non-MMR&quot;))
+             ) %&gt;%
       
-  # add MMR signature exposure levels to germline plp file and write to output
-  plp %&gt;%
-      left_join(hist[,c(&#39;Kids_First_Biospecimen_ID_normal&#39;, &#39;Kids_First_Biospecimen_ID_tumor&#39;)], by = &#39;Kids_First_Biospecimen_ID_normal&#39;) %&gt;%
-      dplyr::rename(&#39;Kids_First_Biospecimen_ID&#39; = &#39;Kids_First_Biospecimen_ID_tumor&#39;) %&gt;%
-      left_join(mmr_df[c(&#39;Kids_First_Biospecimen_ID&#39;, &#39;sum&#39;)], by = &#39;Kids_First_Biospecimen_ID&#39;) %&gt;%
-      dplyr::rename(&#39;MMR_exposure&#39; = &#39;sum&#39;) %&gt;%
-      left_join(tmb[,c(&#39;Kids_First_Biospecimen_ID&#39;, &#39;tmb&#39;)], by = &quot;Kids_First_Biospecimen_ID&quot;) %&gt;%
-      write_tsv(file.path(results_dir, paste0(&quot;germline_variant_plp_with_MMRsigs.tsv&quot;)))
+      ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
+      geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, 
+                  show.legend = FALSE) +
+      geom_boxplot(width=0.1, show.legend = FALSE) + 
+      stat_compare_means(method = &quot;wilcox&quot;,
+                         comparisons = comparisons_mmr, size = 3,
+                         method.args = list(alternative = &quot;greater&quot;)) +
+      labs(x = &#39;Germline Variant Class&#39;, y = &quot;log10(TMB)&quot;,
+           title = group) +
+      theme_minimal() +
+      theme(legend.position = &#39;none&#39;,
+            text = element_text(size = 12)) +
+      scale_x_discrete(labels = c(paste0(&quot;MMR P/LP\n (n=&quot;, length(mmr_ids), &quot;)&quot;), 
+                                  paste0(&quot;MMR WT\n (n=&quot;, nrow(sub_hist) - length(mmr_ids), &quot;)&quot;))) +
+      scale_fill_npg() +
+      scale_y_continuous(expand = expansion(mult = .2)) +
+      theme_Publication() +
+      theme(plot.title = element_text(size = 15, hjust = 0.5),
+            axis.title.x = element_text(size = 13)) 
+          
+    ggsave(
+      file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.tiff&quot;)), 
+      width = 3, height = 3.5)
     
-  # Create subset of above table including only samples with MMR germline variants and write to output
-  dna_repair_plp %&gt;%
-      dplyr::filter(MMR == &quot;Yes&quot;) %&gt;%
-      left_join(hist[,c(&#39;Kids_First_Biospecimen_ID_normal&#39;, &#39;Kids_First_Biospecimen_ID_tumor&#39;)], by = &#39;Kids_First_Biospecimen_ID_normal&#39;) %&gt;%
-      dplyr::rename(&#39;Kids_First_Biospecimen_ID&#39; = &#39;Kids_First_Biospecimen_ID_tumor&#39;) %&gt;%
-      left_join(mmr_df[c(&#39;Kids_First_Biospecimen_ID&#39;, &#39;sum&#39;)], by = &#39;Kids_First_Biospecimen_ID&#39;) %&gt;%
-      dplyr::rename(&#39;MMR_exposure&#39; = &#39;sum&#39;) %&gt;%
-      left_join(tmb[,c(&#39;Kids_First_Biospecimen_ID&#39;, &#39;tmb&#39;)], by = &quot;Kids_First_Biospecimen_ID&quot;) %&gt;%
-      write_tsv(file.path(results_dir, paste0(&quot;MMR_germline_variant_plp_with_MMRsigs.tsv&quot;)))
-    
-  mmr_genes &lt;- read_lines(file.path(input_dir[repair_gene_source[j]], &quot;mismatch_repair.txt&quot;))
-  brca_genes &lt;- c(&quot;BRCA1&quot;, &quot;BRCA2&quot;, &quot;BARD1&quot;, &quot;BRIP1&quot;, &quot;ATM&quot;, &quot;CHEK2&quot;, &quot;PALB2&quot;, &quot;RAD51&quot;, &quot;RAD51C&quot;, &quot;RAD51D&quot;, &quot;MRE11A&quot;)
-
-  # Obtain list of germline variants in MMR and BRCA genes in HGG subjects
-  collapsed_germline &lt;- dna_repair_plp %&gt;%
-      dplyr::filter(gene_symbol_vep %in% c(mmr_genes, brca_genes)) %&gt;%
-      group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
-      summarise(Hugo_Symbol_germline = str_c(sort(unique(gene_symbol_vep)), collapse = &quot;; &quot;))
-
-  # Obtain list of oncogenic/likley oncogenic somatic mutataions in MMR and BRCA genes in HGG subjects
-  collapsed_onco &lt;- maf %&gt;%
-      dplyr::filter(ONCOGENIC %in% c(&quot;Likely Oncogenic&quot;, &quot;Oncogenic&quot;, &quot;Resistance&quot;)) %&gt;%
-      dplyr::filter(Hugo_Symbol %in% c(mmr_genes, brca_genes)) %&gt;%
-      dplyr::rename(Kids_First_Biospecimen_ID_normal = Matched_Norm_Sample_Barcode,
-                    Kids_First_Biospecimen_ID_tumor = Tumor_Sample_Barcode,
-                    Hugo_Symbol_somatic = Hugo_Symbol) %&gt;%
-      group_by(Kids_First_Biospecimen_ID_normal) %&gt;%
-      summarise(Hugo_Symbol_somatic = str_c(sort(unique(Hugo_Symbol_somatic)), collapse = &quot;; &quot;))
-        
-  # Generate summary table for all HGG subjects with MMR exposure  
-  mmr_df %&gt;%
-      filter(sum &gt; 0.06) %&gt;%
-      rename(&quot;MMR_exposure&quot; = sum) %&gt;%
-      rename(&quot;Kids_First_Biospecimen_ID_tumor&quot; = Kids_First_Biospecimen_ID) %&gt;%
-      left_join(hist[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;, 
-                        &quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
-      left_join(collapsed_germline) %&gt;%
-      left_join(collapsed_onco) %&gt;%
-      dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-             plot_group, molecular_subtype, MMR_exposure, 
-             germline_variant, Hugo_Symbol_germline, Hugo_Symbol_somatic) %&gt;%
-      write_tsv(file.path(results_dir, paste0(&quot;PBTA_all_samples_with_MMRsigs.tsv&quot;)))
-    
-  # Generate summary table for all HGG subjects with SBS3 exposure  
-  sbs3_df &lt;- cosmicv3_sigs %&gt;%
-      dplyr::filter(signature == &quot;SBS3&quot; &amp; Kids_First_Biospecimen_ID %in% c(mmr_ids, brca_ids, otherRepair_ids, ctrl_ids)) %&gt;%
-      group_by(Kids_First_Biospecimen_ID) %&gt;%
-      dplyr::mutate(germline_variant = case_when(
-        Kids_First_Biospecimen_ID %in% mmr_ids ~ &quot;MMR&quot;,
-        Kids_First_Biospecimen_ID %in% brca_ids ~ &quot;BRCA/BRCA-interacting&quot;,
-        Kids_First_Biospecimen_ID %in% otherRepair_ids ~ &quot;Other repair&quot;,
-        TRUE ~ &quot;Non-repair&quot;
-      )) %&gt;%
-      dplyr::mutate(germline_variant = factor(germline_variant)) %&gt;% 
-      dplyr::mutate(germline_variant = fct_relevel(germline_variant,
-                                            c(&quot;MMR&quot;, &quot;BRCA/BRCA-interacting&quot;, &quot;Other repair&quot;, &quot;Non-repair&quot;))
-             )
-    
-    sbs3_df %&gt;%
-      dplyr::filter(exposure &gt; 0) %&gt;%
-      dplyr::rename(&quot;SBS3_exposure&quot; = exposure) %&gt;%
-      dplyr::rename(&quot;Kids_First_Biospecimen_ID_tumor&quot; = Kids_First_Biospecimen_ID) %&gt;%
-      left_join(hist[,c(&quot;Kids_First_Participant_ID&quot;, &quot;Kids_First_Biospecimen_ID_normal&quot;, 
-                        &quot;Kids_First_Biospecimen_ID_tumor&quot;, &quot;plot_group&quot;, &quot;molecular_subtype&quot;)]) %&gt;%
-      left_join(collapsed_germline) %&gt;%
-      left_join(collapsed_onco) %&gt;%
-      dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_First_Biospecimen_ID_tumor,
-             plot_group, molecular_subtype, SBS3_exposure, 
-             germline_variant, Hugo_Symbol_germline, Hugo_Symbol_somatic) %&gt;%
-      write_tsv(file.path(results_dir, paste0(&quot;PBTA_all_samples_with_SBS3sigs.tsv&quot;)))
-
+  }
+  
 }</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
 ## 0.251338489643014: cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014: cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014: cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
-## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
-## FALSE): cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`.
-## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
-## ! missing value where TRUE/FALSE needed</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
-## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
 ## 0.0771691767832836: cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836: cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836: cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
-## FALSE): cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`.
-## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
-## ! missing value where TRUE/FALSE needed</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
 ## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
-## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
-## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0),
-## c(0.30228968835189, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0),
 ## c(0.254246127632911, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0),
-## c(0.293982011033159, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0), c(0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+<pre><code>## Warning: Groups with fewer than two datapoints have been dropped.
+## ℹ Set `drop = FALSE` to consider such groups for position adjustment purposes.</code></pre>
+<pre><code>## Warning in wilcox.test.default(0, c(0, 0, 0, 0.149494947346125, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
-## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Removed 1 row containing missing values or values outside the scale
+## range (`geom_segment()`).</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(2.44656665591908, 2.54635035171737,
 ## 0.357696195313068, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.25422036944627,
-## 0.251338489643014, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.213692514765941, 0.295856278517743, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0.232588780541937), c(0, 0, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.665665312228949, 0.192938890371646, :
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
-## FALSE): cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0.1249195072211,
+## 0.348675487933897, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.0928821099146562), c(0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0.0846599425871462, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.0997620660723841), c(0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.455304813498095, 0.200274497567174), :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.207792303071514, 0), c(0.123220454102559, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0.11409480006874,
+## 0.0625758692563287, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;BER&quot;, &quot;Non-BER&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: BER</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning: Computation failed in `stat_signif()`.
-## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
+## Caused by error in `if (scales$x$map(comp[1]) == data$group[1] | manual) ...`:
 ## ! missing value where TRUE/FALSE needed</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0.181892111212878, 0.11901180736911, :
+<pre><code>## Warning in wilcox.test.default(c(0.425232956528977, 0), c(0.0608677931000391, :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0.123699846698777,
-## 0.0771691767832836, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0, 0, 0, 0, 0), c(0, 0, 0, 0), paired =
-## FALSE): cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning: Computation failed in `stat_signif()`.
-## Caused by error in `if (p_value &lt; .Machine$double.eps) ...`:
-## ! missing value where TRUE/FALSE needed</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
-## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
-## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.383362317284423, 0.516568326820801,
-## 0.0857522207102577, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0, 0),
-## c(0.30228968835189, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0, 0),
-## c(0.254246127632911, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.182643267529815, 0, 0, 0, 0),
-## c(0.293982011033159, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0, 0, 0.153785364813601, 0, 0, 0, 0), c(0, :
+<pre><code>## Warning in wilcox.test.default(c(0.722635943882181, -0.601875147631323), :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
-## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
+<pre><code>## Warning in wilcox.test.default(c(0.0930601852951886, 0.0831917780392247), :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
 ## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
-<pre><code>## Warning in wilcox.test.default(c(2.44656665591908, 2.54635035171737,
-## 0.357696195313068, : cannot compute exact p-value with ties</code></pre>
-<pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_tumor)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
-## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0.0813699643105596, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0), c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning: Groups with fewer than two datapoints have been dropped.
+## ℹ Set `drop = FALSE` to consider such groups for position adjustment purposes.</code></pre>
+<pre><code>## Warning in wilcox.test.default(0.371440238769636, c(0.309467121287125,
+## 0.142163890283668, : cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Removed 1 row containing missing values or values outside the scale
+## range (`geom_segment()`).</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.193777555650342, 0), c(0.34423182220016, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0, 0.217240350143575), c(0.0908721355871284, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning: Groups with fewer than two datapoints have been dropped.
+## ℹ Set `drop = FALSE` to consider such groups for position adjustment purposes.</code></pre>
+<pre><code>## Warning in wilcox.test.default(0.118255870167057, c(0.0927628265383658, :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: Removed 1 row containing missing values or values outside the scale
+## range (`geom_segment()`).</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.0831917780392247, 0.0930601852951886), :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(-0.277364056117819, -1.55611765707065), :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning: Groups with fewer than two datapoints have been dropped.
+## ℹ Set `drop = FALSE` to consider such groups for position adjustment purposes.</code></pre>
+<pre><code>## Warning: Removed 1 row containing missing values or values outside the scale
+## range (`geom_segment()`).</code></pre>
+<pre><code>## Warning: There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR
+## There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
+## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in wilcox.test.default(c(0.116862157967812, 0.0800898509912651), :
+## cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning: There was 1 warning in `mutate()`.
+## ℹ In argument: `germline_variant = fct_relevel(germline_variant, c(&quot;MMR&quot;, &quot;Non-MMR&quot;))`.
+## Caused by warning:
+## ! 1 unknown level in `f`: MMR</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.4.0 (2024-04-24)
 ## Platform: x86_64-pc-linux-gnu
