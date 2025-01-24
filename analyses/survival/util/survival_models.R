@@ -560,6 +560,16 @@ plotForest <- function(model) {
     ) %>%
     filter(estimate > 1e-4 & estimate < 1500)
   
+  if (length(names(model$xlevels)) > 0) {
+    
+    survival_df <- survival_df %>%
+      arrange(term) %>%
+      dplyr::mutate(term = str_replace_all(term, paste(names(model$xlevels), collapse = "|"), "")) %>%
+      dplyr::mutate(term = str_replace_all(term, "_", " ")) %>%
+      dplyr::mutate(term = fct_relevel(term, unique(term)))
+    
+  }
+  
   forest_plot <- ggplot(survival_df) +
     aes(x = estimate, y = term, fill = significant
     ) + 
