@@ -1,4 +1,10 @@
-# Germline variation across OpenPBTA patients
+# Integrated germline and somatic profiling of pediatric CNS tumors reveals incidental findings and novel tumor biology
+
+Ryan J. Corbett^, Rebecca Kaufman^, Shelly W. McQuaid, Zalman Vaksman, Saksham Phul, Miguel A. Brown, Jennifer L. Mason, Sebastian M. Waszak, Heena Desai, Ryan Hausler, Ammar S. Naqvi, Antonia Chroni, Zhuangzhuang Geng, Bo Zhang, Chuwei Zhong, Yuankun Zhu, Allison P. Heath, Marilyn Li, Phillip B. Storm, Adam C. Resnick, Kara N. Maxwell, Miriam Bornhorst, Kristina A. Cole, Angela J. Waanders, Suzanne MacFarland, Jo Lynne Rokita+, Sharon J. Diskin+
+
+^Equal authorship
+
++Co-senior authors
 
 ## To reproduce the code in this repository:
 This repository contains a docker image and code used to conduct analyses for the manuscript noted above.
@@ -97,5 +103,5 @@ Jo Lynne Rokita ([@jharenza](https://github.com/jharenza)) and Ryan Corbett ([@r
 
 ## Contact
 
-For questions, please submit an issue or send an email to Jo Lynne Rokita: rokita@chop.edu
+For questions, please submit an issue.
 
