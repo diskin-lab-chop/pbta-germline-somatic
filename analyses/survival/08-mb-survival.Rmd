@@ -70,6 +70,8 @@ mb_hist <- read_tsv(mb_hist_file) %>%
 
 Generate OS and EFS coxph models, adding covariates for metastasis status
 
+EFS:
+
 ```{r}
 add_mb_efs_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
                                 "extent_of_tumor_resection+molecular_subtype+mt+cpg_plp+age_at_diagnosis_years",
@@ -83,6 +85,7 @@ plotForest(readRDS(file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_me
 ggsave(file.path(plot_dir, "forest_EFS_mb_resection_subtype_metastasis_plp.pdf"),
        width = 7, height = 3, units = "in")
 ```
+OS:
 
 ```{r}
 add_mb_os_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
