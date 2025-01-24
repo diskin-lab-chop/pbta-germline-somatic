@@ -1,0 +1,373 @@
+---
+title: "Assess P/LP variant- and splicing-associated somatic gene expression changes in PBTA germline cohort"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This script assesses somatic gene expression in germline CPG P/LP carriers by:
+
+1) Variant classification, with specific interest in splice variant-associated gene expression
+2) Level of proximal alternative splicing (single exon skipping, intron retention)
+
+# Load libraries
+
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+  library(vroom)
+  library(circlize)
+  library(ggpubr)
+  library(ggrepel)
+  library(ggsci)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "alternative-splicing")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# Call plotting theme
+source(file.path(root_dir, "figures", "theme.R"))
+source(file.path(analysis_dir, "util", "splicing_plot_functions.R"))
+source(file.path(analysis_dir, "util", "intron_exon_annotation_function.R"))
+
+set.seed(2024)
+```
+
+Set file paths
+
+```{r}
+hist_cohort_file <- file.path(root_dir, "analyses", 
+                              "collapse-tumor-histologies", "results", 
+                              "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
+
+splice_events_file <- file.path(results_dir,
+                               "plp-variant-proximal-splicing-event-psi.tsv")
+
+rmats_file <- file.path(input_dir, 
+                        "splice_events_cpgs_pbta.tsv.gz")
+
+expr_file <- file.path(root_dir, "analyses",
+                       "two-hits", "results", 
+                       "pbta-germline-gene-expr-zscores.tsv")
+
+prot_file <- file.path(root_dir, "analyses",
+                       "two-hits", "results",  
+                       "cptac-hope-cpg-proteomics-zscores.tsv")
+```
+
+Wrangle data
+
+```{r}
+hist <- read_tsv(hist_cohort_file)
+
+expr_zscores <- read_tsv(expr_file)
+
+splice_events <- read_tsv(splice_events_file) %>%
+  dplyr::rename(subgroup = plot_group)
+```
+Define significant P/LP variant-associated splice events as those with:
+1) min dist b/w variant and splice event < 250bp
+2) abs(PSI zscore) >= 2
+3 abs (PSI diff) >= 0.05
+
+```{r}
+plp_splice_candidates <- splice_events %>%
+  dplyr::filter(abs(sample_PSI_zscore) >= 2,
+                min_dist < 250,
+                abs(PSI_diff_group) > 0.05) %>%
+  left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_normal, molecular_subtype,
+                                   plot_group, plot_group_hex),
+            by = "Kids_First_Biospecimen_ID_normal") %>%
+  left_join(expr_zscores %>%
+              dplyr::select(Kids_First_Biospecimen_ID_rna,
+                            Hugo_Symbol,
+                            expr_zscore)) %>%
+  dplyr::mutate(junction_status = case_when(
+    event_in_gtf == "Yes" ~ "Known",
+    event_in_gtf == "No" ~ "Novel"
+  ))
+
+# apply function to annotate exon or intron number
+plp_splice_candidates <- get_exon_intron_numbers(plp_splice_candidates)
+
+write_tsv(plp_splice_candidates,
+          file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
+```
+
+Plot significant P/LP variant-associated splice events
+
+```{r}
+plot_group_palette <- plp_splice_candidates$plot_group_hex
+names(plot_group_palette) <- plp_splice_candidates$plot_group
+
+plp_splice_candidates %>%
+  ggplot(aes(x = PSI_diff_group, y = splicing_case,
+             label = Hugo_Symbol)) +
+  geom_jitter(aes(fill = plot_group,
+                  shape = junction_status),
+              width = 0,
+              height = 0.05,
+              size = 3, alpha = 0.8,
+              show.legend = TRUE) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray60") +
+  geom_label_repel(aes(label = Hugo_Symbol),
+                  size = 3,
+                  box.padding   = 0.3,
+                  label.padding = 0.1,
+                  point.padding = 0.25,
+                  segment.color = 'grey50',
+                  min.segment.length = 0.1,
+                  max.overlaps = 14) +
+  scale_fill_manual(values = plot_group_palette,
+                     breaks = sort(names(plot_group_palette))) +
+  scale_shape_manual(values = c(21, 23)) +
+  labs(y = NULL, x = "delta PSI (sample-group)",
+       fill = "Tumor histology",
+       shape = "Splice event\nstatus") +
+  guides(
+    fill = guide_legend(ncol = 1,
+                        override.aes = list(shape = 21, size = 3)  # Update shape and size for fill legend
+    ),  # Ensure `fill` legend has one column
+    shape = guide_legend(ncol = 1) # Ensure `shape` legend has one column
+  ) +
+  theme_Publication() +
+  theme(
+    legend.position = "right",            # Position legends below the plot
+    legend.box = "horizontal",             # Align legends horizontally
+    legend.box.just = "left",              # Adjust justification
+    legend.spacing.x = unit(0.5, "cm"),    # Add space between legends
+    legend.text = element_text(size = 10)  # Adjust text size
+  )
+
+ggsave(file.path(plot_dir, "germline_plp_alternative_splicing_diff_plot.pdf"),
+       width = 9, height = 3)
+```
+
+Write cases where P/LP variants are non-splice variants to review literature regarding potential impact on splicing
+
+```{r}
+plp_splice_candidates %>%
+  dplyr::filter(is_splice_variant != "Splice, proximal") %>%
+  dplyr::select(Hugo_Symbol, Kids_First_Biospecimen_ID_rna, 
+                subgroup, splicing_case,
+                sample_PSI_zscore, Kids_First_Biospecimen_ID_normal,
+                chr, plp_variant_position, ref, alt, 
+                variant_classification_vep, clinvar_variant_id,
+                region_start, min_dist, expr_zscore, variant_classification) %>%
+  write_tsv(file.path(results_dir,
+                      "as-event-proximal-nonsplice-plp-variants.tsv"))
+```
+
+Load rmats, gene expression z-scores, and proteomics abundances 
+
+```{r}
+rmats <- read_tsv(rmats_file) %>%
+  dplyr::rename(Hugo_Symbol = geneSymbol,
+                Kids_First_Biospecimen_ID_rna = sample_id) %>%
+    dplyr::mutate(region = case_when(
+          splicing_case %in% c("A3SS", "A5SS") ~ glue::glue("{longExonStart_0base}:{longExonEnd}:{shortES}:{shortEE}:{flankingES}:{flankingEE}"),
+          splicing_case == "RI" ~ glue::glue("{riExonStart_0base}:{riExonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}"),
+          splicing_case == "SE" ~ glue::glue("{exonStart_0base}:{exonEnd}:{upstreamES}:{upstreamEE}:{downstreamES}:{downstreamEE}")
+        )) %>%
+  dplyr::filter(region %in% plp_splice_candidates$region) %>%
+  left_join(expr_zscores %>% dplyr::select(Kids_First_Biospecimen_ID_rna,
+                                           Hugo_Symbol,
+                                           Kids_First_Biospecimen_ID_normal))
+
+prot_zscores <- read_tsv(prot_file) %>%
+  dplyr::rename(Hugo_Symbol = GeneSymbol)
+```
+Loop through sig variant-associated splice events and calculate pearson correlation coefficients between PSI and 1) transcript abundance and 2) protein abundance.
+We will also plot correlations, when data are available. 
+
+```{r}
+plp_splice_candidates <- plp_splice_candidates %>%
+  dplyr::mutate(subgroup = case_when(
+      subgroup == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+      TRUE ~ subgroup
+    )) %>%
+  dplyr::mutate(psi_expr_cor = NA_integer_,
+                psi_expr_cor_p = NA_integer_,
+                psi_prot_cor = NA_integer_,
+                psi_prot_cor_p = NA_integer_)
+
+for (i in 1:nrow(plp_splice_candidates)){
+  
+  gene <- plp_splice_candidates$Hugo_Symbol[i]
+  reg <- plp_splice_candidates$region[i]
+  case <- plp_splice_candidates$splicing_case[i]
+  
+  known_junction <- plp_splice_candidates$event_in_gtf[i]
+  exon_intron_rank <- plp_splice_candidates$exon_intron_id[i]
+  
+  group_rna <- plp_splice_candidates$subgroup[i]
+  group_prot <- plp_splice_candidates$plot_group[i]
+  
+  rmats_gene <- rmats %>%
+    dplyr::filter(Hugo_Symbol == gene,
+                  region == reg,
+                  splicing_case == case) 
+  
+  expr_gene <- expr_zscores %>%
+    dplyr::mutate(subgroup = case_when(
+      subgroup == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+      TRUE ~ subgroup
+    )) %>%
+    dplyr::filter(Hugo_Symbol == gene,
+                  subgroup == group_rna) %>%
+    left_join(rmats_gene %>% dplyr::select(Kids_First_Biospecimen_ID_rna,
+                                           Hugo_Symbol,
+                                           IncLevel1,
+                                           splicing_case),
+              by = c("Kids_First_Biospecimen_ID_rna", "Hugo_Symbol")) %>%
+    dplyr::mutate(IncLevel1 = case_when(
+      known_junction == "No" & is.na(IncLevel1) & case == "SE" ~ 1,
+      known_junction == "No" & is.na(IncLevel1) & case == "RI" ~ 0,
+      TRUE ~ IncLevel1
+    )) %>%
+    group_by(subgroup) %>%
+    dplyr::mutate(psi_zscore = scale(IncLevel1)) %>%
+    ungroup() 
+  
+  if (sum(!is.na(expr_gene$psi_zscore)) >= 3){
+  
+    tpm_cor_res <- cor.test(expr_gene$psi_zscore,
+                        expr_gene$expr_zscore,
+                        method = "pearson")
+    
+    plp_splice_candidates$psi_expr_cor[i] <- tpm_cor_res$estimate
+    plp_splice_candidates$psi_expr_cor_p[i] <- tpm_cor_res$p.value
+    
+  }
+  
+    prot_gene <- prot_zscores %>%
+    dplyr::filter(Hugo_Symbol == gene,
+                  plot_group == group_prot) %>%
+    left_join(rmats_gene %>% dplyr::select(Kids_First_Biospecimen_ID_normal,
+                                           Hugo_Symbol,
+                                           IncLevel1,
+                                           splicing_case),
+              by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol")) %>%
+    dplyr::mutate(IncLevel1 = case_when(
+      known_junction == "No" & is.na(IncLevel1) & case == "SE" ~ 1,
+      known_junction == "No" & is.na(IncLevel1) & case == "RI" ~ 0,
+      TRUE ~ IncLevel1
+    )) %>%
+    group_by(plot_group) %>%
+    dplyr::mutate(psi_zscore = scale(IncLevel1))
+    
+    if (sum(!is.na(prot_gene$expr_zscore_proteo)) >= 3 & sum(!is.na(prot_gene$psi_zscore)) >= 3){
+  
+      prot_cor_res <- cor.test(prot_gene$psi_zscore,
+                          prot_gene$expr_zscore_proteo,
+                          method = "pearson")
+      
+      plp_splice_candidates$psi_prot_cor[i] <- prot_cor_res$estimate
+      plp_splice_candidates$psi_prot_cor_p[i] <- prot_cor_res$p.value
+      
+    }
+    
+    if ((plp_splice_candidates$psi_expr_cor_p[i] < 0.05 & !is.na(plp_splice_candidates$psi_expr_cor_p[i])) | gene %in% c("PTCH1", "TSC2", 
+                                                                                                                         "LZTR1", "GBA",
+                                                                                                                         "FAH")){
+      
+      expr_gene %>%
+        dplyr::mutate(plp_carrier = case_when(
+          Kids_First_Biospecimen_ID_normal %in% plp_splice_candidates$Kids_First_Biospecimen_ID_normal[plp_splice_candidates$region == reg] ~ "Yes",
+          TRUE ~ "No"
+        )) %>%
+        
+      ggplot(aes(x = psi_zscore, y = expr_zscore)) +
+         geom_point(aes(shape = plp_carrier),
+                    fill = "gray50",
+                    size = 3,
+                    alpha = 0.75) +
+         stat_smooth(method = "lm", 
+                     formula = y ~ x, 
+                     geom = "smooth", 
+                     colour = "red",
+                     fill = "pink",
+                     linetype="dashed") +
+         labs(x = glue::glue("{case} PSI z-score"),
+              y = "TPM z-score",
+              color = "Splice event\n proximal\n P/LP carrier",
+              shape = "Splice event\n proximal\n P/LP carrier",
+              title = glue::glue("{gene}, {exon_intron_rank}\n{unique(expr_gene$subgroup)}")) + 
+         stat_cor(method = "pearson",
+                  label.x.npc = "left",
+                  label.y.npc = "top",
+                  size = 3) +
+        scale_shape_manual(values = c(21, 24),
+                   breaks = c("No", "Yes")) +
+    theme_Publication()
+
+    ggsave(file.path(plot_dir, glue::glue("{gene}-{exon_intron_rank}-{group_rna}-tpm.pdf")),
+           width = 5, height = 4)
+      
+    }
+    
+    
+    if (!is.na(plp_splice_candidates$psi_prot_cor_p[i]) & (plp_splice_candidates$psi_prot_cor_p[i] < 0.05 | gene %in% c("PTCH1", "TSC2", 
+                                                                                                                        "LZTR1", "GBA",
+                                                                                                                        "FAH"))){
+      
+      prot_gene %>%
+        dplyr::mutate(plp_carrier = case_when(
+          Kids_First_Biospecimen_ID_normal %in% plp_splice_candidates$Kids_First_Biospecimen_ID_normal[plp_splice_candidates$region == reg] ~ "Yes",
+          TRUE ~ "No"
+        )) %>%
+        
+      ggplot(aes(x = psi_zscore, y = expr_zscore_proteo)) +
+         geom_point(aes(shape = plp_carrier),
+                    fill = "gray50",
+                    size = 3,
+                    alpha = 0.75) +
+         stat_smooth(method = "lm", 
+                     formula = y ~ x, 
+                     geom = "smooth", 
+                     colour = "red",
+                     fill = "pink",
+                     linetype="dashed") +
+         labs(x = glue::glue("{case} PSI z-score"),
+              y = "Protein abundance z-score",
+              color = "Splice event\n proximal\n P/LP carrier",
+              shape = "Splice event\n proximal\n P/LP carrier",
+              title = glue::glue("{gene}, {exon_intron_rank}\n{group_prot}")) + 
+         stat_cor(method = "pearson",
+                  label.x.npc = "left",
+                  label.y.npc = "top",
+                  size = 3) +
+          scale_shape_manual(values = c(21, 24),
+                  breaks = c("No", "Yes")) +
+    theme_Publication()
+
+    ggsave(file.path(plot_dir, glue::glue("{gene}-{exon_intron_rank}-prot-abundance.pdf")),
+           width = 5, height = 4)
+      
+    }
+  
+}
+
+write_tsv(plp_splice_candidates,
+          file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
+```
+
+Print session info
+
+```{r}
+sessionInfo()
+```

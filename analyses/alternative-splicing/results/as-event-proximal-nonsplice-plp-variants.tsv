@@ -1,0 +1,13 @@
+Hugo_Symbol	Kids_First_Biospecimen_ID_rna	subgroup	splicing_case	sample_PSI_zscore	Kids_First_Biospecimen_ID_normal	chr	plp_variant_position	ref	alt	variant_classification_vep	clinvar_variant_id	region_start	min_dist	expr_zscore	variant_classification
+FANCM	BS_0J9SHHSC	Low-grade glioma	SE	-12.8	BS_8YD46AZB	chr14	45198718	C	T	stop_gained	526381	45198732	13	0.73	stop gained
+NF1	BS_NDC69214	Neurofibroma plexiform	SE	-3.31	BS_ZQY1P7NR	chr17	31338739	C	A	stop_gained	185082	31338704	36	-0.15	stop gained
+LZTR1	BS_S71RJ8DH	Atypical Teratoid Rhabdoid Tumor	SE	-4.346	BS_FPB0JGKX	chr22	20987555	C	T	synonymous_variant	1158766	20987504	28	0.57	synonymous variant
+SMARCE1	BS_6YMJ621P	Meningioma	RI	4.33	BS_0YJF1F95	chr17	40632281	TCTCA	T	frameshift_variant	212264	40630714	86	-2.47	frameshift variant
+LZTR1	BS_H3Y8FWHV	Schwannoma	RI	2.577	BS_ETAATG3J	chr22	20994614	C	T	stop_gained	1777724	20994104	57	-2.84	stop gained
+TSC2	BS_3EVSN5QD	SEGA	A3SS	-2.846	BS_BPDT230W	chr16	2062516	TG	T	frameshift_variant	NA	2062497	12	-1.48	frameshift variant
+SLX4	BS_QXKRN6CR	Ependymoma	SE	-3.4	BS_63JFFF51	chr16	3591125	TC	T	frameshift_variant	NA	3592699	185	-0.86	frameshift variant
+RAD51D	BS_M15PW2N0	MB, SHH	A3SS	-3.205	BS_QMBK2FV7	chr17	35107380	T	TA	frameshift_variant	185760	35106988	15	-0.66	frameshift variant
+FANCM	BS_0J9SHHSC	Low-grade glioma	A3SS	-2.681	BS_8YD46AZB	chr14	45198718	C	T	stop_gained	526381	45198644	13	0.73	stop gained
+BAP1	BS_5AF6ZNJF	Meningioma	SE	-4.194	BS_XCKDRRYT	chr3	52404529	G	A	stop_gained	490777	52405110	57	-3.07	stop gained
+TSC2	BS_AG3D3435	SEGA	SE	2.268	BS_Z6GF2TDX	chr16	2080179	C	T	stop_gained	49257	2082436	157	-1.12	stop gained
+ATM	BS_49F4RAA4	Other tumor	SE	-4.472	BS_EVZW31ZP	chr11	108284280	AG	A	frameshift_variant	127374	108282710	54	0.68	frameshift variant
