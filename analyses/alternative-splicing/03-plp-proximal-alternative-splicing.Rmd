@@ -42,6 +42,7 @@ if (!dir.exists(results_dir)) {
 # Call plotting theme
 source(file.path(root_dir, "figures", "theme.R"))
 source(file.path(analysis_dir, "util", "splicing_plot_functions.R"))
+source(file.path(analysis_dir, "util", "intron_exon_annotation_function.R"))
 
 set.seed(2024)
 ```
@@ -94,12 +95,7 @@ plp_splice_candidates <- splice_events %>%
     event_in_gtf == "No" ~ "Novel"
   ))
 
-exon_intron_ranks_df <- read_tsv(file.path(input_dir,
-                                           "splice_event_exon_intron_numbers.tsv"))
-
-plp_splice_candidates <- plp_splice_candidates %>%
-  left_join(exon_intron_ranks_df) %>%
-  distinct()
+plp_splice_candidates <- get_exon_intron_numbers(plp_splice_candidates)
 
 write_tsv(plp_splice_candidates,
           file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
@@ -202,7 +198,7 @@ for (i in 1:nrow(plp_splice_candidates)){
   case <- plp_splice_candidates$splicing_case[i]
   
   known_junction <- plp_splice_candidates$event_in_gtf[i]
-  exon_intron_rank <- plp_splice_candidates$rank[i]
+  exon_intron_rank <- plp_splice_candidates$exon_intron_id[i]
   
   group_rna <- plp_splice_candidates$subgroup[i]
   group_prot <- plp_splice_candidates$plot_group[i]
@@ -277,8 +273,10 @@ for (i in 1:nrow(plp_splice_candidates)){
         )) %>%
         
       ggplot(aes(x = psi_zscore, y = expr_zscore)) +
-         geom_point(aes(color = plp_carrier, shape = plp_carrier),
-                    size = 3) +
+         geom_point(aes(shape = plp_carrier),
+                    fill = "gray50",
+                    size = 3,
+                    alpha = 0.75) +
          stat_smooth(method = "lm", 
                      formula = y ~ x, 
                      geom = "smooth", 
@@ -294,8 +292,8 @@ for (i in 1:nrow(plp_splice_candidates)){
                   label.x.npc = "left",
                   label.y.npc = "top",
                   size = 3) +
-        scale_color_manual(values = c("gray75", "firebrick"),
-                           breaks = c("No", "Yes")) +
+        scale_shape_manual(values = c(21, 24),
+                   breaks = c("No", "Yes")) +
     theme_Publication()
 
     ggsave(file.path(plot_dir, glue::glue("{gene}-{exon_intron_rank}-{group_rna}-tpm.pdf")),
@@ -315,8 +313,10 @@ for (i in 1:nrow(plp_splice_candidates)){
         )) %>%
         
       ggplot(aes(x = psi_zscore, y = expr_zscore_proteo)) +
-         geom_point(aes(color = plp_carrier, shape = plp_carrier),
-                    size = 3) +
+         geom_point(aes(shape = plp_carrier),
+                    fill = "gray50",
+                    size = 3,
+                    alpha = 0.75) +
          stat_smooth(method = "lm", 
                      formula = y ~ x, 
                      geom = "smooth", 
@@ -332,8 +332,8 @@ for (i in 1:nrow(plp_splice_candidates)){
                   label.x.npc = "left",
                   label.y.npc = "top",
                   size = 3) +
-          scale_color_manual(values = c("gray75", "firebrick"),
-                 breaks = c("No", "Yes")) +
+          scale_shape_manual(values = c(21, 24),
+                  breaks = c("No", "Yes")) +
     theme_Publication()
 
     ggsave(file.path(plot_dir, glue::glue("{gene}-{exon_intron_rank}-prot-abundance.pdf")),
@@ -347,5 +347,6 @@ write_tsv(plp_splice_candidates,
           file.path(results_dir, "candidate_plp_associated_splice_events.tsv"))
 ```
 
-
-
+```{r}
+sessionInfo()
+```
