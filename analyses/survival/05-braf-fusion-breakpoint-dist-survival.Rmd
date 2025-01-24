@@ -45,6 +45,8 @@ source(file.path(analysis_dir, "util",
 source(file.path(root_dir, "analyses", 
                   "demo-clin-stats", "util",
                  "heatmap_function.R"))
+source(file.path(root_dir, "figures",
+                 "theme.R"))
 
 set.seed(2024)
 ```

@@ -94,14 +94,14 @@ hgg_hist <- hist %>%
   mutate(age_at_diagnosis_days = as.numeric(age_at_diagnosis_days)) %>%
   mutate(age_at_diagnosis_years = age_at_diagnosis_days/365.25) %>%
   mutate(MMR_variant = case_when(
-    Kids_First_Biospecimen_ID_normal %in% c(mmr_bs, mmr_bs_sv) ~ "MMR PLP",
+    Kids_First_Biospecimen_ID_normal %in% c(mmr_bs, mmr_bs_sv) ~ "MMR P/LP",
     TRUE ~ "MMR WT"
   ))  %>%
   mutate(mol_sub_group = factor(mol_sub_group,
                                 c("HGG, H3 wildtype", "HGG, H3 wildtype, TP53"))) %>%
   mutate(MMR_variant = factor(MMR_variant,
                                    c("MMR WT",
-                                     "MMR PLP")))
+                                     "MMR P/LP")))
 ```
 
 Print N per MMR variant status group
@@ -161,12 +161,12 @@ Create column indicating presence/absence of BRCA variant
 ```{r}
 hgg_hist <- hgg_hist %>%
   mutate(brca_variant = case_when(
-    Kids_First_Biospecimen_ID_normal %in% c(brca_bs, brca_bs_sv) ~ "BRCA PLP",
+    Kids_First_Biospecimen_ID_normal %in% c(brca_bs, brca_bs_sv) ~ "BRCA P/LP",
     TRUE ~ "BRCA WT"
   ))  %>%
   mutate(brca_variant = factor(brca_variant,
                                    c("BRCA WT",
-                                     "BRCA PLP")))
+                                     "BRCA P/LP")))
 ```
 
 Print N per BRCA variant status group
