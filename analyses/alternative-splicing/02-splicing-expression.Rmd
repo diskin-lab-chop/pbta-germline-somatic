@@ -65,6 +65,10 @@ cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation",
 expr_file <- file.path(root_dir, "analyses",
                        "two-hits", "results", "pbta-germline-gene-expr-zscores.tsv")
 
+prot_file <- file.path(root_dir, "analyses",
+                       "two-hits", "results",
+                       "cptac-hope-cpg-proteomics-zscores.tsv")
+
 hist_cohort_file <- file.path(root_dir, "analyses", 
                               "collapse-tumor-histologies", "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta.tsv")
@@ -156,6 +160,50 @@ ggsave(file.path(plot_dir,
                  "tpm-zscores-by-variant-classification.pdf"),
        width = 6, height = 4)
 ```
+Load protein abundance z-score file and append to cpg germline variant df
+
+```{r}
+prot <- read_tsv(prot_file)
+
+plp_prot <- plp_cpg %>%
+  left_join(prot %>% dplyr::select(Kids_First_Biospecimen_ID_normal,
+                                   GeneSymbol,
+                                   expr_zscore_proteo),
+            by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol" = "GeneSymbol")) %>%
+  dplyr::mutate(variant_classification = fct_relevel(variant_classification,
+                                                     c("structural\n variant",
+                                                       "frameshift",
+                                                       "splice", "stop\n gained",
+                                                       "missense", "other")))
+```
+
+Plot CPG P/LP carrier z-scores by germline variant classification
+
+```{r}
+plp_prot %>%
+  ggplot(aes(x = variant_classification, y = expr_zscore_proteo)) + 
+    geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.85,
+                show.legend = FALSE) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+    stat_compare_means(method = "wilcox",
+                       label = "p.signif",
+                       step.increase = 0.1,
+                       comparisons = list(c("splice", "structural\n variant"),
+                                          c("splice", "frameshift"),
+                                          c("splice", "stop\n gained"),
+                                          c("splice", "missense")),
+                       method.args = list(alternative = "two.sided"),
+                       ) +
+    labs(x = "Germline variant classification",
+         y = "Protein abundance z-score") +
+  #  ylim(c(-3, 6)) +
+    scale_fill_npg() + 
+    theme_Publication()
+
+ggsave(file.path(plot_dir,
+                 "total-protein-zscores-by-variant-classification.pdf"),
+       width = 6, height = 4)
+```
 
 Load P/LP variant-proximal alternative splicing events df and append expression z-scores.
 NOTE: we will re-calculate minimum distance between P/LP variant and splice event here to include distance direction, rather than absolute distance
@@ -165,6 +213,10 @@ splice_events <- read_tsv(file.path(results_dir,
                                     "plp-variant-proximal-splicing-event-psi.tsv")) %>%
   left_join(expr_df %>% dplyr::select(Kids_First_Biospecimen_ID_rna, 
                                    Hugo_Symbol, expr_zscore)) %>%
+  left_join(prot %>% dplyr::select(Kids_First_Biospecimen_ID_normal,
+                                   GeneSymbol,
+                                   expr_zscore_proteo),
+            by = c("Kids_First_Biospecimen_ID_normal", "Hugo_Symbol" = "GeneSymbol")) %>%
   dplyr::mutate(region_start_dist = plp_variant_position - region_start,
                 region_end_dist = plp_variant_position - region_end,
                 upstream_exon_start_dist = plp_variant_position - upstream_exon_start,
