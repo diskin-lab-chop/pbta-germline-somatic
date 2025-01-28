@@ -50,6 +50,10 @@ wxs_region_100bp_file <- file.path(results_dir,
 
 pbta_region_file <- file.path(results_dir, 
                               "pbta_wxs_intersect.bed")
+
+long_indel_review_file <- file.path(root_dir, "analyses",
+                                    "variant-distribution",
+                                    "input", "long-indel-manual-review.tsv")
 ```
 
 Wrangle data
@@ -59,8 +63,14 @@ hist <- read_tsv(hist_file)
 
 hist_cohort <- read_tsv(hist_cohort_file)
 
+indels_to_rm <- read_tsv(long_indel_review_file) %>%
+  dplyr::filter(review == "not supported by alignments") %>%
+  pull(sample_variant_id)
+
 plp <- read_tsv(plp_file) %>%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::mutate(sample_variant_id = glue::glue("{Kids_First_Biospecimen_ID_normal}:{chr}:{start}:{ref}:{alt}")) %>%
+  dplyr::filter(!sample_variant_id %in% indels_to_rm)
 ```
 
 Obtain WXS ids to use for filtering later
