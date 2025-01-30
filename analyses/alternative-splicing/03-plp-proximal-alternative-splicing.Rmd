@@ -57,8 +57,8 @@ hist_cohort_file <- file.path(root_dir, "analyses",
 splice_events_file <- file.path(results_dir,
                                "plp-variant-proximal-splicing-event-psi.tsv")
 
-rmats_file <- file.path(input_dir, 
-                        "splice_events_cpgs_pbta.tsv.gz")
+rmats_file <- file.path(results_dir, 
+                        "splice-events-rmats-cpgs.tsv.gz")
 
 expr_file <- file.path(root_dir, "analyses",
                        "two-hits", "results", 
