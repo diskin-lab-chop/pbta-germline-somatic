@@ -219,6 +219,7 @@ loh <- add_cnvkit(loh, cnvkit)
 # add LOH_status column indicating LOH as measured by VAF or CNVKit
 loh <- loh %>%
   dplyr::mutate(loh_status = case_when(
+    (loh_pvalue < 0.05 & (proband_tumor_vaf >= 0.75 | proband_tumor_vaf < 0.25)) & (cnvkit_cn2 == 0 & cnvkit_cn1 != 0 ) ~ "LOH-CNVKit & VAF",
     loh_pvalue < 0.05 & (proband_tumor_vaf >= 0.75 | proband_tumor_vaf < 0.25) ~ "LOH-VAF", 
     cnvkit_cn2 == 0 & cnvkit_cn1 != 0 ~ "LOH-CNVKit",
     TRUE ~ "No LOH"
@@ -236,8 +237,8 @@ loh %>%
   geom_point() +
   labs(x = "Germline VAF",
        y = "Tumor VAF", color = "LOH status") +
-  scale_color_manual(values = c("LOH-VAF" = "orangered", "No LOH" = "gray",
-                                "LOH-CNVKit" = "blue2")) + 
+  scale_color_manual(values = c("LOH-VAF" = "orangered", "No LOH" = "gray90",
+                                "LOH-CNVKit" = "skyblue3", "LOH-CNVKit & VAF" = "darkblue")) +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "tumor-vaf-vs-germline-vaf.pdf"),
