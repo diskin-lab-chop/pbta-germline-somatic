@@ -380,7 +380,7 @@ names(plotgroup_palette) <- unique(annotation$Histology)
 tumor_event_palette <- palette_OkabeIto[4:8]
 names(tumor_event_palette) <- unique(annotation$`Tumor Event`)
 
-ha <- HeatmapAnnotation(name = "annot", df = annotation[,-4],
+ha <- HeatmapAnnotation(name = "annot", df = annotation %>% dplyr::select(-plot_group_hex),
                         col = list("Tumor event"= c("Initial CNS Tumor" = "#F0E442",
                                                          "Progressive" = "#56B4E9",
                                                          "Deceased" = "#009E73",
