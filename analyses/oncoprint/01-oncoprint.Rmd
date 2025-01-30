@@ -361,14 +361,11 @@ annotation <- hist %>%
   )) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% rownames(alteration_mat)) %>%
   left_join(tmb %>% dplyr::select(Kids_First_Biospecimen_ID_tumor, tmb_status)) %>%
-  dplyr::select(Kids_First_Biospecimen_ID_normal, germline_sex_estimate, 
-                predicted_ancestry, tumor_descriptor, plot_group, 
+  dplyr::select(Kids_First_Biospecimen_ID_normal, tumor_descriptor, 
                 RNA_data_available, Proteomics_available, plot_group_hex, 
-                tmb_status) %>%
+                tmb_status, plot_group,) %>%
   column_to_rownames("Kids_First_Biospecimen_ID_normal") %>%
-  dplyr::rename("Sex" = germline_sex_estimate,
-                "Histology" = plot_group,
-                "Predicted ancestry" = predicted_ancestry,
+  dplyr::rename("Histology" = plot_group,
                 "Tumor Event" = tumor_descriptor,
                 "RNA-Seq available" = RNA_data_available,
                 "Proteomics available" = Proteomics_available, 
@@ -383,16 +380,12 @@ names(plotgroup_palette) <- unique(annotation$Histology)
 tumor_event_palette <- palette_OkabeIto[4:8]
 names(tumor_event_palette) <- unique(annotation$`Tumor Event`)
 
-ha <- HeatmapAnnotation(name = "annot", df = annotation[,-7],
+ha <- HeatmapAnnotation(name = "annot", df = annotation %>% dplyr::select(-plot_group_hex),
                         col = list("Tumor event"= c("Initial CNS Tumor" = "#F0E442",
                                                          "Progressive" = "#56B4E9",
                                                          "Deceased" = "#009E73",
                                                          "Recurrence" = "#E69F00",
                                                          "Second Malignancy" = "#0072B2"),
-                                   "Sex" = c("Male" = "#56B4E9",
-                                             "Female" = "#CC79A7",
-                                             "Unknown" = "whitesmoke"),
-                                   "Predicted ancestry" = c("AFR" = "#E69F00", "AMR" = "#56B4E9", "EAS"= "#009E73", "EUR" = "#0072B2", "SAS" = "#D55E00"),
                                    "Histology" = plotgroup_palette,
                                    "Tumor Event" = tumor_event_palette,
                                    "RNA-Seq available" = c("Yes" = "black", "No" = "whitesmoke"),
