@@ -397,11 +397,15 @@ wxs_region_100bp_file &lt;- file.path(results_dir,
                              &quot;pmbb_pbta_wxs_intersect.100bp_padded.bed&quot;)
 
 pbta_region_file &lt;- file.path(results_dir, 
-                              &quot;pbta_wxs_intersect.bed&quot;)</code></pre>
+                              &quot;pbta_wxs_intersect.bed&quot;)
+
+long_indel_review_file &lt;- file.path(root_dir, &quot;analyses&quot;,
+                                    &quot;variant-distribution&quot;,
+                                    &quot;input&quot;, &quot;long-indel-manual-review.tsv&quot;)</code></pre>
 <p>Wrangle data</p>
 <pre class="r"><code>hist &lt;- read_tsv(hist_file)</code></pre>
 <pre><code>## Rows: 47895 Columns: 66
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (45): Kids_First_Participant_ID, Kids_First_Biospecimen_ID, sample_id, a...
 ## dbl (21): cell_line_passage, OS_days, EFS_days, age_at_diagnosis_days, age_a...
@@ -410,17 +414,30 @@ pbta_region_file &lt;- file.path(results_dir,
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>hist_cohort &lt;- read_tsv(hist_cohort_file)</code></pre>
 <pre><code>## Rows: 830 Columns: 36
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (26): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl (10): broad_histology_order, age_at_diagnosis_days, age_last_update_days...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>indels_to_rm &lt;- read_tsv(long_indel_review_file) %&gt;%
+  dplyr::filter(review == &quot;not supported by alignments&quot;) %&gt;%
+  pull(sample_variant_id)</code></pre>
+<pre><code>## Rows: 47 Columns: 10
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;\t&quot;
+## chr (9): Kids_First_Biospecimen_ID_normal, chr, ref, alt, gene_symbol_vep, a...
+## dbl (1): start
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>plp &lt;- read_tsv(plp_file) %&gt;%
-  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal)</code></pre>
+  dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist_cohort$Kids_First_Biospecimen_ID_normal) %&gt;%
+  dplyr::mutate(sample_variant_id = glue::glue(&quot;{Kids_First_Biospecimen_ID_normal}:{chr}:{start}:{ref}:{alt}&quot;)) %&gt;%
+  dplyr::filter(!sample_variant_id %in% indels_to_rm)</code></pre>
 <pre><code>## Rows: 2869 Columns: 23
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (19): Kids_First_Biospecimen_ID_normal, chr, ref, alt, variant_ids, gene...
 ## dbl  (4): start, clinvar_stars, clinvar_variant_id, gnomad_3_1_1_AF_non_canc...
@@ -444,7 +461,7 @@ object</p>
 <pre class="r"><code>exome_20bp_bed &lt;- read_tsv(wxs_region_20bp_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 196796 Columns: 3
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end
@@ -456,7 +473,7 @@ object</p>
 exome_100bp_bed &lt;- read_tsv(wxs_region_100bp_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 174466 Columns: 3
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end
@@ -517,7 +534,7 @@ get overlap with P-LP variants</p>
 <pre class="r"><code>pbta_exome_bed &lt;- read_tsv(pbta_region_file,
                       col_names = c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;))</code></pre>
 <pre><code>## Rows: 174453 Columns: 3
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): chr
 ## dbl (2): start, end

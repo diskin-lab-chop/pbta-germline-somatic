@@ -239,9 +239,16 @@ for (each in names(plplists)){
 ```
 Plot variant allele frequency using full AutoGVP output (contains allele depths)
 ```{r}
+indels_to_rm <- read_tsv(file.path(input_dir,
+                                      "long-indel-manual-review.tsv")) %>%
+  dplyr::filter(review == "not supported by alignments") %>%
+  pull(sample_variant_id)
+
 plp_full <- read_tsv(file.path(data_dir,
                                "pbta-merged-plp-variants-autogvp-full.tsv")) %>%
   filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal) %>%
+  dplyr::mutate(sample_variant_id = glue::glue("{Kids_First_Biospecimen_ID_normal}:{chr}:{start}:{ref}:{alt}")) %>%
+  dplyr::filter(!sample_variant_id %in% indels_to_rm) %>%
   dplyr::mutate(AF = AD_alt/(AD_alt + AD_ref))
 
 plp_full %>%
