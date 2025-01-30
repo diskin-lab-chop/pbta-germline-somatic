@@ -2,7 +2,7 @@ Hugo_Symbol	Associated Syndrome
 BRCA1	BRCA1/2
 BRCA2	BRCA1/2
 CHEK2	CHEK2
-APC	Familial Adenomatous Polyposis
+APC	Familial adenomatous polyposis
 PTCH1	Gorlin syndrome
 SUFU	Gorlin syndrome
 TP53	Li-Fraumeni syndrome
@@ -13,17 +13,26 @@ MSH6	LS or CMMRD
 NF1	NF-1
 NF2	NF-2
 RB1	Retinoblastoma
-SMARCB1	Rhabdoid Tumor Predisposition syndrome
-SMARCA4	Rhabdoid Tumor Predisposition syndrome
+SMARCB1	Rhabdoid tumor predisposition syndrome
+SMARCA4	Rhabdoid tumor predisposition syndrome
 LZTR1	Schwannomatosis
 TSC1	Tuberous Sclerosis
 TSC2	Tuberous Sclerosis
 VHL	Von Hippel-Lindau
-NTHL1	Familial Adenomatous Polyposis
+NTHL1	Familial adenomatous polyposis
 PTCH2	Gorlin syndrome
-PTEN	Cowden Syndrome
-PRKAR1A	Carney Complex
-DICER1	DICER1 Syndrome
-CDKN2A	Melanoma Astrocytoma Syndrome
-BAP1	BAP1 Tumor Predisposition Syndrome
-ELP1	ELP1 Medulloblastoma Syndrome
+PTEN	Cowden syndrome
+PRKAR1A	Carney complex
+DICER1	DICER1 syndrome
+CDKN2A	Melanoma astrocytoma syndrome
+BAP1	BAP1 tumor predisposition syndrome
+ELP1	ELP1 medulloblastoma syndrome
+MEN1	Multiple endocrine neoplasia type 1
+RET	Multiple endocrine neoplasia type 2
+CDKN1B	Multiple endocrine neoplasia type 3
+PTPN11	Noonan syndrome
+SOS1	Noonan syndrome
+RAF1	Noonan syndrome
+RIT1	Noonan syndrome
+AIP	Familial isolated pituitary adenoma
+GPR161	Gorlin-like syndrome
