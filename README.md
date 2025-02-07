@@ -6,6 +6,9 @@ Ryan J. Corbett^, Rebecca Kaufman^, Shelly W. McQuaid, Zalman Vaksman, Saksham P
 
 +Co-senior authors
 
+:tada: This work is now preprinted on [MexRxiv](https://www.medrxiv.org/content/10.1101/2025.02.04.25321499v1). :newspaper:
+
+
 __DISCLAIMER__: This repository contains de-identified data only, and does NOT contain any raw germline variant data.  
 
 ## To reproduce the code in this repository:
