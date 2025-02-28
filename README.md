@@ -42,7 +42,7 @@ docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p
 
 Then, navigate to `localhost:8787` in your web browser. The username for login is `rstudio` and the password will be whatever password is set in the `docker run` command above (default: `pass`).
 
-__Development using Amazon EC2__
+__Development using Amazon EC2, depending on your open ports__
 
 ```
 docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 80:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
@@ -154,6 +154,11 @@ cd /home/rstudio/pbta-germline-somatic/analyses/module_of_interest
     ├── install_github.r
     ├── run_analysis_modules.sh
     └── update_fusion_gene_symbols.py
+```
+
+7. To run all analyses provided in the manuscript (needs to be run on an HPC or EC2):
+```
+bash scripts/run_analysis_modules.sh
 ```
 
 ## Code Authors
