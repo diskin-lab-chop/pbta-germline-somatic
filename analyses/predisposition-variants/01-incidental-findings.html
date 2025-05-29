@@ -468,7 +468,7 @@ plp_sv &lt;- read_tsv(plp_sv_file, show_col_types = FALSE) %&gt;%
 predispositions &lt;- read_tsv(predispositions_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 37 Columns: 2
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -517,7 +517,7 @@ plp_predisposition_syndromes &lt;- hist %&gt;%
   left_join(plp[,c(&quot;Kids_First_Biospecimen_ID_normal&quot;, &quot;chr&quot;, &quot;start&quot;,
                    &quot;ref&quot;, &quot;alt&quot;, &quot;gene_symbol_vep&quot;, &quot;autogvp_call&quot;, 
                    &quot;autogvp_call_reason&quot;, &quot;HGVSc&quot;, &quot;HGVSp&quot;,
-                   &quot;clinvar_variant_id&quot;)]) %&gt;%
+                   &quot;clinvar_variant_id&quot;, &quot;gnomad_3_1_1_AF_non_cancer_popmax&quot;)]) %&gt;%
   left_join(predispositions) %&gt;%
   filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %&gt;%
   dplyr::rename(&quot;associated_syndrome&quot; = `Associated Syndrome`,
@@ -531,7 +531,7 @@ plp_predisposition_syndromes &lt;- hist %&gt;%
          plot_group, molecular_subtype, 
          chr, start, alt, ref,
          gene_symbol_vep, autogvp_call, autogvp_call_reason, HGVSc, HGVSp,
-         clinvar_variant_id,
+         clinvar_variant_id, gnomad_3_1_1_AF_non_cancer_popmax,
          associated_syndrome, clinically_reported_syndrome, incidental_finding) %&gt;%
   dplyr::mutate(clinvar_variant_link = glue::glue(&quot;https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/&quot;))</code></pre>
 <pre><code>## Joining with `by = join_by(Kids_First_Biospecimen_ID_normal)`
