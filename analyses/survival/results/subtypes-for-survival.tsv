@@ -1,14 +1,20 @@
 mol_sub_group	plot_group	n	hist	subtype
-CRANIO, ADAM	Craniopharyngioma	27	CRANIO	ADAM
-DMG, H3 K28	DIPG or DMG	53	DMG	H3-K28
-EPN, PF A	Ependymoma	24	EPN	PF-A
-EPN, ST ZFTA	Ependymoma	19	EPN	ST-ZFTA
-GNG/GNT, BRAF V600E	Mixed neuronal-glial tumor	15	GNG-GNT	BRAF-V600E
-GNG/GNT, Other alteration	Mixed neuronal-glial tumor	44	GNG-GNT	Other-alteration
-HGG, H3 WT	Other high-grade glioma	53	HGG	H3-WT
-LGG, BRAF V600E	Low-grade glioma	29	LGG	BRAF-V600E
-LGG, BRAF fusion	Low-grade glioma	116	LGG	BRAF-fusion
-LGG, Other alteration	Low-grade glioma	50	LGG	Other-alteration
+ATRT, MYC	Atypical Teratoid Rhabdoid Tumor	8	ATRT	MYC
+ATRT, SHH	Atypical Teratoid Rhabdoid Tumor	8	ATRT	SHH
+CRANIO, ADAM	Craniopharyngioma	22	CRANIO	ADAM
+DMG, H3 K28	DIPG or DMG	11	DMG	H3-K28
+DMG, H3 K28, TP53	DIPG or DMG	17	DMG	H3-K28-TP53
+EPN, PF A	Ependymoma	20	EPN	PF-A
+EPN, ST ZFTA	Ependymoma	17	EPN	ST-ZFTA
+GNG/GNT, BRAF V600E	Mixed neuronal-glial tumor	12	GNG-GNT	BRAF-V600E
+GNG/GNT, Other alteration	Mixed neuronal-glial tumor	31	GNG-GNT	Other-alteration
+GNG/GNT, WT	Mixed neuronal-glial tumor	8	GNG-GNT	WT
+HGG, H3 wildtype	Other high-grade glioma	17	HGG	H3-wildtype
+HGG, H3 wildtype, TP53	Other high-grade glioma	14	HGG	H3-wildtype-TP53
+LGG, BRAF V600E	Low-grade glioma	24	LGG	BRAF-V600E
+LGG, BRAF fusion	Low-grade glioma	87	LGG	BRAF-fusion
+LGG, Other alteration	Low-grade glioma	44	LGG	Other-alteration
+LGG, WT	Low-grade glioma	13	LGG	WT
 MB, Group3	Medulloblastoma	19	MB	Group3
-MB, Group4	Medulloblastoma	45	MB	Group4
-MB, SHH	Medulloblastoma	19	MB	SHH
+MB, Group4	Medulloblastoma	39	MB	Group4
+MB, SHH	Medulloblastoma	16	MB	SHH

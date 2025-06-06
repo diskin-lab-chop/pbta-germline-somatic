@@ -143,9 +143,8 @@ for (group in groups){
   
 }
 
-
-subtype_df <- read_tsv(subtype_file)
-
+subtype_df <- read_tsv(subtype_file) %>%
+  dplyr::filter(mol_sub_group != "GNG/GNT, WT")
 
 for (i in 1:nrow(subtype_df)){
   
