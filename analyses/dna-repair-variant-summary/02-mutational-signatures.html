@@ -483,7 +483,7 @@ mutate(exposure = case_when(
   TRUE ~ exposure
 ))</code></pre>
 <pre><code>## Rows: 2909 Columns: 80
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr  (1): Kids_First_Biospecimen_ID
 ## dbl (79): SBS1, SBS2, SBS3, SBS4, SBS5, SBS6, SBS7a, SBS7b, SBS7c, SBS7d, SB...
@@ -638,7 +638,7 @@ for (group in groups){
         scale_fill_npg()
       
       ggsave(
-        file.path(plot_dir, paste0(&quot;cosmicv3_signature_diff_&quot;, names(sample_list)[k], &quot;_vs_other.tiff&quot;)), 
+        file.path(plot_dir, paste0(&quot;cosmicv3_signature_diff_&quot;, names(sample_list)[k], &quot;_vs_other.pdf&quot;)), 
         width = 17, height = 10, units = &quot;cm&quot;)
 
   }
@@ -1954,7 +1954,7 @@ for (group in groups){
                          group = group)
         
       ggsave(
-        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
+        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.pdf&quot;)), 
         width = 3, height = 3.5)
       
     } else if (plot_sigs[k] == &quot;SBS30&quot;){
@@ -1974,7 +1974,7 @@ for (group in groups){
                          group = group)
         
       ggsave(
-        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
+        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.pdf&quot;)), 
         width = 3, height = 3.5)
       
     } else {
@@ -1997,7 +1997,7 @@ for (group in groups){
                            group = group)
           
       ggsave(
-        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.tiff&quot;)), 
+        file.path(plot_dir, paste0(plot_sigs[k], &quot;_signature_byGroup_violinPlot.pdf&quot;)), 
         width = 3, height = 3.5)
         
     }
@@ -2026,7 +2026,7 @@ for (group in groups){
                          group = group)
     
     ggsave(
-      file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.tiff&quot;)), 
+      file.path(plot_dir, paste0(&quot;mmr_signature_byGroup_violinPlot.pdf&quot;)), 
       width = 3, height = 3.5)
     
     comparisons_mmr &lt;- list(c(&quot;MMR&quot;, &quot;Non-MMR&quot;))
@@ -2063,7 +2063,7 @@ for (group in groups){
             axis.title.x = element_text(size = 13)) 
           
     ggsave(
-      file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.tiff&quot;)), 
+      file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.pdf&quot;)), 
       width = 3, height = 3.5)
     
   }
