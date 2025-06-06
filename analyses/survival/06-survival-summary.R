@@ -36,15 +36,19 @@ hist <- read_tsv(hist_file)
 # Create subtype df of molecular subgroup names and folder names
 subtype_df <- hist %>%
   # only retain patients with survival data
-  dplyr::filter(!is.na(EFS_days) | !is.na(OS_days)) %>%
+  dplyr::filter(!is.na(EFS_days) | !is.na(OS_days),
+                mol_sub_group != "GNG/GNT, WT") %>%
+  dplyr::mutate(mol_sub_group = case_when(
+    grepl("DMG|HGG, H3", molecular_subtype) ~ molecular_subtype,
+    TRUE ~ mol_sub_group
+  )) %>%
   dplyr::count(mol_sub_group, plot_group) %>%
   # filter for groups with >=15 pts
-  filter(n >=15 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
+  filter(n >=8 & !grepl("classified", mol_sub_group) & !is.na(mol_sub_group)) %>%
   dplyr::mutate(hist = unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[1])),
-                subtype = case_when(
-                  grepl(",", mol_sub_group) ~ unlist(lapply(strsplit(mol_sub_group, ", "), function(x) x[2])),
-                  TRUE ~ NA_character_)) %>%
-  dplyr::mutate(subtype = str_replace_all(subtype, " ", "-")) %>%
+                subtype = str_remove(mol_sub_group, "^[^ ]+ ")
+  ) %>%
+  dplyr::mutate(subtype = str_replace_all(subtype, " |, ", "-")) %>%
   dplyr::mutate(hist = case_when(
     hist == "GNG/GNT" ~ "GNG-GNT",
     TRUE ~ hist
@@ -68,6 +72,7 @@ os_stats <- data.frame(group = c(group_df$group),
                        type = rep("Overall survival", length(group_df$group)),
                        median_surv_years_plp = NA_integer_,
                        median_surv_years_no_plp = NA_integer_, 
+                       km_p = NA_integer_,
                        HR = NA_integer_,
                        p = NA_integer_,
                        CI_lower = NA_integer_,
@@ -77,7 +82,8 @@ efs_stats <- data.frame(group = c(group_df$group),
                         group_n = NA_integer_,
                         type = rep("Event-free survival", length(group_df$group)),
                         median_surv_years_plp = NA_integer_,
-                        median_surv_years_no_plp = NA_integer_, 
+                        median_surv_years_no_plp = NA_integer_,
+                        km_p = NA_integer_,
                         HR = NA_integer_,
                         p = NA_integer_,
                         CI_lower = NA_integer_,
@@ -112,6 +118,11 @@ for (i in 1:nrow(group_df)){
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_os_plp$model)$table[,"median"][2]/365.25
   os_stats[os_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_os_plp$model)$table[,"median"][1]/365.25
   
+  os_diff_obj <- survdiff(survival::Surv(OS_days, OS_status) ~ cpgPLP_status,  
+                                 km_os_plp$original_data)
+  
+  os_stats[os_stats$group == group_df$group[i],]$km_p <- 1 - pchisq(os_diff_obj$chisq, length(os_diff_obj$n) - 1)
+  
   # extract OS HRs and p-values
   os_stats[os_stats$group == group_df$group[i],]$HR <- exp(os_df$estimate[os_df$term == "cpgPLP_statusCPG P/LP"])
   os_stats[os_stats$group == group_df$group[i],]$p <- os_df$p.value[os_df$term == "cpgPLP_statusCPG P/LP"]
@@ -145,6 +156,11 @@ for (i in 1:nrow(group_df)){
   efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_plp <- summary(km_efs_plp$model)$table[,"median"][2]/365.25
   efs_stats[efs_stats$group == group_df$group[i],]$median_surv_years_no_plp <- summary(km_efs_plp$model)$table[,"median"][1]/365.25
   
+  efs_diff_obj <- survdiff(survival::Surv(EFS_days, EFS_status) ~ cpgPLP_status,  
+                          km_efs_plp$original_data)
+  
+  efs_stats[efs_stats$group == group_df$group[i],]$km_p <- 1 - pchisq(efs_diff_obj$chisq, length(efs_diff_obj$n) - 1)
+  
   # extract EFS HRs and p-values
   efs_stats[efs_stats$group == group_df$group[i],]$HR <- exp(efs_df$estimate[efs_df$term == "cpgPLP_statusCPG P/LP"])
   efs_stats[efs_stats$group == group_df$group[i],]$p <- efs_df$p.value[efs_df$term == "cpgPLP_statusCPG P/LP"]
@@ -165,8 +181,7 @@ efs_stats[abs(log10(efs_stats$HR)) > 3 & !is.na(efs_stats$HR), c("HR", "p", "CI_
 
 # merge OS and EFS stats
 survival_stats <- os_stats %>%
-  bind_rows(efs_stats) %>%
-  dplyr::filter(!is.na(HR))
+  bind_rows(efs_stats) 
 
 # add p-value lable column for HRs with p<0.1
 survival_stats <- survival_stats %>%
@@ -183,31 +198,7 @@ survival_stats <- survival_stats %>%
     TRUE ~ ""
   ))
 
-# reorder rows
-group_order <- c("Atypical Teratoid Rhabdoid Tumor",
-                 "DIPG or DMG",
-                 "Ependymoma",
-                 "EPN, PF A",
-                 "High-grade glioma",
-                 "HGG, H3 WT",
-                 "Low-grade glioma",
-                 "LGG, BRAF V600E",
-                 "LGG, BRAF fusion",
-                 "LGG, Other alteration",
-                 "Medulloblastoma",
-                 "MB, Group3", 
-                 "MB, Group4",
-                 "MB, SHH",
-                 "Meningioma",
-                 "Mixed neuronal-glial tumor",
-                 "GNG/GNT, Other alteration")
-
 survival_stats <- survival_stats %>%
-  dplyr::filter(group %in% group_order) %>%
-  dplyr::mutate(group = fct_relevel(group,
-                                    rev(group_order))) %>%
-  arrange(group) %>%
-  # merge group + Ns for plotting labels
   dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
   dplyr::mutate(group_plus_n = fct_relevel(group_plus_n, 
                                            unique(group_plus_n)))
@@ -215,34 +206,79 @@ survival_stats <- survival_stats %>%
 
 pdf(NULL)
 
-# Plot hazard ratios
-survival_stats %>%
-  dplyr::mutate(CI_upper = case_when(
-    CI_upper > 100 ~ 100,
-    TRUE ~ CI_upper
-  )) %>%
-  
-  ggplot(aes(x = log10(HR), y = group_plus_n,
-             label = p_label)) +
-  geom_point(size = 3, color = "#00A087FF",
-             show.legend = FALSE) + 
-  geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
-                show.legend = FALSE, color = "#00A087FF") +
-  geom_text(x = 1, hjust = 0, size = 3.5, fontface = 2) +
-  labs(x = "log10-P-LP carrier hazard ratio (95% CI)", y = NULL) + 
-  xlim(-2.5, 2) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  facet_wrap(~type, nrow = 1) +
-  theme_Publication() +
-  theme(axis.text.x = ggtext::element_markdown())
-
-# save plot
-ggsave(file.path(plot_dir, "survival-hr-plp-vs-wt.pdf"),
-       width = 8, height = 8)
-
 # Save table to output
 survival_stats %>% 
   dplyr::select(-p_label) %>%
 write_tsv(file.path(results_dir, 
-                    "median-survival-by-ancestry-cancer-group.tsv"))  
+                    "median-survival-by-ancestry-cancer-group.tsv")) 
 
+# plot median survival and KM p-values by histology/subtype
+surv_type <- c("Overall survival", "Event-free survival")
+names(surv_type) <- c("OS", "EFS")
+
+for (i in 1:length(surv_type)){
+
+  # generate KM p-value plot, ordering by p-values
+  km_p_plot <- survival_stats %>%
+    dplyr::filter(type == surv_type[i]) %>%
+    arrange(desc(km_p)) %>%
+    dplyr::mutate(group_plus_n = factor(group_plus_n,
+                                             group_plus_n)) %>%
+    
+    ggplot(aes(x = -log10(km_p), y = factor(group_plus_n))) +
+    geom_point(size = 3, color = "#00A087FF",
+               show.legend = FALSE) + 
+    labs(x = paste0("log10(", names(surv_type[i]), " K-M p) \n "), y = NULL) + 
+    xlim(c(0, 3)) +
+    geom_vline(xintercept = -log10(0.05), linetype = "dashed") +
+    theme_Publication() +
+    theme(axis.text.x = ggtext::element_markdown())
+  
+  # plot median survival by P/LP carrier status and group, when median surv is reached
+  median_surv_plot <- survival_stats %>%
+    dplyr::filter(type == surv_type[i]) %>%
+    pivot_longer(
+      cols = c(median_surv_years_plp, median_surv_years_no_plp),
+      names_to = "plp_status",
+      names_prefix = "median_surv_years_",
+      values_to = "median_surv_years"
+    ) %>%
+    dplyr::mutate(plp_status = case_when(
+      plp_status == "plp" ~ "CPG P/LP carrier",
+      TRUE ~ "non-carrier"
+    )) %>%
+    arrange(desc(km_p)) %>%
+    dplyr::mutate(group_plus_n = factor(group_plus_n,
+                                        unique(group_plus_n))) %>%
+    
+    ggplot(aes(x = median_surv_years, y = factor(group_plus_n),
+               fill = plp_status)) +
+    geom_col(col = "black",
+           #  position = "dodge",
+             position = position_dodge(width = 0.75),  # spacing within groups
+             width = 0.7,
+             show.legend = TRUE) + 
+    labs(x = glue::glue("Median\n {surv_type[i]}"), y = NULL,
+         fill = NULL) + 
+    theme_Publication() +
+    theme(axis.text.x = ggtext::element_markdown()) +
+    theme(axis.text.y = element_blank(),
+          legend.position = "top") +
+    guides(fill = guide_legend(ncol = 2))
+  
+  # merge plots
+  merged_plot <- ggarrange(km_p_plot,
+                              median_surv_plot,
+                              align = "h",
+                              common.legend = TRUE,
+                              widths = c(0.675, 0.3))
+  
+  # write to output
+  ggsave(file.path(plot_dir, 
+                   glue::glue("median-{names(surv_type[i])}-sig-byGroup.pdf")),
+         merged_plot,
+         width = 7, height = 7)
+  
+}
+
+sessionInfo()
