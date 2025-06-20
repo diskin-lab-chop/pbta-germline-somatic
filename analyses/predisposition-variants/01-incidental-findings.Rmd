@@ -77,7 +77,7 @@ plp_predisposition_syndromes <- hist %>%
   left_join(plp[,c("Kids_First_Biospecimen_ID_normal", "chr", "start",
                    "ref", "alt", "gene_symbol_vep", "autogvp_call", 
                    "autogvp_call_reason", "HGVSc", "HGVSp",
-                   "clinvar_variant_id")]) %>%
+                   "clinvar_variant_id", "gnomad_3_1_1_AF_non_cancer_popmax")]) %>%
   left_join(predispositions) %>%
   filter(gene_symbol_vep %in% predispositions$gene_symbol_vep) %>%
   dplyr::rename("associated_syndrome" = `Associated Syndrome`,
@@ -91,7 +91,7 @@ plp_predisposition_syndromes <- hist %>%
          plot_group, molecular_subtype, 
          chr, start, alt, ref,
          gene_symbol_vep, autogvp_call, autogvp_call_reason, HGVSc, HGVSp,
-         clinvar_variant_id,
+         clinvar_variant_id, gnomad_3_1_1_AF_non_cancer_popmax,
          associated_syndrome, clinically_reported_syndrome, incidental_finding) %>%
   dplyr::mutate(clinvar_variant_link = glue::glue("https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_variant_id}/"))
 ```
