@@ -80,6 +80,7 @@ syndromes <- read_tsv(predispositions_file) %>%
     `Associated Syndrome` == "Multiple endocrine neoplasia type 2" ~ "MEN-2",
     `Associated Syndrome` == "Multiple endocrine neoplasia type 4" ~ "MEN-4",
     `Associated Syndrome` == "Familial isolated pituitary adenoma" ~ "FIPA",
+    `Associated Syndrome` == "DROSHA-associated tumor predisposition" ~ "DROSHA tumor predisposition",
     TRUE ~ `Associated Syndrome`
   )) %>%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)
