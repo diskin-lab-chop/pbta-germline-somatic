@@ -5,6 +5,7 @@ LZTR1	BS_S71RJ8DH	Atypical Teratoid Rhabdoid Tumor	SE	-4.346	BS_FPB0JGKX	chr22	2
 SMARCE1	BS_6YMJ621P	Meningioma	RI	4.33	BS_0YJF1F95	chr17	40632281	TCTCA	T	frameshift_variant	212264	40630714	86	-2.47	frameshift variant
 LZTR1	BS_H3Y8FWHV	Schwannoma	RI	2.577	BS_ETAATG3J	chr22	20994614	C	T	stop_gained	1777724	20994104	57	-2.84	stop gained
 TSC2	BS_3EVSN5QD	SEGA	A3SS	-2.846	BS_BPDT230W	chr16	2062516	TG	T	frameshift_variant	NA	2062497	12	-1.48	frameshift variant
+DROSHA	BS_7ZV3DPGT	Other tumor	SE	-4.235	BS_NTV9Z7SE	chr5	31431624	C	A	stop_gained	NA	31431576	49	-2.12	stop gained
 SLX4	BS_QXKRN6CR	Ependymoma	SE	-3.4	BS_63JFFF51	chr16	3591125	TC	T	frameshift_variant	NA	3592699	185	-0.86	frameshift variant
 RAD51D	BS_M15PW2N0	MB, SHH	A3SS	-3.205	BS_QMBK2FV7	chr17	35107380	T	TA	frameshift_variant	185760	35106988	15	-0.66	frameshift variant
 FANCM	BS_0J9SHHSC	Low-grade glioma	A3SS	-2.681	BS_8YD46AZB	chr14	45198718	C	T	stop_gained	526381	45198644	13	0.73	stop gained

@@ -110,6 +110,7 @@ BS_MKYS4YRC	BS_C80S5N37	Ependymoma	EPN, PF A	MUTYH	Pathogenic	ClinVar	chr1	45332
 BS_MN2FX68Z	BS_7C40TRCY	Medulloblastoma	MB, SHH	PTCH1	Pathogenic	ClinVar	chr9	95506600	C	G	c.202-1G>C	NA	5.661065479806948	#a340ff	MB, SHH	0.11
 BS_N0X0S3JD	BS_EYYMKWB7	Low-grade glioma	SEGA, To be classified	TSC1	Pathogenic	ClinVar	chr9	132906080	G	A	c.1498C>T	p.Arg500Ter	1.7048719644563528	#8f8fbf	SEGA	-1.24
 BS_N56BGDK6	BS_45J79YTF	Other high-grade glioma	HGG, H3 wildtype	FANCG	Pathogenic	ClinVar	chr9	35075739	A	AG	c.1158dup	p.Ser387LeufsTer9	3.4276061727818994	#ffccf5	Other high-grade glioma	0.11
+BS_NTV9Z7SE	BS_7ZV3DPGT	Other tumor	PB, Group 1	DROSHA	Pathogenic	InterVar	chr5	31431624	C	A	c.3097G>T	p.Glu1033Ter	0.879705766282288	#b5b5b5	Other tumor	-2.12
 BS_NTV9Z7SE	BS_7ZV3DPGT	Other tumor	PB, Group 1	RECQL4	Pathogenic	ClinVar	chr8	144513260	ACGCCCGGCC	A	c.2412_2420del	p.Ala805_Arg807del	2.37016428054021	#b5b5b5	Other tumor	0.78
 BS_P3W89XQY	BS_V7BJM89K	Low-grade glioma	LGG, NF1-germline	NF1	Pathogenic	ClinVar	chr17	31233085	GAC	G	c.3585_3586del	p.Leu1196CysfsTer7	3.5323169593327655	#8f8fbf	Low-grade glioma	-0.89
 BS_P4Z4YP0P	BS_R5SNFB5B	Other high-grade glioma	HGG, H3 wildtype, TP53	APC	Likely_pathogenic	ClinVar	chr5	112839514	T	A	c.3920T>A	p.Ile1307Lys	3.740927560318628	#ffccf5	Other high-grade glioma	-1.55

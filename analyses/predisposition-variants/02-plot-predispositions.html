@@ -494,8 +494,13 @@ syndromes &lt;- read_tsv(predispositions_file) %&gt;%
     TRUE ~ `Associated Syndrome`
   )) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
+<<<<<<< HEAD
 <pre><code>## Rows: 38 Columns: 2
 ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+=======
+<pre><code>## Rows: 37 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+>>>>>>> main
 ## Delimiter: &quot;\t&quot;
 ## chr (2): Hugo_Symbol, Associated Syndrome
 ## 
@@ -506,7 +511,7 @@ syndromes &lt;- read_tsv(predispositions_file) %&gt;%
 predispositions_path_review &lt;- read_tsv(predispositions_path_review_file) %&gt;%
   dplyr::rename(gene_symbol_vep = Hugo_Symbol)</code></pre>
 <pre><code>## Rows: 14 Columns: 9
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (9): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_F...
 ## 
@@ -600,8 +605,13 @@ predisposition_df %&gt;%
 <p>Load incidental findings summary, and change incidental findings to
 “No” when predisposition is recorded in path review</p>
 <pre class="r"><code>incidental_df &lt;- read_tsv(file.path(results_dir, &quot;incidental-findings-predisposition-variants.tsv&quot;))</code></pre>
+<<<<<<< HEAD
 <pre><code>## Rows: 96 Columns: 21
 ## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+=======
+<pre><code>## Rows: 95 Columns: 21
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+>>>>>>> main
 ## Delimiter: &quot;\t&quot;
 ## chr (18): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sampl...
 ## dbl  (3): start, clinvar_variant_id, gnomad_3_1_1_AF_non_cancer_popmax
@@ -629,7 +639,7 @@ write_tsv(incidental_df,
 “No” when predisposition is recorded in path review</p>
 <pre class="r"><code>incidental_sv_df &lt;- read_tsv(file.path(results_dir, &quot;incidental-findings-predisposition-structural-variants.tsv&quot;))</code></pre>
 <pre><code>## Rows: 11 Columns: 17
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (14): Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, Kids_...
 ## dbl  (3): Start, End, Length
