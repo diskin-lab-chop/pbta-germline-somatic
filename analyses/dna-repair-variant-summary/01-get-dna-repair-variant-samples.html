@@ -695,7 +695,9 @@ for (i in 1:length(repair_gene_source)){
     fdr_mat &lt;- t(apply(pval_mat, 1, function(x) p.adjust(x, method = &quot;BH&quot;)))
   
   # create text matrix of odds ratios and asterisk in cases of statistical significance
-  sig_mat &lt;- ifelse(fdr_mat &lt; 0.05 &amp; enr_mat &gt; 1, &quot;*&quot;, &quot;&quot;)
+  sig_mat &lt;- ifelse(fdr_mat &lt; 0.05 &amp; enr_mat &gt; 1, &quot;*&quot;,
+                    ifelse(pval_mat &lt; 0.05 &amp; enr_mat &gt; 1, &quot;^&quot;, 
+                           &quot;&quot;))
   
   fill_mat &lt;- matrix(glue::glue(&quot;{ct_mat}\n({round(enr_mat, 1)}{sig_mat})&quot;), 
                      length(groups), length(paths))
@@ -707,7 +709,7 @@ for (i in 1:length(repair_gene_source)){
   col_fun = colorRamp2(c(0, 6), c(&quot;white&quot;, &quot;orangered&quot;))
   
   pdf(file.path(plot_dir, paste0(&quot;dna_repair_enr_by_plot_group_&quot;, repair_gene_source[i], &quot;.pdf&quot;)),
-        width = 6, height = 7)
+        width = 6.5, height = 7)
   
   enr_heatmap &lt;- Heatmap(enr_mat,
                          name = &quot;Odds ratio&quot;,

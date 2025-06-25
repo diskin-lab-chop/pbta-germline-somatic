@@ -50,21 +50,31 @@ cd ${analyses_dir}/predisposition-variants
 bash run_module.sh
 
 # Run enrichment analysis module
-echo "Run cpg-enrichment"
-cd ${analyses_dir}/cpg-enrichment
-bash run_module.sh
+# echo "Run cpg-enrichment"
+# cd ${analyses_dir}/cpg-enrichment
+# bash run_module.sh
 
 # Run oncokb annotation analysis module
-# echo "Run oncokb-annotation"
-# cd ${analyses_dir}/oncokb-annotation
-# ONCOKB=$ONCOKB bash run-oncokb-annotation.sh
+echo "Run oncokb-annotation"
+cd ${analyses_dir}/oncokb-annotation
+ONCOKB=$ONCOKB bash run-oncokb-annotation.sh
 
 # Run two-hits analysis module
 echo "Run two-hits"
 cd ${analyses_dir}/two-hits
 bash run_module.sh
 
-# Run two-hits analysis module
+# Run alternative-splicing analysis module
+echo "Run alternative splicing"
+cd ${analyses_dir}/alternative-splicing
+bash run_module.sh
+
+# Run methylation analysis module
+echo "Run methylation"
+cd ${analyses_dir}/methylation
+bash run_module.sh
+
+# Run oncoprint analysis module
 echo "Run oncoprint"
 cd ${analyses_dir}/oncoprint
 bash run_module.sh
