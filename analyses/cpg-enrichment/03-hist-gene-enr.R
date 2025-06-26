@@ -52,8 +52,9 @@ cpgs <- read_lines(file.path(root_dir, "analyses",
                              "oncokb-annotation",
                              "input", "cpg.txt"))
 
-cpg_enr_gnomad <- read_tsv(cpg_enr_gnomad_file)
-cpg_enr_pmbb <- read_tsv(cpg_enr_pmbb_file)
+cpg_enr_gnomad <- read_tsv(cpg_enr_gnomad_file) 
+
+cpg_enr_pmbb <- read_tsv(cpg_enr_pmbb_file) 
 
 # define pineos as a separate group for plotting
 hist <- read_tsv(cbtn_histologies_file) %>%

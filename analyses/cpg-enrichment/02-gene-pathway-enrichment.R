@@ -51,8 +51,13 @@ cbtn_histologies_file <- file.path(root_dir, "analyses",
 
 # Read in hist, plp, and enrichment by CPG files
 
-cpg_enr_gnomad <- read_tsv(cpg_enr_gnomad_file)
-cpg_enr_pmbb <- read_tsv(cpg_enr_pmbb_file)
+cpg_enr_gnomad <- read_tsv(cpg_enr_gnomad_file) %>%
+  # recalculate adjusted p
+  dplyr::mutate(padj_new = p.adjust(p, method = "bonferroni"))
+
+cpg_enr_pmbb <- read_tsv(cpg_enr_pmbb_file) %>%
+  # recalculate adjusted p
+  dplyr::mutate(padj_new = p.adjust(p, method = "bonferroni"))
 
 hist <- read_tsv(cbtn_histologies_file)
 
