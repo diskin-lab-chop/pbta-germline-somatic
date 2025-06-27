@@ -57,8 +57,9 @@ Set file paths
 histologies_file <- file.path(results_dir,
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-plp_file <- file.path(root_dir, "analyses", "two-hits", "results", 
-                      "germline-plp-variants-cpg-somatic-driver-in-tumor.tsv")
+plp_file <- file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_lowVAF_file <- file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
 
 plp_sv_file <- file.path(data_dir,
                          "pbta_germline_svs.tsv")
@@ -78,7 +79,9 @@ hist <- read_tsv(histologies_file, guess_max = 10000) %>%
 
 cpgs <- read_lines(cpg_file)
 
-plp <- read_tsv(plp_file) %>%
+plp <- read_tsv(plp_file, show_col_types = FALSE) %>%
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
   dplyr::filter(Hugo_Symbol %in% cpgs)
 
 plp_sv <- read_tsv(plp_sv_file)
@@ -151,7 +154,7 @@ Survival model including tumor resection and age at dx additive effects, and dia
 
 ```{r}
 int_braf_fusions_plp_efs_model <- fit_save_model(fusions,
-                                    "extent_of_tumor_resection+path_diagnosis*cpg_plp+age_at_diagnosis_years",
+                                    "extent_of_tumor_resection+path_diagnosis+reported_gender+cpg_plp+age_at_diagnosis_years",
                                     file.path(results_dir, "coxph_EFS_lgg_braf_fusion_resection_age_int_diagnosis_plp.RDS"),
                                     "multivariate",
                                     years_col = "EFS_years",
@@ -170,7 +173,7 @@ pa_fusions <- fusions %>%
   dplyr::filter(path_diagnosis == "pilocytic astrocytoma")
 
 add_pa_plp_efs_model <- fit_save_model(pa_fusions,
-                                    "extent_of_tumor_resection+cpg_plp+age_at_diagnosis_years",
+                                    "extent_of_tumor_resection+reported_gender+cpg_plp+age_at_diagnosis_years",
                                     file.path(results_dir, "coxph_EFS_pa_resection_age_plp.RDS"),
                                     "multivariate",
                                     years_col = "EFS_years",
