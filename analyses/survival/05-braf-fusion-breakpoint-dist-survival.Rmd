@@ -57,9 +57,6 @@ Set file paths
 histologies_file <- file.path(results_dir,
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
-# plp_file <- file.path(root_dir, "analyses", "two-hits", "results", 
-#                       "germline-plp-variants-cpg-somatic-driver-in-tumor.tsv")
-
 plp_file <- file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
 plp_lowVAF_file <- file.path(data_dir, "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
