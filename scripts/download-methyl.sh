@@ -5,8 +5,8 @@ set -o pipefail
 
 # download methylation files from the pbta-germline-somatic data v7 data release s3 bucket
 
-URL="https://d3b-openaccess-us-east-1-prd-pbta.s3.amazonaws.com/pbta-germline-somatic"
-RELEASE="v7"
+URL="https://bti-openaccess-us-east-1-prd-opc.s3.us-east-1.amazonaws.com/methylation"
+RELEASE="v10"
 
 # Set the working directory to the directory of this file
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -25,7 +25,7 @@ cd -
 [ ! -d "$BASEDIR/data/$RELEASE/" ] && mkdir $BASEDIR/data/$RELEASE/
 
 # The md5sum file provides our single point of truth for which files are in a release.
-curl --create-dirs $URL/$RELEASE/methyl-md5sum.txt -o $BASEDIR/data/$RELEASE/methyl-md5sum.txt -z $BASEDIR/data/$RELEASE/methyl-md5sum.txt
+curl --create-dirs $URL/methyl-md5sum.txt -o $BASEDIR/data/$RELEASE/methyl-md5sum.txt -z $BASEDIR/data/$RELEASE/methyl-md5sum.txt
 
 FILES=(`tr -s ' ' < $BASEDIR/data/$RELEASE/methyl-md5sum.txt | cut -d ' ' -f 2` release-notes.md)
 
@@ -34,7 +34,7 @@ do
   if [ ! -e "$BASEDIR/data/$RELEASE/$file" ]
   then
     echo "Downloading $file"
-    curl --create-dirs $URL/$RELEASE/$file -o $BASEDIR/data/$RELEASE/$file
+    curl --create-dirs $URL/$file -o $BASEDIR/data/$RELEASE/$file
   fi
 done
 
