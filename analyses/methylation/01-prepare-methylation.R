@@ -1,5 +1,6 @@
 library(tidyverse) 
 library(biomaRt)
+library(qs)
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -12,7 +13,8 @@ results_dir <- file.path(analysis_dir, "results")
 
 # set file paths
 
-methyl_file <- file.path(data_dir, "methyl-beta-values-masked.qs")
+methyl_file <- file.path(data_dir,
+                         "methyl-beta-values-masked.qs")
 
 methyl_annot_file <- file.path(data_dir,
                                "infinium.gencode.v39.probe.annotations.tsv.gz")
@@ -66,8 +68,15 @@ hist <- read_tsv(hist_file, guess_max = 10000) %>%
   write_tsv(file.path(results_dir,
                       "germline-primary-plus-tumor-histologies-methylation.tsv"))
 
+# extract methylation BS IDs
+methyl_ids <- hist %>%
+  dplyr::filter(!is.na(Kids_First_Biospecimen_ID_methyl)) %>%
+  pull(Kids_First_Biospecimen_ID_methyl)
+
+
 # Load methylation data
-methyl <- qread(methyl_file)
+methyl <- qread(methyl_file) 
+
 
 # filter for samples in cohort and probes with data
 methyl <- methyl[, colnames(methyl) %in% methyl_ids]
@@ -262,3 +271,4 @@ saveRDS(cpg_methyl,
 write_tsv(annot, 
           file.path(results_dir,
                     "annot-with-canonical.tsv"))
+                    
