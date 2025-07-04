@@ -4,8 +4,8 @@ set -o pipefail
 
 # Use Children's bucket.
 URL=${PBTA_URL:-https://bti-openaccess-us-east-1-prd-rokita-lab.s3.us-east-1.amazonaws.com/pbta-germline-somatic}
-RELEASE=${PBTA_RELEASE:-v10}
-PREVIOUS=${PBTA_RELEASE:-v9}
+RELEASE=${PBTA_RELEASE:-v11}
+PREVIOUS=${PBTA_RELEASE:-v10}
 
 # Remove old symlinks in data
 find data -type l -delete

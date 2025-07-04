@@ -5,8 +5,8 @@ set -o pipefail
 
 # download methylation files from the pbta-germline-somatic data v7 data release s3 bucket
 
-URL="https://bti-openaccess-us-east-1-prd-opc.s3.us-east-1.amazonaws.com/methylation"
-RELEASE="v10"
+URL=${METHYL_URL:-https://bti-openaccess-us-east-1-prd-rokita-lab.s3.us-east-1.amazonaws.com/pbta-germline-somatic}
+RELEASE=${RELEASE:-v11}
 
 # Set the working directory to the directory of this file
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -25,21 +25,21 @@ cd -
 [ ! -d "$BASEDIR/data/$RELEASE/" ] && mkdir $BASEDIR/data/$RELEASE/
 
 # The md5sum file provides our single point of truth for which files are in a release.
-curl --create-dirs $URL/methyl-md5sum.txt -o $BASEDIR/data/$RELEASE/methyl-md5sum.txt -z $BASEDIR/data/$RELEASE/methyl-md5sum.txt
+curl -L --create-dirs $URL/$RELEASE/methyl-md5sum.txt -o $BASEDIR/data/$RELEASE/methyl-md5sum.txt -z $BASEDIR/data/$RELEASE/methyl-md5sum.txt
 
-FILES=(`tr -s ' ' < $BASEDIR/data/$RELEASE/methyl-md5sum.txt | cut -d ' ' -f 2` release-notes.md)
+FILES=($(awk '{print $2}' "$BASEDIR/data/$RELEASE/methyl-md5sum.txt"))
 
 for file in "${FILES[@]}"
 do
-  if [ ! -e "$BASEDIR/data/$RELEASE/$file" ]
-  then
+  target="$BASEDIR/data/$RELEASE/$file"
+  if [ ! -e "$target" ]; then
     echo "Downloading $file"
-    curl --create-dirs $URL/$file -o $BASEDIR/data/$RELEASE/$file
+    curl -L --fail --silent --show-error "$URL/$RELEASE/$file" -o "$target"
   fi
 done
 
 #check md5sum
-cd $BASEDIR/data/$RELEASE
+cd "$BASEDIR/data/$RELEASE"
 echo "Checking MD5 hashes..."
 md5sum -c methyl-md5sum.txt
 cd $BASEDIR
@@ -47,5 +47,5 @@ cd $BASEDIR
 # Make symlinks in data/ to the files in the just downloaded release folder.
 for file in "${FILES[@]}"
 do
-  ln -sfn $RELEASE/$file data/$file
+  ln -sfn "$RELEASE/$file" "data/$file"
 done

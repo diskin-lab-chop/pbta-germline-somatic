@@ -1,5 +1,6 @@
 library(tidyverse) 
 library(biomaRt)
+library(qs)
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -13,7 +14,7 @@ results_dir <- file.path(analysis_dir, "results")
 # set file paths
 
 methyl_file <- file.path(data_dir,
-                         "IlluminaHumanMethylationEPIC-methyl-beta-values-masked.rds")
+                         "methyl-beta-values-masked.qs")
 
 methyl_annot_file <- file.path(data_dir,
                                "infinium.gencode.v39.probe.annotations.tsv.gz")
@@ -72,20 +73,10 @@ methyl_ids <- hist %>%
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_methyl)) %>%
   pull(Kids_First_Biospecimen_ID_methyl)
 
-methyl_manifest <- read_tsv(file.path(input_dir,
-                                      "itt-141-pbta-methylation.tsv")) %>%
-  dplyr::mutate(name = str_remove_all(file_name, 
-                                      "CBTN-Methylation/|_Red.idat.gz|_Grn.idat.gz|_Grn.idat|_Red.idat")) %>%
-  distinct(name, `Kids First Biospecimen ID`)
 
 # Load methylation data
-methyl <- readRDS(methyl_file) %>%
-  column_to_rownames("Probe_ID")
+methyl <- qread(methyl_file) 
 
-# convert column names to BS IDs by matching file names to IDs in manifest
-match_ids <- as.vector(unlist(methyl_manifest[match(colnames(methyl), methyl_manifest$name), "Kids First Biospecimen ID"]))
-
-colnames(methyl) <- match_ids
 
 # filter for samples in cohort and probes with data
 methyl <- methyl[, colnames(methyl) %in% methyl_ids]
@@ -280,3 +271,4 @@ saveRDS(cpg_methyl,
 write_tsv(annot, 
           file.path(results_dir,
                     "annot-with-canonical.tsv"))
+                    
