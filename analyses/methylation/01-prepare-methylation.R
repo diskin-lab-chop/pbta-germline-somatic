@@ -3,18 +3,17 @@ library(biomaRt)
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-#setwd(root_dir)
 
 data_dir <- file.path(root_dir, "data")
 analysis_dir <- file.path(root_dir, "analyses", "methylation")
+input_dir <- file.path(analysis_dir, "input")
 plot_dir <- file.path(analysis_dir, "plots")
 results_dir <- file.path(analysis_dir, "results")
-
 
 # set file paths
 
 methyl_file <- file.path(data_dir,
-                         "methyl-beta-values.rds")
+                         "IlluminaHumanMethylationEPIC-methyl-beta-values-masked.rds")
 
 methyl_annot_file <- file.path(data_dir,
                                "infinium.gencode.v39.probe.annotations.tsv.gz")
@@ -73,12 +72,24 @@ methyl_ids <- hist %>%
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_methyl)) %>%
   pull(Kids_First_Biospecimen_ID_methyl)
 
+methyl_manifest <- read_tsv(file.path(input_dir,
+                                      "itt-141-pbta-methylation.tsv")) %>%
+  dplyr::mutate(name = str_remove_all(file_name, 
+                                      "CBTN-Methylation/|_Red.idat.gz|_Grn.idat.gz|_Grn.idat|_Red.idat")) %>%
+  distinct(name, `Kids First Biospecimen ID`)
+
 # Load methylation data
-methyl <- readRDS(methyl_file)
+methyl <- readRDS(methyl_file) %>%
+  column_to_rownames("Probe_ID")
+
+# convert column names to BS IDs by matching file names to IDs in manifest
+match_ids <- as.vector(unlist(methyl_manifest[match(colnames(methyl), methyl_manifest$name), "Kids First Biospecimen ID"]))
+
+colnames(methyl) <- match_ids
 
 # filter for samples in cohort and probes with data
-methyl <- methyl[, colnames(methyl) %in% c("Probe_ID", methyl_ids)]
-methyl <- methyl[rowSums(!is.na(methyl[,-1])) != 0,]
+methyl <- methyl[, colnames(methyl) %in% methyl_ids]
+methyl <- methyl[rowSums(!is.na(methyl)) != 0,]
 
 # Obtain sample mean methylation beta values
 num_iterations <- ceiling(ncol(methyl) / 100)
@@ -90,7 +101,7 @@ for (i in 1:num_iterations) {
   # Determine the indices for the current iteration
   if (i == 1) {
     
-    start_index <- (i - 1) * 100 + 2
+    start_index <- (i - 1) * 100 + 1
     end_index <- min(i * 100, ncol(methyl))
     
   } else {
@@ -102,11 +113,14 @@ for (i in 1:num_iterations) {
   
   # Extract the elements for the current iteration
   mean_beta[(start_index):(end_index)] <- colMeans(methyl[,start_index:end_index], na.rm = T)
-
+  
 }
 
-mean_beta_df <- data.frame(Kids_First_Biospecimen_ID_methyl = colnames(methyl)[-1],
-                           mean_beta_value = mean_beta[-1])
+# mean_beta_df <- data.frame(Kids_First_Biospecimen_ID_methyl = colnames(methyl)[-1],
+#                            mean_beta_value = mean_beta[-1])
+
+mean_beta_df <- data.frame(Kids_First_Biospecimen_ID_methyl = colnames(methyl),
+                           mean_beta_value = mean_beta)
 
 write_tsv(mean_beta_df,
           file.path(results_dir, 
@@ -118,7 +132,7 @@ cpgs <- read_lines(cpg_file)
 
 annot <- read_tsv(methyl_annot_file) %>%
   # filter for probes in `methyl` and for probes in CPGs
-  dplyr::filter(`Probe_ID` %in% methyl$Probe_ID,
+  dplyr::filter(`Probe_ID` %in% rownames(methyl),
                 Gene_symbol %in% cpgs)
 
 transcript_ids <- annot %>%
@@ -152,12 +166,15 @@ promoter_probes <- annot %>%
   pull(Probe_ID)
 
 # filter methyl data for promoter probes
-promoter_methyl <- methyl[methyl$Probe_ID %in% promoter_probes,]
+#promoter_methyl <- methyl[methyl$Probe_ID %in% promoter_probes,]
+promoter_methyl <- methyl[rownames(methyl) %in% promoter_probes,]
+
 
 promoter_annot <- annot %>%
   dplyr::filter(Gene_Feature == "promoter" & canonical == "Yes")
 
 promoter_methyl <- promoter_methyl %>%
+  rownames_to_column("Probe_ID") %>%
   left_join(promoter_annot[,c("Probe_ID", "Gene_symbol")])
 
 # calculate mean probe beta value z-scores by plot group
@@ -166,7 +183,7 @@ promoter_methyl_df <- promoter_methyl %>%
   group_by(Kids_First_Biospecimen_ID_methyl, Gene_symbol) %>%
   summarise(mean_beta_value = mean(beta_value, na.rm = T)) %>%
   left_join(hist %>% dplyr::select(Kids_First_Biospecimen_ID_methyl,
-                                          plot_group)) %>%
+                                   plot_group)) %>%
   group_by(Gene_symbol, plot_group) %>%
   dplyr::mutate(z_score = scale(mean_beta_value))
 
@@ -190,7 +207,9 @@ gene_probes <- annot %>%
   pull(Probe_ID)
 
 # filter methyl for genic probes
-gene_methyl <- methyl[methyl$Probe_ID %in% gene_probes,]
+#gene_methyl <- methyl[methyl$Probe_ID %in% gene_probes,]
+gene_methyl <- methyl[rownames(methyl) %in% gene_probes,]
+
 
 gene_annot <- annot %>%
   dplyr::filter(Gene_Feature %in% c("intron", "exon"),
@@ -199,6 +218,7 @@ gene_annot <- annot %>%
   distinct(Probe_ID, .keep_all = T)
 
 gene_methyl <- gene_methyl %>%
+  rownames_to_column("Probe_ID") %>%
   left_join(gene_annot[,c("Probe_ID", "Gene_symbol")])
 
 # calculate mean gene body beta value z-scores by plot group
@@ -226,12 +246,15 @@ hgg_ids <- hist %>%
                 grepl("H3 wildtype", molecular_subtype)) %>%
   pull(Kids_First_Biospecimen_ID_methyl)
 
-hgg_methyl <- methyl[,colnames(methyl) %in% c("Probe_ID", hgg_ids)]
+hgg_methyl <- methyl[,colnames(methyl) %in% hgg_ids]
+
+hgg_methyl <- hgg_methyl %>%
+  rownames_to_column("Probe_ID")
 
 # Save H3-wt HGG beta value matrix
 write_tsv(hgg_methyl, 
-        file.path(results_dir, 
-                  "hgg-methyl-beta-value.tsv.gz"))
+          file.path(results_dir, 
+                    "hgg-methyl-beta-value.tsv.gz"))
 
 
 # CPG probe beta values
@@ -243,6 +266,7 @@ plp_sv <- read_tsv(plp_sv_file)
 
 # create matrix of CPG-annotated probe beta values
 cpg_methyl <- methyl %>%
+  rownames_to_column("Probe_ID") %>%
   dplyr::filter(Probe_ID %in% annot$Probe_ID) %>%
   left_join(annot[,c("Probe_ID", "Gene_symbol", "Gene_Feature")]) %>%
   dplyr::filter(Gene_symbol %in% c(plp$gene_symbol_vep, plp_sv$Hugo_Symbol_cpg)) %>%
