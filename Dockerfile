@@ -1,5 +1,5 @@
 FROM rocker/tidyverse:4.4.0
-MAINTAINER rokita@chop.edu
+LABEL maintainer=jrokita@childrensnational.org
 WORKDIR /rocker-build/
 
 ### Install apt-getable packages to start
@@ -44,7 +44,7 @@ RUN R -e "options(repos = BiocManager::repositories())"
 
 # Install BiocManager and the desired version of Bioconductor
 RUN R -e "install.packages('BiocManager', dependencies=TRUE)"
-RUN R -e "BiocManager::install(version = '3.19')"
+RUN R -e "BiocManager::install(version = '3.19', ask = FALSE)"
 
 # Install packages
 RUN R -e 'BiocManager::install(c( \
@@ -74,11 +74,15 @@ RUN R -e "remotes::install_github('thomasp85/patchwork', ref = '1cb732b129ed6a65
 RUN R -e "remotes::install_github('clauswilke/colorblindr', ref = '90d64f8fc50bee7060be577f180ae019a9bbbb84', dependencies = TRUE)"
 RUN R -e "remotes::install_github('coolbutuseless/ggpattern', ref = 'bc9e4cd1271674a537bf3406663765648e3963bd', dependencies = TRUE)"
 
+# Install `qs` with AVX2 support from source
+RUN R -e 'remotes::install_cran("qs", type = "source", configure.args = list(qs = "--with-simd=AVX2"))'
+
 # Install pip3 and python reqs for oncokb
 RUN apt-get update
 RUN apt-get -y --no-install-recommends install \
     python3-pip python3-dev
 RUN python3 -m pip install --upgrade pip
+RUN pip3 install --upgrade setuptools wheel build
 RUN pip3 install \
   "matplotlib==3.1.2" \
   "kiwisolver==1.2.0" \
@@ -88,7 +92,5 @@ RUN pip3 install \
 # Install oncokb
 RUN git clone https://github.com/oncokb/oncokb-annotator.git /home/oncokb-annotator
 
-
 WORKDIR /rocker-build/
 
-ADD Dockerfile .
