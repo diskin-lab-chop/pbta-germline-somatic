@@ -53,10 +53,9 @@ histologies_file <- file.path(results_dir,
                               "germline-primary-plus-tumor-histologies-methylation.tsv")
 
 promoter_methyl_file <- file.path(results_dir,
-                                  "hgg-methyl-beta-value-masked.tsv.gz")
+                                  "hgg-methyl-beta-value.tsv.gz")
 
-methyl_annot_file <- file.path(root_dir, "data", 
-                               "v7", "infinium.gencode.v39.probe.annotations.tsv.gz")
+methyl_annot_file <- file.path(root_dir, "data", "infinium.gencode.v39.probe.annotations.tsv.gz")
 
 # cpg file
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
