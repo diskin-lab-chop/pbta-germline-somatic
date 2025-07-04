@@ -37,7 +37,7 @@ Users can also run Rstudio in the project docker container from a web browser us
 __Local Development in Rstudio__ (Max OS X and Linux users only)
 
 ```
-docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
+docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 ```
 
 Then, navigate to `localhost:8787` in your web browser. The username for login is `rstudio` and the password will be whatever password is set in the `docker run` command above (default: `pass`).
@@ -45,7 +45,7 @@ Then, navigate to `localhost:8787` in your web browser. The username for login i
 __Development using Amazon EC2, depending on your open ports__
 
 ```
-docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 80:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
+docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 80:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 ```
 
 Then, paste the instance IP address into your browser to start Rstudio. 
