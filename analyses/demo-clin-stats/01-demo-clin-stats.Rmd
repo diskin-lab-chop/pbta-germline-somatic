@@ -112,7 +112,7 @@ hist <- hist %>%
                                    TRUE~ race),
                   ethnicity = case_when(ethnicity %in% unk_ethnicity ~ "Other/Unknown Ethnicity",
                                         TRUE ~ ethnicity),
-                  predicted_ancestry = case_when(is.na(predicted_ancestry) ~ "Other/Unknown Ancestry",
+                  predicted_ancestry = case_when(is.na(predicted_ancestry) ~ "Unknown/Mixed Ancestry",
                                                  TRUE ~ predicted_ancestry),
                   sex = case_when(germline_sex_estimate != "Unknown" ~ germline_sex_estimate,
                                   TRUE ~ reported_gender),
