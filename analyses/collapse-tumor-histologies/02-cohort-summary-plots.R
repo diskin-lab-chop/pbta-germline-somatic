@@ -186,12 +186,13 @@ circos.clear()
 dev.off()
 
 # Define df of sex estimate for pie chart
-sex_df <- data.frame(labels = c(glue::glue("Female (n={sum(hist$germline_sex_estimate == 'Female')})"),
-                                glue::glue("Male (n={sum(hist$germline_sex_estimate == 'Male')})"),
-                                glue::glue("Unknown (n={sum(hist$germline_sex_estimate == 'Unknown')})")),
-                 sizes = c(sum(hist$germline_sex_estimate == "Female"), 
-                           sum(hist$germline_sex_estimate == "Male"),
-                           sum(hist$germline_sex_estimate == "Unknown")))
+hist <- hist %>%
+  dplyr::mutate(plot_sex = case_when(germline_sex_estimate != "Unknown" ~ germline_sex_estimate,
+                                     TRUE ~ reported_gender))
+sex_df <- data.frame(labels = c(glue::glue("Female (n={sum(hist$plot_sex == 'Female')})"),
+                                glue::glue("Male (n={sum(hist$plot_sex == 'Male')})")),
+                 sizes = c(sum(hist$plot_sex == "Female"), 
+                           sum(hist$plot_sex == "Male")))
 
 # plot pie chart
 sex_pie_chart <- ggplot(sex_df, aes(x = "", y = sizes, fill = labels)) +

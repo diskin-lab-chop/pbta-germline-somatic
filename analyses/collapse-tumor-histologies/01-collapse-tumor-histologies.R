@@ -82,7 +82,7 @@ germline_ids_meta <- opc_hist %>%
   filter(Kids_First_Biospecimen_ID %in% germline_ids) %>%
   dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
                 sample_id_normal =  sample_id) %>%
-  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, germline_sex_estimate) %>%
+  dplyr::select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_normal, sample_id_normal, germline_sex_estimate, reported_gender) %>%
   distinct()
 
 path_dx <- opc_hist %>%
@@ -109,7 +109,7 @@ combined_map <- combined %>%
          Kids_First_Biospecimen_ID_tumor, sample_id_tumor, tumor_descriptor, pathology_diagnosis, pathology_free_text_diagnosis, 
          broad_histology, cancer_group, plot_group, molecular_subtype, broad_histology_display,
          broad_histology_hex, cancer_group_abbreviation, plot_group_hex, broad_histology_order, 
-         oncoprint_group, germline_sex_estimate) %>%
+         oncoprint_group, germline_sex_estimate, reported_gender) %>%
   # remove patients with no matched tumor, or patients with a metastatic secondary tumor not in CNS
   dplyr::filter(!is.na(Kids_First_Biospecimen_ID_tumor) & !grepl("neuroblastoma, metastatic|Metastatic secondary", pathology_free_text_diagnosis)) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies-plot-groups.tsv"))

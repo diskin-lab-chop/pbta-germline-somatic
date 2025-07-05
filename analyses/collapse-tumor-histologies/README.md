@@ -8,7 +8,7 @@ This module creates a cohort-specific histologies file including participant IDs
 
 ## Folder content 
 
-1. `01-collapse-tumor-histologies.R` reads in OpenPedCan V11 histologies file, subsets for patients in germline cohort, and adds additional metadata. 
+1. `01-collapse-tumor-histologies.R` reads in OpenPedCan V15 histologies file, subsets for patients in germline cohort, and adds additional metadata. 
 
 2. `02-cohort-summary-plots.R` generates cohort summary plots 
 
