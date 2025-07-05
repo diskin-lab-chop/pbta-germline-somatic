@@ -108,18 +108,17 @@ unk_race <- c("Not Reported", "Other", "Reported Unknown")
 unk_ethnicity <- c("Not Available", "Not Reported", "Unavailable/Not Reported")
 
 hist <- hist %>%
-    dplyr::mutate(race = case_when(
-      race %in% unk_race ~ "Other/Unknown Race",
-      !race %in% unk_race ~ race
-    )) %>%
-    mutate(ethnicity = case_when(
-      ethnicity %in% unk_ethnicity ~ "Other/Unknown Ethnicity",
-      !ethnicity %in% unk_ethnicity ~ ethnicity
-    )) %>%
-  dplyr::mutate(plot_group = case_when(
-    plot_group == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
-    TRUE ~ plot_group
-  ))
+    dplyr::mutate(race = case_when(race %in% unk_race ~ "Other/Unknown Race",
+                                   TRUE~ race),
+                  ethnicity = case_when(ethnicity %in% unk_ethnicity ~ "Other/Unknown Ethnicity",
+                                        TRUE ~ ethnicity),
+                  predicted_ancestry = case_when(is.na(predicted_ancestry) ~ "Other/Unknown Ancestry",
+                                                 TRUE ~ predicted_ancestry),
+                  sex = case_when(germline_sex_estimate != "Unknown" ~ germline_sex_estimate,
+                                  TRUE ~ reported_gender),
+                  plot_group = case_when(plot_group == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
+    TRUE ~ plot_group)
+    )
 ```
   
 Obtain count and median statistics on demographic and clinical data for patients with and without germline CPG P/LP variants
@@ -129,7 +128,7 @@ Obtain count and median statistics on demographic and clinical data for patients
 freq <- summarize_freq(hist, "cpgPLP_status")
 
 # Look at distribution of following variables among patients with and without P/LP variants: sex, reported race, predicted ancestry, reported ethnicity, and histology group
-sex <- summarize_count(hist, "cpgPLP_status", "germline_sex_estimate")
+sex <- summarize_count(hist, "cpgPLP_status", "sex")
 
 race <- summarize_count(hist, "cpgPLP_status", "race") %>%
   select(-cpgPLP_status)
@@ -187,7 +186,7 @@ Obtain p-values through appropriate tests for each term (fisher for count data, 
 terms = c("sex", "race", "ancestry", "ethnicity",
           "group", "age", "OS_years", "EFS_years", "tmb")
 
-sex_p <- fisher.test(table(hist$germline_sex_estimate, hist$cpgPLP_status))$p.value
+sex_p <- fisher.test(table(hist$sex, hist$cpgPLP_status))$p.value
 
 race_p <- fisher.test(table(hist$race, hist$cpgPLP_status))$p.value
 
@@ -237,7 +236,7 @@ for (group in groups) {
   
   freq <- summarize_freq(group_hist, "cpgPLP_status")
 
-  sex <- summarize_count(group_hist, "cpgPLP_status", "germline_sex_estimate")
+  sex <- summarize_count(group_hist, "cpgPLP_status", "sex")
   
   race <- summarize_count(group_hist, "cpgPLP_status", "race") %>%
     select(-cpgPLP_status)
@@ -301,7 +300,7 @@ for (group in groups) {
   group_hist <- hist %>%
     filter(plot_group == group)
   
-  sex_p <- fisher.test(table(group_hist$germline_sex_estimate, group_hist$cpgPLP_status))$p.value
+  sex_p <- fisher.test(table(group_hist$sex, group_hist$cpgPLP_status))$p.value
   
   race_p <- fisher.test(table(group_hist$race, group_hist$cpgPLP_status))$p.value
   
