@@ -199,7 +199,7 @@ sex_pie_chart <- ggplot(sex_df, aes(x = "", y = sizes, fill = labels)) +
            colour = "black",
            show.legend = TRUE) +
   coord_polar(theta = "y") +
-  labs(fill = "Sex") +
+  labs(fill = "Predicted Sex") +
   scale_fill_manual(values = c("#7CAE00", "#F8766D", "gray")) +
   theme_void() +
   theme(legend.text = element_text(size=22),

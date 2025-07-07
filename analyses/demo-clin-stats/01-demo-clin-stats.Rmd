@@ -53,6 +53,9 @@ cbtn_histologies_file <- file.path(root_dir, "analyses",
 all_plp_file <- file.path(data_dir, 
                       "pbta-merged-plp-variants-autogvp-abridged.tsv")
 
+plp_lowVAF_file <- file.path(data_dir,
+                             "pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv")
+
 plp_sv_file <- file.path(data_dir, "pbta_germline_svs.tsv")
 
 cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
@@ -66,6 +69,7 @@ hist <- read_tsv(cbtn_histologies_file) %>%
                 EFS_years = EFS_days/365.25)
 
 all_plp <- read_tsv(all_plp_file) %>%
+  bind_rows(read_tsv(plp_lowVAF_file)) %>%
   dplyr::filter(Kids_First_Biospecimen_ID_normal %in% hist$Kids_First_Biospecimen_ID_normal)
 
 plp_sv <- read_tsv(plp_sv_file) %>%

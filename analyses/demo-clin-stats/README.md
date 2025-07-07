@@ -1,6 +1,13 @@
 # Generate demographic and clinical summary statistics among germline P/LP variant carriers in PBTA germline cohort
 
-This module assesses demographic and clinical summary stats among P/LP carriers in PBTA germline cohort and within tumor histologies 
+This module assesses demographic and clinical summary stats among P/LP carriers in PBTA germline cohort and within tumor histologies and generates multiple tables for the manuscript.
+
+## Table 1
+Derived from `results/demo-clin-stats-all.tsv` and `results/demo-clin-pvals-all.tsv`
+
+## Supplemental Table S9
+Derived from `results/demo-clin-stats-by-histology.xlsx` and `results/demo-clin-pvalues-by-histology.xlsx`
+
 
 ## Usage
 
