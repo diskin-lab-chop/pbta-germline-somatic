@@ -8,11 +8,13 @@ This module processes DNA methylation array data and tests for differential meth
 
 ## Folder content 
 
-1. `01-prepare_methylation.R` Calculate global and mean promoter and gene body methylation rates in CPGs, and extract all CPG beta values.
+1. `00-rename-methylation-columns.R` One-time preprocessing step to rename columns within the methylation data file for v11 data release.
 
-2. `02-global-methylation.Rmd` Compare mean beta values of P-LP carriers to non-carriers within histology groups
+2. `01-prepare_methylation.R` Calculate global and mean promoter and gene body methylation rates in CPGs, and extract all CPG beta values.
 
-3. `03-calculate-probe-zscores.Rmd` Compare probe beta values of P-LP carriers to non-carriers within histology groups
+3. `02-global-methylation.Rmd` Compare mean beta values of P-LP carriers to non-carriers within histology groups
+
+4. `03-calculate-probe-zscores.Rmd` Compare probe beta values of P-LP carriers to non-carriers within histology groups
 
 ## Directory structure
 
