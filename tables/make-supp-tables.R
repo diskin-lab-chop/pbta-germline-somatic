@@ -16,6 +16,16 @@ cohort_hist_file <- file.path(root_dir, "analyses",
                               "results", 
                               "germline-primary-plus-tumor-histologies-plot-groups-clin-meta-subtype.tsv")
 
+syndrome_snv_file  <- file.path(root_dir, "analyses",
+                                "predisposition-variants",
+                                "results", 
+                                "incidental-findings-predisposition-variants-path-review.tsv")
+
+syndrome_sv_file  <- file.path(root_dir, "analyses",
+                                "predisposition-variants",
+                                "results", 
+                                "incidental-findings-predisposition-structural-variants-path-review.tsv")
+
 # wrangle data
 
 opc_hist <- read_tsv(opc_hist_file)
@@ -56,8 +66,7 @@ cohort_hist <- read_tsv(cohort_hist_file) %>%
                 `plot group` = plot_group,
                 `molecular subtype` = molecular_subtype,
                 `broad molecular subgroup` = mol_sub_group,
-                `germline sex estimate` = germline_sex_estimate,
-                `reported gender` = reported_gender,
+                `predicted sex` = germline_sex_estimate,
                 `cancer predispositions` = cancer_predispositions,
                 `age at diagnosis years` = age_at_diagnosis_years,
                 `age last update years` = age_last_update_years,
@@ -75,8 +84,8 @@ cohort_hist <- read_tsv(cohort_hist_file) %>%
                 `sample id tumor`, `tumor event`, `pathology diagnosis`,
                 `pathology free text diagnosis`, `broad histology`,
                 `cancer group`, `plot group`, `molecular subtype`,
-                `broad molecular subgroup`, `germline sex estimate`,
-                `reported gender`, race, ethnicity, `cancer predispositions`,
+                `broad molecular subgroup`, `predicted sex`,
+                 race, ethnicity, `cancer predispositions`,
                 `age at diagnosis years`, `age last update years`,
                 `OS years`, `OS status`, `EFS years`, `EFS status`,
                 `EFS event type`, `extent of tumor resection`,
@@ -102,3 +111,52 @@ write_tsv(hist_cohort_df,
           file.path(output_dir,
                       "Table-S3B.tsv"))
 
+
+
+# Table S5
+
+syndrome_snvs <- read_tsv(syndrome_snv_file) %>%
+  dplyr::rename(`Kids First Participant ID` = Kids_First_Participant_ID,
+                `Kids First Biospecimen ID normal` = Kids_First_Biospecimen_ID_normal,
+                `Tumor Histology` = plot_group,
+                `Molecular subtype` = molecular_subtype,
+                Chr = chr,
+                Start = start,
+                `Ref allele` = ref,
+                `Alt allele` = alt,
+                `Gene symbol` = gene_symbol_vep,
+                `AutoGVP call` = autogvp_call,
+                `AutoGVP call reason` = autogvp_call_reason,
+                `ClinVar variant ID` = clinvar_variant_id,
+                `gnomAD non-cancer AF pop max` = gnomad_3_1_1_AF_non_cancer_popmax,
+                `Associated syndrome` = associated_syndrome,
+                `Clinically reported syndrome` = clinically_reported_syndrome,
+                `Incidental finding` = incidental_finding) %>%
+  dplyr::select(-sample_id_normal,
+                -sample_id_tumor,
+                -clinvar_variant_link,
+                -path_report_findings)
+
+syndrome_svs <- read_tsv(syndrome_sv_file) %>%
+  dplyr::rename(`Kids First Participant ID` = Kids_First_Participant_ID,
+                `Kids First Biospecimen ID normal` = Kids_First_Biospecimen_ID_normal,
+                `Tumor Histology` = plot_group,
+                `Molecular subtype` = molecular_subtype,
+                `Gene symbol` = gene_symbol_vep,
+                `Associated syndrome` = associated_syndrome,
+                `Clinically reported syndrome` = clinically_reported_syndrome,
+                `Incidental finding` = incidental_finding) %>%
+  dplyr::select(-sample_id_normal,
+                -Kids_First_Biospecimen_ID_tumor,
+                -sample_id_tumor,
+                -path_report_findings)
+
+syndrome_list <- list(syndrome_snvs,
+                      syndrome_svs)
+
+write.xlsx(syndrome_list,
+           file.path(output_dir,
+                     "TableS5.xlsx"),
+           overwrite = TRUE,
+           keepNA = TRUE,
+           rowNames = FALSE)
