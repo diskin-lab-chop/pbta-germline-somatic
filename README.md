@@ -21,7 +21,7 @@ git clone git@github.com:diskin-lab-chop/pbta-germline-somatic.git
 
 2. Pull the docker container:
 ```
-docker pull pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
+docker pull pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 ```
 
 3. Start the docker container
@@ -37,7 +37,7 @@ Users can also run Rstudio in the project docker container from a web browser us
 __Local Development in Rstudio__ (Max OS X and Linux users only)
 
 ```
-docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
+docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 ```
 
 Then, navigate to `localhost:8787` in your web browser. The username for login is `rstudio` and the password will be whatever password is set in the `docker run` command above (default: `pass`).
@@ -45,7 +45,7 @@ Then, navigate to `localhost:8787` in your web browser. The username for login i
 __Development using Amazon EC2, depending on your open ports__
 
 ```
-docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 80:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
+docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=pass -p 80:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 ```
 
 Then, paste the instance IP address into your browser to start Rstudio. 
@@ -94,53 +94,7 @@ cd /home/rstudio/pbta-germline-somatic/analyses/module_of_interest
 │   ├── two-hits
 │   └── variant-distribution
 ├── data
-│   ├── cnv-cnvkit-cns.tsv.gz -> v9/cnv-cnvkit-cns.tsv.gz
-│   ├── consensus_seg_annotated_cn_autosomes.tsv.gz -> v9/consensus_seg_annotated_cn_autosomes.tsv.gz
-│   ├── consensus_seg_annotated_cn_x_and_y.tsv.gz -> v9/consensus_seg_annotated_cn_x_and_y.tsv.gz
-│   ├── consensus_seg_with_status.tsv -> v9/consensus_seg_with_status.tsv
-│   ├── cptac-protein-imputed-prot-expression-abundance.tsv.gz -> v9/cptac-protein-imputed-prot-expression-abundance.tsv.gz
-│   ├── gene-counts-rsem-expected_count-collapsed.rds -> v9/gene-counts-rsem-expected_count-collapsed.rds
-│   ├── gene-expression-rsem-tpm-collapsed.rds -> v9/gene-expression-rsem-tpm-collapsed.rds
-│   ├── histologies-base.tsv -> v9/histologies-base.tsv
-│   ├── histologies.tsv -> v9/histologies.tsv
-│   ├── hope-protein-imputed-phospho-expression-abundance.tsv.gz -> v9/hope-protein-imputed-phospho-expression-abundance.tsv.gz
-│   ├── hope-protein-imputed-prot-expression-abundance.tsv.gz -> v9/hope-protein-imputed-prot-expression-abundance.tsv.gz
-│   ├── independent-specimens.methyl.primary-plus.tsv -> v9/independent-specimens.methyl.primary-plus.tsv
-│   ├── independent-specimens.methyl.primary.tsv -> v9/independent-specimens.methyl.primary.tsv
-│   ├── independent-specimens.rnaseqpanel.primary-plus.tsv -> v9/independent-specimens.rnaseqpanel.primary-plus.tsv
-│   ├── independent-specimens.rnaseqpanel.primary.tsv -> v9/independent-specimens.rnaseqpanel.primary.tsv
-│   ├── independent-specimens.wgs.primary-plus.tsv -> v9/independent-specimens.wgs.primary-plus.tsv
-│   ├── independent-specimens.wgs.primary.tsv -> v9/independent-specimens.wgs.primary.tsv
-│   ├── independent-specimens.wgswxs.primary-plus.tsv -> v9/independent-specimens.wgswxs.primary-plus.tsv
-│   ├── independent-specimens.wgswxs.primary.tsv -> v9/independent-specimens.wgswxs.primary.tsv
-│   ├── independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv -> v9/independent-specimens.wgswxspanel.primary-plus.prefer.wgs.tsv
-│   ├── independent-specimens.wgswxspanel.primary-plus.prefer.wxs.tsv -> v9/independent-specimens.wgswxspanel.primary-plus.prefer.wxs.tsv
-│   ├── independent-specimens.wgswxspanel.primary.prefer.wgs.tsv -> v9/independent-specimens.wgswxspanel.primary.prefer.wgs.tsv
-│   ├── independent-specimens.wgswxspanel.primary.prefer.wxs.tsv -> v9/independent-specimens.wgswxspanel.primary.prefer.wxs.tsv
-│   ├── pbta-all-gene-loh.tsv.gz -> v9/pbta-all-gene-loh.tsv.gz
-│   ├── pbta-cnv-consensus-gistic.zip -> v9/pbta-cnv-consensus-gistic.zip
-│   ├── pbta-cnv-consensus.seg.gz -> v9/pbta-cnv-consensus.seg.gz
-│   ├── pbta-fusion-putative-oncogenic.tsv -> v9/pbta-fusion-putative-oncogenic.tsv
-│   ├── pbta-gene-expression-rsem-fpkm-collapsed.polya.rds -> v9/pbta-gene-expression-rsem-fpkm-collapsed.polya.rds
-│   ├── pbta-gene-expression-rsem-fpkm-collapsed.stranded.rds -> v9/pbta-gene-expression-rsem-fpkm-collapsed.stranded.rds
-│   ├── pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv -> v9/pbta-merged-plp-variants-autogvp-abridged-lowVAF-cpgs.tsv
-│   ├── pbta-merged-plp-variants-autogvp-abridged.tsv -> v9/pbta-merged-plp-variants-autogvp-abridged.tsv
-│   ├── pbta-merged-plp-variants-autogvp-full.tsv -> v9/pbta-merged-plp-variants-autogvp-full.tsv
-│   ├── pbta-plp-all-loh.tsv -> v9/pbta-plp-all-loh.tsv
-│   ├── pbta-sv-manta.tsv.gz -> v9/pbta-sv-manta.tsv.gz
-│   ├── pbta_germline_svs.tsv -> v9/pbta_germline_svs.tsv
-│   ├── release-notes.md -> v9/release-notes.md
-│   ├── snv-consensus-plus-hotspots.maf.tsv.gz -> v9/snv-consensus-plus-hotspots.maf.tsv.gz
-│   ├── snv-mutation-tmb-coding.tsv -> v9/snv-mutation-tmb-coding.tsv
-│   ├── splice-events-rmats.tsv.gz -> v9/splice-events-rmats.tsv.gz
-│   ├── v2
-│   ├── v3
-│   ├── v4
-│   ├── v5
-│   ├── v6
-│   ├── v7
-│   ├── v8
-│   └── v9
+│   ├── v11
 ├── doc
 │   └── release-notes.md
 ├── download_data.sh
