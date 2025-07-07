@@ -191,7 +191,7 @@ Obtain p-values through appropriate tests for each term (fisher for count data, 
 terms = c("sex", "race", "ancestry", "ethnicity",
           "group", "age", "OS_years", "EFS_years", "tmb")
 
-sex_p <- fisher.test(table(hist$germline_sex_estimate, hist$cpgPLP_status))$p.value
+sex_p <- fisher.test(table(hist$germline_sex_estimate[hist$germline_sex_estimate != "Unknown"], hist$cpgPLP_status[hist$germline_sex_estimate != "Unknown"]))$p.value
 
 race_p <- fisher.test(table(hist$race, hist$cpgPLP_status))$p.value
 
@@ -305,7 +305,7 @@ for (group in groups) {
   group_hist <- hist %>%
     filter(plot_group == group)
   
-  sex_p <- fisher.test(table(group_hist$germline_sex_estimate, group_hist$cpgPLP_status))$p.value
+  sex_p <- fisher.test(table(group_hist$germline_sex_estimate[group_hist$germline_sex_estimate != "Unknown"], group_hist$cpgPLP_status[group_hist$germline_sex_estimate != "Unknown"]))$p.value
   
   race_p <- fisher.test(table(group_hist$race, group_hist$cpgPLP_status))$p.value
   
