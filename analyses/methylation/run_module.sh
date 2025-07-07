@@ -11,3 +11,6 @@ R -e "rmarkdown::render('02-global-methylation.Rmd')"
 
 # Assess probe differential methylation
 R -e "rmarkdown::render('03-calculate-probe-zscores.Rmd')"
+
+# Plot HGG H3 wt promoter methylation
+R -e "rmarkdown::render('04-plot-hgg-promoter-methylation.Rmd')"

@@ -1,0 +1,207 @@
+---
+title: "Plot HGG H3 Wt promoter methylation heatmap"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This script generates a heatmap of HGG H3 wt samples by CpG promoter methylation 
+
+# Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+  library(ggpubr)
+  library(ComplexHeatmap)
+  library(circlize)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "methylation")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# source publication theme
+source(file.path(root_dir, "figures", "theme.R"))
+
+# set seed to reproduce plots
+set.seed(2023)
+```
+
+
+Set input file paths
+```{r}
+plp_file <- file.path(data_dir,
+                      "pbta-merged-plp-variants-autogvp-abridged.tsv")
+
+plp_sv_file <- file.path(data_dir,
+                         "pbta_germline_svs.tsv")
+
+histologies_file <- file.path(results_dir,
+                              "germline-primary-plus-tumor-histologies-methylation.tsv")
+
+promoter_methyl_file <- file.path(results_dir,
+                                  "hgg-methyl-beta-value.tsv.gz")
+
+methyl_annot_file <- file.path(root_dir, "data", "infinium.gencode.v39.probe.annotations.tsv.gz")
+
+# cpg file
+cpg_file <- file.path(root_dir, "analyses", "oncokb-annotation", "input", "cpg.txt")
+```
+
+Wrange data
+
+```{r}
+hist <- read_tsv(histologies_file)
+
+methyl_annot <- read_tsv(methyl_annot_file)
+
+promoter_probes <- methyl_annot %>%
+  dplyr::filter(!Chromosome %in% c("chrX", "chrY"),
+                Gene_Feature == "promoter") %>%
+  distinct(Probe_ID) %>%
+  pull(Probe_ID)
+
+# filter matrix for promoter-annotated probes
+methyl_mat <- read_tsv(promoter_methyl_file) %>%
+  dplyr::filter(Probe_ID %in% promoter_probes) %>%
+    column_to_rownames("Probe_ID")
+```
+
+Filter hist for HGG H3 wildtype samples with methylation data
+
+```{r}
+hist_methyl_hgg <- hist %>%
+#  dplyr::filter(!is.na(Kids_First_Biospecimen_ID_methyl)) %>%
+  dplyr::mutate(tp53_altered = case_when(
+    plot_group %in% c("DIPG or DMG", "Other high-grade glioma") & grepl("TP53", molecular_subtype) ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_methyl %in% colnames(methyl_mat)) %>%
+  dplyr::arrange(factor(Kids_First_Biospecimen_ID_methyl),
+                 levels = colnames(methyl_mat))
+```
+
+Load CPG P/LP variant information and append to hist
+
+```{r}
+cpgs <- read_lines(cpg_file)
+
+plp <- read_tsv(plp_file) %>%
+  dplyr::rename(Hugo_Symbol = gene_symbol_vep) %>%
+  dplyr::mutate(variant_classification_vep = case_when(
+    grepl("frameshift", variant_classification_vep) ~ "frameshift_variant",
+    grepl("stop_gained", variant_classification_vep) ~ "stop_gained",
+    grepl("missense_variant", variant_classification_vep) ~ "missense_variant",
+    grepl("splice_donor|splice_acceptor", variant_classification_vep) ~ "splice_site",
+    grepl("splice", variant_classification_vep) ~ "splice_region",
+    TRUE ~ variant_classification_vep
+  ))
+
+plp_sv <- read_tsv(plp_sv_file) %>%
+  dplyr::rename(Hugo_Symbol = Hugo_Symbol_cpg,
+                variant_classification_vep = Type)
+
+plp_summary <- plp %>%
+  dplyr::filter(Hugo_Symbol %in% cpgs) %>%
+  distinct(Kids_First_Biospecimen_ID_normal, Hugo_Symbol, variant_classification_vep) %>%
+  bind_rows(plp_sv %>% dplyr::select(Kids_First_Biospecimen_ID_normal, 
+                                     Hugo_Symbol, variant_classification_vep)) %>%
+  group_by(Kids_First_Biospecimen_ID_normal) %>%
+  summarise(Hugo_Symbol = str_c(Hugo_Symbol, collapse = ","),
+            variant_classification_vep = str_c(variant_classification_vep, collapse = ",")) %>%
+  dplyr::mutate(variant_classification_vep = case_when(
+    grepl("stop_gained,stop_gained", variant_classification_vep) ~ "stop_gained",
+    grepl("splice_site,splice_site", variant_classification_vep) ~ "splice_site",
+    grepl(",", variant_classification_vep) ~ "multiple",
+    TRUE ~ variant_classification_vep
+  ))
+
+hist_methyl_hgg <- hist_methyl_hgg %>%
+  left_join(plp_summary) %>%
+  dplyr::mutate(Hugo_Symbol = case_when(
+    is.na(Hugo_Symbol) ~ "",
+    TRUE ~ Hugo_Symbol
+  ))
+```
+
+Load global methylation value df 
+
+```{r}
+global_methylation <- read_tsv(file.path(results_dir,
+                                         "pbta-germline-mean-sample-methyl-beta.tsv")) %>%
+  dplyr::filter(Kids_First_Biospecimen_ID_methyl %in% hist_methyl_hgg$Kids_First_Biospecimen_ID_methyl) %>%
+  dplyr::arrange(factor(Kids_First_Biospecimen_ID_methyl), levels = hist_methyl_hgg$Kids_First_Biospecimen_ID_methyl)
+```
+
+Generate heatap annotation object
+
+```{r}
+ha_hgg = HeatmapAnnotation(
+  `Tumor Descriptor` = hist_methyl_hgg$tumor_descriptor,
+  `TP53 altered` = hist_methyl_hgg$tp53_altered,
+  `Average methylation` = global_methylation$mean_beta_value,
+  `P/LP variant classification` = hist_methyl_hgg$variant_classification_vep,
+  Gene_symbol = anno_text(hist_methyl_hgg$Hugo_Symbol,
+  gp = gpar(fontsize = 9)),
+                       col = list("Tumor Descriptor" = c("Initial CNS Tumor" = "#F0E442",
+                                                         "Progressive" = "#56B4E9",
+                                                         "Deceased" = "#009E73",
+                                                         "Recurrence" = "#E69F00",
+                                                         "Second Malignancy" = "#0072B2"),
+                                  "TP53 altered" = c("Yes" = "black", "No" = "whitesmoke"),
+                                  "Average methylation" = colorRamp2(c(0.3, 0.5, 0.7), c("navy", "whitesmoke", "orangered")),
+                                  "P/LP variant classification" = c("DEL" = "#313695" , "missense_variant" = "#3CB371","frameshift_variant" ="#FFBBFF","stop_gained" ="#6828E8", "splice_site" = "#F0E442", "multiple" = "#FF3E96", "splice_region" = "#7B68EE", "synonymous_variant" = "#FFE4E1")),
+                  annotation_name_gp= gpar(fontsize = 10))
+
+col_fun = colorRamp2(c(0, 0.5, 1), c("navy", "whitesmoke", "orangered"))
+```
+
+Calculate beta value variances and extract 20k most variable probes for plotting
+
+```{r}
+methyl_var <- apply(methyl_mat, 1, var)
+names(methyl_var) <- rownames(methyl_mat)
+
+var_probes <- names(sort(methyl_var, decreasing = T))[1:20000]
+```
+
+Plot heatmap
+
+```{r}
+ht_hgg <- Heatmap(methyl_mat[var_probes,hist_methyl_hgg$Kids_First_Biospecimen_ID_methyl],
+                  col = col_fun,
+              name = "Promoter CpG beta value",
+              show_row_names = FALSE,
+              show_column_names = FALSE,
+              top_annotation = ha_hgg,
+              use_raster = FALSE,
+              heatmap_legend_param = list(legend_gp = gpar(fontsize = 10),
+                                          labels_gp = gpar(fontsize = 10)))
+
+pdf(file.path(plot_dir, "pbta-germline-hgg-wt-plp-somatic-prom-methylation.pdf"),
+               width = 7.5, height = 10)
+
+draw(ht_hgg, merge_legend = TRUE, heatmap_legend_side = "right",
+     annotation_legend_side = "right")
+
+dev.off()
+```
+
+Print session info
+
+```{r}
+sessionInfo()
+```
