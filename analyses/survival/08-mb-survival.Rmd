@@ -74,7 +74,7 @@ EFS:
 
 ```{r}
 add_mb_efs_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
-                                "extent_of_tumor_resection+molecular_subtype+reported_gender+mt+cpg_plp+age_at_diagnosis_years",
+                                "extent_of_tumor_resection+molecular_subtype+germline_sex_estimate+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_EFS_mb_resection_subtype_metastasis_plp.RDS"),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -89,7 +89,7 @@ OS:
 
 ```{r}
 add_mb_os_model <- fit_save_model(mb_hist[!grepl("classified", mb_hist$molecular_subtype),],
-                                "extent_of_tumor_resection+molecular_subtype+reported_gender+mt+cpg_plp+age_at_diagnosis_years",
+                                "extent_of_tumor_resection+molecular_subtype+germline_sex_estimate+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_OS_mb_resection_subtype_metastasis_plp.RDS"),
                                 "multivariate",
                                 years_col = "OS_years",
@@ -111,7 +111,7 @@ for (subtype in subtypes){
   abbrev <- str_replace(subtype, "MB, ", "")
   
   add_mb_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == subtype,],
-                                "extent_of_tumor_resection+reported_gender+mt+cpg_plp+age_at_diagnosis_years",
+                                "extent_of_tumor_resection+germline_sex_estimate+mt+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, glue::glue("coxph_add_EFS_mb_{abbrev}_resection_metastasis_plp.RDS")),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -206,7 +206,7 @@ Plot MB Group 4 EFS coxph model including methylation subclass as a covariate
 
 ```{r}
 add_mb_g4_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group4" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
-                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+reported_gender+cpg_plp+age_at_diagnosis_years",
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+germline_sex_estimate+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_EFS_mb_g4_methyl_subtype.RDS"),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -221,7 +221,7 @@ Plot MB Group 3 EFS coxph model including methylation subtype as covariate
 
 ```{r}
 add_mb_g3_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
-                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+reported_gender+cpg_plp+age_at_diagnosis_years",
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+germline_sex_estimate+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_EFS_mb_g3_resection_methyl_subtype.RDS"),
                                 "multivariate",
                                 years_col = "EFS_years",
@@ -236,7 +236,7 @@ Plot MB Group 3 OS coxph model including methylation subtype as covariate
 
 ```{r}
 add_mb_g3_efs_model <- fit_save_model(mb_hist[mb_hist$molecular_subtype == "MB, Group3" & grepl("G34", mb_hist$dkfz_v12_methylation_subclass),],
-                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+reported_gender+cpg_plp+age_at_diagnosis_years",
+                                "extent_of_tumor_resection+dkfz_v12_methylation_subclass+germline_sex_estimate+cpg_plp+age_at_diagnosis_years",
                                 file.path(results_dir, "coxph_add_OS_mb_g3_resection_methyl_subtype.RDS"),
                                 "multivariate",
                                 years_col = "OS_years",

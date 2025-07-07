@@ -42,7 +42,7 @@ mb_hist <- mb_hist %>%
 
 # generate logistic regression model including appropriate covariates
 model <- glm(
-  meta ~ extent_of_tumor_resection + molecular_subtype + reported_gender + cpg_plp + age_at_diagnosis_years,
+  meta ~ extent_of_tumor_resection + molecular_subtype + germline_sex_estimate + cpg_plp + age_at_diagnosis_years,
   data = mb_hist[!mb_hist$molecular_subtype %in% c("MB, To be classified"),],
   family = binomial
 )

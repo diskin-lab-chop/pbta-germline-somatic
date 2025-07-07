@@ -154,7 +154,7 @@ Survival model including tumor resection and age at dx additive effects, and dia
 
 ```{r}
 int_braf_fusions_plp_efs_model <- fit_save_model(fusions,
-                                    "extent_of_tumor_resection+path_diagnosis+reported_gender+cpg_plp+age_at_diagnosis_years",
+                                    "extent_of_tumor_resection+path_diagnosis+germline_sex_estimate+cpg_plp+age_at_diagnosis_years",
                                     file.path(results_dir, "coxph_EFS_lgg_braf_fusion_resection_age_int_diagnosis_plp.RDS"),
                                     "multivariate",
                                     years_col = "EFS_years",
@@ -173,7 +173,7 @@ pa_fusions <- fusions %>%
   dplyr::filter(path_diagnosis == "pilocytic astrocytoma")
 
 add_pa_plp_efs_model <- fit_save_model(pa_fusions,
-                                    "extent_of_tumor_resection+reported_gender+cpg_plp+age_at_diagnosis_years",
+                                    "extent_of_tumor_resection+germline_sex_estimate+cpg_plp+age_at_diagnosis_years",
                                     file.path(results_dir, "coxph_EFS_pa_resection_age_plp.RDS"),
                                     "multivariate",
                                     years_col = "EFS_years",
