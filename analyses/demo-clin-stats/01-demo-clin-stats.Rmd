@@ -128,7 +128,7 @@ Obtain count and median statistics on demographic and clinical data for patients
 freq <- summarize_freq(hist, "cpgPLP_status")
 
 # Look at distribution of following variables among patients with and without P/LP variants: sex, reported race, predicted ancestry, reported ethnicity, and histology group
-sex <- summarize_count(hist, "cpgPLP_status", "sex")
+sex <- summarize_count(hist, "cpgPLP_status", "germline_sex_estimate")
 
 race <- summarize_count(hist, "cpgPLP_status", "race") %>%
   select(-cpgPLP_status)

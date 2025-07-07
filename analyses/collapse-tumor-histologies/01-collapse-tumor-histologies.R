@@ -61,11 +61,6 @@ opc_hist <- read_tsv(file.path(data_dir, "histologies.tsv"), guess_max = 100000)
          
   )
 
-# pull tumor BS IDs that are not included in independent specimens
-# tumors_to_add <- opc_hist %>%
-#   dplyr::filter(Kids_First_Biospecimen_ID %in% c("BS_A70G7S2W", "BS_YETTZ1NC")) %>%
-#   dplyr::select(Kids_First_Biospecimen_ID)
-
 # select all normal BS_ids of interest
 germline_ids <- read_lines(file.path(input_dir, "samples_of_interest.txt"))
 
@@ -94,7 +89,21 @@ path_dx <- opc_hist %>%
 
 # combine germline + tumor ids
 combined <- germline_ids_meta %>%
-  left_join(tumor_ids) %>%
+  left_join(tumor_ids)
+
+# get original normal experimental strategy
+strategy <- combined %>%
+  select(Kids_First_Participant_ID, Kids_First_Biospecimen_ID_tumor, Kids_First_Biospecimen_ID = Kids_First_Biospecimen_ID_normal,
+         sample_id_normal, germline_sex_estimate, reported_gender) %>%
+  left_join(opc_hist[,c("Kids_First_Biospecimen_ID", "experimental_strategy")]) %>%
+  dplyr::rename(Kids_First_Biospecimen_ID_normal = Kids_First_Biospecimen_ID,
+                experimental_strategy_normal = experimental_strategy)
+
+combined <- combined %>%
+  left_join(strategy) %>%
+  # remove germline sex for WXS
+  dplyr::mutate(germline_sex_estimate = case_when(experimental_strategy_normal == "WXS" ~ "Unknown",
+                                                  TRUE ~ germline_sex_estimate)) %>%
   write_tsv(file.path(results_dir, "germline-primary-plus-tumor-histologies.tsv"))
 
 # add cancer/plot group mapping file 

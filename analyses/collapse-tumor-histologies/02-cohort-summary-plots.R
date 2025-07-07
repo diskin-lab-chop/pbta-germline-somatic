@@ -186,13 +186,12 @@ circos.clear()
 dev.off()
 
 # Define df of sex estimate for pie chart
-hist <- hist %>%
-  dplyr::mutate(plot_sex = case_when(germline_sex_estimate != "Unknown" ~ germline_sex_estimate,
-                                     TRUE ~ reported_gender))
-sex_df <- data.frame(labels = c(glue::glue("Female (n={sum(hist$plot_sex == 'Female')})"),
-                                glue::glue("Male (n={sum(hist$plot_sex == 'Male')})")),
-                 sizes = c(sum(hist$plot_sex == "Female"), 
-                           sum(hist$plot_sex == "Male")))
+sex_df <- data.frame(labels = c(glue::glue("Female (n={sum(hist$germline_sex_estimate == 'Female')})"),
+                                glue::glue("Male (n={sum(hist$germline_sex_estimate == 'Male')})"),
+                                glue::glue("Unknown (n={sum(hist$germline_sex_estimate == 'Unknown')})")),
+                 sizes = c(sum(hist$germline_sex_estimate == "Female"), 
+                           sum(hist$germline_sex_estimate == "Male"),
+                           sum(hist$germline_sex_estimate == "Unknown")))
 
 # plot pie chart
 sex_pie_chart <- ggplot(sex_df, aes(x = "", y = sizes, fill = labels)) +
@@ -200,7 +199,7 @@ sex_pie_chart <- ggplot(sex_df, aes(x = "", y = sizes, fill = labels)) +
            colour = "black",
            show.legend = TRUE) +
   coord_polar(theta = "y") +
-  labs(fill = "Sex") +
+  labs(fill = "Predicted Sex") +
   scale_fill_manual(values = c("#7CAE00", "#F8766D", "gray")) +
   theme_void() +
   theme(legend.text = element_text(size=22),
