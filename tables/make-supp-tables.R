@@ -102,27 +102,12 @@ cohort_hist <- read_tsv(cohort_hist_file) %>%
                 `EFS event type`, `extent of tumor resection`,
                 `CNS region`, `predicted ancestry`)
 
-# write to output
-write_tsv(cohort_hist,
-          file.path(output_dir,
-                    "Table-S3A.tsv"))
-
-# Create table of patient freq by cohort and plot group
-hist_cohort_df <- table(cohort_hist$`plot group`,
-                        cohort_hist$cohort)
-
-hist_cohort_df <- hist_cohort_df %>%
-  as.data.frame() %>%
-  pivot_wider(names_from = Var2,
-              values_from = Freq) %>%
-  dplyr::rename(`plot group` = Var1)
-
-# write to output
-write_tsv(hist_cohort_df,
-          file.path(output_dir,
-                      "Table-S3B.tsv"))
-
-
+write.xlsx(cohort_hist,
+           file.path(output_dir,
+                     "TableS3.xlsx"),
+           overwrite = TRUE,
+           keepNA = TRUE,
+           rowNames = FALSE)
 
 # Table S5
 
@@ -260,6 +245,38 @@ write.xlsx(subtype_list,
            overwrite = TRUE,
            keepNA = TRUE,
            rowNames = FALSE)
+
+# Table S9
+table_s9_names <- readxl::excel_sheets(file.path(root_dir, 
+                                              "analyses",
+                                              "demo-clin-stats",
+                                              "results",
+                                              "demo-clin-stats-by-histology.xlsx"))
+
+# Read all sheets into a named list
+table_s9 <- lapply(table_s9_names, function(x) readxl::read_excel(file.path(root_dir, 
+                                                               "analyses",
+                                                               "demo-clin-stats",
+                                                               "results",
+                                                               "demo-clin-stats-by-histology.xlsx"), sheet = x))
+table_s9_names <- ifelse(table_s9_names == "Mixed neuronal-glial tumor",
+                         "Mixed GNT",
+                         ifelse(table_s9_names == "Other high-grade glioma",
+                                "Other HGG",
+                                ifelse(table_s9_names == "Neurofibroma plexiform",
+                                       "NFP", table_s9_names)))
+
+letters_vec <- LETTERS[1:length(table_s9_names)]
+names(table_s9) <- glue::glue("TableS10{letters_vec}-{table_s9_names}")
+
+write.xlsx(table_s9,
+           file.path(output_dir,
+                     "TableS9.xlsx"),
+           overwrite = TRUE,
+           keepNA = TRUE,
+           rowNames = FALSE)
+
+
 
 # Table S10A
 cpg_list_gnomad <- read_tsv(file.path(root_dir, 
