@@ -305,7 +305,7 @@ for (i in 1:nrow(plp_splice_candidates)){
                      fill = "pink",
                      linetype="dashed") +
          labs(x = glue::glue("{case} PSI z-score"),
-              y = "TPM z-score",
+              y = glue::glue("<i>{gene}</i> TPM z-score"),
               color = "Splice event\n proximal\n P/LP carrier",
               shape = "Splice event\n proximal\n P/LP carrier",
               #title = glue::glue("{gene}, {exon_intron_rank}\n{unique(expr_gene$subgroup)}"))
@@ -317,7 +317,8 @@ for (i in 1:nrow(plp_splice_candidates)){
         scale_shape_manual(values = c(21, 24),
                    breaks = c("No", "Yes")) +
     theme_Publication() +
-    theme(plot.title = element_markdown(size = 18))
+    theme(plot.title = element_markdown(size = 18),
+          axis.title.y = ggtext::element_markdown())
 
     ggsave(file.path(plot_dir, glue::glue("{gene}-{exon_intron_rank}-{group_rna}-tpm.pdf")),
            width = 5, height = 4)
@@ -347,10 +348,9 @@ for (i in 1:nrow(plp_splice_candidates)){
                      fill = "pink",
                      linetype="dashed") +
          labs(x = glue::glue("{case} PSI z-score"),
-              y = "Protein abundance z-score",
+              y = glue::glue("{gene} protein abundance z-score"),
               color = "Splice event\n proximal\n P/LP carrier",
               shape = "Splice event\n proximal\n P/LP carrier",
-              #title = glue::glue("{gene}, {exon_intron_rank}\n{group_prot}")
               title = glue::glue("{toupper(gene)}, {exon_intron_rank}<br>{group_prot}")) + 
          stat_cor(method = "pearson",
                   label.x.npc = "left",
@@ -359,7 +359,8 @@ for (i in 1:nrow(plp_splice_candidates)){
           scale_shape_manual(values = c(21, 24),
                   breaks = c("No", "Yes")) +
     theme_Publication() +
-    theme(plot.title = element_markdown(size = 18))
+    theme(plot.title = element_markdown(size = 18),
+          axis.title.y = ggtext::element_markdown())
 
     ggsave(file.path(plot_dir, glue::glue("{gene}-{exon_intron_rank}-prot-abundance.pdf")),
            width = 5, height = 4)
