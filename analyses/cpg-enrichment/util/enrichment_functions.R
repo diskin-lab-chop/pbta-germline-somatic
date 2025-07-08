@@ -71,6 +71,47 @@ plot_pvalue <- function(enr_df, facet_var,
   
 }
 
+# plot p-value function 
+plot_pvalue_ital <- function(enr_df, facet_var,
+                        to_retain = NULL){
+  
+  # get ntests to plot bonferroni-adjusted sig threshold
+  ntests <- length(unique(enr_df[[facet_var]]))
+  
+  # filter enrichment results for levels of variable of interest, when `to_retain` provided
+  if (!is.null(to_retain)){
+    
+    enr_df <- enr_df %>%
+      dplyr::filter(!!sym(facet_var) %in% to_retain)
+    
+  }
+  
+  pval_plot <- enr_df %>% 
+    # log-transform
+    mutate(p = -log10(p)) %>%
+    
+    ggplot(aes(x = p, y = factor(cohort))) +
+    geom_point(size = 3, show.legend = FALSE, color = "#00A087FF") + 
+    labs(x = "-log10(p)\n", y = "") + 
+    # add bonferroni-adjusted signicance threshold
+    geom_vline(xintercept = -log10(0.05/ntests), linetype = "dashed") + 
+    xlim(0, NA) + 
+    # facet wrap by variable, placing strips to the left of plots
+    facet_wrap(facet_var, scale = "fixed",
+               nrow = length(unique(enr_df[[facet_var]])),
+               labeller = labeller(.cols = label_wrap_gen(14)),
+               strip.position = "left") +
+    theme_Publication() +
+    # rotate strip text 
+    theme(plot.margin = unit(c(2,1,1,0), "lines"),
+          strip.text.y.left = element_text(angle = 0)) +
+    theme(strip.placement = "outside",
+          strip.text = element_text(face = "bold.italic"))
+  
+  return(pval_plot)
+  
+}
+
 # Odds Ratio plot
 plot_enr <- function(enr_df, facet_var, log_scale = FALSE){
   
