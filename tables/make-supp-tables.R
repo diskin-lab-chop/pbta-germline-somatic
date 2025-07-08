@@ -1,6 +1,7 @@
 
-
 library(tidyverse)
+library(openxlsx)
+
 
 # Set up directories
 root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
@@ -273,7 +274,7 @@ write.xlsx(table_s9,
            file.path(output_dir,
                      "TableS9.xlsx"),
            overwrite = TRUE,
-           keepNA = TRUE,
+           na.string = "",
            rowNames = FALSE)
 
 
