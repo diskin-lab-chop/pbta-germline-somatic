@@ -291,11 +291,13 @@ Plot normalized expression within histologies, for genes that have P/LP variants
 z_scored_expression <- z_scored_expression %>%
   dplyr::mutate(
     subgroup_clean = subgroup %>%
-      gsub("Other high-grade glioma", "Other HGG", .) %>%
+      gsub("Other high-grade glioma", "HGG", .) %>%
       gsub("Low-grade glioma", "LGG", .) %>%
+      gsub("MB, SHH", "MB-SHH", .) %>%
       gsub(",", "", .) %>%
       gsub(" ", "~", .),
-    group_gene = glue::glue('italic({Hugo_Symbol})*": "*{subgroup_clean}'))
+      group_gene = glue::glue('**<i>{Hugo_Symbol}</i>: {subgroup_clean}**')
+    )
 
 # Identify histology-gene pairs for which there are at least 3 patients with P/LP variants in group
 plot_group_gene <- z_scored_expression %>%
@@ -331,8 +333,10 @@ z_scored_expression %>%
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
-    facet_wrap(~group_gene, labeller = label_parsed) +
-    theme_Publication()
+    facet_wrap(~group_gene) +
+    theme_Publication() +
+    theme(strip.text = ggtext::element_markdown())
+
 
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
