@@ -1,6 +1,6 @@
 # Germline pathogenic variation impacts somatic alterations and patient outcomes in pediatric CNS tumors
 
-Ryan J. Corbett^, Rebecca Kaufman^, Shelly W. McQuaid, Zalman Vaksman, Saksham Phul, Miguel A. Brown, Jennifer L. Mason, Sebastian M. Waszak, Bo Zhang, Chuwei Zhong, Heena Desai, Ryan Hausler, Ammar S. Naqvi, Antonia Chroni, Zhuangzhuang Geng, Elizabeth M. Gonzalez, Yuankun Zhu, Allison P. Heath, Marilyn Li, Penn Medicine BioBank, Regeneron Genetics Center, Phillip B. Storm, Adam C. Resnick, Kara N. Maxwell, Kristina A. Cole, Angela J. Waanders, Miriam Bornhorst, Suzanne MacFarland, Jo Lynne Rokita+, Sharon J. Diskin+
+Ryan J. Corbett^, Rebecca Kaufman^, Shelly W. McQuaid, Zalman Vaksman, Saksham Phul, Miguel A. Brown, Jennifer L. Mason, Sebastian M. Waszak, Bo Zhang, Chuwei Zhong, Emily Blauel, Heena Desai, Ryan Hausler, Ammar S. Naqvi, Jessica M. Daggett, Alex Sickler, Evan C. Cresswell-Clay, Patricia J. Sullivan, Antonia Chroni, Zhuangzhuang Geng, Elizabeth M. Gonzalez, Yuankun Zhu, Allison P. Heath, Marilyn Li, Penn Medicine BioBank, Regeneron Genetics Center, Phillip B. Storm, Adam C. Resnick, Kara N. Maxwell, Kristina A. Cole, Angela J. Waanders, Miriam Bornhorst, Suzanne MacFarland, Jo Lynne Rokita+, Sharon J. Diskin+
 
 ^Equal authorship
 
