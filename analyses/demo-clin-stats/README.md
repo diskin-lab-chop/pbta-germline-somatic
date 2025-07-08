@@ -2,11 +2,11 @@
 
 This module assesses demographic and clinical summary stats among P/LP carriers in PBTA germline cohort and within tumor histologies and generates multiple tables for the manuscript.
 
-## Table 1
-Derived from `results/demo-clin-stats-all.tsv` and `results/demo-clin-pvals-all.tsv`
+## Main Table 1
+Derived from `demo-clin-stats-cohort.xlsx`
 
 ## Supplemental Table S9
-Derived from `results/demo-clin-stats-by-histology.xlsx` and `results/demo-clin-pvalues-by-histology.xlsx`
+Derived from `demo-clin-stats-by-histology.xlsx`
 
 
 ## Usage
@@ -26,16 +26,17 @@ Derived from `results/demo-clin-stats-by-histology.xlsx` and `results/demo-clin-
 ├── 01-demo-clin-stats.nb.html
 ├── 02-plot-ancestry.R
 ├── README.md
-├── input
 ├── plots
+│   ├── other_group_plp_carrier_enr.pdf
 │   ├── plot_group_plp_carrier_enr_heatmap.pdf
-│   └── predicted-ancestry-pca.pdf
+│   ├── predicted-ancestry-pca.pdf
+│   └── subtype_plp_carrier_enr.pdf
 ├── results
-│   ├── cohort-summary-table-manuscript.tsv
 │   ├── demo-clin-pvals-all.tsv
-│   ├── demo-clin-pvalues-by-histology.xlsx
 │   ├── demo-clin-stats-all.tsv
-│   └── demo-clin-stats-by-histology.xlsx
+│   ├── demo-clin-stats-by-histology.xlsx
+│   ├── demo-clin-stats-cohort.xlsx
+│   └── plp-carrier-subtype-counts.tsv
 ├── run_module.sh
 └── util
     ├── heatmap_function.R

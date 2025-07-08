@@ -183,8 +183,6 @@ stats <- freq %>%
   bind_rows(demo_path, clin) %>%
   rownames_to_column("Term")
 
-write_tsv(stats, 
-          file.path(results_dir, "demo-clin-stats-all.tsv"))
 ```
 
 Obtain p-values through appropriate tests for each term (fisher for count data, wilcox.test for continuous data)
@@ -218,9 +216,6 @@ pvals <- data.frame(term = terms,
   mutate(pvalue = ifelse(pvalue < 0.01,
                                  formatC(pvalue, format = "e", digits = 2),
                                  as.character(round(pvalue, 2))))
-
-write_tsv(pvals, 
-          file.path(results_dir, "demo-clin-pvals-all.tsv"))
 ```
 
 
