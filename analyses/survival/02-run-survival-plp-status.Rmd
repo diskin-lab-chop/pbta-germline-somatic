@@ -127,6 +127,16 @@ for (group in groups){
   group_hist <- hist %>%
     filter(grepl(group, plot_group))
   
+  group_hist <- group_hist %>% 
+    dplyr::mutate(mol_sub_group = case_when(
+      !grepl("To be classified", mol_sub_group) ~ mol_sub_group,
+      grepl("To be classified", mol_sub_group) ~ NA_character_
+    )) %>%
+    dplyr::mutate(extent_of_tumor_resection = case_when(
+      !grepl("Unavailable", extent_of_tumor_resection) ~ extent_of_tumor_resection,
+      TRUE ~ NA_character_
+    ))
+  
   if (group == "Other high-grade glioma"){
     group_hist <- group_hist %>%
        dplyr::mutate(molecular_subtype = fct_relevel(molecular_subtype,
@@ -194,9 +204,8 @@ for (group in groups){
 
   readr::write_rds(kap_efs, km_efs_model_file)
 
-
   # generate coxph models (including appropriate covariates) and save
-  add_model_os <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group) & !grepl("Unavailable", group_hist$extent_of_tumor_resection),],
+  add_model_os <- fit_save_model(group_hist,
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
@@ -206,8 +215,8 @@ for (group in groups){
                                                    "molecular_subtype+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
                                                    ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor", "Medulloblastoma"),
                                                           "extent_of_tumor_resection+mol_sub_group+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
-                                                          ifelse(group %in% c("Mixed neuronal-glial tumor", "Ependymom"),
-                                                                 "mol_sub_group+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
+                                                          ifelse(group %in% c("Mixed neuronal-glial tumor"),
+                                                                 "extent_of_tumor_resection+mol_sub_group+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
                                                                  ifelse(group %in% c("Choroid plexus tumor", "Mesenchymal tumor",
                                                                                      "Meningioma", "Schwannoma"),
                                                                         "extent_of_tumor_resection+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
@@ -219,7 +228,7 @@ for (group in groups){
              status_col = "OS_status"
             )
   
-  add_model_efs <- fit_save_model(group_hist[!grepl("To be classified", group_hist$mol_sub_group) & !grepl("Unavailable", group_hist$extent_of_tumor_resection),],
+  add_model_efs <- fit_save_model(group_hist,
                                   terms = ifelse(
                                      group %in% c("Low-grade glioma"), 
                                      "mol_sub_group+extent_of_tumor_resection+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
@@ -229,8 +238,8 @@ for (group in groups){
                                                    "molecular_subtype+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
                                                    ifelse(group %in% c("Atypical Teratoid Rhabdoid Tumor", "Medulloblastoma"),
                                                           "extent_of_tumor_resection+mol_sub_group+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
-                                                          ifelse(group %in% c("Mixed neuronal-glial tumor", "Ependymom"),
-                                                                 "mol_sub_group+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
+                                                          ifelse(group %in% c("Mixed neuronal-glial tumor"),
+                                                                 "extent_of_tumor_resection+mol_sub_group+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
                                                                  ifelse(group %in% c("Choroid plexus tumor", "Mesenchymal tumor",
                                                                                      "Meningioma", "Schwannoma"),
                                                                         "extent_of_tumor_resection+germline_sex_estimate+cpgPLP_status+age_at_diagnosis_years",
@@ -299,6 +308,12 @@ for (j in 1:nrow(subtypes)) {
   # Subset metadata for histology subtype
   subtype_hist <- hist %>%
     filter(grepl(subtypes$plot_group[j], plot_group) & grepl(subtypes$mol_sub_group[j], mol_sub_group))
+  
+  subtype_hist <- subtype_hist %>% 
+    dplyr::mutate(extent_of_tumor_resection = case_when(
+      !grepl("Unavailable", extent_of_tumor_resection) ~ extent_of_tumor_resection,
+      TRUE ~ NA_character_
+    ))
   
   
   # Run kaplan meier survival models and save to output
