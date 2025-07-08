@@ -308,7 +308,6 @@ for (i in 1:nrow(plp_splice_candidates)){
               y = glue::glue("<i>{gene}</i> TPM z-score"),
               color = "Splice event\n proximal\n P/LP carrier",
               shape = "Splice event\n proximal\n P/LP carrier",
-              #title = glue::glue("{gene}, {exon_intron_rank}\n{unique(expr_gene$subgroup)}"))
               title = glue::glue("<i>{gene}</i>, {exon_intron_rank}<br>{unique(expr_gene$subgroup)}")) + 
          stat_cor(method = "pearson",
                   label.x.npc = "left",

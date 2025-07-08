@@ -83,7 +83,7 @@ plot_pvalue_ital <- function(enr_df, facet_var,
     
     enr_df <- enr_df %>%
       dplyr::filter(!!sym(facet_var) %in% to_retain)
-    
+
   }
   
   pval_plot <- enr_df %>% 
