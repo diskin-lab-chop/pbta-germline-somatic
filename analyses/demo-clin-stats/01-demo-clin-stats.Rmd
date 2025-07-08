@@ -120,6 +120,10 @@ hist <- hist %>%
       ethnicity %in% unk_ethnicity ~ "Other/Unknown Ethnicity",
       !ethnicity %in% unk_ethnicity ~ ethnicity
     )) %>%
+    mutate(predicted_ancestry = case_when(
+      is.na(predicted_ancestry) ~ "Unknown Ancestry",
+      TRUE ~ predicted_ancestry
+    )) %>%
   dplyr::mutate(plot_group = case_when(
     plot_group == "Atypical Teratoid Rhabdoid Tumor" ~ "ATRT",
     TRUE ~ plot_group
@@ -166,10 +170,8 @@ demo_path <- sex %>%
 # Calculate median survival and tmb for each group
 clin <- hist %>%
   group_by(cpgPLP_status) %>%
-  summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
-            median_os_years = round(median(OS_years, na.rm = T), 2),
-            median_efs_years = round(median(EFS_years, na.rm = T), 2),
-            median_tmb = round(median(tmb, na.rm = T), 2)) %>%
+  summarise(`Median age at diagnosis, years` = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
+            `Median tumor mutation burden` = round(median(tmb, na.rm = T), 2)) %>%
   column_to_rownames("cpgPLP_status") %>%
   t() %>%
   as.data.frame() %>%
@@ -181,17 +183,16 @@ stats <- freq %>%
   bind_rows(demo_path, clin) %>%
   rownames_to_column("Term")
 
-write_tsv(stats, 
-          file.path(results_dir, "demo-clin-stats-all.tsv"))
 ```
 
 Obtain p-values through appropriate tests for each term (fisher for count data, wilcox.test for continuous data)
 
 ```{r}
-terms = c("sex", "race", "ancestry", "ethnicity",
-          "group", "age", "OS_years", "EFS_years", "tmb")
+terms = c("Predicted sex", "Race", "Ethnicity", "Genetic Ancestry Superpopulation",
+          "Tumor Histology", "Median age at diagnosis, years",
+          "Median tumor mutation burden")
 
-sex_p <- fisher.test(table(hist$germline_sex_estimate, hist$cpgPLP_status))$p.value
+sex_p <- fisher.test(table(hist$germline_sex_estimate[hist$germline_sex_estimate != "Unknown"], hist$cpgPLP_status[hist$germline_sex_estimate != "Unknown"]))$p.value
 
 race_p <- fisher.test(table(hist$race, hist$cpgPLP_status))$p.value
 
@@ -205,34 +206,75 @@ group_p <- fisher.test(table(hist$plot_group, hist$cpgPLP_status), simulate.p.va
 age_p <- wilcox.test(as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "CPG P/LP"]),
                      as.numeric(hist$age_at_diagnosis_days[hist$cpgPLP_status == "No CPG P/LP"]))$p.value
 
-os_p <- wilcox.test(hist$OS_years[hist$cpgPLP_status == "CPG P/LP"],
-          hist$OS_years[hist$cpgPLP_status == "No CPG P/LP"])$p.value
-
-efs_p <- wilcox.test(hist$EFS_years[hist$cpgPLP_status == "CPG P/LP"],
-          hist$EFS_years[hist$cpgPLP_status == "No CPG P/LP"])$p.value
-
 tmb_p <- wilcox.test(hist$tmb[hist$cpgPLP_status == "CPG P/LP"],
           hist$tmb[hist$cpgPLP_status == "No CPG P/LP"])$p.value
 
 # Merge p-values and write to output
 pvals <- data.frame(term = terms,
-                    pvalue = c(sex_p, race_p, ancestry_p, ethnicity_p, 
-                               group_p, age_p, os_p, efs_p, tmb_p))
+                    pvalue = c(sex_p, race_p, ethnicity_p, ancestry_p,
+                               group_p, age_p, tmb_p)) %>%
+  mutate(pvalue = ifelse(pvalue < 0.01,
+                                 formatC(pvalue, format = "e", digits = 2),
+                                 as.character(round(pvalue, 2))))
+```
 
-write_tsv(pvals, 
-          file.path(results_dir, "demo-clin-pvals-all.tsv"))
+
+```{r}
+term_df <- tibble(Term = c("Predicted sex",
+                           "Race",
+                           "Ethnicity",
+                           "Genetic Ancestry Superpopulation",
+                           "Tumor Histology"))
+
+merged_stat_df <- stats %>%
+  bind_rows(term_df) %>%
+  dplyr::mutate(Term = fct_relevel(Term,
+                                   c("Number Cohort", "Predicted sex",
+                                     sort(unique(hist$germline_sex_estimate)),
+                                     "Race", sort(unique(hist$race)),
+                                     "Ethnicity", sort(unique(hist$ethnicity)),
+                                     "Genetic Ancestry Superpopulation",
+                                     sort(unique(hist$predicted_ancestry)),
+                                     "Tumor Histology",
+                                     sort(unique(hist$plot_group))))) %>%
+  dplyr::arrange(Term) %>%
+  dplyr::mutate(`CPG P/LP` = case_when(
+    is.na(`CPG P/LP`) ~ "",
+    TRUE ~ `CPG P/LP`
+  ),
+  `No CPG P/LP` = case_when(
+    is.na(`No CPG P/LP`) ~ "",
+    TRUE ~ `No CPG P/LP`
+  )) %>%
+  left_join(pvals,
+            by = c("Term" = "term")) %>%
+  dplyr::mutate(Term = as.character(Term)) %>%
+  dplyr::mutate(Term = case_when(
+    !is.na(pvalue) | Term == "Number Cohort" ~ Term,
+    is.na(pvalue) ~ glue::glue("     {Term}")
+  )) %>%
+  dplyr::mutate(pvalue = case_when(
+    !is.na(pvalue) ~ pvalue,
+    TRUE ~ "")) 
+
+write.xlsx(merged_stat_df,
+           file.path(results_dir, "demo-clin-stats-cohort.xlsx"),
+           overwrite = TRUE,
+           keepNA = TRUE,
+           rowNames = FALSE)
 ```
 
 Obtain same summary statistics for each histology group
 
 ```{r}
 groups <- unique(hist$plot_group)
+terms <- terms[terms != "Tumor Histology"]
 
 # remove `Other CNS embryonal tumor`, since there are no patients with P/LP variants
 groups <- groups[groups != "Other CNS embryonal tumor"]
 
 # Create empty list to store stats
-stats_list <- list()
+hist_stats_list <- list()
 
 for (group in groups) {
   
@@ -269,43 +311,20 @@ for (group in groups) {
   
   clin <- group_hist %>%
     group_by(cpgPLP_status) %>%
-    summarise(median_age = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
-              median_os_years = round(median(OS_years, na.rm = T), 2),
-              median_efs_years = round(median(EFS_years, na.rm = T), 2),
-              median_tmb = round(median(tmb, na.rm = T), 2)) %>%
+    summarise(`Median age at diagnosis, years` = round(median(as.numeric(age_at_diagnosis_days)/365.25, na.rm = T), 2),
+            `Median tumor mutation burden` = round(median(tmb, na.rm = T), 2)) %>%
     column_to_rownames("cpgPLP_status") %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(`CPG P/LP` = as.character(`CPG P/LP`),
                   `No CPG P/LP` = as.character(`No CPG P/LP`))
   
-  stats_list[[group]] <- freq %>%
-    bind_rows(demo_path, clin)
+  stats_hist <- freq %>%
+    bind_rows(demo_path, clin) %>%
+    rownames_to_column("Term")
 
-}
 
-# write stats by group to excel file, with separate tab for each group
-write.xlsx(stats_list,
-           file.path(results_dir, "demo-clin-stats-by-histology.xlsx"),
-           overwrite = TRUE,
-           keepNA = TRUE,
-           rowNames = TRUE)
-```
-
-Obtain corresponding p-values for terms by histology
-
-```{r}
-pvalue_list <- list()
-
-terms = c("age", "sex", "race", "ancestry", "ethnicity",
-          "OS_years", "EFS_years", "tmb")
-
-for (group in groups) {
-  
-  group_hist <- hist %>%
-    filter(plot_group == group)
-  
-  sex_p <- fisher.test(table(group_hist$germline_sex_estimate, group_hist$cpgPLP_status))$p.value
+  sex_p <- fisher.test(table(group_hist$germline_sex_estimate[group_hist$germline_sex_estimate != "Unknown"], group_hist$cpgPLP_status[group_hist$germline_sex_estimate != "Unknown"]))$p.value
   
   race_p <- fisher.test(table(group_hist$race, group_hist$cpgPLP_status))$p.value
   
@@ -316,22 +335,54 @@ for (group in groups) {
   age_p <- wilcox.test(as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "CPG P/LP"]),
                        as.numeric(group_hist$age_at_diagnosis_days[group_hist$cpgPLP_status == "No CPG P/LP"]))$p.value
 
-  os_p <- wilcox.test(group_hist$OS_years[group_hist$cpgPLP_status == "CPG P/LP"],
-            group_hist$OS_years[group_hist$cpgPLP_status == "No CPG P/LP"])$p.value
-  
-  efs_p <- wilcox.test(group_hist$EFS_years[group_hist$cpgPLP_status == "CPG P/LP"],
-            group_hist$EFS_years[group_hist$cpgPLP_status == "No CPG P/LP"])$p.value
-  
   tmb_p <- wilcox.test(group_hist$tmb[hist$cpgPLP_status == "CPG P/LP"],
             group_hist$tmb[hist$cpgPLP_status == "No CPG P/LP"])$p.value
   
-  pvalue_list[[group]] <- data.frame(term = terms,
+  pvalues_hist <- data.frame(term = terms,
                                     pvalue = c(age_p, sex_p, race_p, ancestry_p,
-                                               ethnicity_p, os_p, efs_p, tmb_p))
+                                               ethnicity_p, tmb_p)) %>%
+  mutate(pvalue = ifelse(pvalue < 0.01,
+                                 formatC(pvalue, format = "e", digits = 2),
+                                 as.character(round(pvalue, 2))))
+  
+  
+  hist_term_df <- tibble(Term = c("Predicted sex",
+                           "Race",
+                           "Ethnicity",
+                           "Genetic Ancestry Superpopulation"))
+
+  hist_stats_list[[group]] <- stats_hist %>%
+    bind_rows(hist_term_df) %>%
+    dplyr::mutate(Term = fct_relevel(Term,
+                                     c("Number Cohort", "Predicted sex",
+                                       sort(unique(group_hist$germline_sex_estimate)),
+                                       "Race", sort(unique(group_hist$race)),
+                                       "Ethnicity", sort(unique(group_hist$ethnicity)),
+                                       "Genetic Ancestry Superpopulation",
+                                       sort(unique(group_hist$predicted_ancestry))))) %>%
+    dplyr::arrange(Term) %>%
+    dplyr::mutate(`CPG P/LP` = case_when(
+      is.na(`CPG P/LP`) ~ "",
+      TRUE ~ `CPG P/LP`
+    ),
+    `No CPG P/LP` = case_when(
+      is.na(`No CPG P/LP`) ~ "",
+      TRUE ~ `No CPG P/LP`
+    )) %>%
+    left_join(pvalues_hist,
+              by = c("Term" = "term")) %>%
+    dplyr::mutate(Term = as.character(Term)) %>%
+    dplyr::mutate(Term = case_when(
+      !is.na(pvalue) | Term == "Number Cohort" ~ Term,
+      is.na(pvalue) ~ glue::glue("     {Term}")
+    )) %>%
+    dplyr::mutate(pvalue = case_when(
+      !is.na(pvalue) ~ pvalue,
+      TRUE ~ "")) 
 }
 
-write.xlsx(pvalue_list,
-           file.path(results_dir, "demo-clin-pvalues-by-histology.xlsx"),
+write.xlsx(hist_stats_list,
+           file.path(results_dir, "demo-clin-stats-by-histology.xlsx"),
            overwrite = TRUE,
            keepNA = TRUE,
            rowNames = FALSE)
