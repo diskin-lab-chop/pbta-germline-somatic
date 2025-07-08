@@ -136,16 +136,16 @@ freq <- summarize_freq(hist, "cpgPLP_status")
 sex <- summarize_count(hist, "cpgPLP_status", "germline_sex_estimate")
 
 race <- summarize_count(hist, "cpgPLP_status", "race") %>%
-  select(-cpgPLP_status)
+  dplyr::select(-cpgPLP_status)
 
 ancestry <- summarize_count(hist, "cpgPLP_status", "predicted_ancestry") %>%
-  select(-cpgPLP_status)
+  dplyr::select(-cpgPLP_status)
 
 ethnicity <- summarize_count(hist, "cpgPLP_status", "ethnicity") %>%
-  select(-cpgPLP_status)
+  dplyr::select(-cpgPLP_status)
 
 group <- summarize_count(hist, "cpgPLP_status", "plot_group") %>%
-  select(-cpgPLP_status)
+  dplyr::select(-cpgPLP_status)
 
 # merge stats and add %
 demo_path <- sex %>%
@@ -244,13 +244,13 @@ for (group in groups) {
   sex <- summarize_count(group_hist, "cpgPLP_status", "germline_sex_estimate")
   
   race <- summarize_count(group_hist, "cpgPLP_status", "race") %>%
-    select(-cpgPLP_status)
+    dplyr::select(-cpgPLP_status)
   
   ancestry <- summarize_count(group_hist, "cpgPLP_status", "predicted_ancestry") %>%
-    select(-cpgPLP_status)
+    dplyr::select(-cpgPLP_status)
   
   ethnicity <- summarize_count(group_hist, "cpgPLP_status", "ethnicity") %>%
-    select(-cpgPLP_status)
+    dplyr::select(-cpgPLP_status)
  
   demo_path <- sex %>%
     bind_cols(race, ethnicity, ancestry) %>%
@@ -387,8 +387,15 @@ subtype_enr <- subtype_enr %>%
   write_tsv(file.path(results_dir, "plp-carrier-subtype-counts.tsv"))
 
 subtype_enr_plot <- subtype_enr %>% 
+  dplyr::mutate(subtype = str_replace_all(
+      subtype,
+      c(
+        "\\bBRAF\\b" = "<i>BRAF</i>",
+        "\\bTP53\\b" = "<i>TP53</i>"
+      ))) %>%
   dplyr::mutate(subtype = fct_relevel(subtype,
                                           rev(unique(subtype)))) %>%
+  
   ggplot(aes(x = log10(OR), y = subtype, label = fdr_label)) +
   geom_point(size = 3, color = "#00A087FF",
              show.legend = FALSE) + 
@@ -400,7 +407,8 @@ subtype_enr_plot <- subtype_enr %>%
   xlim(min(log10(subtype_enr$CI_lower))-0.25, max(log10(subtype_enr$CI_upper))+0.25) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   theme_Publication() +
-  theme(plot.margin = unit(c(2,0.5,1,0.25), "lines"))
+  theme(plot.margin = unit(c(2,0.5,1,0.25), "lines")) +
+  theme(axis.text.y = ggtext::element_markdown(size = 12))
 
 pdf(file.path(plot_dir, "subtype_plp_carrier_enr.pdf"),
     width = 5, height = 8)
