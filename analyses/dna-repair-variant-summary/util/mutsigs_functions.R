@@ -73,8 +73,8 @@ plot_exposure_violin <- function(df, x, y, sig, group){
     #       plot.title = element_text(size = 8, hjust = 0.5)) +
     scale_x_discrete(labels = x_labels) +
     scale_fill_npg() +
-    stat_summary(fun.data=data_summary,
-                 show.legend = F) +
+    #stat_summary(fun.data=data_summary,
+    #             show.legend = F) +
     scale_y_continuous(expand = expansion(mult = .2)) +
     theme_Publication() +
     theme(plot.title = element_text(size = 15, hjust = 0.5),
