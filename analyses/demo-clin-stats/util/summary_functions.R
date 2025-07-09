@@ -42,7 +42,7 @@ plp_enrichment <- function(hist, var){
   
   enr_df <- hist %>%
     ## group by junction and calculate means
-    select(!!rlang::ensym(var), cpgPLP_status) %>%
+    dplyr::select(!!rlang::ensym(var), cpgPLP_status) %>%
     group_by(!!rlang::ensym(var), cpgPLP_status) %>%
     count() %>%
     ungroup() %>%
@@ -64,7 +64,7 @@ plp_enrichment <- function(hist, var){
       CI_lower = Fisher_Test$conf.int[1],
       CI_upper = Fisher_Test$conf.int[2]
     ) %>%
-    select(!!rlang::ensym(var), `CPG P/LP`, `No CPG P/LP`, OR, P_Value,
+    dplyr::select(!!rlang::ensym(var), `CPG P/LP`, `No CPG P/LP`, OR, P_Value,
            CI_lower, CI_upper) %>%
     ungroup() %>%
     dplyr::mutate(adjusted_p = p.adjust(P_Value, method = "fdr")) %>%

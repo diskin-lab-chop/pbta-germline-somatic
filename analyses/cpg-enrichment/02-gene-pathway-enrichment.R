@@ -116,7 +116,7 @@ sig_cpgs_both <- intersect(sig_cpgs_gnomad, sig_cpgs_pmbb)
 # Create enrichment FDR plot of sig enriched CPGS 
 
 pval_plot <- cpg_enr_all %>% 
-  plot_pvalue(., facet_var = "gene_symbol_vep",
+  plot_pvalue_ital(., facet_var = "gene_symbol_vep",
               to_retain = sig_cpgs_both)
 
 # Create Odds Ratio plot of sig enriched CPGs
@@ -130,7 +130,7 @@ enr_plot <- cpg_enr_all %>%
 
 perc_plot <- cpg_enr_all %>% 
   filter(gene_symbol_vep %in% sig_cpgs_both) %>%
-  plot_perc(., facet_var = "gene_symbol_vep")
+  plot_perc(., facet_var = "gene_symbol_vep") 
 
 # Merge plots and write to output
 

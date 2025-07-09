@@ -162,6 +162,9 @@ hist_cpg_enr_all <- hist_cpg_enr_pbta %>%
          hist_gene = glue::glue("{plot_group}: {gene_symbol_vep}"),
          hist_gene = factor(hist_gene, unique(hist_gene)),)
 
+write_tsv(hist_cpg_enr_all,
+          file.path(results_dir, "hist-gene-plp-enr-pbta-vs-pmbb-gnomad.tsv"))
+
 # pull significnalty enriched CPGs relative to gnomAD and PMBB cohorts, and obtain those common to both sets
 sig_hist_cpgs_gnomad <- hist_cpg_enr_all %>%
   filter(cohort == "gnomAD" & padj < 0.05 & padj > 0) %>%
@@ -173,13 +176,18 @@ sig_hist_cpgs_pmbb <- hist_cpg_enr_all %>%
 
 sig_hist_cpgs_both <- intersect(sig_hist_cpgs_gnomad, sig_hist_cpgs_pmbb)
 
+hist_cpg_enr_all <- hist_cpg_enr_all %>%
+  dplyr::filter(hist_gene %in% sig_hist_cpgs_both)
+
 # Loop through plot groups to plot sig results
 plot_groups <- hist_cpg_enr_all %>%
   filter(hist_gene %in% sig_hist_cpgs_both) %>%
   pull(plot_group) %>%
   unique()
 
-for (group in plot_groups) {
+merged_plot <- list()
+
+for (group in sort(plot_groups)) {
   
   # get number of significantly enriched genes in plot group to determine plot height
   n_sig <- sum(grepl(group, sig_hist_cpgs_both))
@@ -188,15 +196,14 @@ for (group in plot_groups) {
   
   pval_plot <- hist_cpg_enr_all %>%
     dplyr::filter(plot_group == group) %>%
-    plot_pvalue(., facet_var = "hist_gene",
-                to_retain = sig_hist_cpgs_both)
+    plot_pvalue_ital(., facet_var = "gene_symbol_vep")
   
   # Create CPG Odds Ratio plot 
   
   enr_plot <- hist_cpg_enr_all %>% 
     filter(hist_gene %in% sig_hist_cpgs_both,
            plot_group == group) %>%
-    plot_enr(., facet_var = "hist_gene",
+    plot_enr(., facet_var = "gene_symbol_vep",
              log_scale = TRUE)
   
   # Create % patients with CPG PLP plot, and include fractions as text 
@@ -204,18 +211,33 @@ for (group in plot_groups) {
   perc_plot <- hist_cpg_enr_all %>%
     filter(hist_gene %in% sig_hist_cpgs_both,
            plot_group == group) %>%
-    plot_perc(., facet_var = "hist_gene")
+    plot_perc(., facet_var = "gene_symbol_vep")
   
   # Merge plots and write to output
 
-  ggarrange(pval_plot, enr_plot, perc_plot,
-            nrow = 1, widths = c(2.5,1.25,1.65))
+  merged_plot[[group]] <- ggarrange(pval_plot, enr_plot, perc_plot,
+                            nrow = 1, widths = c(2.,1.25,1.65))
   
-  ggsave(file.path(plot_dir, glue::glue("sig-{group}-CPG-enrichment-PBTA-vs-control.pdf")),
-         width = 10, height = 2.5 +((n_sig - 1) * 1.1))
+  merged_plot[[group]] <- annotate_figure(
+                                          merged_plot[[group]],
+                                          top = text_grob(group, face = "bold", size = 18)
+                                        )
 
 }
 
+hist_heights <- hist_cpg_enr_all %>%
+  dplyr::filter(padj < 0.05) %>%
+  dplyr::filter(cohort == "PMBB") %>%
+  count(plot_group) %>%
+  pull(n)
+
+ggarrange(plotlist = merged_plot[1:length(merged_plot)],
+          ncol = 1,
+          heights = (1 + hist_heights/3),
+          align = "hv")
+
+ggsave(file.path(plot_dir, "sig-CPG-enrichment-PBTA-vs-control-byHist.pdf"),
+        width = 9, height = 25)
 
 write_tsv(hist_cpg_enr_all,
           file.path(results_dir, "hist-gene-plp-enr-pbta-vs-pmbb-gnomad.tsv"))
