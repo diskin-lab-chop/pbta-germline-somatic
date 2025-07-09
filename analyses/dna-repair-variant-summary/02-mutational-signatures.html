@@ -2043,24 +2043,27 @@ for (group in groups){
              ) %&gt;%
       
       ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
-      geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, 
-                  show.legend = FALSE) +
-      geom_boxplot(width=0.1, show.legend = FALSE) + 
-      stat_compare_means(method = &quot;wilcox&quot;,
-                         comparisons = comparisons_mmr, size = 3,
-                         method.args = list(alternative = &quot;greater&quot;)) +
-      labs(x = &#39;Germline Variant Class&#39;, y = &quot;log10(TMB)&quot;,
-           title = group) +
-      theme_minimal() +
-      theme(legend.position = &#39;none&#39;,
-            text = element_text(size = 12)) +
-      scale_x_discrete(labels = c(paste0(&quot;MMR P/LP\n (n=&quot;, length(mmr_ids), &quot;)&quot;), 
-                                  paste0(&quot;MMR WT\n (n=&quot;, nrow(sub_hist) - length(mmr_ids), &quot;)&quot;))) +
-      scale_fill_npg() +
-      scale_y_continuous(expand = expansion(mult = .2)) +
-      theme_Publication() +
-      theme(plot.title = element_text(size = 15, hjust = 0.5),
-            axis.title.x = element_text(size = 13)) 
+        geom_jitter(width = 0.2, size = 1.5,
+                    show.legend = FALSE) +
+        geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, alpha = 0.5,
+                    show.legend = FALSE) +
+        geom_boxplot(width=0.1, outliers = FALSE,
+                    show.legend = FALSE) + 
+        stat_compare_means(method = &quot;wilcox&quot;,
+                          comparisons = comparisons_mmr, size = 3,
+                          method.args = list(alternative = &quot;greater&quot;)) +
+        labs(x = &#39;Germline Variant Class&#39;, y = &quot;log10(TMB)&quot;,
+            title = group) +
+        theme_minimal() +
+        theme(legend.position = &#39;none&#39;,
+              text = element_text(size = 12)) +
+        scale_x_discrete(labels = c(paste0(&quot;MMR P/LP\n (n=&quot;, length(mmr_ids), &quot;)&quot;), 
+                                    paste0(&quot;MMR WT\n (n=&quot;, nrow(sub_hist) - length(mmr_ids), &quot;)&quot;))) +
+        scale_fill_npg() +
+        scale_y_continuous(expand = expansion(mult = .2)) +
+        theme_Publication() +
+        theme(plot.title = element_text(size = 15, hjust = 0.5),
+              axis.title.x = element_text(size = 13)) 
           
     ggsave(
       file.path(plot_dir, paste0(&quot;tmb_byGroup_violinPlot.pdf&quot;)), 
@@ -2119,8 +2122,8 @@ for (group in groups){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.847557423441827, 0.516945852639431, 0, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, alpha = 0.5, :
+## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(2.44656665591908, 2.54635035171737,
 ## 0.357696195313068, : cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, alpha = 0.5, :
@@ -2176,8 +2179,8 @@ for (group in groups){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.425232956528977, 0), c(0.0608677931000391, :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, alpha = 0.5, :
+## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.722635943882181, -0.601875147631323), :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, alpha = 0.5, :
@@ -2232,8 +2235,8 @@ for (group in groups){
 ## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(0.0831917780392247, 0.0930601852951886), :
 ## cannot compute exact p-value with ties</code></pre>
-<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, show.legend =
-## FALSE): Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
+<pre><code>## Warning in geom_violin(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, alpha = 0.5, :
+## Ignoring unknown parameters: `binaxis` and `stackdir`</code></pre>
 <pre><code>## Warning in wilcox.test.default(c(-0.277364056117819, -1.55611765707065), :
 ## cannot compute exact p-value with ties</code></pre>
 <pre><code>## Warning: There was 1 warning in `mutate()`.
