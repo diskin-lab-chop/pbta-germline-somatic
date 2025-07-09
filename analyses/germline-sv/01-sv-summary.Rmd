@@ -108,7 +108,7 @@ dist_plot <- ggplot(data = n_per_gene, aes(x = reorder(Hugo_Symbol_cpg, plot_ord
   ylab("Number of patients with P/LP SV") +
   xlab("Cancer Predisposition Gene") +
   theme_Publication() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  theme(axis.text.x = element_text(face = "italic", angle = 90, vjust = 0.5, hjust=1)) +
   ylim(0,5) +
   labs(fill = "Tumor diagnosis", pattern = "SV Type")
 

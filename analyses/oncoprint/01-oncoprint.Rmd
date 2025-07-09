@@ -335,7 +335,7 @@ Generate oncoprint
 ht=oncoPrint(t(alteration_mat), get_type = function(x)strsplit(x, ";")[[1]],
              alter_fun = alter_fun, col = col, show_column_names =FALSE,
              column_names_gp = gpar(fontsize = 11),
-             row_names_gp=gpar(fontsize = 11),
+             row_names_gp=gpar(fontsize = 11, fontface="italic"),
              alter_fun_is_vectorized = FALSE,
              column_names_side = "top",
              column_order = unique(all_cases$Kids_First_Biospecimen_ID_normal),
