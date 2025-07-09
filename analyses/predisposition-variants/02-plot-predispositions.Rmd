@@ -146,15 +146,15 @@ predisposition_df %>%
 Create bar plot of patients with/without P/LP germline variants in gene associated with each cancer predisposition syndrome
 
 ```{r}
-labels <- c("Von Hippel-Lindau (VHL)",
-            "Schwannomatosis (LZTR1)",
-            "Familial Adenomatous Polyposis (APC)",
-            "Gorlin Syndrome (PTCH1,SUFU)",
-            "CMMRD/Lynch Syndrome (PMS2, MLH1, MSH2, MSH6)",
-            "NF-2 (NF2)",
-            "Li-Fraumeni Syndrome (TP53)",
-            "Tuberous Sclerosis (TSC1/2)",
-            "NF-1 (NF1)")
+# Define label-making function
+make_predisposition_label <- function(predisposition, genes_str) {
+  formatted_genes <- gsub("\\|", ", ", genes_str)
+  bquote(.(predisposition) ~ "(" * italic(.(formatted_genes)) * ")")
+}
+
+# Generate labels from predisposition_genes list
+labels <- map2(names(predisposition_genes), predisposition_genes, make_predisposition_label)
+names(labels) <- names(predisposition_genes)
 
 predisposition_df %>%
   count(predisposition, plp_variant) %>%
@@ -173,7 +173,7 @@ predisposition_df %>%
   labs(x = "No. patients",
        y = "",
        fill = "P/LP variant") +
-  scale_y_discrete(labels=labels) +
+  scale_y_discrete(labels = labels) +
   scale_fill_npg() +
   theme_Publication() +
   theme(legend.position = "top") +
@@ -253,7 +253,12 @@ total_cts <- incidental_df %>%
   arrange(n)
 
 # Define plot labels
-labels <- glue::glue("{syndrome_genes} ({syndromes$`Associated Syndrome`})")
+make_label <- function(gene, syndrome) {
+  bquote(italic(.(gene)) ~ "(" * .(syndrome) * ")")
+}
+
+#labels <- glue::glue("{syndrome_genes} ({syndromes$`Associated Syndrome`})")
+labels <- map2(syndrome_genes, syndromes$`Associated Syndrome`, make_label)
 names(labels) <- syndrome_genes
 
 incidental_df %>%

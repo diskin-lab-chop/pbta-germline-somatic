@@ -223,6 +223,7 @@ expr_plot_df %>%
                show.legend = FALSE) +
   geom_vline(xintercept = c(-2, 0, 2), linetype = "dashed", color = "gray60") + 
   geom_label_repel(aes(label = gene_text),
+                  fontface = "italic",
                   size = 2.25,
                   box.padding   = 0.3, 
                   label.padding = 0.1,
@@ -288,7 +289,15 @@ Plot normalized expression within histologies, for genes that have P/LP variants
 ```{r plot expr by P/LP status within hist}
 # define group_gene column
 z_scored_expression <- z_scored_expression %>%
-  dplyr::mutate(group_gene = glue::glue("{Hugo_Symbol}: {subgroup}"))
+  dplyr::mutate(
+    subgroup_clean = subgroup %>%
+      gsub("Other high-grade glioma", "HGG", .) %>%
+      gsub("Low-grade glioma", "LGG", .) %>%
+      gsub("MB, SHH", "MB-SHH", .) %>%
+      gsub(",", "", .) %>%
+      gsub(" ", "~", .),
+      group_gene = glue::glue('**<i>{Hugo_Symbol}</i>: {subgroup_clean}**')
+    )
 
 # Identify histology-gene pairs for which there are at least 3 patients with P/LP variants in group
 plot_group_gene <- z_scored_expression %>%
@@ -310,8 +319,8 @@ to_plot <- compare_means_result %>%
 # plot expr z-scores by P/LP status within histologies for selected gene-histology pairs
 z_scored_expression %>%
   dplyr::filter(group_gene %in% to_plot) %>%
-  
-   ggplot(aes(x = is_plp, y = expr_zscore)) + 
+
+    ggplot(aes(x = is_plp, y = expr_zscore)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, 
                 width = 0.2, size = 2.5, alpha = 0.85,
                 show.legend = FALSE) +
@@ -324,12 +333,15 @@ z_scored_expression %>%
     geom_hline(yintercept = 0, linetype = "dashed", color = "gray") + 
     scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
-    facet_wrap(~group_gene, nrow = 2,
-               labeller = labeller(group_gene = label_wrap_gen(18))) + 
-    theme_Publication()
+    facet_wrap(~group_gene) +
+    theme_Publication() +
+    theme(strip.text = ggtext::element_markdown())
+
+
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
                    width = 7, height = 5)
+  
 ```
 
 We can further separate samples based on whether matched tumors have detected oncogenic/likely oncogenic SNV, which may influence gene expression
