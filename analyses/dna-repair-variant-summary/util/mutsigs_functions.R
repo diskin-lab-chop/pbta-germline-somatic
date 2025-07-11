@@ -58,9 +58,13 @@ plot_exposure_violin <- function(df, x, y, sig, group){
   vplot <- df %>%
     # generate violin plot and save 
     ggplot(aes(x = !!rlang::ensym(x), y = !!rlang::ensym(y), fill = !!rlang::ensym(x))) +
-    geom_violin(binaxis = "y", stackdir = "center", 
+    geom_jitter(width = 0.2, size = 1.5,
                 show.legend = FALSE) +
-    geom_boxplot(width=0.1, show.legend = FALSE) + 
+    geom_violin(binaxis = "y", stackdir = "center", alpha = 0.5,
+                show.legend = FALSE) +
+    geom_boxplot(width=0.1, outliers = FALSE,
+                 show.legend = FALSE) + 
+    
     labs(x = 'Germline Variant Class', y = paste0(sig, " Exposure"),
          title = group) +
     #  theme_minimal() +
@@ -69,8 +73,8 @@ plot_exposure_violin <- function(df, x, y, sig, group){
     #       plot.title = element_text(size = 8, hjust = 0.5)) +
     scale_x_discrete(labels = x_labels) +
     scale_fill_npg() +
-    stat_summary(fun.data=data_summary,
-                 show.legend = F) +
+    #stat_summary(fun.data=data_summary,
+    #             show.legend = F) +
     scale_y_continuous(expand = expansion(mult = .2)) +
     theme_Publication() +
     theme(plot.title = element_text(size = 15, hjust = 0.5),
