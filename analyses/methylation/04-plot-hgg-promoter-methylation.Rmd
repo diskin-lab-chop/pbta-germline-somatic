@@ -149,23 +149,26 @@ global_methylation <- read_tsv(file.path(results_dir,
 Generate heatap annotation object
 
 ```{r}
+gene_labels <- parse(text = paste0('italic("', hist_methyl_hgg$Hugo_Symbol, '")'))
+
 ha_hgg = HeatmapAnnotation(
   `Tumor Descriptor` = hist_methyl_hgg$tumor_descriptor,
   `TP53 altered` = hist_methyl_hgg$tp53_altered,
   `Average methylation` = global_methylation$mean_beta_value,
   `P/LP variant classification` = hist_methyl_hgg$variant_classification_vep,
   Gene_symbol = anno_text(
-    hist_methyl_hgg$Hugo_Symbol,
-    gp = gpar(fontsize = 9, fontface = "italic")  # <-- italicized here
+    gene_labels,
+    gp = gpar(fontsize = 9),
+    just = "right"
   ),
-                       col = list("Tumor Descriptor" = c("Initial CNS Tumor" = "#F0E442",
-                                                         "Progressive" = "#56B4E9",
-                                                         "Deceased" = "#009E73",
-                                                         "Recurrence" = "#E69F00",
-                                                         "Second Malignancy" = "#0072B2"),
-                                  "TP53 altered" = c("Yes" = "black", "No" = "whitesmoke"),
-                                  "Average methylation" = colorRamp2(c(0.3, 0.5, 0.7), c("navy", "whitesmoke", "orangered")),
-                                  "P/LP variant classification" = c("DEL" = "#313695" , "missense_variant" = "#3CB371","frameshift_variant" ="#FFBBFF","stop_gained" ="#6828E8", "splice_site" = "#F0E442", "multiple" = "#FF3E96", "splice_region" = "#7B68EE", "synonymous_variant" = "#FFE4E1")),
+ col = list("Tumor Descriptor" = c("Initial CNS Tumor" = "#F0E442",
+                                   "Progressive" = "#56B4E9",
+                                   "Deceased" = "#009E73",
+                                   "Recurrence" = "#E69F00",
+                                   "Second Malignancy" = "#0072B2"),
+            "TP53 altered" = c("Yes" = "black", "No" = "whitesmoke"),
+            "Average methylation" = colorRamp2(c(0.3, 0.5, 0.7), c("navy", "whitesmoke", "orangered")),
+            "P/LP variant classification" = c("DEL" = "#313695" , "missense_variant" = "#3CB371","frameshift_variant" ="#FFBBFF","stop_gained" ="#6828E8", "splice_site" = "#F0E442", "multiple" = "#FF3E96", "splice_region" = "#7B68EE", "synonymous_variant" = "#FFE4E1")),
                   annotation_name_gp= gpar(fontsize = 10))
 
 col_fun = colorRamp2(c(0, 0.5, 1), c("navy", "whitesmoke", "orangered"))
