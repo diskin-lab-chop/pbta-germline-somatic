@@ -317,6 +317,21 @@ plotKM <- function(model,
                    combined = FALSE, 
                    title) {
   
+  if (grepl("BRAF", title)){
+    
+    before <- stringr::str_replace(title, "BRAF.*", "")
+    after  <- stringr::str_replace(title, ".*?BRAF", "")
+    
+    # Combine using plotmath-safe syntax
+    title <- paste0('"', before, '" * italic("BRAF") * "', after, '"')
+    
+  } else {
+    
+    # If no BRAF, wrap whole thing in quotes
+    title <- paste0('"', title, '"')
+  
+  }
+  
   if (combined == FALSE){
     
     term <- model$original_data %>%
@@ -393,6 +408,8 @@ plotKM <- function(model,
                                      legend.labs = labels,
                                      risk.table.y.text.col = TRUE,
                                      risk.table.y.text = TRUE) 
+    
+    km_plot$plot <- km_plot$plot + ggtitle(parse(text = title))
     
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
@@ -483,6 +500,8 @@ plotKM <- function(model,
                                      legend.labs = labels,
                                      risk.table.y.text.col = TRUE,
                                      risk.table.y.text = TRUE) 
+    
+    km_plot$plot <- km_plot$plot + ggtitle(parse(text = title))
     
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 

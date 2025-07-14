@@ -154,8 +154,10 @@ ha_hgg = HeatmapAnnotation(
   `TP53 altered` = hist_methyl_hgg$tp53_altered,
   `Average methylation` = global_methylation$mean_beta_value,
   `P/LP variant classification` = hist_methyl_hgg$variant_classification_vep,
-  Gene_symbol = anno_text(hist_methyl_hgg$Hugo_Symbol,
-  gp = gpar(fontsize = 9)),
+  Gene_symbol = anno_text(
+    hist_methyl_hgg$Hugo_Symbol,
+    gp = gpar(fontsize = 9, fontface = "italic")  # <-- italicized here
+  ),
                        col = list("Tumor Descriptor" = c("Initial CNS Tumor" = "#F0E442",
                                                          "Progressive" = "#56B4E9",
                                                          "Deceased" = "#009E73",
