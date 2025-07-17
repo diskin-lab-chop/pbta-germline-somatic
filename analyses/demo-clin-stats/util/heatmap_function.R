@@ -114,8 +114,7 @@ plot_ct <- function(df, var1, var2){
                   col = col_fun,
                   cell_fun = function(j, i, x, y, width, height, fill) {
                     grid.text(sprintf("%s", ct_mat[i, j]), x, y, gp = gpar(fontsize = 12))},
-                  show_heatmap_legend = FALSE,
-                  row_labels = row_labels)
+                  show_heatmap_legend = FALSE)
     
   }
   
