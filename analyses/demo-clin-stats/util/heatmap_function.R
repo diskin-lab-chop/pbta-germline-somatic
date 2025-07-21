@@ -82,15 +82,41 @@ plot_ct <- function(df, var1, var2){
   
   col_fun = colorRamp2(c(0, ceiling(max(ct_mat))), c("white", "orangered"))
   
-  ht <- Heatmap(ct_mat,
-                 name = "Count",
-                 cluster_rows = F,
-                 cluster_columns = F,
-                 rect_gp = gpar(col = "black", lwd = 2),
-                 col = col_fun,
-                 cell_fun = function(j, i, x, y, width, height, fill) {
-                   grid.text(sprintf("%s", ct_mat[i, j]), x, y, gp = gpar(fontsize = 12))},
-                show_heatmap_legend = FALSE)
+  if (sum(grepl("TP53", rownames(ct_mat))) > 0){
+  
+    rownames(ct_mat) <- stringr::str_replace(
+      rownames(ct_mat),
+      "TP53",
+      'italic("TP53") ~'
+    )
+  
+    # Convert to expressions for ComplexHeatmap
+    row_labels <- parse(text = rownames(ct_mat))
+    
+    ht <- Heatmap(ct_mat,
+                   name = "Count",
+                   cluster_rows = F,
+                   cluster_columns = F,
+                   rect_gp = gpar(col = "black", lwd = 2),
+                   col = col_fun,
+                   cell_fun = function(j, i, x, y, width, height, fill) {
+                     grid.text(sprintf("%s", ct_mat[i, j]), x, y, gp = gpar(fontsize = 12))},
+                  show_heatmap_legend = FALSE,
+                  row_labels = row_labels)
+    
+  } else {
+    
+    ht <- Heatmap(ct_mat,
+                  name = "Count",
+                  cluster_rows = F,
+                  cluster_columns = F,
+                  rect_gp = gpar(col = "black", lwd = 2),
+                  col = col_fun,
+                  cell_fun = function(j, i, x, y, width, height, fill) {
+                    grid.text(sprintf("%s", ct_mat[i, j]), x, y, gp = gpar(fontsize = 12))},
+                  show_heatmap_legend = FALSE)
+    
+  }
   
   return(ht)
   

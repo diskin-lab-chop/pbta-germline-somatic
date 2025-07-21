@@ -208,9 +208,27 @@ survival_stats <- survival_stats %>%
                                     rev(group_order))) %>%
   arrange(group) %>%
   # merge group + Ns for plotting labels
-  dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
-  dplyr::mutate(group_plus_n = fct_relevel(group_plus_n, 
-                                           unique(group_plus_n)))
+  # dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
+  # dplyr::mutate(group_plus_n = fct_relevel(group_plus_n,
+  #                                          unique(group_plus_n))) %>%
+  # %>%
+  dplyr::mutate(
+    group_label = dplyr::if_else(
+      stringr::str_detect(group, "BRAF"),
+      {
+        # Extract parts before and after 'BRAF'
+        before <- stringr::str_replace(group, "BRAF.*", "")
+        after  <- stringr::str_replace(group, ".*?BRAF", "")
+        
+        # Combine using plotmath-safe syntax
+        paste0('"', before, '" * italic("BRAF") * "', after, '"')
+      },
+      # If no BRAF, wrap whole thing in quotes
+      paste0('"', group, '"')
+    ),
+    group_plus_n = paste0(group_label, ' * " (N=', group_n, ')"')
+  ) %>%
+  dplyr::mutate(group_plus_n = fct_relevel(group_plus_n, unique(group_plus_n)))
 
 
 pdf(NULL)
@@ -234,7 +252,8 @@ survival_stats %>%
   geom_vline(xintercept = 0, linetype = "dashed") +
   facet_wrap(~type, nrow = 1) +
   theme_Publication() +
-  theme(axis.text.x = ggtext::element_markdown())
+  theme(axis.text.x = ggtext::element_markdown()) +
+  scale_y_discrete(labels = function(x) parse(text = x))
 
 # save plot
 ggsave(file.path(plot_dir, "survival-hr-plp-vs-wt.pdf"),
