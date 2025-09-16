@@ -266,8 +266,8 @@ Plot number of significantly differentially methylated probes by direction and a
 methyl_enr_df <- hyper_enr_df %>%
   bind_rows(hypo_enr_df) %>%
   dplyr::mutate(p_text = case_when(
-    P_Value < 0.01 ~ "*p<0.01",
-    P_Value < 0.05 ~ glue::glue("*p={round(P_Value, 3)}"),
+    P_Value < 0.01 ~ glue::glue("*p={sprintf('%.1e', P_Value)}"),
+    P_Value < 0.05 ~ glue::glue("*p={round(P_Value, 2)}"),
     TRUE ~ glue::glue("p={round(P_Value, 2)}")
   )) %>%
   dplyr::mutate(probe_gene_feature = factor(probe_gene_feature,
@@ -302,9 +302,9 @@ enr_plot <- methyl_enr_df %>%
                 show.legend = FALSE) +
   geom_vline(xintercept = 0, linetype = "dashed") + 
   geom_text(aes(x = 4), colour = "black", 
-            size = 3, fontface = 1, hjust = 0)  +
+            size = 2.75, fontface = 1, hjust = 0)  +
   labs(x = "log2-Odds Ratio\n(95% CI)", y = NULL, fill = NULL) + 
-  xlim(c(-5,6.25)) +
+  xlim(c(-5,6.75)) +
   scale_y_discrete(labels=c("hypermethylated" = NULL, 
                             "hypomethylated" = NULL)) +
   facet_wrap(~factor(probe_gene_feature), nrow = 5, scale = "fixed",
