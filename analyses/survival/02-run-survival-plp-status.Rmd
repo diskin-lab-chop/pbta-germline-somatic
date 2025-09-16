@@ -313,7 +313,11 @@ for (j in 1:nrow(subtypes)) {
     dplyr::mutate(extent_of_tumor_resection = case_when(
       !grepl("Unavailable", extent_of_tumor_resection) ~ extent_of_tumor_resection,
       TRUE ~ NA_character_
-    ))
+    )) %>%
+    dplyr::mutate(extent_of_tumor_resection = fct_relevel(extent_of_tumor_resection,
+                                                          c("Gross/Near total resection",
+                                                            "Partial resection",
+                                                            "Biopsy only")))
   
   
   # Run kaplan meier survival models and save to output
