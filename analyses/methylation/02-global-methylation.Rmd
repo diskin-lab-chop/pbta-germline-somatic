@@ -279,10 +279,12 @@ methyl %>%
   )) %>%
   ggplot(aes(x = MMR_plp, y = mean_beta_value)) + 
   geom_jitter(aes(fill = plot_group), shape = 21, 
-              width = 0.2, size = 2.5, alpha = 0.85,
+              width = 0.2, size = 2.5, alpha = 0.65,
               show.legend = FALSE) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA,
-               show.legend = FALSE) +
+  stat_summary(fun = mean, geom = "point", size = 3, color = "black",
+           show.legend = FALSE) +
+  stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
+               geom = "errorbar", width = 0.2, color = "black") +
   geom_text_repel(aes(label = sample_label), 
                   size = 4, 
                   na.rm = TRUE, 

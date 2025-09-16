@@ -402,11 +402,14 @@ for (group in groups){
       
       ggplot(aes(x = germline_variant, y = log10(tmb), fill = germline_variant)) +
         geom_jitter(width = 0.2, size = 1.5,
+                    alpha = 0.5,
                     show.legend = FALSE) +
         geom_violin(binaxis = "y", stackdir = "center", alpha = 0.5,
                     show.legend = FALSE) +
-        geom_boxplot(width=0.1, outliers = FALSE,
-                    show.legend = FALSE) + 
+        stat_summary(fun = mean, geom = "point", size = 3, color = "black",
+                 show.legend = FALSE) +
+        stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
+                     geom = "errorbar", width = 0.2, color = "black") +
         stat_compare_means(method = "wilcox",
                           comparisons = comparisons_mmr, size = 3,
                           method.args = list(alternative = "greater")) +
