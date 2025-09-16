@@ -415,8 +415,10 @@ ggsave(file.path(plot_dir,
 ```
 
 ```{r}
-write_tsv(splice_psi_df,
-          file.path(results_dir,
+splice_psi_df %>% 
+  dplyr::select(-plot_case,
+                -plot_group) %>%
+write_tsv(file.path(results_dir,
                     "plp-variant-proximal-splicing-event-psi.tsv"))
 ```
 

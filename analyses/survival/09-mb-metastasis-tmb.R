@@ -238,10 +238,12 @@ mb_hist %>%
   
   ggplot(aes(x = cpg_plp, y = age_at_diagnosis_years, fill = cpg_plp)) + 
   geom_jitter(shape = 21, 
-              width = 0.2, size = 2.5, alpha = 0.85,
+              width = 0.2, size = 2.5, alpha = 0.65,
               show.legend = FALSE) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+  stat_summary(fun = mean, geom = "point", size = 3, color = "black",
                show.legend = FALSE) +
+  stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
+               geom = "errorbar", width = 0.2, color = "black") +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("CPG P/LP", "No CPG P/LP")),
                      method.args = list(alternative = "two.sided")) + 
