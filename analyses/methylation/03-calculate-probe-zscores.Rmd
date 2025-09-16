@@ -390,19 +390,31 @@ methyl_expr_plot_df <- methyl_expr_diff_df %>%
 plot_group_palette <- methyl_expr_plot_df$plot_group_hex
 names(plot_group_palette) <- methyl_expr_plot_df$plot_group
 
+group_cts <- methyl_expr_plot_df %>%
+  count(methyl_group) %>%
+  dplyr::mutate(group_n = glue::glue("N = {n}"))
+
 ggplot(methyl_expr_plot_df,
                     aes(x = factor(methyl_group), y = expr_zscore)) +
-  geom_jitter(aes(fill = plot_group), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+  geom_jitter(aes(fill = plot_group), shape = 21, 
+              width = 0.2, size = 2.5, alpha = 0.65) +
+  stat_summary(fun = mean, geom = "point", size = 3, color = "black") +
+  stat_summary(fun.data = ~mean_sdl(.x, mult = 1), 
+                 geom = "errorbar", width = 0.2, color = "black") +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c(">= 2", "<-2"),
                                         c(">= 2", "[-2, 1)"),
                                         c(">= 2", "[-1, 1)"),
                                         c(">= 2", "[1, 2)")),
                      method.args = list(alternative = "two.sided")) +
+  geom_text(data = group_cts,
+            aes(x = methyl_group, y = -4, label = group_n),
+            size = 3.5,
+            inherit.aes = FALSE, col = "grey20") +
   labs(x = "Methyl Probe z-score", y = "TPM z-score", fill = "Histology") +
    scale_fill_manual(values = plot_group_palette, 
                       breaks = sort(names(plot_group_palette))) +
+  ylim(c(-4,6)) +
   theme_Publication()
 
 ggsave(file.path(plot_dir, "expr-zscore-by-diff-meth.pdf"),
