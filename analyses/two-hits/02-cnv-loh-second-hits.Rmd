@@ -327,11 +327,8 @@ cnv_loh_plot_df %>%
               fill = CNV_status_somatic)) +
   geom_jitter(shape = 21, width = 0.2, size = 2.5, alpha = 0.5,
               show.legend = FALSE) +
-  stat_summary(fun = mean, geom = "point", 
-               size = 3, color = "black",
-               show.legend = FALSE) +
-  stat_summary(fun.data = ~mean_sdl(.x, mult = 1), 
-               geom = "errorbar", width = 0.2, color = "black") +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                 show.legend = FALSE) +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("gain", "loss"),
                                         c("loss", "neutral"),
@@ -353,11 +350,8 @@ cnv_loh_plot_df %>%
               fill = CNV_status_somatic)) +
   geom_jitter(shape = 21, width = 0.2, size = 2.5, alpha = 0.5,
               show.legend = FALSE) +
-  stat_summary(fun = mean, geom = "point", 
-               size = 3, color = "black",
-               show.legend = FALSE) +
-  stat_summary(fun.data = ~mean_sdl(.x, mult = 1), 
-               geom = "errorbar", width = 0.2, color = "black") +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                 show.legend = FALSE) +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("gain", "loss"),
                                         c("loss", "neutral"),

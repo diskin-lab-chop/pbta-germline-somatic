@@ -216,10 +216,8 @@ mb_hist %>%
   geom_jitter(shape = 21, 
               width = 0.2, size = 2.5, alpha = 0.65,
               show.legend = FALSE) +
-  stat_summary(fun = mean, geom = "point", size = 3, color = "black",
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
                show.legend = FALSE) +
-  stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
-               geom = "errorbar", width = 0.2, color = "black") +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("CPG P/LP", "No CPG P/LP")),
                      method.args = list(alternative = "less")) + 
@@ -240,10 +238,8 @@ mb_hist %>%
   geom_jitter(shape = 21, 
               width = 0.2, size = 2.5, alpha = 0.65,
               show.legend = FALSE) +
-  stat_summary(fun = mean, geom = "point", size = 3, color = "black",
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
                show.legend = FALSE) +
-  stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
-               geom = "errorbar", width = 0.2, color = "black") +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("CPG P/LP", "No CPG P/LP")),
                      method.args = list(alternative = "two.sided")) + 

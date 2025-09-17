@@ -138,12 +138,10 @@ plot expression z-scores by variant classification, using splice variant group a
 plp_expr %>%
   ggplot(aes(x = variant_classification, y = expr_zscore)) + 
     geom_jitter(aes(fill = variant_classification), shape = 21, 
-                width = 0.2, size = 2.5, alpha = 0.65,
+                width = 0.2, size = 2.5, alpha = 0.75,
                 show.legend = FALSE) +
-    stat_summary(fun = mean, geom = "point", size = 3, color = "black",
-                 show.legend = FALSE) +
-    stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
-                 geom = "errorbar", width = 0.2, color = "black") +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     stat_compare_means(method = "wilcox",
                        label = "p.signif",
                        step.increase = 0.1,
@@ -187,14 +185,10 @@ Plot CPG P/LP carrier z-scores by germline variant classification
 plp_prot %>%
   ggplot(aes(x = variant_classification, y = expr_zscore_proteo)) + 
     geom_jitter(aes(fill = variant_classification), shape = 21, 
-                width = 0.2, size = 2.5, alpha = 0.65,
+                width = 0.2, size = 2.5, alpha = 0.75,
                 show.legend = FALSE) +
-    stat_summary(fun = mean, geom = "point", 
-                 size = 3, color = "black",
-                 show.legend = FALSE) +
-    stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
-                 geom = "errorbar", width = 0.2, 
-                 color = "black") +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     stat_compare_means(method = "wilcox",
                        label = "p.signif",
                        step.increase = 0.1,

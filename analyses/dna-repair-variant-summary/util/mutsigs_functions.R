@@ -63,10 +63,8 @@ plot_exposure_violin <- function(df, x, y, sig, group){
                 show.legend = FALSE) +
     geom_violin(binaxis = "y", stackdir = "center", alpha = 0.5,
                 show.legend = FALSE) +
-    stat_summary(fun = mean, geom = "point", size = 3, color = "black",
-                 show.legend = FALSE) +
-    stat_summary(fun.data = ~mean_sdl(.x, mult = 1),
-                 geom = "errorbar", width = 0.2, color = "black") +
+    geom_boxplot(width=0.1, outliers = FALSE,
+                 show.legend = FALSE) + 
     labs(x = 'Germline Variant Class', y = paste0(sig, " Exposure"),
          title = group) +
     scale_x_discrete(labels = x_labels) +

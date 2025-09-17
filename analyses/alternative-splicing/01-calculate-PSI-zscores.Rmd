@@ -388,10 +388,10 @@ label_df <- splice_psi_df %>%
 splice_psi_df %>%
 
     ggplot(aes(x = plot_group, y = sample_PSI_zscore)) + 
-    geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.6) +
-    stat_summary(fun = mean, geom = "point", size = 3, color = "black") +
-    stat_summary(fun.data = ~mean_sdl(.x, mult = 1), 
-                 geom = "errorbar", width = 0.2, color = "black") +
+    geom_jitter(aes(fill = variant_classification), shape = 21, 
+                width = 0.2, size = 2.5, alpha = 0.75) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     geom_hline(yintercept = c(-2, 2), linetype = "dashed", color = "gray") + 
     stat_compare_means(method = "wilcox",
                       comparisons = list(c("Splice,\n<20bp", "Non-\nsplice,\n>=250bp"),
