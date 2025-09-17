@@ -349,10 +349,7 @@ splice_psi_df <- splice_psi_df %>%
     grepl("splice", variant_classification_vep) ~ "splice variant",
     grepl("stop_gained&frameshift", variant_classification_vep) ~ "frameshift variant",
     TRUE ~ str_replace_all(variant_classification_vep, "_", " ")
-  )) 
-
-# Plot PSI z-scores by splice case, germline variant type, and proximity to splice event
-splice_psi_df %>%
+  ))  %>%
   dplyr::mutate(plot_group = case_when(
     is_splice_variant == "Splice, proximal" ~ "Splice,\n<20bp",
     is_splice_variant == "Splice, distal" ~ "Splice,\n>=20bp",
@@ -369,11 +366,32 @@ splice_psi_df %>%
     splicing_case == "SE" ~ "Skipped Exon", 
     splicing_case == "RI" ~ "Retained Intron",
     splicing_case %in% c("A3SS", "A5SS") ~ "Alternative Splice Site",
+  ))
+
+group_cts <- splice_psi_df %>%
+  count(plot_case, plot_group) %>%
+  dplyr::mutate(group_n = glue::glue("N = {n}"))
+
+label_df <- splice_psi_df %>%
+  left_join(group_cts) %>%
+  dplyr::mutate(plot_case = case_when(
+    splicing_case == "SE" ~ "Skipped Exon", 
+    splicing_case == "RI" ~ "Retained Intron",
+    splicing_case %in% c("A3SS", "A5SS") ~ "Alternative Splice Site",
   )) %>%
+  dplyr::group_by(plot_group, plot_case) %>%
+  dplyr::summarise(group_n = unique(group_n),
+                   y_pos = min(sample_PSI_zscore) - 3,
+                   .groups = "drop")
+
+# Plot PSI z-scores by splice case, germline variant type, and proximity to splice event
+splice_psi_df %>%
 
     ggplot(aes(x = plot_group, y = sample_PSI_zscore)) + 
-    geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.85) +
-    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+    geom_jitter(aes(fill = variant_classification), shape = 21, 
+                width = 0.2, size = 2.5, alpha = 0.75) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     geom_hline(yintercept = c(-2, 2), linetype = "dashed", color = "gray") + 
     stat_compare_means(method = "wilcox",
                       comparisons = list(c("Splice,\n<20bp", "Non-\nsplice,\n>=250bp"),
@@ -381,6 +399,10 @@ splice_psi_df %>%
                                          c("Splice,\n<20bp", "Splice,\n>=20bp")),
                        method.args = list(alternative = "two.sided"),
                        step.increase = 0.15) + 
+    # Add labels
+    geom_text(data = label_df,
+              aes(x = plot_group, y = y_pos, label = group_n),
+              inherit.aes = FALSE, col = "grey20") +
     labs(x = "Germline P/LP variant type and proximity to somatic splice event", y = "Somatic PSI z-score", fill = "Germline Variant\nClassification") +
     facet_wrap(~plot_case, nrow = 1, scale = "free_y") +
     scale_y_continuous(expand = expansion(mult = .2)) +
@@ -393,8 +415,10 @@ ggsave(file.path(plot_dir,
 ```
 
 ```{r}
-write_tsv(splice_psi_df,
-          file.path(results_dir,
+splice_psi_df %>% 
+  dplyr::select(-plot_case,
+                -plot_group) %>%
+write_tsv(file.path(results_dir,
                     "plp-variant-proximal-splicing-event-psi.tsv"))
 ```
 

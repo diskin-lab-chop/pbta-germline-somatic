@@ -31,7 +31,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
    libxt6
    
 # cmake is needed for ggpubr to install
-RUN apt-get -y --no-install-recommends install \
+RUN apt-get -y update && apt-get install -y \
     cmake
 
 # add bedtools
@@ -53,13 +53,14 @@ RUN R -e 'BiocManager::install(c( \
   "data.table", \
   "ggpubr", \
   "ggthemes", \
+  "gtools", \
   "maftools", \
   "msigdbr", \
   "openxlsx", \
-	"optparse", \
-	"pheatmap", \
-	"RColorBrewer", \
-	"survival", \
+  "optparse", \
+  "pheatmap", \
+  "RColorBrewer", \
+  "survival", \
   "survMisc", \
   "survminer", \
   "tidytext", \

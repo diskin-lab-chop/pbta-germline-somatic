@@ -19,6 +19,8 @@ plot_dir <- file.path(analysis_dir, "plots")
 # Load survival functions
 source(file.path(root_dir, "figures", "theme.R"))
 
+set.seed(2025)
+
 # wrangle data
 
 mb_hist_file <- file.path(results_dir, 
@@ -212,7 +214,7 @@ mb_hist %>%
   
   ggplot(aes(x = cpg_plp, y = log10(tmb), fill = cpg_plp)) + 
   geom_jitter(shape = 21, 
-              width = 0.2, size = 2.5, alpha = 0.85,
+              width = 0.2, size = 2.5, alpha = 0.65,
               show.legend = FALSE) +
   geom_boxplot(alpha = 0.05, outlier.shape = NA,
                show.legend = FALSE) +
@@ -234,7 +236,7 @@ mb_hist %>%
   
   ggplot(aes(x = cpg_plp, y = age_at_diagnosis_years, fill = cpg_plp)) + 
   geom_jitter(shape = 21, 
-              width = 0.2, size = 2.5, alpha = 0.85,
+              width = 0.2, size = 2.5, alpha = 0.65,
               show.legend = FALSE) +
   geom_boxplot(alpha = 0.05, outlier.shape = NA,
                show.legend = FALSE) +

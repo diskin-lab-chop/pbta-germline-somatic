@@ -316,15 +316,15 @@ to_plot <- compare_means_result %>%
   dplyr::filter(p_value < 0.05) %>%
   pull(group_gene)
 
-# plot expr z-scores by P/LP status within histologies for selected gene-histology pairs
 z_scored_expression %>%
   dplyr::filter(group_gene %in% to_plot) %>%
-
-    ggplot(aes(x = is_plp, y = expr_zscore)) + 
+  
+  ggplot(aes(x = is_plp, y = expr_zscore)) + 
     geom_jitter(aes(fill = plot_group), shape = 21, 
-                width = 0.2, size = 2.5, alpha = 0.85,
+                width = 0.2, size = 2.5, alpha = 0.5,
                 show.legend = FALSE) +
-    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     stat_compare_means(method = "wilcox",
                        comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "less")) + 
@@ -336,8 +336,6 @@ z_scored_expression %>%
     facet_wrap(~group_gene) +
     theme_Publication() +
     theme(strip.text = ggtext::element_markdown())
-
-
 
   ggsave(file.path(plot_dir, "hist-gene-expr-plp-vs-noplp.pdf"),
                    width = 7, height = 5)
@@ -379,9 +377,10 @@ z_scored_expression %>%
   dplyr::filter(is_plp == "Yes") %>%
   ggplot(aes(x = second_hit, y = expr_zscore)) +
   geom_jitter(aes(fill = plot_group), shape = 21, 
-              width = 0.2, size = 2.5, alpha = 0.85,
+              width = 0.2, size = 2.5, alpha = 0.75,
               show.legend = FALSE) +
-  geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+  geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                 show.legend = FALSE) +
   stat_compare_means(method = "wilcox",
                      comparisons = list(c("Yes", "No")),
                        method.args = list(alternative = "less")) + 
