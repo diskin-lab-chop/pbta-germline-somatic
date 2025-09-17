@@ -171,13 +171,8 @@ survival_stats <- os_stats %>%
 # add p-value lable column for HRs with p<0.1
 survival_stats <- survival_stats %>%
   dplyr::mutate(p_label = case_when(
-    p< 0.01 ~ "*p<0.01",
-    p < 0.05 ~ glue::glue("*p={round(p, 2)}"),
-    p < 0.1 ~ glue::glue("^p={round(p, 2)}"),
-    TRUE ~ ""
-  )) %>%
-  dplyr::mutate(p_label = case_when(
-    p< 0.01 ~ "*p<0.01",
+   # p < 0.01 ~ "*p<0.01",
+    p < 0.01 ~ glue::glue("*p={sprintf('%.1e', p)}"),
     p < 0.05 ~ glue::glue("*p={round(p, 2)}"),
     p < 0.1 ~ glue::glue("^p={round(p, 2)}"),
     TRUE ~ ""
@@ -207,11 +202,6 @@ survival_stats <- survival_stats %>%
   dplyr::mutate(group = fct_relevel(group,
                                     rev(group_order))) %>%
   arrange(group) %>%
-  # merge group + Ns for plotting labels
-  # dplyr::mutate(group_plus_n = glue::glue("{group} (N={group_n})")) %>%
-  # dplyr::mutate(group_plus_n = fct_relevel(group_plus_n,
-  #                                          unique(group_plus_n))) %>%
-  # %>%
   dplyr::mutate(
     group_label = dplyr::if_else(
       stringr::str_detect(group, "BRAF"),
@@ -246,7 +236,7 @@ survival_stats %>%
              show.legend = FALSE) + 
   geom_errorbar(aes(xmin = log10(CI_lower), xmax = log10(CI_upper)), width = 0.2, 
                 show.legend = FALSE, color = "#00A087FF") +
-  geom_text(x = 1, hjust = 0, size = 3.5, fontface = 2) +
+  geom_text(x = 0.9, hjust = 0, size = 2.75, fontface = 2) +
   labs(x = "log10-P/LP carrier hazard ratio (95% CI)", y = NULL) + 
   xlim(-2.5, 2) +
   geom_vline(xintercept = 0, linetype = "dashed") +

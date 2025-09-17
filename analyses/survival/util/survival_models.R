@@ -7,13 +7,26 @@
 
 # Attach this package
 library(survminer)
+library(gtools)
 library(patchwork)
+
+# set locale to system default UTF-8 to print "±" in plots
+Sys.setlocale("LC_ALL","en_US.UTF-8")
 
 # Magrittr pipe
 `%>%` <- dplyr::`%>%`
 
-efs_palette <- c("#E69F01", "#56B4E8", "#009E74", 
-                 "#0072B3", "#D55E01", "#CC79A6", "#999998")
+# Function to adjust hex colors (for OS to EFS color palette)
+adjust_hex <- function(hex_color, adjustment = 1) {
+  # Convert hex to RGB
+  rgb_values <- col2rgb(hex_color)
+  
+  # Adjust RGB values (ensure within 0-255)
+  new_rgb <- pmin(rgb_values + adjustment, 255)
+  
+  # Convert back to hex
+  return(rgb(new_rgb[1,], new_rgb[2,], new_rgb[3,], maxColorValue = 255))
+}
 
 survival_analysis <- function(metadata,
                               ind_var,
@@ -315,22 +328,9 @@ fit_save_model <- function(df,
 plotKM <- function(model,
                    variable,
                    combined = FALSE, 
-                   title) {
-  
-  if (grepl("BRAF", title)){
-    
-    before <- stringr::str_replace(title, "BRAF.*", "")
-    after  <- stringr::str_replace(title, ".*?BRAF", "")
-    
-    # Combine using plotmath-safe syntax
-    title <- paste0('"', before, '" * italic("BRAF") * "', after, '"')
-    
-  } else {
-    
-    # If no BRAF, wrap whole thing in quotes
-    title <- paste0('"', title, '"')
-  
-  }
+                   title,
+                   palette = "okabe_ito",
+                   p_pos = "bottomleft") {
   
   if (combined == FALSE){
     
@@ -344,9 +344,8 @@ plotKM <- function(model,
       diff_obj <- survdiff(survival::Surv(OS_days, OS_status) ~ term,  
                            model$original_data)
       diff_pvalue <- 1 - pchisq(diff_obj$chisq, length(diff_obj$n) - 1)
-      diff_pvalue_formatted <- format(
-        signif(diff_pvalue, 2),
-        scientific = FALSE)
+      diff_pvalue_formatted <- as.numeric(format(
+        round(diff_pvalue, 3), nsmall = 3))
       
       pvalue_label <- ifelse(diff_pvalue_formatted < 0.001, 
                              paste0(event_type, " P < 0.001"),
@@ -358,7 +357,7 @@ plotKM <- function(model,
         unique()
       
       levels <- levels[!is.na(levels)]
-      levels <- levels[order(levels)]
+      levels <- levels(levels)
     }
     
     if ("EFS_days" %in% names(model$original_data)){
@@ -368,13 +367,14 @@ plotKM <- function(model,
       diff_obj <- survdiff(survival::Surv(EFS_days, EFS_status) ~ term,  
                            model$original_data)
       diff_pvalue <- 1 - pchisq(diff_obj$chisq, length(diff_obj$n) - 1)
-      diff_pvalue_formatted <- format(
-        signif(diff_pvalue, 2),
-        scientific = FALSE)
+      diff_pvalue_formatted <- as.numeric(format(
+        round(diff_pvalue, 3), nsmall = 3))
       
-      pvalue_label <- ifelse(diff_pvalue_formatted < 0.001, 
-                             paste0(event_type, " P < 0.001"),
-                             paste0(event_type, " P = ", diff_pvalue_formatted))
+      pvalue_label <- ifelse(diff_pvalue < 0.001, 
+                             glue::glue("{event_type} P = {sprintf('%.1e', diff_pvalue)}"),
+                          #   paste0(event_type, " P < 0.001"),
+                             paste0(event_type, " P = ", as.numeric(format(
+                               round(diff_pvalue, 3), nsmall = 3))))
       
       levels <- model$original_data %>%
         filter(!is.na(EFS_days)) %>%
@@ -382,16 +382,27 @@ plotKM <- function(model,
         unique()
       
       levels <- levels[!is.na(levels)]
-      levels <- levels[order(levels)]
+      levels <- levels(levels)
       
     }
     
-    colors <- colorblindr::palette_OkabeIto[1:(length(levels)+1)]
-    colors <- colors[-4]
+    # Define color palette for plotting (default okabe_ito)
+    if (is.character(palette) && length(palette) == 1 && palette == "okabe_ito"){
+      
+      colors <- c(colorblindr::palette_OkabeIto,
+                  "black", "#b08ccf", "#a340ff", "#685815")[1:(length(levels))]
+      names(colors) <- glue::glue("{levels}")
+      
+    } else {
+      
+      colors <- palette
+      names(colors) <- glue::glue("{levels}")
+      
+    }
+    
     lines <- c(rep("solid", length(levels)), 
                rep("dashed", length(levels)))
-    labels <- glue::glue("{event_type}:{levels}")
-    
+    labels <- glue::glue("{levels}")
     
     km_plot <- survminer::ggsurvplot(fit = model$model, 
                                      data = model$original_data,
@@ -409,11 +420,12 @@ plotKM <- function(model,
                                      risk.table.y.text.col = TRUE,
                                      risk.table.y.text = TRUE) 
     
-    km_plot$plot <- km_plot$plot + ggtitle(parse(text = title))
-    
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
-                        500, 0.15, 
+                        ifelse(p_pos == "topright",
+                               3700, 200),
+                        ifelse(p_pos == "topright",
+                               0.95, 0.15), 
                         label = pvalue_label) +
       theme(legend.text = element_text(size = 16, color = "black")) +
       cowplot::background_grid()
@@ -444,8 +456,21 @@ plotKM <- function(model,
     levels_os <- unique(variable_os[!is.na(data_os$OS_days)][order(variable_os[!is.na(data_os$OS_days)])])
     levels_os <- levels_os[!is.na(levels_os)]
     
-    os_palette <- colorblindr::palette_OkabeIto[1:(length(levels_os)+1)]
-    os_palette <- os_palette[-4]
+    # Define color palette for plotting (default okabe_ito)
+    if (is.character(palette) && length(palette) == 1 && palette == "okabe_ito"){
+      
+      colors_os <- c(colorblindr::palette_OkabeIto,
+                     "black", "#b08ccf", "#a340ff", "#685815")[1:(length(levels_os))]
+      
+    } else {
+      
+      colors_os <- palette
+      
+    }
+    
+    # define EFS color palette by adjusting OS color palette by 1 (colors cannot be the same in combined plot)
+    
+    colors_efs <- sapply(colors_os, adjust_hex)
     
     variable_efs <- data_efs %>%
       pull(variable)
@@ -453,8 +478,10 @@ plotKM <- function(model,
     levels_efs <- unique(variable_efs[!is.na(data_efs$EFS_days)][order(variable_efs[!is.na(data_efs$EFS_days)])])
     levels_efs <- levels_efs[!is.na(levels_efs)]
     
-    colors <- c(os_palette[1:length(levels_os)],
-                efs_palette[1:length(levels_efs)])
+    colors <- c(colors_os[1:length(levels_os)],
+                colors_efs[1:length(levels_efs)])
+    names(colors) <- c(glue::glue("OS:{levels_os}"),
+                       glue::glue("EFS:{levels_efs}"))
     
     lines <- c(rep("solid", length(levels_os)), 
                rep("dashed", length(levels_efs)))
@@ -465,24 +492,26 @@ plotKM <- function(model,
     diff_os_obj <- survdiff(survival::Surv(OS_days, OS_status) ~ variable_os,  
                             data_os)
     diff_os_pvalue <- 1 - pchisq(diff_os_obj$chisq, length(diff_os_obj$n) - 1)
-    diff_os_pvalue_formatted <- format(
-      signif(diff_os_pvalue, 2),
-      scientific = FALSE)
+    # diff_os_pvalue_formatted <- as.numeric(format(
+    #   round(diff_os_pvalue, 3), nsmall = 3))
     
-    os_pvalue_label <- ifelse(diff_os_pvalue_formatted < 0.001, 
-                              "OS P < 0.001",
-                              paste0("OS P = ", diff_os_pvalue_formatted))
+    os_pvalue_label <- ifelse(diff_os_pvalue < 0.001, 
+                              glue::glue("OS P = {sprintf('%.1e', diff_os_pvalue)}"),
+                            #  "OS P < 0.001",
+                              paste0("OS P = ", as.numeric(format(
+                                round(diff_os_pvalue, 3), nsmall = 3))))
     
     diff_efs_obj <- survdiff(survival::Surv(EFS_days, EFS_status) ~ variable_efs,  
                              data_efs)
     diff_efs_pvalue <- 1 - pchisq(diff_efs_obj$chisq, length(diff_efs_obj$n) - 1)
-    diff_efs_pvalue_formatted <- format(
-      signif(diff_efs_pvalue, 2),
-      scientific = FALSE)
+    # diff_efs_pvalue_formatted <- as.numeric(format(
+    #   round(diff_efs_pvalue, 3), nsmall = 3))
     
-    efs_pvalue_label <- ifelse(diff_efs_pvalue_formatted < 0.001, 
-                               "EFS P < 0.001",
-                               paste0("EFS P = ", diff_efs_pvalue_formatted))
+    efs_pvalue_label <- ifelse(diff_efs_pvalue < 0.001, 
+                               glue::glue("EFS P = {sprintf('%.1e', diff_efs_pvalue)}"),
+                            #   "EFS P < 0.001",
+                               paste0("EFS P = ", as.numeric(format(
+                                 round(diff_efs_pvalue, 3), nsmall = 3))))
     
     km_plot <- survminer::ggsurvplot(fit = fit, 
                                      data = data_efs,
@@ -501,14 +530,12 @@ plotKM <- function(model,
                                      risk.table.y.text.col = TRUE,
                                      risk.table.y.text = TRUE) 
     
-    km_plot$plot <- km_plot$plot + ggtitle(parse(text = title))
-    
     km_plot_graph <- km_plot$plot + 
       ggplot2::annotate("text", 
-                        600, 0.15, 
+                        500, 0.15, 
                         label = os_pvalue_label) +
       ggplot2::annotate("text", 
-                        600, 0.10, 
+                        500, 0.10, 
                         label = efs_pvalue_label) +
       theme(legend.key.size = unit(1, 'cm')) +
       cowplot::background_grid()
@@ -527,9 +554,7 @@ plotKM <- function(model,
 
 
 
-
-
-plotForest <- function(model) {
+plotForest <- function(model, filter_estimates = TRUE) {
   
   # Determine if OS or EFS model 
   
@@ -576,8 +601,14 @@ plotForest <- function(model) {
       term = factor(term, 
                     levels = term_order,
                     labels = term_labels)
-    ) %>%
-    filter(estimate > 1e-4 & estimate < 1500)
+    )
+  
+  if (filter_estimates == TRUE){
+    
+    survival_df <- survival_df %>%
+      filter(estimate > 1e-5 & estimate < 10000)
+    
+  }
   
   if (length(names(model$xlevels)) > 0) {
     
@@ -589,91 +620,95 @@ plotForest <- function(model) {
     
   }
   
-  forest_plot <- ggplot(survival_df) +
-    aes(x = estimate, y = term, fill = significant
-    ) + 
-    # add CI first so line doesn't cover open point
-    geom_errorbarh(
-      aes(xmin = conf.low,xmax = conf.high,
-      ), height = 0.15, linewidth = 0.65) + 
-    geom_point(size = 3.5, shape = 23) +
-    # Point fill based on sigificance
-    scale_fill_manual(
-      values = c("FALSE" = "white", 
-                 "TRUE" = "black",
-                 "REF" = "gray"),
-      guide = FALSE # turn off legend
-    ) + 
-    # Vertical guiding line at 1
-    geom_vline(xintercept = 1, linetype = 3
-    ) +
-    labs(x = "Hazard Ratio ± 95% CI", y = "",
-         subtitle = glue::glue("{event_type}: N = {survival_n$n} with {survival_n$nevent} events")
-    ) + 
-    # log-scale the x-axis
-    #  scale_x_log10() +
-    scale_x_log10(labels = function(x) format(x, scientific = FALSE)) +
-    ggpubr::theme_pubr() + 
-    theme(
-      plot.subtitle = element_text(face = "bold"),
-      plot.margin = margin(r=6, unit = "pt")
-    ) +
-    # grid makes it easier to follow lines
-    cowplot::background_grid()
-  
-  # Accompanying panel with sample sizes, P-values, etc.
-  
-  # prepare data for panel
-  # note this warning is OK and EXPECTED because there is no CI for the reference group: 
-  #    Removed 2 rows containing missing values (geom_text). 
-  survival_df_spread <- survival_df %>%
-    mutate(
-      # Clean pvalues into labels. 
-      p_string = if_else(
-        p.value >= 0.01, 
-        paste0("P = ", format(round(p.value, 2), nsmall = 2)),
-        "P < 0.01"
-      ),
-      conf.low = format(round(conf.low, 2), nsmall = 2),
-      conf.high = format(round(conf.high, 2), nsmall = 2),
-      estimate = format(round(estimate, 2), nsmall = 2),
-      hr_ci = glue::glue("{estimate} ({conf.low} - {conf.high})")
-    ) %>%
-    dplyr::mutate(hr_ci = str_replace_all(hr_ci, " - ", "-"),
-                  hr_ci = str_replace_all(hr_ci, "  ", ""),
-                  hr_ci = str_replace_all(hr_ci, "- ", "-")) %>%
-    dplyr::select(term, hr_ci, p_string) %>%
-    # this throws a warning but it's ok
-    # format tibble for plotting
-    gather(hr_ci:p_string, key = "name", value = "value") %>%
-    #remove values for reference
-    mutate(value = value)
-  
-  labels_panel <- ggplot(survival_df_spread) +
-    aes(x = name, y = term, label = value) + 
-    geom_text(hjust = 0, size = 3,
-              nudge_x = -0.5) +
-    ggpubr::theme_pubr() + 
-    # remove axes.
-    theme(
-      axis.title.x = element_blank(),
-      axis.text.x = element_text(face = "bold"),
-      axis.ticks.x = element_blank(),
-      axis.line.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      axis.line.y = element_blank(),
-      # -26 is as low as we can go before plot starts to get coverd
-      plot.margin = margin(6, 0, 6, 0, unit = "pt"),
-      #  plot.subtitle = element_text(face = "bold")
-    ) +
-    scale_x_discrete(labels = c("      HR (95% CI)            ", 
-                                "P-value              "),
-                     position = "top")
-  
-  forest_panels <- cowplot::plot_grid(forest_plot, labels_panel, nrow = 1, rel_widths = c(1,0.5), 
-                                      scale = 1, align = "h", hjust = 0, ncol = 2)
-  
-  print(forest_panels)
+  if (nrow(survival_df) > 0){
+    
+    forest_plot <- ggplot(survival_df) +
+      aes(x = estimate, y = term, fill = significant
+      ) + 
+      # add CI first so line doesn't cover open point
+      geom_errorbarh(
+        aes(xmin = conf.low,xmax = conf.high,
+        ), height = 0.15, linewidth = 0.65) + 
+      geom_point(size = 3.5, shape = 23) +
+      # Point fill based on sigificance
+      scale_fill_manual(
+        values = c("FALSE" = "white", 
+                   "TRUE" = "black",
+                   "REF" = "gray"),
+        guide = FALSE # turn off legend
+      ) + 
+      # Vertical guiding line at 1
+      geom_vline(xintercept = 1, linetype = 3
+      ) +
+      labs(x = "Hazard Ratio ± 95% CI", y = "",
+           subtitle = glue::glue("{event_type}: N = {survival_n$n} with {survival_n$nevent} events")
+      ) + 
+      # log-scale the x-axis
+      #  scale_x_log10() +
+      scale_x_log10(labels = function(x) format(x, scientific = FALSE)) +
+      ggpubr::theme_pubr() + 
+      theme(
+        plot.subtitle = element_text(face = "bold"),
+        plot.margin = margin(r=6, unit = "pt")
+      ) +
+      # grid makes it easier to follow lines
+      cowplot::background_grid()
+    
+    # Accompanying panel with sample sizes, P-values, etc.
+    
+    # prepare data for panel
+    # note this warning is OK and EXPECTED because there is no CI for the reference group: 
+    #    Removed 2 rows containing missing values (geom_text). 
+    survival_df_spread <- survival_df %>%
+      mutate(
+        # Clean pvalues into labels. 
+        p_string = if_else(
+          p.value >= 0.01, 
+          paste0("P = ", format(round(p.value, 2), nsmall = 2)),
+          glue::glue("P = {sprintf('%.1e', p.value)}")
+        ),
+        conf.low = format(round(conf.low, 1), nsmall = 1),
+        conf.high = format(round(conf.high, 1), nsmall = 1),
+        estimate = format(round(estimate, 2), nsmall = 2),
+        hr_ci = glue::glue("{estimate} ({conf.low} - {conf.high})")
+      ) %>%
+      dplyr::mutate(hr_ci = str_replace_all(hr_ci, " - ", "-"),
+                    hr_ci = str_replace_all(hr_ci, "  ", ""),
+                    hr_ci = str_replace_all(hr_ci, "- ", "-")) %>%
+      dplyr::select(term, hr_ci, p_string) %>%
+      # this throws a warning but it's ok
+      # format tibble for plotting
+      gather(hr_ci:p_string, key = "name", value = "value") %>%
+      #remove values for reference
+      mutate(value = value)
+    
+    labels_panel <- ggplot(survival_df_spread) +
+      aes(x = name, y = term, label = value) + 
+      geom_text(hjust = 0.5, size = 3,
+                nudge_x = 0) +
+      ggpubr::theme_pubr() + 
+      theme(
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(face = "bold"),
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.y = element_blank(),
+        plot.margin = margin(6, 0, 6, 0, unit = "pt")
+      ) +
+      scale_x_discrete(
+        labels = c("HR (95% CI)",
+                   "P-value"),
+        position = "top",
+        expand = expansion(mult = c(0.7, 0.85))) # add spacing
+    
+    
+    forest_panels <- cowplot::plot_grid(forest_plot, labels_panel, nrow = 1, rel_widths = c(1,0.5), 
+                                        scale = 1, align = "h", hjust = 0, ncol = 2)
+    
+    print(forest_panels)
+    
+  }
 }
