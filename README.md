@@ -29,7 +29,7 @@ docker pull pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 From the `pbta-germline-somatic` folder, run:
 
 ```
-docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.0
+docker run --platform linux/amd64 --name <CONTAINER_NAME> -d -e PASSWORD=ANYTHING -p 8787:8787 -v $PWD:/home/rstudio/pbta-germline-somatic pgc-images.sbgenomics.com/diskin-lab/pbta-germline:1.0.1
 ```
  
 Users can also run Rstudio in the project docker container from a web browser using the instructions below:
