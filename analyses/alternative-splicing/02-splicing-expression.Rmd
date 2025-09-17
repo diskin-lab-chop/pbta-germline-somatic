@@ -137,9 +137,11 @@ plot expression z-scores by variant classification, using splice variant group a
 ```{r}
 plp_expr %>%
   ggplot(aes(x = variant_classification, y = expr_zscore)) + 
-    geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.85,
+    geom_jitter(aes(fill = variant_classification), shape = 21, 
+                width = 0.2, size = 2.5, alpha = 0.75,
                 show.legend = FALSE) +
-    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     stat_compare_means(method = "wilcox",
                        label = "p.signif",
                        step.increase = 0.1,
@@ -182,9 +184,11 @@ Plot CPG P/LP carrier z-scores by germline variant classification
 ```{r}
 plp_prot %>%
   ggplot(aes(x = variant_classification, y = expr_zscore_proteo)) + 
-    geom_jitter(aes(fill = variant_classification), shape = 21, width = 0.2, size = 2.5, alpha = 0.85,
+    geom_jitter(aes(fill = variant_classification), shape = 21, 
+                width = 0.2, size = 2.5, alpha = 0.75,
                 show.legend = FALSE) +
-    geom_boxplot(alpha = 0.05, outlier.shape = NA) +
+    geom_boxplot(alpha = 0.05, outlier.shape = NA,
+                   show.legend = FALSE) +
     stat_compare_means(method = "wilcox",
                        label = "p.signif",
                        step.increase = 0.1,
@@ -196,7 +200,6 @@ plp_prot %>%
                        ) +
     labs(x = "Germline variant classification",
          y = "Protein abundance z-score") +
-  #  ylim(c(-3, 6)) +
     scale_fill_npg() + 
     theme_Publication()
 
@@ -211,7 +214,8 @@ NOTE: we will re-calculate minimum distance between P/LP variant and splice even
 ```{r}
 splice_events <- read_tsv(file.path(results_dir,
                                     "plp-variant-proximal-splicing-event-psi.tsv")) %>%
-  left_join(expr_df %>% dplyr::select(Kids_First_Biospecimen_ID_rna, 
+  left_join(expr_df %>% dplyr::select(Kids_First_Biospecimen_ID_rna,
+                                      Kids_First_Biospecimen_ID_normal,
                                    Hugo_Symbol, expr_zscore)) %>%
   left_join(prot %>% dplyr::select(Kids_First_Biospecimen_ID_normal,
                                    GeneSymbol,
