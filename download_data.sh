@@ -33,6 +33,15 @@ do
   fi
 done
 
+# download GENCODE v39
+GENCODE39="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.primary_assembly.annotation.gtf.gz"
+cd data
+if [ ! -e ${GENCODE39##*/} ]
+then
+  echo "Downloading ${GENCODE39##*/}"
+  curl -k -O $GENCODE39
+fi
+cd ..
 
 # Check the md5s for everything we downloaded except CHANGELOG.md
 cd data/$RELEASE
