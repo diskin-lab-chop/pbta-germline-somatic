@@ -51,6 +51,7 @@ RUN R -e 'BiocManager::install(c( \
 	"BiocManager", \
 	"biomaRt", \
   "data.table", \
+  "ggbio", \
   "ggpubr", \
   "ggthemes", \
   "gtools", \
@@ -60,6 +61,7 @@ RUN R -e 'BiocManager::install(c( \
   "optparse", \
   "pheatmap", \
   "RColorBrewer", \
+  "rtracklayrer", \
   "survival", \
   "survMisc", \
   "survminer", \
