@@ -1,0 +1,288 @@
+---
+title: "DNA methylation: Plot gene models and probe methylation"
+output: 
+  html_notebook:
+  toc: TRUE
+toc_float: TRUE
+author: Ryan Corbett
+---
+
+This script plots gene models and probe methylation in patients and regions of P/LP variant-associated differential methylation
+
+# Load libraries
+```{r load libraries, set up directories}
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+  library(ggpubr)
+  library(ggrepel)
+  library(rtracklayer)
+  library(ggbio)
+})
+
+# Set up directories
+root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
+
+data_dir <- file.path(root_dir, "data")
+analysis_dir <- file.path(root_dir, "analyses", "methylation")
+input_dir <- file.path(analysis_dir, "input")
+results_dir <- file.path(analysis_dir, "results")
+plot_dir <- file.path(analysis_dir, "plots")
+
+# If the directory does not exist, create it
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+
+# source publication theme
+source(file.path(root_dir, "figures", "theme.R"))
+
+# set seed to reproduce plots
+set.seed(2024)
+```
+
+Set file paths
+```{r}
+gtf_file <- file.path(data_dir,
+                      "gencode.v39.primary_assembly.annotation.gtf.gz")
+
+hist_cohort_file <- file.path(results_dir, 
+                              "germline-primary-plus-tumor-histologies-methylation.tsv")
+
+methyl_zscore_file <- file.path(results_dir, "pbta-germline-methylation-beta-zscores.tsv")
+```
+
+Load GTF and filter for exons
+```{r}
+gtf <- rtracklayer::import(gtf_file, format = "gtf")
+
+exons <- gtf[gtf$type %in% c("exon", "intron")]
+```
+
+Plot MSH2 gene model and highlight:
+- SV in sample BS_S75EZJDW (chr2:47402604-47422500) 
+- Region of differentially methylated probes in same patient's tumor (chr2:47402604-47403155)
+
+```{r}
+gene_of_interest <- "MSH2"
+transcript_of_interest <- "MSH2-201"
+msh2_exons <- exons[exons$transcript_name == transcript_of_interest & !is.na(exons$transcript_name)]
+
+ggplot() +
+  geom_alignment(msh2_exons, type = type, fill = "grey80") +
+  theme_Publication() +
+  labs(title = "MSH2\nchr2") +
+  scale_x_continuous(position = "top") +
+  geom_rect(aes(xmin = 47402401, xmax = 47422500, ymin = -Inf, ymax = Inf),
+            fill = "salmon", alpha = 0.4) +
+  geom_segment(aes(x = 47402604, xend = 47403155, y = -Inf),
+            col = "black", size = 4)
+
+ggsave(file.path(plot_dir, "msh2-gene-model.pdf"),
+       width = 6, height = 2, units = "in")
+```
+Plot 2 RECQL4 gene models and highlight:
+- P/LP variants in two patients 
+- Regions of differentially methylated probes matched tumors
+
+```{r}
+transcript_of_interest <- "RECQL4-209"
+recql4_exons <- exons[exons$transcript_name == transcript_of_interest & !is.na(exons$transcript_name)]
+
+ggplot() +
+  geom_alignment(recql4_exons, type = type, fill = "grey80") +
+  theme_Publication() +
+  labs(title = "RECQL4\nchr8") +
+  scale_x_continuous(position = "top") +
+  geom_text(aes(x = 144514982, y = -Inf, label = "*"),
+            col = "red", size = 10) +
+  geom_segment(aes(x = 144517529, xend = 144518568, y = -Inf),
+            col = "black", size = 4)
+
+ggsave(file.path(plot_dir, "recql4-gene-model-BS_PF7546KW.pdf"),
+       width = 6, height = 2, units = "in")
+
+ggplot() +
+  geom_alignment(recql4_exons, type = type, fill = "grey80") +
+  theme_Publication() +
+  labs(title = "RECQL4\nchr8") +
+  scale_x_continuous(position = "top") +
+  geom_text(aes(x = 144513610, y = -Inf, label = "*"),
+            col = "red", size = 10) +
+  geom_segment(aes(x = 144517529, xend = 144518568, y = -Inf),
+            col = "black", size = 4)
+
+ggsave(file.path(plot_dir, "recql4-gene-model-BS_TV8HD883.pdf"),
+       width = 6, height = 2, units = "in")
+```
+
+Plot 2 MSH6 gene model and highlight:
+- P/LP variant in sample BS_G113MX63 (chr2:47800909)
+- Regions of differentially methylated probes matched tumor (chr2:47782559-47784062)
+
+```{r}
+transcript_of_interest <- "MSH6-201"
+msh6_exons <- exons[exons$transcript_name == transcript_of_interest & !is.na(exons$transcript_name)]
+
+ggplot() +
+  geom_alignment(msh6_exons, type = type, fill = "grey80") +
+  theme_Publication() +
+  labs(title = "MSH6\nchr2") +
+  scale_x_continuous(position = "top") +
+  geom_text(aes(x = 47800909, y = -Inf, label = "*"),
+            col = "red", size = 10) +
+  geom_segment(aes(x = 47782559, xend = 47784062, y = -Inf),
+            col = "black", size = 4)
+
+ggsave(file.path(plot_dir, "msh6-gene-model-BS_G113MX63.pdf"),
+       width = 6, height = 2, units = "in")
+```
+
+Load differential methylation data and create a plotting data frame
+
+```{r}
+methyl_zscores <- read_tsv(methyl_zscore_file)
+
+methyl_plot_df <- methyl_zscores %>%
+  # create rows for sample-level probe beta values
+  dplyr::select(Kids_First_Biospecimen_ID_methyl, 
+                Kids_First_Biospecimen_ID_normal,
+                Probe_ID, probe_position,
+                Hugo_Symbol,
+                probe_gene_feature,
+                beta_value_sample, 
+                sample_beta_zscore_group) %>%
+  # define group as Biospecimen ID
+  dplyr::mutate(group = Kids_First_Biospecimen_ID_methyl) %>%
+  dplyr::rename(beta_value = beta_value_sample) %>%
+  # append additional rows where beta value represents mean (excluding sample)
+  # define this group as "Other samples"
+  bind_rows(methyl_zscores %>%
+                dplyr::select(Kids_First_Biospecimen_ID_methyl, 
+                              Kids_First_Biospecimen_ID_normal,
+                              Probe_ID, probe_position,
+                              Hugo_Symbol,
+                              probe_gene_feature,
+                              mean_beta_group) %>%
+              dplyr::rename(beta_value = mean_beta_group) %>%
+              dplyr::mutate(group = "Other samples")) %>%
+  # add signif value for text plotting
+  dplyr::mutate(sig_zscore = case_when(
+    abs(sample_beta_zscore_group) > 2 ~ "**",
+    TRUE ~ NA_character_
+  ))
+```
+
+Plot RECQL4 promoter methylation in BS_TV8HD883 vs. other samples
+
+```{r}
+methyl_plot_df %>%
+  dplyr::filter(Hugo_Symbol == "RECQL4",
+                Kids_First_Biospecimen_ID_normal == "BS_TV8HD883",
+                probe_gene_feature == "promoter") %>%
+  dplyr::arrange(probe_position) %>%
+  dplyr::mutate(Probe_ID = fct_relevel(Probe_ID,
+                                       unique(Probe_ID))) %>%
+  
+  ggplot(aes(x = Probe_ID, y = beta_value, group = group)) +
+  geom_line(aes(linetype=group)) +
+  geom_point() +
+  geom_text(aes(x = Probe_ID, y = beta_value+0.05, label = sig_zscore),
+            color = "red", size = 6) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  theme_Publication() + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = c(.2,0.8),
+        legend.background = element_rect(color = "black"))
+
+ggsave(file.path(plot_dir, "RECQL4-BS_RWKHJFYY-promoter-methylation.pdf"),
+       width = 6, height = 3, units = "in")
+```
+Plot RECQL4 promoter methylation in BS_PF7546KW vs. other samples
+
+```{r}
+methyl_plot_df %>%
+  dplyr::filter(Hugo_Symbol == "RECQL4",
+                Kids_First_Biospecimen_ID_normal == "BS_PF7546KW",
+                probe_gene_feature == "promoter") %>%
+  dplyr::arrange(probe_position) %>%
+  dplyr::mutate(Probe_ID = fct_relevel(Probe_ID,
+                                       unique(Probe_ID))) %>%
+  
+  ggplot(aes(x = Probe_ID, y = beta_value, group = group)) +
+  geom_line(aes(linetype=group)) +
+  geom_point() +
+  geom_text(aes(x = Probe_ID, y = beta_value+0.05, label = sig_zscore),
+            color = "red", size = 6) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  theme_Publication() + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = c(.2,0.8),
+        legend.background = element_rect(color = "black"))
+
+ggsave(file.path(plot_dir, "RECQL4-BS_KGT59ZDT-promoter-methylation.pdf"),
+       width = 6, height = 3, units = "in")
+```
+
+Plot MSH2 promoter methylation in BS_S75EZJDW vs. other samples
+
+```{r}
+methyl_plot_df %>%
+  dplyr::filter(Hugo_Symbol == "MSH2",
+                Kids_First_Biospecimen_ID_normal == "BS_S75EZJDW",
+                probe_gene_feature == "promoter") %>%
+  dplyr::arrange(probe_position) %>%
+  dplyr::mutate(Probe_ID = fct_relevel(Probe_ID,
+                                       unique(Probe_ID))) %>%
+  
+  ggplot(aes(x = Probe_ID, y = beta_value, group = group)) +
+  geom_line(aes(linetype=group)) +
+  geom_point() +
+  geom_text(aes(x = Probe_ID, y = beta_value+0.01, label = sig_zscore),
+            color = "red", size = 6) +
+  ylim(c(0,.25)) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  theme_Publication() + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = c(.2,0.8),
+        legend.background = element_rect(color = "black"))
+
+ggsave(file.path(plot_dir, "MSH2-BS_RJMW12ZA-promoter-methylation.pdf"),
+       width = 6, height = 3, units = "in")
+```
+
+Plot MSH6 promoter methylation in BS_G113MX63 vs. other samples
+
+```{r}
+methyl_plot_df %>%
+  dplyr::filter(Hugo_Symbol == "MSH6",
+                Kids_First_Biospecimen_ID_normal == "BS_G113MX63",
+                probe_gene_feature == "promoter",
+                probe_position > 47695466) %>%
+  dplyr::arrange(probe_position) %>%
+  dplyr::mutate(Probe_ID = fct_relevel(Probe_ID,
+                                       unique(Probe_ID))) %>%
+  
+  ggplot(aes(x = Probe_ID, y = beta_value, group = group)) +
+  geom_line(aes(linetype=group)) +
+  geom_point() +
+  geom_text(aes(x = Probe_ID, y = beta_value+0.01, label = sig_zscore),
+            color = "red", size = 6) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  labs(x = NULL, y = "beta value", linetype = NULL) +
+  theme_Publication() + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = c(.8,0.8),
+        legend.background = element_rect(color = "black"))
+
+ggsave(file.path(plot_dir, "MSH6-BS_5V730EQB-promoter-methylation.pdf"),
+       width = 6, height = 3, units = "in")
+```
+
+print session info
+
+```{r}
+sessionInfo()
+```
