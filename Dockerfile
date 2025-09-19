@@ -61,6 +61,7 @@ RUN R -e 'BiocManager::install(c( \
   "optparse", \
   "pheatmap", \
   "RColorBrewer", \
+  "rtracklayrer", \
   "survival", \
   "survMisc", \
   "survminer", \
